@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="app">
-        <Main-Component></Main-Component>
+        <Open-Component></Open-Component>
     </div>
 </body>
 </html>

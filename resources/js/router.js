@@ -1,10 +1,15 @@
 /* 기본셋팅 1204 최정훈 */
 import { createWebHistory, createRouter } from 'vue-router';
+import MainComponent from '../components/MainComponent.vue';
 
 const routes = [
 	{
 		path: "/",
-		redirect : '/'
+		redirect : '/main'
+	},
+	{
+		path: "/main",
+		component : MainComponent
 	},
 ];
 
