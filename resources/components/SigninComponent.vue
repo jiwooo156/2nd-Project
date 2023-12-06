@@ -24,8 +24,12 @@
 						<input type="text">
 					</div>
 					<div>
+						<div>생년월일</div>
+						<input type="text">
+					</div>
+					<div>
 						<div>성별</div>
-						<select  id="shop_type" class="shop_modal_select">
+						<select>
 							<option>남자</option>
 							<option>여자</option>
 						</select>	

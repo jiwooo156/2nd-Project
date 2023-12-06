@@ -15,12 +15,13 @@
 import MainComponent from './MainComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
+import UserComponent from './UserComponent.vue'
 
 export default {
 
     name: 'OpenComponent',
     components: {
-		MainComponent,LoginComponent,SigninComponent,
+		MainComponent,LoginComponent,SigninComponent,UserComponent
     },
     methods: {
 
