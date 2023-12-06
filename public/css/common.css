@@ -5,30 +5,60 @@
 	box-sizing: border-box;
 	text-decoration: none; 
 }
-
 textarea{
 	resize: none
 }
 
-
+.pointer:hover{
+	cursor: pointer;
+}
+.center{
+	text-align: center;
+}
 
 
 /* 로그인페이지 */
+
+.login_bg{
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	z-index: 1;
+}
+.login_bg::after {
+	width: 100vw;
+	height: 100vh;
+	content: "";
+	background: url("/img/login_bg.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	opacity: 0.6;
+}
+
 .login_frame{
     margin: 0 auto;
     width: 95%;
-    max-width: 1000px;
-    text-align: center;
+    max-width: 550px;
 }
 
 .login_header{
-	font-size: 3rem;
-	margin: 80px auto;
+	font-size: 2.3rem;
+    margin: 80px auto;
+    font-weight: 900;
+
+}
+.login_header_a{
+	color: #000;
 }
 
 .login_container{
 	border: 1px solid #E4E4E4;
-	padding: 20px;
+    padding: 40px;
+	background-color: white;
 }
 
 .login_box{
@@ -39,8 +69,10 @@ textarea{
 .login_box input{
 	border: none;
 	outline: none;
-	border-bottom: 3px solid #B7B7B7;
+	border-bottom: 2px solid #B7B7B7;
 	padding: 10px 0px;
+	margin-bottom: 10px;
+	font-size: 1rem;
 }
 
 .login_box input::placeholder{
@@ -48,16 +80,123 @@ textarea{
 }
 
 .login_btn{
-	padding: 1px;
+	border: none;
+	width: 100%;
+	background-color: #DEDEDE;
+	padding: 10px;
+	margin-top: 15px;
+	font-weight: 900;
 }
 
 .login_and{
-	padding: auto;
+	display:flex;
+	flex-basis:100%;
+	align-items:center;
+	color:rgba(0,0,0,0.35);
+	font-size:14px;
+    margin: 12px 0px;
+}
+.login_and::before{
+    content: "";
+    flex-grow: 1;
+    margin: 0px 10px 0px 0px;
+    background: rgba(0,0,0,0.35);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+}
+.login_and::after{
+	content:"";
+	flex-grow:1;
+    margin: 0px 0px 0px 10px;
+	background:rgba(0,0,0,0.35);
+	height:1px;
+	font-size:0px;
+	line-height: 0px;
 }
 
 .login_kakao{
-	padding: 1px;
+	border: none;
+	width: 100%;
+	background-color: #FADA0A;
+	padding: 10px;
+	font-weight: 900;
 }
+
 .login_sign{
-	padding: 1px;
+	text-align: left;
+    padding-top: 14px;
+}
+
+.login_sign a{
+	font-size: 0.8rem;
+	color: #000;
+}
+
+
+
+
+/* signin */
+.sign_bg{
+	background-color: #F2F1F1;
+}
+
+.sign_frame{
+	margin: 0 auto;
+    width: 95%;
+    max-width: 550px;
+}
+
+.sign_header{
+	font-size: 2.3rem;
+    margin: 60px auto;
+    font-weight: 900;
+}
+
+.sign_header a {
+	color: #000;
+}
+
+.sign_container input, .sign_container select{
+    width: 100%;
+    padding: 9px;
+	outline: none;
+	border: none;
+}
+
+.sign_container input::placeholder{
+	color: #B7B7B7;
+}
+
+.sign_container div{
+    font-weight: 500;
+    padding: 3px 0px;
+}
+
+.sign_relative{
+	position: relative;
+}
+.sign_chk_btn{
+    position: absolute;
+    top: 31.5px;
+    right: 3px;
+    border: none;
+    background-color: #d9d9d9;
+    padding: 7px;
+    font-size: 11px;
+}
+
+.sign_footer_box{
+	display: flex;
+	justify-content: space-between;
+	margin-top: 25px;
+}
+
+.sign_footer_btn{
+	border: none;
+    padding: 8px;
+    width: 30%;
+    background-color: #DEDEDE;
+    font-size: 1.5rem;
+	color: #000;
 }
