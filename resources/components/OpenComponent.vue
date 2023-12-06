@@ -13,12 +13,14 @@
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
+import LoginComponent from './LoginComponent.vue'
+import SigninComponent from './SigninComponent.vue'
 
 export default {
 
     name: 'OpenComponent',
     components: {
-		MainComponent,
+		MainComponent,LoginComponent,SigninComponent,
     },
     methods: {
 

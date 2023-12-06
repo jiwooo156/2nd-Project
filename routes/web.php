@@ -16,3 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', function () {
+    return view('welcome');
+});
+Route::get('/signin', function () {
+    return view('welcome');
+});
+
+
+// 잘못된 URL입력시
+Route::fallback(function(){
+    return redirect('/error');
+});
+
+Route::get('/error', function () {
+    return view('welcome');
+});
