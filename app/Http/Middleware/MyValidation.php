@@ -26,7 +26,7 @@ class MyValidation
         
         // 항목 리스트 
         $arrBaseKey = [
-            'emeail'
+            'email'
             ,'name'
             ,'pw'
             ,'pw_chk'
@@ -40,10 +40,10 @@ class MyValidation
         ];
         // 유효성 체크 리스트
         $arrBaseValidation = [
-            'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
+            'email' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
             ,'name'     => 'required|regex:/^[가-힣]+$/u|min:2|max:10'
             ,'pw' => 'required|regex:/^(?=.*[a-z])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/u'
-            ,'pw_chk' => 'same:password'
+            ,'pw_chk' => 'same:pw'
             ,'phone' => 'required|regex:/^010([0-9]{4})([0-9]{4})$/u'
             ,'gender' => 'required|in:M,F'
             ,'birthdate' => 'required|regex:/^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/|date_format:Ymd|before_or_equal:today'

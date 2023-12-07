@@ -7,58 +7,95 @@
 			<div>
 				<div class="sign_container">
 					<div class="sign_relative">
-						<div>E-mail</div>
+						<span>E-mail</span>
+						<span
+							v-if="$store.state.emailFlg === 1" 
+							class="sign_commsg"
+						>사용 가능한 이메일 입니다.</span>
+						<span
+							v-if="$store.state.emailFlg === 2" 
+							class="sign_errmsg"
+						>이미 사용중인 이메일 입니다.</span>
+						<span
+							v-for="item in $store.state.varErr" :key="item"
+							v-if="$store.state.emailFlg !== 1" 
+							class="sign_errmsg"
+						>{{ item[0] }}</span>
 						<input type="email" placeholder="ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ" id="signin_email">
 						<button class="sign_chk_btn pointer"
+							v-if="$store.state.emailFlg !== 1" 
 							@click="email_chk"
 						>중복확인</button>
+						<button class="sign_chk_btn pointer"
+							v-if="$store.state.emailFlg === 1" 
+							@click="del_email_chk"
+						>다시쓰기</button>
 					</div>
 					<div>
 						<span>비밀번호</span>
 						<span v-show="err_pw" class="sign_errmsg">비밀번호 형식이 올바르지 않습니다.</span>
 						<span v-show="com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>
-						<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="pw">
+						<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="pw" id="signin_pw">
 					</div>
 					<div>
 						<span>비밀번호확인</span>
 						<span v-show="err_pw_chk" class="sign_errmsg">비밀번호와 일치하지 않습니다.</span>
 						<span v-show="com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
-						<input type="password" placeholder="비밀번호와 동일" v-model="pw_chk">
+						<input type="password" placeholder="비밀번호와 동일" v-model="pw_chk" id="signin_pw_chk">
 					</div>
 					<div>
 						<span>이름</span>
 						<span v-show="err_name" class="sign_errmsg">이름 형식이 올바르지 않습니다.</span>
 						<span v-show="com_name" class="sign_commsg">사용가능한 이름 입니다.</span>
-						<input type="text" placeholder="한글 2~10" v-model="name">
+						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name">
 					</div>
 					<div class="sign_relative">
-						<div
+						<span>닉네임</span>
+						<span
+							v-if="$store.state.nickFlg === 1" 
+							class="sign_commsg"
+						>사용 가능한 닉네임 입니다.</span>
+						<span
+							v-if="$store.state.nickFlg === 2" 
+							class="sign_errmsg"
+						>이미 사용중인 닉네임 입니다.</span>
+						<span
+							v-for="item in $store.state.varErr" :key="item"
+							class="sign_errmsg"
+						>{{ item[0] }}</span>
+						<input type="text" placeholder="한글,영어,숫자 2~10" id="signin_nick">
+						<button class="sign_chk_btn pointer"
+							v-if="$store.state.nickFlg !== 1" 
 							@click="nick_chk"
-						>닉네임</div>
-						<input type="text" placeholder="한글,영어,숫자 2~10">
-						<button class="sign_chk_btn pointer">중복확인</button>
+						>중복확인</button>
+						<button class="sign_chk_btn pointer"
+							v-if="$store.state.nickFlg === 1" 
+							@click="del_nick_chk"
+						>다시쓰기</button>
 					</div>
 					<div>
 						<span>생년월일</span>
 						<span v-show="err_birthdate" class="sign_errmsg">생년월일 형식이 올바르지 않습니다.</span>
 						<span v-show="com_birthdate" class="sign_commsg">사용가능한 생년월일 입니다.</span>
-						<input type="text" placeholder="YYYYMMDD"  v-model="birthdate">
+						<input type="text" placeholder="YYYYMMDD"  v-model="birthdate" id="signin_birthdate">
 					</div>
 					<div>
 						<span>전화번호</span>
 						<span v-show="err_phone" class="sign_errmsg">전화번호 형식이 올바르지 않습니다.</span>
 						<span v-show="com_phone" class="sign_commsg">사용가능한 전화번호 입니다.</span>
-						<input type="text" placeholder="휴대폰번호" v-model="phone" max="11" min="11">
+						<input type="text" placeholder="휴대폰번호" v-model="phone" max="11" min="11"  id="signin_phone">
 					</div>
 					<div>
-						<div>성별</div>
-						<select>
+						<span>성별</span>
+						<select id="signin_gender">
 							<option>남자</option>
 							<option>여자</option>
 						</select>	
 					</div>
 					<div class="sign_footer_box center">
-						<button class="sign_footer_btn pointer">회원가입</button>
+						<button class="sign_footer_btn pointer"
+							@click="signin"
+						>회원가입</button>
 						<router-link :to="'/main'" class="sign_footer_btn pointer">취소</router-link>
 					</div>
 				</div>
@@ -177,12 +214,26 @@ export default {
 			this.err_phone = false;
 			this.com_phone = true;
 		},
+
 		email_chk(){
 			this.$store.dispatch('actionEmailChk');
+		},
+		del_email_chk(){
+			this.$store.commit('setEmailFlg',0);
+			document.querySelector('#signin_email').readOnly = false;
+			document.querySelector('#signin_email').removeAttribute('style')
 		},
 		nick_chk(){
 			this.$store.dispatch('actionNickChk');
 		},
+		del_nick_chk(){
+			this.$store.commit('setNickFlg',0);
+			document.querySelector('#signin_nick').readOnly = false;
+			document.querySelector('#signin_nick').removeAttribute('style')
+		},
+		signin(){
+			this.$store.dispatch('actionSignIn');
+		}
 	}
 }
 </script>
