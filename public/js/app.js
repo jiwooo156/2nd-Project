@@ -19421,12 +19421,105 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
-      setting: ''
+      pw: "",
+      pw_chk: "",
+      name: "",
+      birthdate: "",
+      phone: "",
+      err_pw: false,
+      com_pw: false,
+      err_pw_chk: false,
+      com_pw_chk: false,
+      err_name: false,
+      com_name: false,
+      err_birthdate: false,
+      com_birthdate: false,
+      err_phone: false,
+      com_phone: false
     };
+  },
+  watch: {
+    pw: function pw() {
+      this.pwval();
+    },
+    pw_chk: function pw_chk() {
+      this.pwchkval();
+    },
+    name: function name() {
+      this.nameval();
+    },
+    birthdate: function birthdate() {
+      this.birthdateval();
+    },
+    phone: function phone() {
+      this.phoneval();
+    }
   },
   created: function created() {},
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    pwval: function pwval() {
+      var VAR = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/;
+      if (!VAR.test(this.pw) || !this.pw) {
+        this.err_pw = true;
+        this.com_pw = false;
+        return;
+      }
+      this.err_pw = false;
+      this.com_pw = true;
+    },
+    pwchkval: function pwchkval() {
+      if (this.pw_chk !== this.pw || !this.pw_chk) {
+        this.err_pw_chk = true;
+        this.com_pw_chk = false;
+        return;
+      }
+      this.err_pw_chk = false;
+      this.com_pw_chk = true;
+    },
+    nameval: function nameval() {
+      var VAR = /^[가-힣]{2,10}$/;
+      if (!VAR.test(this.name) || !this.name) {
+        this.err_name = true;
+        this.com_name = false;
+        return;
+      }
+      this.err_name = false;
+      this.com_name = true;
+    },
+    birthdateval: function birthdateval() {
+      // 오늘날짜 yyyymmdd 형태로 가져오는법
+      var today = new Date();
+      var year = today.getFullYear();
+      var month = (today.getMonth() + 1).toString().padStart(2, '0');
+      var day = today.getDate().toString().padStart(2, '0');
+      var formattedDate = year + month + day;
+      var VAR = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
+      if (!VAR.test(this.birthdate) || !this.birthdate || this.birthdate >= formattedDate) {
+        this.err_birthdate = true;
+        this.com_birthdate = false;
+        return;
+      }
+      this.err_birthdate = false;
+      this.com_birthdate = true;
+    },
+    phoneval: function phoneval() {
+      var VAR = /^010([0-9]{4})([0-9]{4})$/;
+      if (!VAR.test(this.phone) || !this.phone) {
+        this.err_phone = true;
+        this.com_phone = false;
+        return;
+      }
+      this.err_phone = false;
+      this.com_phone = true;
+    },
+    email_chk: function email_chk() {
+      this.$store.dispatch('actionEmailChk');
+    },
+    nick_chk: function nick_chk() {
+      this.$store.dispatch('actionNickChk');
+    }
+  }
 });
 
 /***/ }),
@@ -19602,11 +19695,65 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "sign_container"
 };
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"sign_relative\"><div>E-mail</div><input type=\"email\" placeholder=\"ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ\"><button class=\"sign_chk_btn pointer\">중복확인</button></div><div><div>비밀번호</div><input type=\"password\" placeholder=\"영어,숫자,!?~@# 8~20\"></div><div><div>비밀번호확인</div><input type=\"password\" placeholder=\"비밀번호와 동일\"></div><div><div>이름</div><input type=\"text\" placeholder=\"한글,영어 1~50\"></div><div class=\"sign_relative\"><div>닉네임</div><input type=\"text\" placeholder=\"한글,영어,숫자 2~10\"><button class=\"sign_chk_btn pointer\">중복확인</button></div><div><div>생년월일</div><input type=\"text\" placeholder=\"YYYYMMDD\"></div><div><div>전화번호</div><input type=\"text\" placeholder=\"휴대폰번호\"></div><div><div>성별</div><select><option>남자</option><option>여자</option></select></div>", 8);
+var _hoisted_5 = {
+  "class": "sign_relative"
+};
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "E-mail", -1 /* HOISTED */);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "email",
+  placeholder: "ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ",
+  id: "signin_email"
+}, null, -1 /* HOISTED */);
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
+var _hoisted_9 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_10 = {
+  "class": "sign_commsg"
+};
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호확인", -1 /* HOISTED */);
+var _hoisted_12 = {
+  "class": "sign_errmsg"
+};
 var _hoisted_13 = {
+  "class": "sign_commsg"
+};
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "이름", -1 /* HOISTED */);
+var _hoisted_15 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_16 = {
+  "class": "sign_commsg"
+};
+var _hoisted_17 = {
+  "class": "sign_relative"
+};
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "text",
+  placeholder: "한글,영어,숫자 2~10"
+}, null, -1 /* HOISTED */);
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "sign_chk_btn pointer"
+}, "중복확인", -1 /* HOISTED */);
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
+var _hoisted_21 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_22 = {
+  "class": "sign_commsg"
+};
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "전화번호", -1 /* HOISTED */);
+var _hoisted_24 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_25 = {
+  "class": "sign_commsg"
+};
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "성별"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "남자"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "여자")])], -1 /* HOISTED */);
+var _hoisted_27 = {
   "class": "sign_footer_box center"
 };
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "sign_footer_btn pointer"
 }, "회원가입", -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -19619,12 +19766,48 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("이의이승")];
     }),
     _: 1 /* STABLE */
-  })]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: item,
-      "class": "regist_err"
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "sign_chk_btn pointer",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.email_chk && $options.email_chk.apply($options, arguments);
+    })
+  }, "중복확인")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_9, "비밀번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, "사용가능한 비밀번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "password",
+    placeholder: "영어,숫자,특수문자(!?~@#)최소1개포함 8~20",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.pw = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "password",
+    placeholder: "비밀번호와 동일",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.pw_chk = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_16, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    placeholder: "한글 2~10",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.name = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    onClick: _cache[4] || (_cache[4] = function () {
+      return $options.nick_chk && $options.nick_chk.apply($options, arguments);
+    })
+  }, "닉네임"), _hoisted_18, _hoisted_19]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_21, "생년월일 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_22, "사용가능한 생년월일 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    placeholder: "YYYYMMDD",
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return $data.birthdate = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_24, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    placeholder: "휴대폰번호",
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      return $data.phone = $event;
+    }),
+    max: "11",
+    min: "11"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: '/main',
     "class": "sign_footer_btn pointer"
   }, {
@@ -19798,12 +19981,55 @@ __webpack_require__.r(__webpack_exports__);
 var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
   // state() : data를 저장하는 영역
   state: function state() {
-    return {};
+    return {
+      emailFlg: false,
+      nickFlg: false,
+      varErr: []
+    };
   },
   // mutations : 데이터 수정용 함수 저장 영역
-  mutations: {},
+  mutations: {
+    setEmailFlg: function setEmailFlg(state, boo) {
+      state.emailFlg = boo;
+    },
+    setNickFlg: function setNickFlg(state, boo) {
+      state.nickFlg = boo;
+    }
+  },
   // actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
-  actions: {}
+  actions: {
+    // 이메일 중복확인
+    actionEmailChk: function actionEmailChk() {
+      var email = document.querySelector('#signin_email').value;
+      var URL = '/api/signin/' + email;
+      var HEADER = {
+        headers: {
+          'Authorization': 'Bearer team5'
+        }
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL, HEADER).then(function (res) {
+        if (res.data.code === "0") {
+          if (res.data.data.length === 0) {
+            console.log("정상통과");
+            context.commit('setIdFlg', 1);
+            document.querySelector('#u_id').readOnly = true;
+          } else if (res.data.data.length > 0) {
+            context.commit('setIdFlg', 2);
+            console.log("flg2");
+          } else {
+            context.commit('setIdFlg', 0);
+            context.commit('setErrMsg', res.data.errorMsg);
+            console.log("flg0");
+          }
+        } else {
+          console.log('else');
+          context.commit('setErrMsg', res.data.errorMsg);
+        }
+      })["catch"](function (err) {
+        console.log(err.response.data);
+      });
+    }
+  }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
