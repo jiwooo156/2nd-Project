@@ -19606,9 +19606,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<br><div class=\"user_userInfo\"><div class=\"user_userInfo_text\"><h1>회원 정보</h1></div></div><br><div class=\"user_box_top_red\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div><br><div class=\"user_userInfo_text3\"><h3>회원정보 설정</h3></div>", 7);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<br><div class=\"user_userInfo\"><div class=\"user_userInfo_text\"><h1>회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br><div class=\"user_container\"><div class=\"user_userInfo_text3\"><h3>회원정보 설정</h3></div><table class=\"user_table\"><tbody><tr><td class=\"user_rowname\">회원번호</td><td class=\"user_rowcontent\">1871017772</td></tr><tr><td class=\"user_rowname\">이메일</td><td class=\"user_rowcontent\">rlawldnd841@gmail.com <button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">비밀번호</td><td class=\"user_rowcontent\">********* <button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">닉네임</td><td class=\"user_rowcontent\">보성쿤 <button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">탈퇴신청</td><td class=\"user_rowcontent\"><button type=\"submit\" class=\"user_button_exit\">탈퇴</button></td></tr></tbody></table></div>", 6);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ul class=\"user_list_table\">\r\n\t\t<li>회원번호</li>\r\n\t\t<li>이메일</li>\r\n\t\t<li>비밀번호</li>\r\n\t\t<li>닉네임</li>\r\n\t\t<li>탈퇴신청</li>\r\n\t</ul> ")], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
+  return _hoisted_1;
 }
 
 /***/ }),

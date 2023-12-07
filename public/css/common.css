@@ -62,29 +62,30 @@ textarea{
 	padding: 1px;
 }
 
+
 /* 유저페이지 */
 
-.user_list_table{
-	list-style: none;
-}
+/* 페이지 최상단 "회원정보" */
 .user_userInfo{
-	width:95%;
+	width:85%;
 	border-bottom: 1px solid #B7B7B7;
-	margin:10px;	
+	margin-left:50px;	
 }
 .user_userInfo_text{
 width: 20%;
-/* text-align: center; */
+text-align: center;
 }
-.user_sub_container{
-	width:90%;
-	border-bottom:1px solid #B7B7B7;
-	margin:10px;	
+
+/* 두번째 "회원정보" 텍스트   */
+.user_subcontainer{
+	height: auto;
+	display: flex;
 }
 .user_box_top_red{
-	margin:10px;
+	margin-left:50px;
 	display: inline-block;
 	width:15%;
+	height:50px;
 	text-align: center;
 	border:1px solid #B7B7B7;
 	border-top: 4px solid red;
@@ -92,13 +93,45 @@ width: 20%;
 }
 .user_vacant_box{
 	display:inline-block;
-	width:80%;
-	border-bottom: 1px solid #B7B7B7;
-	margin:-11px;
+	width:70%;
+	height:50px;
+	border-bottom: 1px solid #B7B7B7;	
 }
+/* 회원정보 설정 */
 .user_userInfo_text3{
-	margin:10px;
+	margin:20px;
 }
-/* .user_list_table{
-	margin:10px;
-} */
+.user_container{
+	margin-left: 50px;
+	width:100%;
+}
+.user_table{
+	border: 1px solid #B7B7B7;
+	border-right: none;
+	border-collapse: collapse;
+	border-spacing: none;
+}
+.user_rowname{
+	border-bottom: 1px solid #808080;
+	background-color: #D9D9D9;
+	border-spacing: 0px;
+	width:4%;
+	height:100px;
+	padding:10px;
+	
+}
+.user_rowcontent{
+	border-bottom: 1px solid #B7B7B7;
+	text-align: center;
+	width:10%;
+}
+.user_button{
+	width:50px;
+	/* border: 1px solid #B7B7B7; */
+	padding: 5px;
+	float:right;
+}
+.user_button_exit{
+	width:50px;
+	padding:5px;
+}
