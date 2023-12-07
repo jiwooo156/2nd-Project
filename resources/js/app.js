@@ -2,14 +2,14 @@
 require('./bootstrap');
 
 import { createApp } from 'vue'
-import MainComponent from '../components/MainComponent.vue'
+import OpenComponent from '../components/OpenComponent.vue'
 import store from './store.js'
 import VueCookies from "vue-cookies";
 import router from './router.js'
 
 const app = createApp({
 	components: {
-		MainComponent,
+		OpenComponent,
 	}
 })
 .use(store)

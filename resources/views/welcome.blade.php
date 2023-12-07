@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link rel="stylesheet" href="/css/common.css">
-    <title>Portfolio</title>
+    <title>이에이승</title>
 </head>
 <body>
     <div id="app">
-        <Main-Component></Main-Component>
+        <Open-Component></Open-Component>
     </div>
 </body>
 </html>
