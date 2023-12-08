@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    // 이메일중복확인
     public function emailchk(Request $req)
     {
         $result = User::select('email')->where('email',$req->email)->get();
@@ -22,6 +23,7 @@ class UserController extends Controller
         ], 200);
     }
 
+    // 닉네임중복확인
     public function nickchk(Request $req)
     {
         $result = User::select('nick')->where('nick',$req->nick)->get();
@@ -31,7 +33,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    
+    // 회원가입
     public function store(Request $req)
     {
         $data = $req->only('email','name','password','birthdate','phone','gender','nick');
@@ -49,6 +51,8 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    // 로그인
     public function login(Request $req)
     {
         $result = User::where('email',$req->email)->first();
@@ -86,5 +90,30 @@ class UserController extends Controller
             return $response->cookie('access_token', $token, 1440)
             ->cookie('nick', $result->nick, 1440, null, null, false, false);
         }
+    }
+    // 로그아웃
+    public function logout(Request $req){
+        $token = $req->cookie('access_token');
+        $nick = $req->nick;
+        Log::debug($token);
+        Log::debug($nick);
+        $result = User::where('nick',$nick)
+                    ->where('access_token',$token)
+                    ->get();
+        if($result){
+            $response->cookie('access_token', null, -1);
+            $response->cookie('nick', null, -1);
+
+            return response()->json([
+                'code' => '0'
+                ,'data' => $result
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 'E90'
+                ,'errorMsg' => $errorMsg
+            ], 400);
+        }
+    
     }
 }

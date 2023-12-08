@@ -202,10 +202,13 @@ const store = createStore({
 				const HEADER = {
 					headers: {
 						'Authorization': 'Bearer team5',
+						'Content-Type': 'multipart/form-data',
 					}
 				};
+				const formData = new FormData();
+				formData.append('nick',context.state.NowUser);
 
-				axios.get(URL,HEADER)
+				axios.post(URL,formData,HEADER)
 				.then(res => {
 					context.commit('setCookieFlg',false)
 					router.push('/main')

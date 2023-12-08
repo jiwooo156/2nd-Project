@@ -20314,10 +20314,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
       var URL = '/api/logout';
       var HEADER = {
         headers: {
-          'Authorization': 'Bearer team5'
+          'Authorization': 'Bearer team5',
+          'Content-Type': 'multipart/form-data'
         }
       };
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL, HEADER).then(function (res) {
+      var formData = new FormData();
+      formData.append('nick', context.state.NowUser);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
         context.commit('setCookieFlg', false);
         _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
       })["catch"](function (err) {});
