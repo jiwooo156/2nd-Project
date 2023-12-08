@@ -289,3 +289,11 @@ text-align: center;
 	border:none;
 	cursor: pointer;
 }
+
+
+/* main page */
+.main_bg {
+	background: url('img/.main_bg_1.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}

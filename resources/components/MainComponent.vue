@@ -1,21 +1,19 @@
 <template>
-	<div class="">
-        <p>메인</p>
-	</div>
+    <div class="main_bg">
+
+    </div>
 </template>
+
 <script>
-
 export default {
+    setup () {
+        
 
-    name: 'MainComponent',
-    components: {
-		
-    },
-    methods: {
-
-    },
-    created() {
-
-    },
+        return {}
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
