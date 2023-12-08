@@ -61,7 +61,7 @@ const store = createStore({
 				}
 			})
 			.catch(err => {
-				console.log(err.response.data);
+				context.commit('setEmailFlg',0);
 				context.commit('setErrMsg',err.response.data.errorMsg);
 			})
 		},
@@ -96,7 +96,7 @@ const store = createStore({
 					}
 				})
 				.catch(err => {
-					console.log(err.response.data);
+					context.commit('setNickFlg',0);
 					context.commit('setErrMsg',err.response.data.errorMsg);
 				})
 			}else{
@@ -129,20 +129,20 @@ const store = createStore({
 				};
 				const formData = new FormData();
 				formData.append('email', email.value);
-				formData.append('pw', pw.value);
+				formData.append('password', pw.value);
 				formData.append('pw_chk', pwchk.value);
 				formData.append('name', name.value);
 				formData.append('nick', nick.value);
 				formData.append('birthdate', birthdate.value);
 				formData.append('phone', phone.value);
 				formData.append('gender', gender);
-				console.log(pw.value);
 				axios.post(URL, formData, HEADER)
 				.then(res => {
 				
 					if(res.data.code === "0"){
 						alert("회원가입에 성공 했습니다.");
 						context.commit('setErrMsg',[]);
+						// 초기화작업
 						email.value = '';
 						pw.value = '';
 						pwchk.value = '';
@@ -150,6 +150,8 @@ const store = createStore({
 						nick.value = '';
 						birthdate.value = '';
 						phone.value = '';
+						context.commit('setNickFlg',0);
+						context.commit('setEmailFlg',0);
 						router.push('/login')
 					}else{
 						context.commit('setErrMsg',res.data.errorMsg);

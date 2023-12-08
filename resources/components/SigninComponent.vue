@@ -61,6 +61,7 @@
 						>이미 사용중인 닉네임 입니다.</span>
 						<span
 							v-for="item in $store.state.varErr" :key="item"
+							v-if="$store.state.IdFlg === 1" 
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
 						<input type="text" placeholder="한글,영어,숫자 2~10" id="signin_nick">

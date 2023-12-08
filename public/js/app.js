@@ -19833,19 +19833,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.name = $event;
     }),
     id: "signin_name"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.IdFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 2
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: item,
       "class": "sign_errmsg"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)), _hoisted_23, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 2,
+  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_23, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 3,
     "class": "sign_chk_btn pointer",
     onClick: _cache[5] || (_cache[5] = function () {
       return $options.nick_chk && $options.nick_chk.apply($options, arguments);
     })
   }, "중복확인")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 3,
+    key: 4,
     "class": "sign_chk_btn pointer",
     onClick: _cache[6] || (_cache[6] = function () {
       return $options.del_nick_chk && $options.del_nick_chk.apply($options, arguments);
@@ -20092,7 +20094,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
           console.log('else');
         }
       })["catch"](function (err) {
-        console.log(err.response.data);
+        context.commit('setEmailFlg', 0);
         context.commit('setErrMsg', err.response.data.errorMsg);
       });
     },
@@ -20124,7 +20126,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
             console.log('else');
           }
         })["catch"](function (err) {
-          console.log(err.response.data);
+          context.commit('setNickFlg', 0);
           context.commit('setErrMsg', err.response.data.errorMsg);
         });
       } else {
@@ -20156,18 +20158,18 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
         };
         var formData = new FormData();
         formData.append('email', email.value);
-        formData.append('pw', pw.value);
+        formData.append('password', pw.value);
         formData.append('pw_chk', pwchk.value);
         formData.append('name', name.value);
         formData.append('nick', nick.value);
         formData.append('birthdate', birthdate.value);
         formData.append('phone', phone.value);
         formData.append('gender', gender);
-        console.log(pw.value);
         axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
           if (res.data.code === "0") {
             alert("회원가입에 성공 했습니다.");
             context.commit('setErrMsg', []);
+            // 초기화작업
             email.value = '';
             pw.value = '';
             pwchk.value = '';
@@ -20175,6 +20177,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
             nick.value = '';
             birthdate.value = '';
             phone.value = '';
+            context.commit('setNickFlg', 0);
+            context.commit('setEmailFlg', 0);
             _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/login');
           } else {
             context.commit('setErrMsg', res.data.errorMsg);

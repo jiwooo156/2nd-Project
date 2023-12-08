@@ -25,6 +25,9 @@ Route::get('/signin', function () {
 Route::get('/user', function () {
     return view('welcome');
 });
+Route::get('/main', function () {
+    return view('welcome');
+});
 
 
 // 잘못된 URL입력시

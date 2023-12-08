@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+// use Illuminate\Http\Response;
 
 
 class UserController extends Controller
@@ -39,17 +41,25 @@ class UserController extends Controller
     
     public function store(Request $req)
     {
-
-        // $data = $req->only('email','name','pw','phone','birthdate','phone','gender');
-        // // 비밀번호 암호화
-        // $data['password'] = Hash::make($data['password']);
-        // // 회원 정보 DB에 저장
-        // // orm,엘로컨트 방식
-        // $result = User::create($data);
-
-        // return response()->json([
-        //     'code' => '0'
-        //     ,'data' => $result
-        // ], 200);
+        $data = $req->only('email','name','password','birthdate','phone','gender','nick');
+        // 비밀번호 암호화
+        $data['password'] = Hash::make($data['password']);
+        $token = Str::random(100);
+        $data['access_token'] = $token;
+        // 회원 정보 DB에 저장
+        // orm,엘로컨트 방식
+        $result = User::create($data);
+        if($result){
+            response()->cookie('access_token', $token, 1440);
+            return response()->json([
+                'code' => '0'
+                ,'data' => $result
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 'E05',
+                'errorMsg' => '회원가입에 실패했습니다.'
+            ], 400);
+        }
     }
 }
