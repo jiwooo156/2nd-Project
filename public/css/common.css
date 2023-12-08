@@ -15,7 +15,12 @@ textarea{
 .center{
 	text-align: center;
 }
-
+.header{
+	
+}
+.hidden-header{
+	display: none;
+}
 
 /* 로그인페이지 */
 

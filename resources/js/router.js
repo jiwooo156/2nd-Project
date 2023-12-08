@@ -4,7 +4,7 @@ import MainComponent from '../components/MainComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
-
+import VueCookies from "vue-cookies";
 const routes = [
 	{
 		path: "/",
@@ -16,11 +16,26 @@ const routes = [
 	},
 	{
 		path: "/login",
-		component : LoginComponent
+		component: LoginComponent,
+		beforeEnter: (to, from, next) => {
+			if (VueCookies.get('nick')) {
+				next('/');
+			} else {
+				next();
+			}
+		},
 	},
 	{
 		path: "/signin",
-		component : SigninComponent
+		component : SigninComponent,
+		beforeEnter: (to, from, next) => {
+			if (VueCookies.get('nick')) {
+				console.log(VueCookies.get('nick'));
+				next('/');
+			} else {
+				next();
+			}
+		},
 	},
 	{
 		path: "/user",

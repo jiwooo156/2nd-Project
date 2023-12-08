@@ -14,6 +14,8 @@ const store = createStore({
 			emailFlg: 0,
 			nickFlg: 0,
 			varErr: [],
+			cookieFlg: false,
+			NowUser: "",
 		}
 	},
 
@@ -22,11 +24,17 @@ const store = createStore({
 		setEmailFlg(state, int){
 			state.emailFlg = int;
 		},
-		setNickFlg(state, boo){
-			state.nickFlg = boo;
+		setNickFlg(state, int){
+			state.nickFlg = int;
 		},
 		setErrMsg(state, data){
 			state.varErr=data;
+		},
+		setCookieFlg(state, boo){
+			state.cookieFlg=boo;
+		},
+		setNowUser(state, str){
+			state.NowUser=str;
 		},
 	},
 
@@ -137,21 +145,9 @@ const store = createStore({
 				formData.append('phone', phone.value);
 				formData.append('gender', gender);
 				axios.post(URL, formData, HEADER)
-				.then(res => {
-				
+				.then(res => {		
 					if(res.data.code === "0"){
 						alert("회원가입에 성공 했습니다.");
-						context.commit('setErrMsg',[]);
-						// 초기화작업
-						email.value = '';
-						pw.value = '';
-						pwchk.value = '';
-						name.value = '';
-						nick.value = '';
-						birthdate.value = '';
-						phone.value = '';
-						context.commit('setNickFlg',0);
-						context.commit('setEmailFlg',0);
 						router.push('/login')
 					}else{
 						context.commit('setErrMsg',res.data.errorMsg);
@@ -164,8 +160,40 @@ const store = createStore({
 				alert("닉네임 인증을 해주세요")
 			}
 		},
-		
+		// 로그인
+		actionLogin(context){
+			let email = document.querySelector('#login_email').value;
+			let pw = document.querySelector('#login_pw').value;
+				const URL = '/api/login'
+				const HEADER = {
+					headers: {
+						'Authorization': 'Bearer team5',
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				const formData = new FormData();
+				formData.append('email', email);
+				formData.append('password', pw);
 
+				axios.post(URL,formData,HEADER)
+				.then(res => {
+					console.log('로그인성공')
+					if(res.data.code === "0"){	
+						context.commit('setCookieFlg', true);
+						router.push('/main')
+					}else{
+						console.log('else');
+						alert(err.response.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					if(err.response.data.errorMsg.email){
+						alert("이메일을 확인해 주세요")
+					}else if(err.response.data.errorMsg.password){
+						alert("비밀번호를 확인해 주세요")
+					}
+				})
+		},
 	},
 });
 

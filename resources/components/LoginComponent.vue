@@ -7,11 +7,13 @@
 			<div class="login_container">
 				<div>
 					<div class="login_box">
-						<input type="email" placeholder="이메일">
-						<input type="password" placeholder="비밀번호">
+						<input type="email" placeholder="이메일" id="login_email">
+						<input type="password" placeholder="비밀번호" id="login_pw">
 					</div>
 					<div>
-						<button class="login_btn pointer">로그인</button>
+						<button class="login_btn pointer"
+							@click="login"
+						>로그인</button>
 						<div class="login_and">또는</div>
 						<button class="login_kakao pointer">kakao로 로그인</button>
 						<div class="login_sign">
@@ -26,14 +28,6 @@
 <script>
 export default {
 	name: 'LoginComponent',
-	props: {
-
-	},
-	
-	components: {
-
-	},
-
 	data() {
 		return {
 			setting: '',
@@ -41,15 +35,20 @@ export default {
 	},
 
 	created() {
-
+		let boo = $cookies.get('nick') ?  true : false;
+        this.$store.commit('setCookieFlg', boo);
 	},
 
-	mounted() {
-
+	updated() {
+		this.$store.commit('setErrMsg',[]);
+		document.querySelector('#login_email').value = "";
+		document.querySelector('#login_pw').value = "";
 	},
 
 	methods: {
-
+		login(){	
+			this.$store.dispatch('actionLogin');
+		}
 	}
 }
 </script>

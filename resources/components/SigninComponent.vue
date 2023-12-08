@@ -107,13 +107,6 @@
 <script>
 export default {
 	name: 'SigninComponent',
-	props: {
-
-	},
-	
-	components: {
-
-	},
 
 	data() {
 		return {
@@ -152,11 +145,11 @@ export default {
 		},
 	},
 	created() {
-
-	},
-
-	mounted() {
-	
+		this.$store.commit('setErrMsg',[]);
+		this.$store.commit('setNickFlg',0);
+		this.$store.commit('setEmailFlg',0);	
+		let boo = $cookies.get('nick') ?  true : false;
+		this.$store.commit('setCookieFlg', boo);
 	},
 
 	methods: {
@@ -169,6 +162,7 @@ export default {
 			}
 			this.err_pw = false;
 			this.com_pw = true;
+			
 		},
 		pwchkval(){
 			if(this.pw_chk !== this.pw||!this.pw_chk){

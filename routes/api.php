@@ -17,8 +17,9 @@ use App\Http\Controllers\UserController; //유저컨틀롤러 추가
 
 
 Route::middleware('apiChkToken')->middleware('myValidation')->prefix('signin')->group(function() {
-
     Route::post('/email', [UserController::class, 'emailchk']);
     Route::post('/nick', [UserController::class, 'nickchk']);
     Route::post('/', [UserController::class, 'store']);
 });
+
+Route::middleware('apiChkToken')->middleware('myValidation')->post('/login', [UserController::class, 'login']);
