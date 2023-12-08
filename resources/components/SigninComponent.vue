@@ -229,6 +229,6 @@ export default {
 		signin(){
 			this.$store.dispatch('actionSignIn');
 		}
-	}
+	},
 }
 </script>

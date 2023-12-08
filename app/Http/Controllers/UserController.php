@@ -52,8 +52,14 @@ class UserController extends Controller
     public function login(Request $req)
     {
         $result = User::where('email',$req->email)->first();
-        if(!$result || !(Hash::check($req->password, $result->password))){
-            $errorMsg = ['아이디와 비밀번호를 다시 확인해주세요'];
+        if(!$result){
+            $errorMsg = ['존재하지않는 이메일 입니다.'];
+            return response()->json([
+                'code' => 'E06'
+                ,'errorMsg' => $errorMsg
+            ], 400);
+        }else if(!(Hash::check($req->password, $result->password))){
+            $errorMsg = ['비밀번호를 확인해주세요'];
             return response()->json([
                 'code' => 'E06'
                 ,'errorMsg' => $errorMsg

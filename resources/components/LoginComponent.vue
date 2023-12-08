@@ -39,16 +39,10 @@ export default {
         this.$store.commit('setCookieFlg', boo);
 	},
 
-	updated() {
-		this.$store.commit('setErrMsg',[]);
-		document.querySelector('#login_email').value = "";
-		document.querySelector('#login_pw').value = "";
-	},
-
 	methods: {
 		login(){	
 			this.$store.dispatch('actionLogin');
 		}
-	}
+	},
 }
 </script>

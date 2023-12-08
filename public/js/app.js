@@ -19346,11 +19346,6 @@ __webpack_require__.r(__webpack_exports__);
     var boo = $cookies.get('nick') ? true : false;
     this.$store.commit('setCookieFlg', boo);
   },
-  updated: function updated() {
-    this.$store.commit('setErrMsg', []);
-    document.querySelector('#login_email').value = "";
-    document.querySelector('#login_pw').value = "";
-  },
   methods: {
     login: function login() {
       this.$store.dispatch('actionLogin');
@@ -19407,15 +19402,28 @@ __webpack_require__.r(__webpack_exports__);
     SigninComponent: _SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     UserComponent: _UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  methods: {},
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('actionLogout');
+    },
+    cookienick: function cookienick() {
+      var boo = $cookies.get('nick') ? true : false;
+      this.$store.commit('setCookieFlg', boo);
+      if (boo) {
+        var nick = decodeURIComponent(this.$cookies.get('nick'));
+        this.$store.commit('setNowUser', nick);
+      }
+    }
+  },
   created: function created() {
+    this.cookienick();
+  },
+  updated: function updated() {
     var boo = $cookies.get('nick') ? true : false;
     this.$store.commit('setCookieFlg', boo);
     if (boo) {
-      var testt = decodeURIComponent(document.cookie.split("; ").map(function (el) {
-        return el.split('=');
-      })[0][1]);
-      this.$store.commit('setNowUser', testt);
+      var nick = decodeURIComponent(this.$cookies.get('nick'));
+      this.$store.commit('setNowUser', nick);
     }
   },
   data: function data() {
@@ -19699,18 +19707,49 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
+  key: 0,
   "class": "header"
 };
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "헤더", -1 /* HOISTED */);
 var _hoisted_3 = {
   key: 0
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_4 = {
+  key: 1
+};
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "footer"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, _ctx.$store.state.cookieFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.NowUser), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 메인 영역 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 푸터 영역 "), _hoisted_4], 64 /* STABLE_FRAGMENT */);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), _ctx.$route.fullPath != '/login' || _ctx.$route.fullPath != '/signin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !_ctx.$store.state.cookieFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/login"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("로그인")];
+    }),
+    _: 1 /* STABLE */
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/signin"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("회원가입")];
+    }),
+    _: 1 /* STABLE */
+  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.cookieFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/user"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.NowUser), 1 /* TEXT */)];
+    }),
+    _: 1 /* STABLE */
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "pointer",
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.logout && $options.logout.apply($options, arguments);
+    })
+  }, "로그아웃")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 메인 영역 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 푸터 영역 "), _hoisted_5], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -20262,11 +20301,26 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
         }
       })["catch"](function (err) {
         if (err.response.data.errorMsg.email) {
-          alert("이메일을 확인해 주세요");
+          alert(err.response.data.errorMsg.email);
         } else if (err.response.data.errorMsg.password) {
-          alert("비밀번호를 확인해 주세요");
+          alert(err.response.data.errorMsg.password);
+        } else {
+          alert(err.response.data.errorMsg[0]);
         }
       });
+    },
+    // 로그아웃
+    actionLogout: function actionLogout(context) {
+      var URL = '/api/logout';
+      var HEADER = {
+        headers: {
+          'Authorization': 'Bearer team5'
+        }
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL, HEADER).then(function (res) {
+        context.commit('setCookieFlg', false);
+        _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
+      })["catch"](function (err) {});
     }
   }
 });

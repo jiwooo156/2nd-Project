@@ -23,3 +23,4 @@ Route::middleware('apiChkToken')->middleware('myValidation')->prefix('signin')->
 });
 
 Route::middleware('apiChkToken')->middleware('myValidation')->post('/login', [UserController::class, 'login']);
+Route::middleware('apiChkToken')->middleware('myValidation')->post('/logout', [UserController::class, 'logout']);

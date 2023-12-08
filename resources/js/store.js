@@ -188,10 +188,30 @@ const store = createStore({
 				})
 				.catch(err => {
 					if(err.response.data.errorMsg.email){
-						alert("이메일을 확인해 주세요")
+						alert(err.response.data.errorMsg.email)
 					}else if(err.response.data.errorMsg.password){
-						alert("비밀번호를 확인해 주세요")
+						alert(err.response.data.errorMsg.password)
+					}else{
+						alert(err.response.data.errorMsg[0])
 					}
+				})
+		},
+		// 로그아웃
+		actionLogout(context){
+				const URL = '/api/logout'
+				const HEADER = {
+					headers: {
+						'Authorization': 'Bearer team5',
+					}
+				};
+
+				axios.get(URL,HEADER)
+				.then(res => {
+					context.commit('setCookieFlg',false)
+					router.push('/main')
+				})
+				.catch(err => {
+	
 				})
 		},
 	},
