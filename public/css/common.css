@@ -230,7 +230,7 @@ textarea{
 .user_userInfo{
 	border-bottom: 1px solid #B7B7B7;	
 }
-.user_userInfo_text{
+.user_userInfo_text_center{
 width: 50%;
 text-align: center;
 }
@@ -238,7 +238,7 @@ text-align: center;
 .user_subcontainer{
 	display: flex;
 }
-.user_box_top_red{
+.user_box_top_red_center{
 	width:50%;
 	height:50px;
 	text-align: center;
