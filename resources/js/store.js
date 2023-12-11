@@ -16,6 +16,7 @@ const store = createStore({
 			varErr: [],
 			localFlg: false,
 			NowUser: "",
+			userFlg: false
 		}
 	},
 
@@ -35,6 +36,9 @@ const store = createStore({
 		},
 		setNowUser(state, str){
 			state.NowUser=str;
+		},
+		setUserFlg(state, boo){
+			state.userFlg=boo;
 		},
 	},
 
@@ -246,6 +250,37 @@ const store = createStore({
 				.catch(err => {
 					alert("로그아웃중 오류가 발생했습니다."+err.response.data.errorMsg)
 				})
+		},
+		// 유저정보페이지 비밀번호 체크
+		actionUserChk(context){
+			let pw = document.querySelector('#userchk_pw').value;
+			const URL = '/userchk'
+			const HEADER = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('password', pw);
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				if(res.data.code === "0"){	
+					context.commit('setErrMsg','');
+					context.commit('setUserFlg',true);
+					router.push('/user')
+				}else{
+					context.commit('setErrMsg',res.data.errorMsg);
+				}
+			})
+			.catch(err => {
+				if(err.response.data.code === "E03"){
+					context.commit('setErrMsg',err.response.data.errorMsg.password);
+					context.commit('setUserFlg',false);
+				}else{
+					context.commit('setErrMsg',err.response.data.errorMsg);
+					context.commit('setUserFlg',false);
+				}
+			})
 		},
 	},
 });

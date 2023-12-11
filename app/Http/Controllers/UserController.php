@@ -57,8 +57,22 @@ class UserController extends Controller
     public function login(Request $req)
     {
         $result = User::where('email',$req->email)->first();
+        if(!(Hash::check($req->password, $result->password))){
+            $errorMsg = ['비밀번호를 확인해주세요'];
+            return response()->json([
+                'code' => 'E06'
+                ,'errorMsg' => $errorMsg
+            ], 400);
+        }else if(!$result){
+            $errorMsg = ['존재하지않는 이메일 입니다.'];
+            return response()->json([
+                'code' => 'E06'
+                ,'errorMsg' => $errorMsg
+            ], 400);
+        }
         if($result){
             Auth::login($result);
+            $test = Auth::user();
             return response()->json([
                 'code' => '0',
                 'data' => $result
@@ -82,19 +96,8 @@ class UserController extends Controller
             // return $response->cookie('access_token', $token, 1440)
             // ->cookie('nick', $result->nick, 1440, null, null, false, false);
             // 1211 최정훈 수정 쿠키사용x
-        }else if(!$result){
-            $errorMsg = ['존재하지않는 이메일 입니다.'];
-            return response()->json([
-                'code' => 'E06'
-                ,'errorMsg' => $errorMsg
-            ], 400);
-        }else if(!(Hash::check($req->password, $result->password))){
-            $errorMsg = ['비밀번호를 확인해주세요'];
-            return response()->json([
-                'code' => 'E06'
-                ,'errorMsg' => $errorMsg
-            ], 400);
         }
+
     }
     // 로그아웃
     public function logout(Request $req){
@@ -104,5 +107,23 @@ class UserController extends Controller
             'code' => '0',
             'data' => $result
         ], 200);
+    }
+    // 유저비밀번호 확인
+    public function userchk(Request $req){
+        $auth = Auth::user();
+        $result = User::where('email',$auth->email)->first();
+        if(!(Hash::check($req->password, $result->password))){
+            $errorMsg = ["비밀번호가 일치하지 않습니다"];
+            return response()->json([
+                'code' => 'E07',
+                'errorMsg' => $errorMsg
+            ], 400);
+        }
+        if($result){
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        }
     }
 }

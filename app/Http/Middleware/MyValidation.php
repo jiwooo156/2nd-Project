@@ -65,11 +65,10 @@ class MyValidation
                 $arrRequestParam[$val] = $request->$val;
             } else {
                 unset($arrBaseValidation[$val]);
-            }
-            Log::debug("리퀘스트 파라미터 획득",$arrRequestParam);     
-            Log::debug("유효성 체크 리스트 획득",$arrBaseValidation);    
+            } 
         }
-    
+        Log::debug("리퀘스트 파라미터 획득",$arrRequestParam);     
+        Log::debug("유효성 체크 리스트 획득",$arrBaseValidation);    
 
          // 유효성 검사
         $validator = Validator::make($arrRequestParam,$arrBaseValidation);

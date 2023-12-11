@@ -14,7 +14,7 @@
                     v-if="$store.state.localFlg"
                 >
                 <router-link 
-                    to="/user"
+                    to="/userchk"
                 >{{ $store.state.NowUser }}</router-link>
                 <div
                     class="pointer"
@@ -35,12 +35,13 @@ import MainComponent from './MainComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
+import UserChk from './UserChk.vue'
 
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,
     },
     methods: {
         logout(){
