@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController; //유저컨틀롤러 추가
+use Illuminate\Support\Facades\Log; //로그확인추가
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +41,9 @@ Route::middleware('myValidation')->prefix('userchk')->group(function() {
     });
     Route::post('/', [UserController::class, 'userchk']);
 });
-Route::middleware('myValidation')->prefix('user')->group(function() {
-    Route::get('/', [UserController::class, 'getuserinfo']);
+Route::middleware('myValidation')->prefix('userinfo')->group(function() {
+    Route::get('/', [UserController::class, 'userinfo']);
+    
 });
 Route::get('/', function () {
     return view('welcome');

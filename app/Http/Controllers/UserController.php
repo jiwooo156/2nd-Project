@@ -127,15 +127,14 @@ class UserController extends Controller
         }
     }
     // 유저정보조회
-    public function getuserinfo(){
-        Log::debug('함수진입');
+    public function userinfo(Request $req){
         $auth = Auth::user();
-        Log::debug('유저이메일',[$auth->email]);
-        $result = User::where('email',$auth->email)->first();
+        $result = User::select('id','email','nick')->where('email',$auth->email)->first();
         Log::debug($result);
-        // return response()->json([
-        //     'code' => '0',
-        //     'data' => $result
-        // ], 200);
+        return response()->json([
+            'code' => '0',
+            'data' => $result
+        ], 200);
     }
+
 }

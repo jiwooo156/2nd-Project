@@ -16,7 +16,8 @@ const store = createStore({
 			varErr: [],
 			localFlg: false,
 			NowUser: "",
-			userFlg: false
+			userFlg: false,
+			userInfo: [],
 		}
 	},
 
@@ -39,6 +40,9 @@ const store = createStore({
 		},
 		setUserFlg(state, boo){
 			state.userFlg=boo;
+		},
+		setUserInfo(state, data){
+			state.userInfo=data;
 		},
 	},
 
@@ -284,18 +288,15 @@ const store = createStore({
 		},
 		// 유저정보페이지 비밀번호 체크
 		actionGetUser(context){
-			const URL = '/user'
-			console.log("함수시작")
+			const URL = '/userinfo'
 			axios.get(URL)
 			.then(res => {
-				if(res.data.code === "0"){	
-			
-				}else{
-					context.commit('setErrMsg',res.data.errorMsg);
-				}
+				console.log(res.data.data);
+				context.commit('setUserInfo',res.data.data);
+				console.log(context.state.userInfo);
 			})
 			.catch(err => {
-			
+				console.log("캐치")
 			})
 		},
 	},

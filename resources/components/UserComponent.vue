@@ -32,12 +32,12 @@
 			<tbody>
 				<tr>
 					<td class="user_rowname">회원번호</td>
-					<td class="user_rowcontent"></td>
+					<td class="user_rowcontent">{{ $store.state.userInfo.id }}</td>
 				</tr>
 				
 				<tr>					
 					<td class="user_rowname">이메일</td>
-					<td class="user_rowcontent">rlawldnd841@gmail.com</td>					
+					<td class="user_rowcontent">{{ $store.state.userInfo.email }}</td>					
 				</tr>
 				<tr>
 					<td class="user_rowname">비밀번호</td>
@@ -45,7 +45,7 @@
 				</tr>
 				<tr>
 					<td class="user_rowname">닉네임</td>
-					<td class="user_rowcontent">보성쿤<button type="submit" class="user_button">변경</button></td>
+					<td class="user_rowcontent">{{ $store.state.userInfo.nick }}<button type="submit" class="user_button">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">탈퇴신청</td>
