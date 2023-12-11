@@ -2,7 +2,7 @@
 	<br>
 <div class="user_black-bg" v-if="openModal == true">
 	<div class="user_white-bg">
-		<span>새로운 정보를 입력해주세요</span>
+		<span>새로운 닉네임을 입력해주세요</span>
 		<br>
 		<input type="text">
 		<button class="user_button">변경</button>
@@ -37,11 +37,11 @@
 				
 				<tr>					
 					<td class="user_rowname">이메일</td>
-					<td class="user_rowcontent">rlawldnd841@gmail.com<button class="user_button" @click="openClick()">변경</button></td>					
+					<td class="user_rowcontent">rlawldnd841@gmail.com</td>					
 				</tr>
 				<tr>
 					<td class="user_rowname">비밀번호</td>
-					<td class="user_rowcontent">*********<button type="submit" class="user_button">변경</button></td>
+					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="openClick()">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">닉네임</td>
