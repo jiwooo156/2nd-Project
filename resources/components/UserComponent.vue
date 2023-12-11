@@ -1,6 +1,6 @@
 <template>
 	<br>
-<div class="user_black-bg" v-if="openModal == true">
+<div class="user_black-bg" v-if="openModal">
 	<div class="user_white-bg">
 		<span>새로운 닉네임을 입력해주세요</span>
 		<br>
@@ -74,7 +74,8 @@ export default {
 	},
 
 	created() {
-		
+		console.log("유저시작")
+		this.$store.dispatch('actionGetUser')
 	},
 
 	mounted() {

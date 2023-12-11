@@ -34,15 +34,14 @@ Route::middleware('myValidation')->prefix('login')->group(function() {
 Route::get('/logout', [UserController::class, 'logout']);
 
 
-// Route::middleware('myValidation')->prefix('user')->group(function() {
-//     Route::get('/', [UserController::class, 'userinfo']);
-//     Route::post('/', [UserController::class, 'login']);
-// });
 Route::middleware('myValidation')->prefix('userchk')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
     Route::post('/', [UserController::class, 'userchk']);
+});
+Route::middleware('myValidation')->prefix('user')->group(function() {
+    Route::get('/', [UserController::class, 'getuserinfo']);
 });
 Route::get('/', function () {
     return view('welcome');

@@ -282,6 +282,22 @@ const store = createStore({
 				}
 			})
 		},
+		// 유저정보페이지 비밀번호 체크
+		actionGetUser(context){
+			const URL = '/user'
+			console.log("함수시작")
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){	
+			
+				}else{
+					context.commit('setErrMsg',res.data.errorMsg);
+				}
+			})
+			.catch(err => {
+			
+			})
+		},
 	},
 });
 
