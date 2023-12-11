@@ -2,11 +2,23 @@
 	<br>
 <div class="user_black-bg" v-if="openModal">
 	<div class="user_white-bg">
-		<span>새로운 닉네임을 입력해주세요</span>
+		<span>탈퇴하면 복구못함</span>
+		<br>
+		<form action="">
+		<label for="reason">탈퇴사유 : </label>
+		<select name="reason" id="reas">
+			<option value="del_flg1">서비스 불만족</option>
+			<option value="del_flg2">원하는 정보가 없음</option>
+			<option value="del_flg3">불건전한 내용</option>
+			<option value="del_flg4">기타</option>
+		<input class="userChk_button" type="submit" value="제출"/>
+		</select>
+		</form>
 		<br>
 		<input type="text">
-		<button class="user_button">변경</button>
-		<button class="user_button" @click="modalClose()">닫기</button>
+		<br>
+		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button" @click="modalClose()">취소</button>
 	</div>
 </div>
 
