@@ -35,8 +35,8 @@ export default {
 	},
 
 	created() {
-		let boo = $cookies.get('nick') ?  true : false;
-        this.$store.commit('setCookieFlg', boo);
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
 	},
 
 	methods: {

@@ -14,7 +14,7 @@ const store = createStore({
 			emailFlg: 0,
 			nickFlg: 0,
 			varErr: [],
-			cookieFlg: false,
+			localFlg: false,
 			NowUser: "",
 		}
 	},
@@ -30,8 +30,8 @@ const store = createStore({
 		setErrMsg(state, data){
 			state.varErr=data;
 		},
-		setCookieFlg(state, boo){
-			state.cookieFlg=boo;
+		setLocalFlg(state, boo){
+			state.localFlg=boo;
 		},
 		setNowUser(state, str){
 			state.NowUser=str;
@@ -43,16 +43,22 @@ const store = createStore({
 		// 이메일 중복확인
 		actionEmailChk(context){
 			let email = document.querySelector('#signin_email').value
-			const URL = '/api/signin/email'
-			const HEADER = {
-				headers: {
-					'Authorization': 'Bearer team5',
-					'Content-Type': 'multipart/form-data',
-				}
-			};
-			const formData = new FormData();
-			formData.append('email', email);
-			axios.post(URL, formData, HEADER)
+			// const URL = '/api/signin/email'
+			// 1211 최정훈 수정 api로 안보내고 web으로 변경
+			// const URL = '/signin/email'
+			// const HEADER = {
+			// 	headers: {
+			// 		// 'Authorization': 'Bearer team5',
+			// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+			// 		'Content-Type': 'multipart/form-data',
+			// 	}
+			// };
+			// const formData = new FormData();
+			// formData.append('email', email);
+			// axios.get(URL, formData, HEADER)
+			// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+			const URL = '/signin/email/?email='+email
+			axios.get(URL)
 			.then(res => {
 				context.commit('setErrMsg','');
 				if(res.data.code === "0"){
@@ -78,16 +84,21 @@ const store = createStore({
 		actionNickChk(context){
 			if(context.state.emailFlg===1){
 				let nick = document.querySelector('#signin_nick').value
-				const URL = '/api/signin/nick'
-				const HEADER = {
-					headers: {
-						'Authorization': 'Bearer team5',
-						'Content-Type': 'multipart/form-data',
-					}
-				};
-				const formData = new FormData();
-				formData.append('nick', nick);
-				axios.post(URL, formData, HEADER)
+				// const URL = '/api/signin/nick'
+				// 1211 최정훈 수정 api로 안보내고 web으로 변경
+				// const URL = '/signin/nick'
+				// const HEADER = {
+				// 	headers: {
+				// 		// 'Authorization': 'Bearer team5',
+				// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+				// 		'Content-Type': 'multipart/form-data',
+				// 	}
+				// };
+				// const formData = new FormData();
+				// formData.append('nick', nick);
+				// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+				const URL = '/signin/nick?nick='+nick
+				axios.get(URL)
 				.then(res => {
 					context.commit('setErrMsg','');
 					if(res.data.code === "0"){
@@ -106,6 +117,7 @@ const store = createStore({
 				.catch(err => {
 					context.commit('setNickFlg',0);
 					context.commit('setErrMsg',err.response.data.errorMsg);
+				
 				})
 			}else{
 				alert("이메일 인증을 해주세요")
@@ -128,10 +140,13 @@ const store = createStore({
 				}else if(gender === "여자"){
 					gender = "F"
 				}
-				const URL = '/api/signin'
+				// const URL = '/api/signin'
+				// 1211 최정훈 수정 api로 안보내고 web으로 변경
+				const URL = '/signin'
 				const HEADER = {
 					headers: {
-						'Authorization': 'Bearer team5',
+						// 'Authorization': 'Bearer team5',
+						// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
 						'Content-Type': 'multipart/form-data',
 					}
 				};
@@ -164,10 +179,13 @@ const store = createStore({
 		actionLogin(context){
 			let email = document.querySelector('#login_email').value;
 			let pw = document.querySelector('#login_pw').value;
-				const URL = '/api/login'
+				// const URL = '/api/login''
+				// 1211 최정훈 수정 api로 안보내고 web으로 변경	
+				const URL = '/login'
 				const HEADER = {
 					headers: {
-						'Authorization': 'Bearer team5',
+						// 'Authorization': 'Bearer team5',
+						// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
 						'Content-Type': 'multipart/form-data',
 					}
 				};
@@ -177,9 +195,12 @@ const store = createStore({
 
 				axios.post(URL,formData,HEADER)
 				.then(res => {
-					console.log('로그인성공')
 					if(res.data.code === "0"){	
-						context.commit('setCookieFlg', true);
+						console.log('로그인성공')
+						console.log(res.data.data.nick)
+						localStorage.setItem('nick', res.data.data.nick);
+						context.commit('setLocalFlg', true);
+						context.commit('setNowUser', localStorage.getItem('nick'));
 						router.push('/main')
 					}else{
 						console.log('else');
@@ -198,23 +219,32 @@ const store = createStore({
 		},
 		// 로그아웃
 		actionLogout(context){
-				const URL = '/api/logout'
-				const HEADER = {
-					headers: {
-						'Authorization': 'Bearer team5',
-						'Content-Type': 'multipart/form-data',
-					}
-				};
-				const formData = new FormData();
-				formData.append('nick',context.state.NowUser);
+				// // const URL = '/api/logout''
+				// // 1211 최정훈 수정 api로 안보내고 web으로 변경	
+				// const URL = '/logout'
+				// const HEADER = {
+				// 	headers: {
+				// 		// 'Authorization': 'Bearer team5',
+				// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+				// 		'Content-Type': 'multipart/form-data',
+				// 	}
+				// };
+				// const formData = new FormData();
+				// formData.append('nick',context.state.NowUser);
+				// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+				const URL = '/logout'
 
-				axios.post(URL,formData,HEADER)
+				axios.get(URL)
 				.then(res => {
-					context.commit('setCookieFlg',false)
-					router.push('/main')
+					if(res.data.code === "0"){	
+						localStorage.clear();
+						context.commit('setLocalFlg',false)
+						context.commit('setNowUser','')
+						router.push('/main')
+					}
 				})
 				.catch(err => {
-	
+					alert("로그아웃중 오류가 발생했습니다."+err.response.data.errorMsg)
 				})
 		},
 	},
