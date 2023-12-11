@@ -35,6 +35,7 @@ import MainComponent from './MainComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
+import RegionComponent from './RegionComponent.vue'
 import UserChk from './UserChk.vue'
 
 export default {
