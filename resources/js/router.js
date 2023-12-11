@@ -4,6 +4,7 @@ import MainComponent from '../components/MainComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
+import RegionComponent from '../components/RegionComponent.vue';
 import VueCookies from "vue-cookies";
 const routes = [
 	{
@@ -40,6 +41,10 @@ const routes = [
 	{
 		path: "/user",
 		component : UserComponent
+	},
+	{
+		path: "/region",
+		component : RegionComponent
 	},
 ];
 
