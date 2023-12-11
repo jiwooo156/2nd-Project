@@ -18,6 +18,9 @@ const store = createStore({
 			NowUser: "",
 			userFlg: false,
 			userInfo: [],
+			openPwModal: false,
+			openNickModal: false,
+			openDelModal: false,
 		}
 	},
 
@@ -44,6 +47,16 @@ const store = createStore({
 		setUserInfo(state, data){
 			state.userInfo=data;
 		},
+		setPasswordModalFlg(state, boo){
+			state.openPwModal=boo;
+		},
+		setNickModalFlg(state, boo){
+			state.openNickModal=boo;
+		},
+		setDelModalFlg(state, boo){
+			state.openDelModal=boo;
+		},
+
 	},
 
 	// actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
@@ -328,6 +341,35 @@ const store = createStore({
 				}
 			})
 		},
+		// 유저페이지 비밀번호변경
+		actionChangePw(context){
+			let pw = document.querySelector('#user_pw').value;
+			let pw_chk = document.querySelector('#user_pw_chk').value;
+				const URL = '/user/pchk'
+				const HEADER = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				const formData = new FormData();
+				formData.append('password', pw);
+				formData.append('pw_chk', pw_chk);
+
+				axios.post(URL,formData,HEADER)
+				.then(res => {
+					if(res.data.code === "0"){	
+						context.commit('setPasswordModalFlg',false);
+						alert('정상처리되었습니다');
+						router.push('/userchk')
+					}else{
+						alert(res.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					console.log("캐치")
+					alert(err.response.data.errorMsg);
+				})
+		}
 	},
 });
 

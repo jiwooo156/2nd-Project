@@ -1,6 +1,8 @@
 <template>
 	<br>
-<div class="user_black-bg" v-if="openPwModal">
+<div class="user_black-bg" 
+	v-if="$store.state.openPwModal"
+>
 	<div class="user_white-bg">
 		<br>
 		<label for="user_del_reason">변경하실 비밀번호 : </label>
@@ -17,11 +19,15 @@
 			v-if="delinput"
 		>
 		<br>
-		<button class="userChk_button">변경하기</button>
+		<button class="userChk_button"
+			@click="userpwchn"
+		>변경하기</button>
 		<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>
 	</div>
 </div>
-<div class="user_black-bg" v-if="openNickModal">
+<div class="user_black-bg" 
+	v-if="$store.state.openNickModal"
+>
 	<div class="user_white-bg">
 		<label for="user_del_reason">변경하실 닉네임 : </label>
 			<input type="text">
@@ -33,7 +39,9 @@
 		<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
 	</div>
 </div>
-<div class="user_black-bg" v-if="openDelModal">
+<div class="user_black-bg" 
+	v-if="$store.state.openDelModal"
+	>
 	<div class="user_white-bg">
 		<span>탈퇴하면 복구못함</span>
 		<br>
@@ -119,9 +127,6 @@ export default {
 
 	data() {
 		return {
-			openPwModal: false,
-			openNickModal: false,
-			openDelModal: false,
 			user_pw: "",
 			user_pw_chk: "",
 			user_err_pw: false,
@@ -134,23 +139,18 @@ export default {
 	},
 
 	created() {
-		console.log("유저시작")
 		this.$store.dispatch('actionGetUser')
-	},
-
-	mounted() {
-
 	},
 
 	methods: {
 		ctlPasswordModal(flg){
-			this.openPwModal = flg;
+			this.$store.commit('setPasswordModalFlg',flg);
 		},
 		ctlNickModal(flg){
-			this.openNickModal = flg;
+			this.$store.commit('setNickModalFlg',flg);
 		},
 		ctlDelModal(flg){
-			this.openDelModal = flg;
+			this.$store.commit('setDelModalFlg',flg);
 		},
 		pw(){
 			this.pwval()
@@ -188,6 +188,9 @@ export default {
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
 		},
+		userpwchn(){
+			this.$store.dispatch('actionChangePw');
+		}
 		
 	},
 }
