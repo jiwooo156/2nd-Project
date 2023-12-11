@@ -291,12 +291,41 @@ const store = createStore({
 			const URL = '/userinfo'
 			axios.get(URL)
 			.then(res => {
-				console.log(res.data.data);
 				context.commit('setUserInfo',res.data.data);
-				console.log(context.state.userInfo);
 			})
 			.catch(err => {
 				console.log("캐치")
+			})
+		},
+		// 유저정보페이지 비밀번호 체크
+		actionUserChk(context){
+			let pw = document.querySelector('#userchk_pw').value;
+			const URL = '/userchk'
+			const HEADER = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('password', pw);
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				if(res.data.code === "0"){	
+					context.commit('setErrMsg','');
+					context.commit('setUserFlg',true);
+					router.push('/user')
+				}else{
+					context.commit('setErrMsg',res.data.errorMsg);
+				}
+			})
+			.catch(err => {
+				if(err.response.data.code === "E03"){
+					context.commit('setErrMsg',err.response.data.errorMsg.password);
+					context.commit('setUserFlg',false);
+				}else{
+					context.commit('setErrMsg',err.response.data.errorMsg);
+					context.commit('setUserFlg',false);
+				}
 			})
 		},
 	},

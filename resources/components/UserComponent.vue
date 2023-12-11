@@ -1,12 +1,56 @@
 <template>
 	<br>
-<div class="user_black-bg" v-if="openModal">
+<div class="user_black-bg" v-if="openPwModal">
 	<div class="user_white-bg">
-		<span>새로운 닉네임을 입력해주세요</span>
 		<br>
-		<input type="text">
-		<button class="user_button">변경</button>
-		<button class="user_button" @click="modalClose()">닫기</button>
+		<label for="user_del_reason">변경하실 비밀번호 : </label>
+		<span v-show="user_err_pw" class="sign_errmsg">비밀번호 형식이 올바르지 않습니다.</span>
+		<span v-show="user_com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>
+		<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20">
+		<br>	
+		<label for="user_del_reason">비밀번호 확인 : </label>
+		<span v-show="user_err_pw_chk" class="sign_errmsg">비밀번호와 일치하지 않습니다.</span>
+		<span v-show="user_com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
+		<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20">
+		<br>
+		<input type="text"
+			v-if="delinput"
+		>
+		<br>
+		<button class="userChk_button">변경하기</button>
+		<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>
+	</div>
+</div>
+<div class="user_black-bg" v-if="openNickModal">
+	<div class="user_white-bg">
+		<label for="user_del_reason">변경하실 닉네임 : </label>
+			<input type="text">
+			<br>
+			<button class="userChk_button">중복확인</button>
+		<br>
+		<br>
+		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
+	</div>
+</div>
+<div class="user_black-bg" v-if="openDelModal">
+	<div class="user_white-bg">
+		<span>탈퇴하면 복구못함</span>
+		<br>
+		<label for="user_del_reason">탈퇴사유 : </label>
+		<select name="reason" id="user_del_reason" v-model="delreason">
+			<option>서비스 불만족</option>
+			<option>원하는 정보가 없음</option>
+			<option>불건전한 내용</option>
+			<option>기타</option>
+		</select>
+		<br>
+		<input type="text"
+			v-if="delinput"
+		>
+		<br>
+		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
 	</div>
 </div>
 
@@ -41,15 +85,15 @@
 				</tr>
 				<tr>
 					<td class="user_rowname">비밀번호</td>
-					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="openClick()">변경</button></td>
+					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">닉네임</td>
-					<td class="user_rowcontent">{{ $store.state.userInfo.nick }}<button type="submit" class="user_button">변경</button></td>
+					<td class="user_rowcontent">{{ $store.state.userInfo.nick }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">탈퇴신청</td>
-					<td class="user_rowcontent"><button type="submit" class="user_button_exit">탈퇴</button></td>
+					<td class="user_rowcontent"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
 				</tr>	
 			</tbody>
 		</table>
@@ -60,16 +104,32 @@
 
 export default {
 	name: 'UserComponent',
-	props: {
-	},
 
-	components: {
-
+	watch: {
+		delreason(){
+			this.del_val()
+		},
+		user_pw(){
+			this.pwval()
+		},
+		user_pw_chk(){
+			this.pwchkval()
+		},
 	},
 
 	data() {
 		return {
-			openModal: false,
+			openPwModal: false,
+			openNickModal: false,
+			openDelModal: false,
+			user_pw: "",
+			user_pw_chk: "",
+			user_err_pw: false,
+			user_com_pw: false,
+			user_err_pw_chk: false,
+			user_com_pw_chk: false,
+			delreason: '' ,
+			delinput: false,
 		}
 	},
 
@@ -83,12 +143,52 @@ export default {
 	},
 
 	methods: {
-		openClick(){
-			this.openModal = true;
+		ctlPasswordModal(flg){
+			this.openPwModal = flg;
 		},
-		modalClose(){
-			this.openModal = false;
+		ctlNickModal(flg){
+			this.openNickModal = flg;
 		},
+		ctlDelModal(flg){
+			this.openDelModal = flg;
+		},
+		pw(){
+			this.pwval()
+		},
+		pw_chk(){
+			this.pwchkval()
+		},
+		del_val(){
+			let reason = document.querySelector('#user_del_reason')
+			console.log(reason.value)
+			console.log("정상	")
+			console.log(this.delinput)
+			if(reason.value === "기타"){
+				this.delinput = true
+			}else{
+				this.delinput = false
+			}
+		},
+		pwval(){
+			const VAR = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/
+			if(!VAR.test(this.user_pw)||!this.user_pw){
+				this.user_err_pw = true;
+				this.user_com_pw = false;
+				return;
+			}
+			this.user_err_pw = false;
+			this.user_com_pw = true;
+		},
+		pwchkval(){
+			if(this.user_pw_chk !== this.user_pw||!this.user_pw){
+				this.user_err_pw_chk = true;
+				this.user_com_pw_chk = false;
+				return
+			}
+			this.user_err_pw_chk = false;
+			this.user_com_pw_chk = true;
+		},
+		
 	},
 }
 </script>
