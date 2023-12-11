@@ -1,9 +1,9 @@
 <template>
 	<!-- 헤더 영역 -->
-	<div class="header" v-if="$route.fullPath != '/login'||$route.fullPath != '/signin'">
+	<div class="header" v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'">
 				<h1>헤더</h1>
                 <div
-                    v-if="!$store.state.cookieFlg"
+                    v-if="!$store.state.localFlg"
                 >
                 <router-link to="/login"
                 >로그인</router-link>
@@ -11,7 +11,7 @@
                 >회원가입</router-link>
                 </div>
                 <div
-                    v-if="$store.state.cookieFlg"
+                    v-if="$store.state.localFlg"
                 >
                 <router-link 
                     to="/user"
@@ -46,25 +46,19 @@ export default {
         logout(){
             this.$store.dispatch('actionLogout');
         },
-        cookienick(){
-            let boo = $cookies.get('nick') ?  true : false;
-            this.$store.commit('setCookieFlg', boo);
+        localStoragechk(){
+            let boo = localStorage.getItem('nick') ?  true : false;
             if(boo){
-                let nick = decodeURIComponent(this.$cookies.get('nick'));
-                this.$store.commit('setNowUser',nick);
+                this.$store.commit('setLocalFlg', boo);
+                this.$store.commit('setNowUser', localStorage.getItem('nick'));
             }
         }
     },
     created() {
-        this.cookienick()
+        this.localStoragechk()
     },
     updated(){
-        let boo = $cookies.get('nick') ?  true : false;
-        this.$store.commit('setCookieFlg', boo);
-        if(boo){
-            let nick = decodeURIComponent(this.$cookies.get('nick'));
-            this.$store.commit('setNowUser',nick);
-        }
+        this.localStoragechk()
     },
     data() {
         return {

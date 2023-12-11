@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {
+    // 이메일중복확인
     public function emailchk(Request $req)
     {
         $result = User::select('email')->where('email',$req->email)->get();
@@ -22,6 +24,7 @@ class UserController extends Controller
         ], 200);
     }
 
+    // 닉네임중복확인
     public function nickchk(Request $req)
     {
         $result = User::select('nick')->where('nick',$req->nick)->get();
@@ -31,7 +34,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    
+    // 회원가입
     public function store(Request $req)
     {
         $data = $req->only('email','name','password','birthdate','phone','gender','nick');
@@ -49,10 +52,37 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    // 로그인
     public function login(Request $req)
     {
         $result = User::where('email',$req->email)->first();
-        if(!$result){
+        if($result){
+            Auth::login($result);
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+            // $token = Str::random(100);
+            // $result1 = 
+            //     DB::table('users')
+            //     ->where('email',$req->email)
+            //     ->update([
+            //         'access_token' =>  $token 
+            //     ]);       
+            // if(!$result1){
+            //     DB::rollback();
+            // }else(
+            //     DB::commit()
+            // );
+            // $response = response()->json([
+            //     'code' => '0',
+            //     'data' => $result
+            // ], 200);
+            // return $response->cookie('access_token', $token, 1440)
+            // ->cookie('nick', $result->nick, 1440, null, null, false, false);
+            // 1211 최정훈 수정 쿠키사용x
+        }else if(!$result){
             $errorMsg = ['존재하지않는 이메일 입니다.'];
             return response()->json([
                 'code' => 'E06'
@@ -65,26 +95,14 @@ class UserController extends Controller
                 ,'errorMsg' => $errorMsg
             ], 400);
         }
-        if($result){
-            $token = Str::random(100);
-            $result1 = 
-                DB::table('users')
-                ->where('email',$req->email)
-                ->update([
-                    'access_token' =>  $token 
-                ]);       
-            if(!$result1){
-                DB::rollback();
-            }else(
-                DB::commit()
-            );
-            $response = response()->json([
-                'code' => '0',
-                'data' => $result
-            ], 200);
-            Log::debug($result);
-            return $response->cookie('access_token', $token, 1440)
-            ->cookie('nick', $result->nick, 1440, null, null, false, false);
-        }
+    }
+    // 로그아웃
+    public function logout(Request $req){
+        $result = Auth::logout();
+        Log::debug($result);
+        return response()->json([
+            'code' => '0',
+            'data' => $result
+        ], 200);
     }
 }
