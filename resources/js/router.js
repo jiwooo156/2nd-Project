@@ -6,6 +6,8 @@ import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import VueCookies from "vue-cookies";
+import UserChk from '../components/UserChk.vue';
+import store from './store.js'
 const routes = [
 	{
 		path: "/",
@@ -19,7 +21,7 @@ const routes = [
 		path: "/login",
 		component: LoginComponent,
 		beforeEnter: (to, from, next) => {
-			if (VueCookies.get('nick')) {
+			if (store.state.localFlg) {
 				next('/');
 			} else {
 				next();
@@ -30,8 +32,7 @@ const routes = [
 		path: "/signin",
 		component : SigninComponent,
 		beforeEnter: (to, from, next) => {
-			if (VueCookies.get('nick')) {
-				console.log(VueCookies.get('nick'));
+			if (store.state.localFlg) {
 				next('/');
 			} else {
 				next();
@@ -39,8 +40,28 @@ const routes = [
 		},
 	},
 	{
+		path: "/userchk",
+		component : UserChk,
+		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+		beforeEnter: (to, from, next) => {
+			if (!store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		}		
+	},
+	{
 		path: "/user",
-		component : UserComponent
+		component : UserComponent,
+		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+		beforeEnter: (to, from, next) => {
+			if (!store.state.userFlg) {
+				next('/userchk');
+			} else {
+				next();
+			}
+		}		
 	},
 	{
 		path: "/region",

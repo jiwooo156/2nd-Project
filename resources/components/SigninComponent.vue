@@ -21,7 +21,7 @@
 							v-if="$store.state.emailFlg !== 1" 
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
-						<input type="email" placeholder="ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ" id="signin_email">
+						<input type="text" placeholder="ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ" id="signin_email" autocomplete='off'>
 						<button class="sign_chk_btn pointer"
 							v-if="$store.state.emailFlg !== 1" 
 							@click="email_chk"
@@ -35,19 +35,19 @@
 						<span>비밀번호</span>
 						<span v-show="err_pw" class="sign_errmsg">비밀번호 형식이 올바르지 않습니다.</span>
 						<span v-show="com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>
-						<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="pw" id="signin_pw">
+						<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="pw" id="signin_pw" autocomplete='off' minlength="8" maxlength="20">
 					</div>
 					<div>
 						<span>비밀번호확인</span>
 						<span v-show="err_pw_chk" class="sign_errmsg">비밀번호와 일치하지 않습니다.</span>
 						<span v-show="com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
-						<input type="password" placeholder="비밀번호와 동일" v-model="pw_chk" id="signin_pw_chk">
+						<input type="password" placeholder="비밀번호와 동일" v-model="pw_chk" id="signin_pw_chk" autocomplete='off' minlength="8" maxlength="20">
 					</div>
 					<div>
 						<span>이름</span>
 						<span v-show="err_name" class="sign_errmsg">이름 형식이 올바르지 않습니다.</span>
 						<span v-show="com_name" class="sign_commsg">사용가능한 이름 입니다.</span>
-						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name">
+						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10">
 					</div>
 					<div class="sign_relative">
 						<span>닉네임</span>
@@ -61,10 +61,10 @@
 						>이미 사용중인 닉네임 입니다.</span>
 						<span
 							v-for="item in $store.state.varErr" :key="item"
-							v-if="$store.state.IdFlg === 1" 
+							v-if="$store.state.emailFlg === 1" 
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
-						<input type="text" placeholder="한글,영어,숫자 2~10" id="signin_nick">
+						<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8">
 						<button class="sign_chk_btn pointer"
 							v-if="$store.state.nickFlg !== 1" 
 							@click="nick_chk"
@@ -78,13 +78,13 @@
 						<span>생년월일</span>
 						<span v-show="err_birthdate" class="sign_errmsg">생년월일 형식이 올바르지 않습니다.</span>
 						<span v-show="com_birthdate" class="sign_commsg">사용가능한 생년월일 입니다.</span>
-						<input type="text" placeholder="YYYYMMDD"  v-model="birthdate" id="signin_birthdate">
+						<input type="text" placeholder="YYYYMMDD"  v-model="birthdate" id="signin_birthdate" autocomplete='off' minlength="8" maxlength="8">
 					</div>
 					<div>
 						<span>전화번호</span>
 						<span v-show="err_phone" class="sign_errmsg">전화번호 형식이 올바르지 않습니다.</span>
 						<span v-show="com_phone" class="sign_commsg">사용가능한 전화번호 입니다.</span>
-						<input type="text" placeholder="휴대폰번호" v-model="phone" max="11" min="11"  id="signin_phone">
+						<input type="text" placeholder="휴대폰번호" v-model="phone" id="signin_phone"  autocomplete='off' minlength="11" maxlength="11">
 					</div>
 					<div>
 						<span>성별</span>
@@ -148,8 +148,8 @@ export default {
 		this.$store.commit('setErrMsg',[]);
 		this.$store.commit('setNickFlg',0);
 		this.$store.commit('setEmailFlg',0);	
-		let boo = $cookies.get('nick') ?  true : false;
-		this.$store.commit('setCookieFlg', boo);
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
 	},
 
 	methods: {
@@ -162,7 +162,6 @@ export default {
 			}
 			this.err_pw = false;
 			this.com_pw = true;
-			
 		},
 		pwchkval(){
 			if(this.pw_chk !== this.pw||!this.pw_chk){

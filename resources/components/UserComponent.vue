@@ -1,5 +1,27 @@
 <template>
 	<br>
+<div class="user_black-bg" v-if="openModal">
+	<div class="user_white-bg">
+		<span>탈퇴하면 복구못함</span>
+		<br>
+		<form action="">
+		<label for="reason">탈퇴사유 : </label>
+		<select name="reason" id="reas">
+			<option value="del_flg1">서비스 불만족</option>
+			<option value="del_flg2">원하는 정보가 없음</option>
+			<option value="del_flg3">불건전한 내용</option>
+			<option value="del_flg4">기타</option>
+		<input class="userChk_button" type="submit" value="제출"/>
+		</select>
+		</form>
+		<br>
+		<input type="text">
+		<br>
+		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button" @click="modalClose()">취소</button>
+	</div>
+</div>
+
 <div class="user_container">
 	<div class="user_userInfo">		
 		<div class="user_userInfo_text_center">
@@ -22,15 +44,16 @@
 			<tbody>
 				<tr>
 					<td class="user_rowname">회원번호</td>
-					<td class="user_rowcontent">1871017772</td>
+					<td class="user_rowcontent"></td>
 				</tr>
+				
 				<tr>					
 					<td class="user_rowname">이메일</td>
-					<td class="user_rowcontent">rlawldnd841@gmail.com<button type="submit" class="user_button">변경</button></td>						
+					<td class="user_rowcontent">rlawldnd841@gmail.com</td>					
 				</tr>
 				<tr>
 					<td class="user_rowname">비밀번호</td>
-					<td class="user_rowcontent">*********<button type="submit" class="user_button">변경</button></td>
+					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="openClick()">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">닉네임</td>
@@ -39,31 +62,32 @@
 				<tr>
 					<td class="user_rowname">탈퇴신청</td>
 					<td class="user_rowcontent"><button type="submit" class="user_button_exit">탈퇴</button></td>
-				</tr>
+				</tr>	
 			</tbody>
 		</table>
 	</div>
 </div>
 </template>
 <script>
+
 export default {
 	name: 'UserComponent',
 	props: {
-
 	},
-	
+
 	components: {
 
 	},
 
 	data() {
 		return {
-			setting: '',
+			openModal: false,
 		}
 	},
 
 	created() {
-
+		console.log("유저시작")
+		this.$store.dispatch('actionGetUser')
 	},
 
 	mounted() {
@@ -71,7 +95,12 @@ export default {
 	},
 
 	methods: {
-
-	}
+		openClick(){
+			this.openModal = true;
+		},
+		modalClose(){
+			this.openModal = false;
+		},
+	},
 }
 </script>

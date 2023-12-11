@@ -22,9 +22,10 @@ return new class extends Migration
             $table->string('phone', 11);
             $table->char('birthdate', 8);
             $table->string('nick', 8);
-            $table->string('access_token', 100)->nullable();
             $table->timestamps();
             $table->softDeletes();  
+            $table->char('del_flg', 1)->nullable();
+            $table->string('del_msg', 50)->nullable();
         });
     }
 

@@ -19355,8 +19355,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    var boo = $cookies.get('nick') ? true : false;
-    this.$store.commit('setCookieFlg', boo);
+    var boo = localStorage.getItem('nick') ? true : false;
+    this.$store.commit('setLocalFlg', boo);
   },
   methods: {
     login: function login() {
@@ -19403,6 +19403,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SigninComponent.vue */ "./resources/components/SigninComponent.vue");
 /* harmony import */ var _UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./UserComponent.vue */ "./resources/components/UserComponent.vue");
 /* harmony import */ var _RegionComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RegionComponent.vue */ "./resources/components/RegionComponent.vue");
+/* harmony import */ var _UserChk_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./UserChk.vue */ "./resources/components/UserChk.vue");
+
 
 
 
@@ -19414,31 +19416,26 @@ __webpack_require__.r(__webpack_exports__);
     MainComponent: _MainComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     LoginComponent: _LoginComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     SigninComponent: _SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    UserComponent: _UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    UserComponent: _UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    UserChk: _UserChk_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   methods: {
     logout: function logout() {
       this.$store.dispatch('actionLogout');
     },
-    cookienick: function cookienick() {
-      var boo = $cookies.get('nick') ? true : false;
-      this.$store.commit('setCookieFlg', boo);
+    localStoragechk: function localStoragechk() {
+      var boo = localStorage.getItem('nick') ? true : false;
       if (boo) {
-        var nick = decodeURIComponent(this.$cookies.get('nick'));
-        this.$store.commit('setNowUser', nick);
+        this.$store.commit('setLocalFlg', boo);
+        this.$store.commit('setNowUser', localStorage.getItem('nick'));
       }
     }
   },
   created: function created() {
-    this.cookienick();
+    this.localStoragechk();
   },
   updated: function updated() {
-    var boo = $cookies.get('nick') ? true : false;
-    this.$store.commit('setCookieFlg', boo);
-    if (boo) {
-      var nick = decodeURIComponent(this.$cookies.get('nick'));
-      this.$store.commit('setNowUser', nick);
-    }
+    this.localStoragechk();
   },
   data: function data() {
     return {};
@@ -19541,8 +19538,8 @@ __webpack_require__.r(__webpack_exports__);
     this.$store.commit('setErrMsg', []);
     this.$store.commit('setNickFlg', 0);
     this.$store.commit('setEmailFlg', 0);
-    var boo = $cookies.get('nick') ? true : false;
-    this.$store.commit('setCookieFlg', boo);
+    var boo = localStorage.getItem('nick') ? true : false;
+    this.$store.commit('setLocalFlg', boo);
   },
   methods: {
     pwval: function pwval() {
@@ -19624,6 +19621,29 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=script&lang=js":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=script&lang=js ***!
+  \**********************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'UserChk',
+  created: function created() {},
+  methods: {
+    chk_pw: function chk_pw() {
+      this.$store.dispatch('actionUserChk');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserComponent.vue?vue&type=script&lang=js":
 /*!****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserComponent.vue?vue&type=script&lang=js ***!
@@ -19641,12 +19661,22 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
-      setting: ''
+      openModal: false
     };
   },
-  created: function created() {},
+  created: function created() {
+    console.log("유저시작");
+    this.$store.dispatch('actionGetUser');
+  },
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    openClick: function openClick() {
+      this.openModal = true;
+    },
+    modalClose: function modalClose() {
+      this.openModal = false;
+    }
+  }
 });
 
 /***/ }),
@@ -19778,7 +19808,7 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), _ctx.$route.fullPath != '/login' || _ctx.$route.fullPath != '/signin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !_ctx.$store.state.cookieFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), _ctx.$route.fullPath != '/login' && _ctx.$route.fullPath != '/signin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !_ctx.$store.state.localFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: "/login"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -19792,8 +19822,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("회원가입")];
     }),
     _: 1 /* STABLE */
-  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.cookieFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    to: "/user"
+  })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.localFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/userchk"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.NowUser), 1 /* TEXT */)];
@@ -19901,9 +19931,10 @@ var _hoisted_8 = {
   "class": "sign_errmsg"
 };
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "email",
+  type: "text",
   placeholder: "ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ",
-  id: "signin_email"
+  id: "signin_email",
+  autocomplete: "off"
 }, null, -1 /* HOISTED */);
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
 var _hoisted_11 = {
@@ -19940,8 +19971,11 @@ var _hoisted_22 = {
 };
 var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  placeholder: "한글,영어,숫자 2~10",
-  id: "signin_nick"
+  placeholder: "한글,영어,숫자 2~8",
+  id: "signin_nick",
+  autocomplete: "off",
+  minlength: "2",
+  maxlength: "8"
 }, null, -1 /* HOISTED */);
 var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
 var _hoisted_25 = {
@@ -19998,22 +20032,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.pw = $event;
     }),
-    id: "signin_pw"
+    id: "signin_pw",
+    autocomplete: "off",
+    minlength: "8",
+    maxlength: "20"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     placeholder: "비밀번호와 동일",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.pw_chk = $event;
     }),
-    id: "signin_pw_chk"
+    id: "signin_pw_chk",
+    autocomplete: "off",
+    minlength: "8",
+    maxlength: "20"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_17, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_18, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "한글 2~10",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.name = $event;
     }),
-    id: "signin_name"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.IdFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    id: "signin_name",
+    autocomplete: "off",
+    minlength: "2",
+    maxlength: "10"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 2
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
@@ -20038,16 +20081,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.birthdate = $event;
     }),
-    id: "signin_birthdate"
+    id: "signin_birthdate",
+    autocomplete: "off",
+    minlength: "8",
+    maxlength: "8"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_28, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_29, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "휴대폰번호",
     "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.phone = $event;
     }),
-    max: "11",
-    min: "11",
-    id: "signin_phone"
+    id: "signin_phone",
+    autocomplete: "off",
+    minlength: "11",
+    maxlength: "11"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "sign_footer_btn pointer",
     onClick: _cache[9] || (_cache[9] = function () {
@@ -20066,6 +20113,74 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=template&id=128a677a":
+/*!**************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=template&id=128a677a ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_container"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_userInfo"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_userInfo_text_center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
+  "class": "user_h1"
+}, "회원 정보")])])], -1 /* HOISTED */);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_3 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_4 = {
+  "class": "userChk_container"
+};
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_subcontainer"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_box_top_red_center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "회원 정보")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_vacant_box"
+})], -1 /* HOISTED */);
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, "본인확인을 위해 비밀번호를 입력해주세요", -1 /* HOISTED */);
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "password",
+  placeholder: "비밀번호",
+  id: "userchk_pw"
+}, null, -1 /* HOISTED */);
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_12 = {
+  "class": "userChk_button"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.varErr[0]), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, _hoisted_6, _hoisted_7, _hoisted_8, _hoisted_9, _hoisted_10, _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.chk_pw && $options.chk_pw.apply($options, arguments);
+    }),
+    "class": "userChk_button"
+  }, "확인"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/main"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("취소")];
+    }),
+    _: 1 /* STABLE */
+  })])])], 64 /* STABLE_FRAGMENT */);
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserComponent.vue?vue&type=template&id=db56b95e":
 /*!********************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserComponent.vue?vue&type=template&id=db56b95e ***!
@@ -20079,9 +20194,73 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<br><div class=\"user_container\"><div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br><div class=\"user_infocontainer\"><div class=\"user_userInfo_text3\"><h3>회원정보 설정</h3></div><table class=\"user_table\"><tbody><tr><td class=\"user_rowname\">회원번호</td><td class=\"user_rowcontent\">1871017772</td></tr><tr><td class=\"user_rowname\">이메일</td><td class=\"user_rowcontent\">rlawldnd841@gmail.com<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">비밀번호</td><td class=\"user_rowcontent\">*********<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">닉네임</td><td class=\"user_rowcontent\">보성쿤<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">탈퇴신청</td><td class=\"user_rowcontent\"><button type=\"submit\" class=\"user_button_exit\">탈퇴</button></td></tr></tbody></table></div></div>", 2);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_2 = {
+  key: 0,
+  "class": "user_black-bg"
+};
+var _hoisted_3 = {
+  "class": "user_white-bg"
+};
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span>탈퇴하면 복구못함</span><br><form action=\"\"><label for=\"reason\">탈퇴사유 : </label><select name=\"reason\" id=\"reas\"><option value=\"del_flg1\">서비스 불만족</option><option value=\"del_flg2\">원하는 정보가 없음</option><option value=\"del_flg3\">불건전한 내용</option><option value=\"del_flg4\">기타</option><input class=\"userChk_button\" type=\"submit\" value=\"제출\"></select></form><br><input type=\"text\"><br><button class=\"userChk_button\">탈퇴</button>", 7);
+var _hoisted_11 = {
+  "class": "user_container"
+};
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br>", 4);
+var _hoisted_16 = {
+  "class": "user_infocontainer"
+};
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_userInfo_text3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "회원정보 설정")], -1 /* HOISTED */);
+var _hoisted_18 = {
+  "class": "user_table"
+};
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "회원번호"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+})], -1 /* HOISTED */);
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "이메일"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, "rlawldnd841@gmail.com")], -1 /* HOISTED */);
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "비밀번호", -1 /* HOISTED */);
+var _hoisted_22 = {
+  "class": "user_rowcontent"
+};
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "닉네임"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("보성쿤"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "user_button"
+}, "변경")])], -1 /* HOISTED */);
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "탈퇴신청"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "user_button_exit"
+}, "탈퇴")])], -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return _hoisted_1;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, $data.openModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "userChk_button",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.modalClose();
+    })
+  }, "취소")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [_hoisted_19, _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*********"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "user_button",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.openClick();
+    })
+  }, "변경")])]), _hoisted_23, _hoisted_24])])])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -20170,9 +20349,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/LoginComponent.vue */ "./resources/components/LoginComponent.vue");
 /* harmony import */ var _components_SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/SigninComponent.vue */ "./resources/components/SigninComponent.vue");
 /* harmony import */ var _components_UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/UserComponent.vue */ "./resources/components/UserComponent.vue");
-/* harmony import */ var _components_RegionComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/RegionComponent.vue */ "./resources/components/RegionComponent.vue");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
-/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _components_UserChk_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/UserChk.vue */ "./resources/components/UserChk.vue");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
 /* 기본셋팅 1204 최정훈 */
 
 
@@ -20191,7 +20369,7 @@ var routes = [{
   path: "/login",
   component: _components_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (vue_cookies__WEBPACK_IMPORTED_MODULE_5___default().get('nick')) {
+    if (_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.localFlg) {
       next('/');
     } else {
       next();
@@ -20201,8 +20379,18 @@ var routes = [{
   path: "/signin",
   component: _components_SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (vue_cookies__WEBPACK_IMPORTED_MODULE_5___default().get('nick')) {
-      console.log(vue_cookies__WEBPACK_IMPORTED_MODULE_5___default().get('nick'));
+    if (_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.localFlg) {
+      next('/');
+    } else {
+      next();
+    }
+  }
+}, {
+  path: "/userchk",
+  component: _components_UserChk_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  // 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (!_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.localFlg) {
       next('/');
     } else {
       next();
@@ -20210,10 +20398,15 @@ var routes = [{
   }
 }, {
   path: "/user",
-  component: _components_UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, {
-  path: "/region",
-  component: _components_RegionComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  component: _components_UserComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+  // 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (!_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.userFlg) {
+      next('/userchk');
+    } else {
+      next();
+    }
+  }
 }];
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_6__.createRouter)({
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_6__.createWebHistory)(),
@@ -20254,8 +20447,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
       emailFlg: 0,
       nickFlg: 0,
       varErr: [],
-      cookieFlg: false,
-      NowUser: ""
+      localFlg: false,
+      NowUser: "",
+      userFlg: false
     };
   },
   // mutations : 데이터 수정용 함수 저장 영역
@@ -20269,11 +20463,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     setErrMsg: function setErrMsg(state, data) {
       state.varErr = data;
     },
-    setCookieFlg: function setCookieFlg(state, boo) {
-      state.cookieFlg = boo;
+    setLocalFlg: function setLocalFlg(state, boo) {
+      state.localFlg = boo;
     },
     setNowUser: function setNowUser(state, str) {
       state.NowUser = str;
+    },
+    setUserFlg: function setUserFlg(state, boo) {
+      state.userFlg = boo;
     }
   },
   // actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
@@ -20281,16 +20478,22 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     // 이메일 중복확인
     actionEmailChk: function actionEmailChk(context) {
       var email = document.querySelector('#signin_email').value;
-      var URL = '/api/signin/email';
-      var HEADER = {
-        headers: {
-          'Authorization': 'Bearer team5',
-          'Content-Type': 'multipart/form-data'
-        }
-      };
-      var formData = new FormData();
-      formData.append('email', email);
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
+      // const URL = '/api/signin/email'
+      // 1211 최정훈 수정 api로 안보내고 web으로 변경
+      // const URL = '/signin/email'
+      // const HEADER = {
+      // 	headers: {
+      // 		// 'Authorization': 'Bearer team5',
+      // 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+      // 		'Content-Type': 'multipart/form-data',
+      // 	}
+      // };
+      // const formData = new FormData();
+      // formData.append('email', email);
+      // axios.get(URL, formData, HEADER)
+      // 1211 최정훈 수정 get형식이 옳은방식이라 수정
+      var URL = '/signin/email/?email=' + email;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
         context.commit('setErrMsg', '');
         if (res.data.code === "0") {
           if (res.data.data.length === 0) {
@@ -20313,16 +20516,21 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     actionNickChk: function actionNickChk(context) {
       if (context.state.emailFlg === 1) {
         var nick = document.querySelector('#signin_nick').value;
-        var URL = '/api/signin/nick';
-        var HEADER = {
-          headers: {
-            'Authorization': 'Bearer team5',
-            'Content-Type': 'multipart/form-data'
-          }
-        };
-        var formData = new FormData();
-        formData.append('nick', nick);
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
+        // const URL = '/api/signin/nick'
+        // 1211 최정훈 수정 api로 안보내고 web으로 변경
+        // const URL = '/signin/nick'
+        // const HEADER = {
+        // 	headers: {
+        // 		// 'Authorization': 'Bearer team5',
+        // 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+        // 		'Content-Type': 'multipart/form-data',
+        // 	}
+        // };
+        // const formData = new FormData();
+        // formData.append('nick', nick);
+        // 1211 최정훈 수정 get형식이 옳은방식이라 수정
+        var URL = '/signin/nick?nick=' + nick;
+        axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
           context.commit('setErrMsg', '');
           if (res.data.code === "0") {
             if (res.data.data.length === 0) {
@@ -20360,10 +20568,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
         } else if (gender === "여자") {
           gender = "F";
         }
-        var URL = '/api/signin';
+        // const URL = '/api/signin'
+        // 1211 최정훈 수정 api로 안보내고 web으로 변경
+        var URL = '/signin';
         var HEADER = {
           headers: {
-            'Authorization': 'Bearer team5',
+            // 'Authorization': 'Bearer team5',
+            // 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
             'Content-Type': 'multipart/form-data'
           }
         };
@@ -20394,10 +20605,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     actionLogin: function actionLogin(context) {
       var email = document.querySelector('#login_email').value;
       var pw = document.querySelector('#login_pw').value;
-      var URL = '/api/login';
+      // const URL = '/api/login''
+      // 1211 최정훈 수정 api로 안보내고 web으로 변경	
+      var URL = '/login';
       var HEADER = {
         headers: {
-          'Authorization': 'Bearer team5',
+          // 'Authorization': 'Bearer team5',
+          // 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
           'Content-Type': 'multipart/form-data'
         }
       };
@@ -20405,9 +20619,12 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
       formData.append('email', email);
       formData.append('password', pw);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
-        console.log('로그인성공');
         if (res.data.code === "0") {
-          context.commit('setCookieFlg', true);
+          console.log('로그인성공');
+          console.log(res.data.data.nick);
+          localStorage.setItem('nick', res.data.data.nick);
+          context.commit('setLocalFlg', true);
+          context.commit('setNowUser', localStorage.getItem('nick'));
           _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
         } else {
           console.log('else');
@@ -20425,18 +20642,68 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     },
     // 로그아웃
     actionLogout: function actionLogout(context) {
-      var URL = '/api/logout';
+      // // const URL = '/api/logout''
+      // // 1211 최정훈 수정 api로 안보내고 web으로 변경	
+      // const URL = '/logout'
+      // const HEADER = {
+      // 	headers: {
+      // 		// 'Authorization': 'Bearer team5',
+      // 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+      // 		'Content-Type': 'multipart/form-data',
+      // 	}
+      // };
+      // const formData = new FormData();
+      // formData.append('nick',context.state.NowUser);
+      // 1211 최정훈 수정 get형식이 옳은방식이라 수정
+      var URL = '/logout';
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
+        if (res.data.code === "0") {
+          localStorage.clear();
+          context.commit('setLocalFlg', false);
+          context.commit('setNowUser', '');
+          _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
+        }
+      })["catch"](function (err) {
+        alert("로그아웃중 오류가 발생했습니다." + err.response.data.errorMsg);
+      });
+    },
+    // 유저정보페이지 비밀번호 체크
+    actionUserChk: function actionUserChk(context) {
+      var pw = document.querySelector('#userchk_pw').value;
+      var URL = '/userchk';
       var HEADER = {
         headers: {
-          'Authorization': 'Bearer team5',
           'Content-Type': 'multipart/form-data'
         }
       };
       var formData = new FormData();
-      formData.append('nick', context.state.NowUser);
+      formData.append('password', pw);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
-        context.commit('setCookieFlg', false);
-        _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
+        if (res.data.code === "0") {
+          context.commit('setErrMsg', '');
+          context.commit('setUserFlg', true);
+          _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/user');
+        } else {
+          context.commit('setErrMsg', res.data.errorMsg);
+        }
+      })["catch"](function (err) {
+        if (err.response.data.code === "E03") {
+          context.commit('setErrMsg', err.response.data.errorMsg.password);
+          context.commit('setUserFlg', false);
+        } else {
+          context.commit('setErrMsg', err.response.data.errorMsg);
+          context.commit('setUserFlg', false);
+        }
+      });
+    },
+    // 유저정보페이지 비밀번호 체크
+    actionGetUser: function actionGetUser(context) {
+      var URL = '/user';
+      console.log("함수시작");
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
+        if (res.data.code === "0") {} else {
+          context.commit('setErrMsg', res.data.errorMsg);
+        }
       })["catch"](function (err) {});
     }
   }
@@ -38181,6 +38448,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/components/UserChk.vue":
+/*!******************************************!*\
+  !*** ./resources/components/UserChk.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _UserChk_vue_vue_type_template_id_128a677a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserChk.vue?vue&type=template&id=128a677a */ "./resources/components/UserChk.vue?vue&type=template&id=128a677a");
+/* harmony import */ var _UserChk_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserChk.vue?vue&type=script&lang=js */ "./resources/components/UserChk.vue?vue&type=script&lang=js");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_UserChk_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_UserChk_vue_vue_type_template_id_128a677a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/components/UserChk.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/components/UserComponent.vue":
 /*!************************************************!*\
   !*** ./resources/components/UserComponent.vue ***!
@@ -38289,6 +38584,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/components/UserChk.vue?vue&type=script&lang=js":
+/*!******************************************************************!*\
+  !*** ./resources/components/UserChk.vue?vue&type=script&lang=js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_UserChk_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_UserChk_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./UserChk.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/components/UserComponent.vue?vue&type=script&lang=js":
 /*!************************************************************************!*\
   !*** ./resources/components/UserComponent.vue?vue&type=script&lang=js ***!
@@ -38381,6 +38692,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SigninComponent_vue_vue_type_template_id_4a335f1a__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SigninComponent_vue_vue_type_template_id_4a335f1a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SigninComponent.vue?vue&type=template&id=4a335f1a */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SigninComponent.vue?vue&type=template&id=4a335f1a");
+
+
+/***/ }),
+
+/***/ "./resources/components/UserChk.vue?vue&type=template&id=128a677a":
+/*!************************************************************************!*\
+  !*** ./resources/components/UserChk.vue?vue&type=template&id=128a677a ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_UserChk_vue_vue_type_template_id_128a677a__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_UserChk_vue_vue_type_template_id_128a677a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./UserChk.vue?vue&type=template&id=128a677a */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/UserChk.vue?vue&type=template&id=128a677a");
 
 
 /***/ }),
