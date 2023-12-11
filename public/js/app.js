@@ -3879,6 +3879,9 @@ function buildProps(node, context, props = node.props, isComponent, isDynamicCom
       if (isEventHandler && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isReservedProp)(name)) {
         hasVnodeHook = true;
       }
+      if (isEventHandler && value.type === 14) {
+        value = value.arguments[0];
+      }
       if (value.type === 20 || (value.type === 4 || value.type === 8) && getConstantType(value, context) > 0) {
         return;
       }
@@ -8628,7 +8631,12 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
         if (delayEnter) {
           activeBranch.transition.afterLeave = () => {
             if (pendingId === suspense.pendingId) {
-              move(pendingBranch, container2, anchor2, 0);
+              move(
+                pendingBranch,
+                container2,
+                next(activeBranch),
+                0
+              );
               queuePostFlushCb(effects);
             }
           };
@@ -8675,7 +8683,6 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
       }
       const { vnode: vnode2, activeBranch, parentComponent: parentComponent2, container: container2, isSVG: isSVG2 } = suspense;
       triggerEvent(vnode2, "onFallback");
-      const anchor2 = next(activeBranch);
       const mountFallback = () => {
         if (!suspense.isInFallback) {
           return;
@@ -8684,7 +8691,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
           null,
           fallbackVNode,
           container2,
-          anchor2,
+          next(activeBranch),
           parentComponent2,
           null,
           // fallback tree will not have suspense context
@@ -14767,9 +14774,9 @@ function initCustomFormatter() {
     return;
   }
   const vueStyle = { style: "color:#3ba776" };
-  const numberStyle = { style: "color:#0b1bc9" };
-  const stringStyle = { style: "color:#b62e24" };
-  const keywordStyle = { style: "color:#9d288c" };
+  const numberStyle = { style: "color:#1677ff" };
+  const stringStyle = { style: "color:#f5222d" };
+  const keywordStyle = { style: "color:#eb2f96" };
   const formatter = {
     header(obj) {
       if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isObject)(obj)) {
@@ -14963,7 +14970,7 @@ function isMemoSame(cached, memo) {
   return true;
 }
 
-const version = "3.3.9";
+const version = "3.3.10";
 const _ssrUtils = {
   createComponentInstance,
   setupComponent,
@@ -15765,7 +15772,8 @@ function patchStopImmediatePropagation(e, value) {
   }
 }
 
-const nativeOnRE = /^on[a-z]/;
+const isNativeOn = (key) => key.charCodeAt(0) === 111 && key.charCodeAt(1) === 110 && // lowercase letter
+key.charCodeAt(2) > 96 && key.charCodeAt(2) < 123;
 const patchProp = (el, key, prevValue, nextValue, isSVG = false, prevChildren, parentComponent, parentSuspense, unmountChildren) => {
   if (key === "class") {
     patchClass(el, nextValue, isSVG);
@@ -15799,7 +15807,7 @@ function shouldSetAsProp(el, key, value, isSVG) {
     if (key === "innerHTML" || key === "textContent") {
       return true;
     }
-    if (key in el && nativeOnRE.test(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
+    if (key in el && isNativeOn(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isFunction)(value)) {
       return true;
     }
     return false;
@@ -15816,7 +15824,11 @@ function shouldSetAsProp(el, key, value, isSVG) {
   if (key === "type" && el.tagName === "TEXTAREA") {
     return false;
   }
-  if (nativeOnRE.test(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
+  if (key === "width" || key === "height") {
+    const tag = el.tagName;
+    return !(tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE");
+  }
+  if (isNativeOn(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
     return false;
   }
   return key in el;
@@ -16531,14 +16543,14 @@ const modifierGuards = {
   exact: (e, modifiers) => systemModifiers.some((m) => e[`${m}Key`] && !modifiers.includes(m))
 };
 const withModifiers = (fn, modifiers) => {
-  return (event, ...args) => {
+  return fn._withMods || (fn._withMods = (event, ...args) => {
     for (let i = 0; i < modifiers.length; i++) {
       const guard = modifierGuards[modifiers[i]];
       if (guard && guard(event, modifiers))
         return;
     }
     return fn(event, ...args);
-  };
+  });
 };
 const keyNames = {
   esc: "escape",
@@ -16550,7 +16562,7 @@ const keyNames = {
   delete: "backspace"
 };
 const withKeys = (fn, modifiers) => {
-  return (event) => {
+  return fn._withKeys || (fn._withKeys = (event) => {
     if (!("key" in event)) {
       return;
     }
@@ -16558,7 +16570,7 @@ const withKeys = (fn, modifiers) => {
     if (modifiers.some((k) => k === eventKey || keyNames[k] === eventKey)) {
       return fn(event);
     }
-  };
+  });
 };
 
 const rendererOptions = /* @__PURE__ */ (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.extend)({ patchProp }, nodeOps);
@@ -16771,8 +16783,8 @@ const EMPTY_ARR =  true ? Object.freeze([]) : 0;
 const NOOP = () => {
 };
 const NO = () => false;
-const onRE = /^on[^a-z]/;
-const isOn = (key) => onRE.test(key);
+const isOn = (key) => key.charCodeAt(0) === 111 && key.charCodeAt(1) === 110 && // uppercase letter
+(key.charCodeAt(2) > 122 || key.charCodeAt(2) < 97);
 const isModelListener = (key) => key.startsWith("onUpdate:");
 const extend = Object.assign;
 const remove = (arr, el) => {
@@ -19606,12 +19618,19 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
-      setting: ''
+      openModal: false
     };
   },
   created: function created() {},
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    openClick: function openClick() {
+      this.openModal = true;
+    },
+    modalClose: function modalClose() {
+      this.openModal = false;
+    }
+  }
 });
 
 /***/ }),
@@ -20046,9 +20065,80 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<br><div class=\"user_container\"><div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br><div class=\"user_infocontainer\"><div class=\"user_userInfo_text3\"><h3>회원정보 설정</h3></div><table class=\"user_table\"><tbody><tr><td class=\"user_rowname\">회원번호</td><td class=\"user_rowcontent\">1871017772</td></tr><tr><td class=\"user_rowname\">이메일</td><td class=\"user_rowcontent\">rlawldnd841@gmail.com<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">비밀번호</td><td class=\"user_rowcontent\">*********<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">닉네임</td><td class=\"user_rowcontent\">보성쿤<button type=\"submit\" class=\"user_button\">변경</button></td></tr><tr><td class=\"user_rowname\">탈퇴신청</td><td class=\"user_rowcontent\"><button type=\"submit\" class=\"user_button_exit\">탈퇴</button></td></tr></tbody></table></div></div>", 2);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_2 = {
+  key: 0,
+  "class": "user_black-bg"
+};
+var _hoisted_3 = {
+  "class": "user_white-bg"
+};
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "새로운 닉네임을 입력해주세요", -1 /* HOISTED */);
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "text"
+}, null, -1 /* HOISTED */);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "user_button"
+}, "변경", -1 /* HOISTED */);
+var _hoisted_8 = {
+  "class": "user_container"
+};
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br>", 4);
+var _hoisted_13 = {
+  "class": "user_infocontainer"
+};
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "user_userInfo_text3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "회원정보 설정")], -1 /* HOISTED */);
+var _hoisted_15 = {
+  "class": "user_table"
+};
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "회원번호"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+})], -1 /* HOISTED */);
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "이메일"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, "rlawldnd841@gmail.com")], -1 /* HOISTED */);
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "비밀번호", -1 /* HOISTED */);
+var _hoisted_19 = {
+  "class": "user_rowcontent"
+};
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "닉네임"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("보성쿤"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "user_button"
+}, "변경")])], -1 /* HOISTED */);
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowname"
+}, "탈퇴신청"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "user_rowcontent"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "submit",
+  "class": "user_button_exit"
+}, "탈퇴")])], -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return _hoisted_1;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, $data.openModal == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, _hoisted_6, _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "user_button",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.modalClose();
+    })
+  }, "닫기")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [_hoisted_16, _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*********"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "user_button",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.openClick();
+    })
+  }, "변경")])]), _hoisted_20, _hoisted_21])])])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -38629,7 +38719,15 @@ function initDev() {
 if (true) {
   initDev();
 }
-const compileCache = /* @__PURE__ */ Object.create(null);
+const compileCache = /* @__PURE__ */ new WeakMap();
+function getCache(options) {
+  let c = compileCache.get(options != null ? options : _vue_shared__WEBPACK_IMPORTED_MODULE_2__.EMPTY_OBJ);
+  if (!c) {
+    c = /* @__PURE__ */ Object.create(null);
+    compileCache.set(options != null ? options : _vue_shared__WEBPACK_IMPORTED_MODULE_2__.EMPTY_OBJ, c);
+  }
+  return c;
+}
 function compileToFunction(template, options) {
   if (!(0,_vue_shared__WEBPACK_IMPORTED_MODULE_2__.isString)(template)) {
     if (template.nodeType) {
@@ -38640,7 +38738,8 @@ function compileToFunction(template, options) {
     }
   }
   const key = template;
-  const cached = compileCache[key];
+  const cache = getCache(options);
+  const cached = cache[key];
   if (cached) {
     return cached;
   }
@@ -38675,7 +38774,7 @@ ${codeFrame}` : message);
   }
   const render = new Function("Vue", code)(_vue_runtime_dom__WEBPACK_IMPORTED_MODULE_0__);
   render._rc = true;
-  return compileCache[key] = render;
+  return cache[key] = render;
 }
 (0,_vue_runtime_dom__WEBPACK_IMPORTED_MODULE_1__.registerRuntimeCompiler)(compileToFunction);
 
