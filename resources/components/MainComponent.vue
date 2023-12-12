@@ -15,7 +15,10 @@ export default {
 
     },
     created() {
-
+		console.log('main : created');
+    },
+    updated() {
+		console.log('main : updated');
     },
 }
 </script>

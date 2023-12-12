@@ -230,8 +230,8 @@ export default {
 		}
 	},
 	beforeRouteLeave(to, from, next) {
-	this.$store.commit('setErrMsg','')
-    next();
+		this.$store.commit('setErrMsg','')
+		next();
 	},
 }
 </script>
