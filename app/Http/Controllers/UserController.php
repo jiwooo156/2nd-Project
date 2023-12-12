@@ -136,5 +136,29 @@ class UserController extends Controller
             'data' => $result
         ], 200);
     }
+    // 비밀번호 변경
+    public function changepw(Request $req){
+        try {
+            DB::beginTransaction();
+            $auth = Auth::user();
+            Log::debug($req->password);
+            $newpw = Hash::make($req->password);
+            Log::debug($newpw);
+            $result = User::where('email',$auth->email)->first();
+            $result->password = $newpw;
+            $result->save();
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        } catch(Excepion $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E08',
+                'errorMsg' => ["비밀번호 변경에 실패했습니다"]
+            ], 400);
+        }
+    }
 
 }
