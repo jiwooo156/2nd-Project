@@ -143,6 +143,33 @@ const store = createStore({
 			}else{
 				alert("이메일 인증을 해주세요")
 			}
+		},	
+		// 닉네임 중복확인2(닉네임 변경용)
+		actionNickChk2(context){
+				let nick = document.querySelector('#user_nick').value
+				const URL = '/signin/nick?nick='+nick
+				axios.get(URL)
+				.then(res => {
+					context.commit('setErrMsg','');
+					if(res.data.code === "0"){
+						if(res.data.data.length === 0){
+							context.commit('setNickFlg',1);
+							document.querySelector('#user_nick').readOnly = true;
+							document.querySelector('#user_nick').style.backgroundColor = 'rgb(169 183 200)';		
+						}else if(res.data.data.length > 0){
+							console.log("있을때")
+							context.commit('setNickFlg',2);
+						}
+					}else{
+						console.log('else')
+					}
+				})
+				.catch(err => {
+					console.log("캐치")
+					context.commit('setNickFlg',0);
+					context.commit('setErrMsg',err.response.data.errorMsg);
+				
+				})
 		},
 
 		// 회원가입
@@ -345,6 +372,34 @@ const store = createStore({
 		actionChangePw(context){
 			let pw = document.querySelector('#user_pw').value;
 			let pw_chk = document.querySelector('#user_pw_chk').value;
+				const URL = '/user/pchk'
+				const HEADER = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				const formData = new FormData();
+				formData.append('password', pw);
+				formData.append('pw_chk', pw_chk);
+
+				axios.post(URL,formData,HEADER)
+				.then(res => {
+					if(res.data.code === "0"){	
+						context.commit('setPasswordModalFlg',false);
+						alert('정상처리되었습니다');
+						router.push('/userchk')
+					}else{
+						alert(res.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					console.log("캐치")
+					alert(err.response.data.errorMsg);
+				})
+		},
+		// 유저페이지 닉네임변경
+		actionChangeNick(context){
+			let nick = document.querySelector('#user_pw').value;
 				const URL = '/user/pchk'
 				const HEADER = {
 					headers: {

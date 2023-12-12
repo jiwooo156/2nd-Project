@@ -72,7 +72,7 @@ class UserController extends Controller
         }
         if($result){
             Auth::login($result);
-            $test = Auth::user();
+            Auth::user();
             return response()->json([
                 'code' => '0',
                 'data' => $result

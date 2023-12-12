@@ -20,7 +20,7 @@
 		>
 		<br>
 		<button class="userChk_button"
-			@click="userpwchn"
+			@click="userpwchange"
 		>변경하기</button>
 		<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>
 	</div>
@@ -29,13 +29,35 @@
 	v-if="$store.state.openNickModal"
 >
 	<div class="user_white-bg">
+		<span
+			v-if="$store.state.nickFlg === 1" 
+			class="sign_commsg"
+		>사용 가능한 닉네임 입니다.</span>
+		<span
+			v-if="$store.state.nickFlg === 2" 
+			class="sign_errmsg"
+		>이미 사용중인 닉네임 입니다.</span>
+		<span
+			v-for="item in $store.state.varErr" :key="item"
+			v-if="$store.state.nickFlg === 0" 
+			class="sign_errmsg"
+		>{{ item[0] }}</span>
 		<label for="user_del_reason">변경하실 닉네임 : </label>
-			<input type="text">
+			<input type="text" id="user_nick"  placeholder="한글,영어,숫자 2~8" >
 			<br>
-			<button class="userChk_button">중복확인</button>
+			<button class="userChk_button"
+				v-if="$store.state.nickFlg !== 1" 
+				@click="nick_chk"
+			>중복확인</button>
+			<button class="userChk_button"
+				v-if="$store.state.nickFlg === 1" 
+				@click="del_nick_chk"
+			>다시쓰기</button>
 		<br>
 		<br>
-		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button"
+			@click="usernickchange"
+		>변경</button>
 		<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
 	</div>
 </div>
@@ -188,10 +210,20 @@ export default {
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
 		},
-		userpwchn(){
+		userpwchange(){
 			this.$store.dispatch('actionChangePw');
-		}
-		
+		},
+		usernickchange(){
+			this.$store.dispatch('actionChangeNick');
+		},
+		nick_chk(){
+			this.$store.dispatch('actionNickChk2');
+		},
+		del_nick_chk(){
+			this.$store.commit('setNickFlg',0);
+			document.querySelector('#user_nick').readOnly = false;
+			document.querySelector('#user_nick').removeAttribute('style')
+		},
 	},
 }
 </script>
