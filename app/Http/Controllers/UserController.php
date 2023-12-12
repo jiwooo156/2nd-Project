@@ -113,7 +113,6 @@ class UserController extends Controller
             // ->cookie('nick', $result->nick, 1440, null, null, false, false);
             // 1211 최정훈 수정 쿠키사용x
         }
-
     }
     // 로그아웃
     public function logout(Request $req){
@@ -168,7 +167,7 @@ class UserController extends Controller
                 'code' => '0',
                 'data' => $result
             ], 200);
-        } catch(Excepion $e){
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E08',
@@ -189,7 +188,7 @@ class UserController extends Controller
                 'code' => '0',
                 'data' => $result
             ], 200);
-        } catch(Excepion $e){
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E09',
@@ -212,7 +211,7 @@ class UserController extends Controller
                 'code' => '0',
                 'data' => $result
             ], 200);
-        } catch(Excepion $e){
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E09',
@@ -220,5 +219,4 @@ class UserController extends Controller
             ], 400);
         }
     }
-
 }
