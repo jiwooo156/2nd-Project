@@ -49,6 +49,8 @@ Route::middleware('myValidation')->prefix('userinfo')->group(function() {
 
 Route::middleware('myValidation')->prefix('user')->group(function() {
     Route::post('/pchk', [UserController::class, 'changepw']);
+    Route::post('/nchk', [UserController::class, 'changenick']);
+    Route::post('/del', [UserController::class, 'deluser']);
 });
 Route::get('/', function () {
     return view('welcome');

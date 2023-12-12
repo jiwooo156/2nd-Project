@@ -76,10 +76,14 @@
 		</select>
 		<br>
 		<input type="text"
+			id="user_del_reason_input"
 			v-if="delinput"
+			placeholder="직접입력 50자 내외"
 		>
 		<br>
-		<button class="userChk_button">탈퇴</button>
+		<button class="userChk_button"
+			@click="userout"
+		>탈퇴</button>
 		<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
 	</div>
 </div>
@@ -119,7 +123,8 @@
 				</tr>
 				<tr>
 					<td class="user_rowname">닉네임</td>
-					<td class="user_rowcontent">{{ $store.state.userInfo.nick }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
+					<td class="user_rowcontent"
+					>{{ $store.state.NowUser }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname">탈퇴신청</td>
@@ -151,6 +156,7 @@ export default {
 		return {
 			user_pw: "",
 			user_pw_chk: "",
+			nick: "",
 			user_err_pw: false,
 			user_com_pw: false,
 			user_err_pw_chk: false,
@@ -163,7 +169,6 @@ export default {
 	created() {
 		this.$store.dispatch('actionGetUser')
 	},
-
 	methods: {
 		ctlPasswordModal(flg){
 			this.$store.commit('setPasswordModalFlg',flg);
@@ -224,6 +229,14 @@ export default {
 			document.querySelector('#user_nick').readOnly = false;
 			document.querySelector('#user_nick').removeAttribute('style')
 		},
+		userout(){
+			this.$store.dispatch('actiondeluser');
+		},
+	},
+	beforeRouteLeave(to, from, next) {
+	this.$store.commit('setPasswordModalFlg',false)
+	this.$store.commit('setNickModalFlg',false)
+	this.$store.commit('setDelModalFlg',false)
 	},
 }
 </script>

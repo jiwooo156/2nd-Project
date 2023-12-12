@@ -174,7 +174,7 @@ const store = createStore({
 
 		// 회원가입
 		actionSignIn(context){
-			if(context.state.emailFlg===1){
+			if(context.state.emailFlg===1&&context.state.nickFlg===1){
 				let email = document.querySelector('#signin_email')
 				let pw = document.querySelector('#signin_pw')
 				let pwchk = document.querySelector('#signin_pw_chk')
@@ -399,32 +399,79 @@ const store = createStore({
 		},
 		// 유저페이지 닉네임변경
 		actionChangeNick(context){
-			let nick = document.querySelector('#user_pw').value;
-				const URL = '/user/pchk'
+			if(context.state.nickFlg === 1){
+				let nick = document.querySelector('#user_nick');
+				const URL = '/user/nchk'
 				const HEADER = {
 					headers: {
 						'Content-Type': 'multipart/form-data',
 					}
 				};
 				const formData = new FormData();
-				formData.append('password', pw);
-				formData.append('pw_chk', pw_chk);
+				formData.append('nick', nick.value);
 
 				axios.post(URL,formData,HEADER)
 				.then(res => {
 					if(res.data.code === "0"){	
-						context.commit('setPasswordModalFlg',false);
+						context.commit('setNickModalFlg',false);
+						context.commit('setNickFlg',0)
+						context.commit('setNowUser',nick.value)
 						alert('정상처리되었습니다');
-						router.push('/userchk')
+						nick.value = null;
 					}else{
-						alert(res.data.errorMsg);
+						alert(res.data.errorMsg)
 					}
 				})
 				.catch(err => {
-					console.log("캐치")
-					alert(err.response.data.errorMsg);
+					alert(err.response.data.errorMsg)
 				})
-		}
+			}else{
+				alert("중복확인을 눌러주세요")
+			}
+		},
+		// 유저 탈퇴
+		actiondeluser(context){
+			let delflg = "0";
+			let delmsg = "";
+			let delreason = document.querySelector('#user_del_reason');
+			delmsg = delreason.value;
+			if(delmsg === "서비스 불만족"){
+				delflg = "1";
+			}else if(delmsg === "원하는 정보가 없음"){
+				delflg = "2";
+			}else if(delmsg === "불건전한 내용"){
+				delflg = "3";
+			}else if(delmsg === "기타"){
+				let msg = document.querySelector('#user_del_reason_input').value;
+				if(msg === ""){
+					msg = "미입력"
+				}
+				delmsg = msg
+			}
+			const URL = '/user/del'
+			const HEADER = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('del_flg', delflg);
+			formData.append('del_msg', delmsg);
+
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				if(res.data.code === "0"){
+					alert("정상적으로 탈퇴 되었습니다");
+					context.dispatch('actionLogout');
+				}else{
+					alert("회원탈퇴중 오류가 발생했습니다.");
+				}
+			
+			})
+			.catch(err => {
+				alert(err.response.data.errorMsg)
+			})
+		},
 	},
 });
 

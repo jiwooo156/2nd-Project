@@ -229,5 +229,9 @@ export default {
 			this.$store.dispatch('actionSignIn');
 		}
 	},
+	beforeRouteLeave(to, from, next) {
+	this.$store.commit('setErrMsg','')
+    next();
+	},
 }
 </script>

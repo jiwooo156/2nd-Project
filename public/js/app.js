@@ -22646,6 +22646,10 @@ __webpack_require__.r(__webpack_exports__);
     signin: function signin() {
       this.$store.dispatch('actionSignIn');
     }
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    this.$store.commit('setErrMsg', '');
+    next();
   }
 });
 
@@ -22702,6 +22706,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       user_pw: "",
       user_pw_chk: "",
+      nick: "",
       user_err_pw: false,
       user_com_pw: false,
       user_err_pw_chk: false,
@@ -22772,7 +22777,15 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit('setNickFlg', 0);
       document.querySelector('#user_nick').readOnly = false;
       document.querySelector('#user_nick').removeAttribute('style');
+    },
+    userout: function userout() {
+      this.$store.dispatch('actiondeluser');
     }
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    this.$store.commit('setPasswordModalFlg', false);
+    this.$store.commit('setNickModalFlg', false);
+    this.$store.commit('setDelModalFlg', false);
   }
 });
 
@@ -23373,53 +23386,52 @@ var _hoisted_33 = [_hoisted_29, _hoisted_30, _hoisted_31, _hoisted_32];
 var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 var _hoisted_35 = {
   key: 0,
-  type: "text"
+  type: "text",
+  id: "user_del_reason_input",
+  placeholder: "직접입력 50자 내외"
 };
 var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "userChk_button"
-}, "탈퇴", -1 /* HOISTED */);
-var _hoisted_38 = {
+var _hoisted_37 = {
   "class": "user_container"
 };
-var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br>", 4);
-var _hoisted_43 = {
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"user_userInfo\"><div class=\"user_userInfo_text_center\"><h1 class=\"user_h1\">회원 정보</h1></div></div><br><div class=\"user_subcontainer\"><div class=\"user_box_top_red_center\"><h2>회원 정보</h2></div><div class=\"user_vacant_box\"></div></div><br>", 4);
+var _hoisted_42 = {
   "class": "user_infocontainer"
 };
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "user_userInfo_text3"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "회원정보 설정")], -1 /* HOISTED */);
-var _hoisted_45 = {
+var _hoisted_44 = {
   "class": "user_table"
 };
-var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "user_rowname"
 }, "회원번호", -1 /* HOISTED */);
-var _hoisted_47 = {
+var _hoisted_46 = {
   "class": "user_rowcontent"
 };
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "user_rowname"
 }, "이메일", -1 /* HOISTED */);
-var _hoisted_49 = {
+var _hoisted_48 = {
   "class": "user_rowcontent"
 };
-var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "user_rowname"
 }, "비밀번호", -1 /* HOISTED */);
-var _hoisted_51 = {
+var _hoisted_50 = {
   "class": "user_rowcontent"
 };
-var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "user_rowname"
 }, "닉네임", -1 /* HOISTED */);
-var _hoisted_53 = {
+var _hoisted_52 = {
   "class": "user_rowcontent"
 };
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "user_rowname"
 }, "탈퇴신청", -1 /* HOISTED */);
-var _hoisted_55 = {
+var _hoisted_54 = {
   "class": "user_rowcontent"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -23488,27 +23500,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.delreason = $event;
     })
-  }, [].concat(_hoisted_33), 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.delreason]]), _hoisted_34, $data.delinput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", _hoisted_35)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_36, _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, [].concat(_hoisted_33), 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.delreason]]), _hoisted_34, $data.delinput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", _hoisted_35)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "userChk_button",
-    onClick: _cache[9] || (_cache[9] = function ($event) {
+    onClick: _cache[9] || (_cache[9] = function () {
+      return $options.userout && $options.userout.apply($options, arguments);
+    })
+  }, "탈퇴"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "userChk_button",
+    onClick: _cache[10] || (_cache[10] = function ($event) {
       return $options.ctlDelModal(false);
     })
-  }, "취소")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [_hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.userInfo.id), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.userInfo.email), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*********"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    type: "submit",
-    "class": "user_button",
-    onClick: _cache[10] || (_cache[10] = function ($event) {
-      return $options.ctlPasswordModal(true);
-    })
-  }, "변경")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.userInfo.nick), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, "취소")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.userInfo.id), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.userInfo.email), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("*********"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "submit",
     "class": "user_button",
     onClick: _cache[11] || (_cache[11] = function ($event) {
+      return $options.ctlPasswordModal(true);
+    })
+  }, "변경")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.NowUser), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "user_button",
+    onClick: _cache[12] || (_cache[12] = function ($event) {
       return $options.ctlNickModal(true);
     })
-  }, "변경")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, "변경")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_53, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "submit",
     "class": "user_button_exit",
-    onClick: _cache[12] || (_cache[12] = function ($event) {
+    onClick: _cache[13] || (_cache[13] = function ($event) {
       return $options.ctlDelModal(true);
     })
   }, "탈퇴")])])])])])])], 64 /* STABLE_FRAGMENT */);
@@ -23751,7 +23768,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     }
   },
   // actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
-  actions: _defineProperty(_defineProperty({
+  actions: _defineProperty(_defineProperty(_defineProperty(_defineProperty({
     // 이메일 중복확인
     actionEmailChk: function actionEmailChk(context) {
       var email = document.querySelector('#signin_email').value;
@@ -23855,7 +23872,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     },
     // 회원가입
     actionSignIn: function actionSignIn(context) {
-      if (context.state.emailFlg === 1) {
+      if (context.state.emailFlg === 1 && context.state.nickFlg === 1) {
         var email = document.querySelector('#signin_email');
         var pw = document.querySelector('#signin_pw');
         var pwchk = document.querySelector('#signin_pw_chk');
@@ -24055,6 +24072,70 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
       }
     })["catch"](function (err) {
       console.log("캐치");
+      alert(err.response.data.errorMsg);
+    });
+  }), "actionChangeNick", function actionChangeNick(context) {
+    if (context.state.nickFlg === 1) {
+      var nick = document.querySelector('#user_nick');
+      var URL = '/user/nchk';
+      var HEADER = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData();
+      formData.append('nick', nick.value);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
+        if (res.data.code === "0") {
+          context.commit('setNickModalFlg', false);
+          context.commit('setNickFlg', 0);
+          context.commit('setNowUser', nick.value);
+          alert('정상처리되었습니다');
+          nick.value = null;
+        } else {
+          alert(res.data.errorMsg);
+        }
+      })["catch"](function (err) {
+        alert(err.response.data.errorMsg);
+      });
+    } else {
+      alert("중복확인을 눌러주세요");
+    }
+  }), "actiondeluser", function actiondeluser(context) {
+    var delflg = "0";
+    var delmsg = "";
+    var delreason = document.querySelector('#user_del_reason');
+    delmsg = delreason.value;
+    if (delmsg === "서비스 불만족") {
+      delflg = "1";
+    } else if (delmsg === "원하는 정보가 없음") {
+      delflg = "2";
+    } else if (delmsg === "불건전한 내용") {
+      delflg = "3";
+    } else if (delmsg === "기타") {
+      var msg = document.querySelector('#user_del_reason_input').value;
+      if (msg === "") {
+        msg = "미입력";
+      }
+      delmsg = msg;
+    }
+    var URL = '/user/del';
+    var HEADER = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+    var formData = new FormData();
+    formData.append('del_flg', delflg);
+    formData.append('del_msg', delmsg);
+    axios__WEBPACK_IMPORTED_MODULE_0___default().post(URL, formData, HEADER).then(function (res) {
+      if (res.data.code === "0") {
+        alert("정상적으로 탈퇴 되었습니다");
+        context.dispatch('actionLogout');
+      } else {
+        alert("회원탈퇴중 오류가 발생했습니다.");
+      }
+    })["catch"](function (err) {
       alert(err.response.data.errorMsg);
     });
   })

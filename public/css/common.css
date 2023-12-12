@@ -181,9 +181,9 @@ textarea{
 	position: relative;
 }
 .sign_chk_btn{
-    position: absolute;
-    top: 22.5px;
-    right: 3px;
+	position: absolute;
+    top: 29.5px;
+    right: 4px;
     border: none;
     background-color: #d9d9d9;
     padding: 7px;

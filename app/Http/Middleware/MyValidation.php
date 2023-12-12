@@ -34,6 +34,9 @@ class MyValidation
             ,'gender' 
             ,'birthdate' 
             ,'nick'
+            ,'del_flg'
+            ,'del_msg'
+            ,'nick'
             ,'title'
             ,'content'
             ,'img'
@@ -52,6 +55,8 @@ class MyValidation
                 'date_format:Ymd',
                 'before_or_equal:' . now()->format('Ymd'),
             ]
+            ,'del_flg' => 'required|in:0,1,2,3,4,5,6,7,8,9'
+            ,'del_msg' => 'required|max:50|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'nick' => 'required|regex:/^[a-zA-Z가-힣0-9]{2,8}$/u'
             ,'title' => 'required|max:100|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'content' => 'required|max:1000|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
