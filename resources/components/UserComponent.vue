@@ -239,9 +239,11 @@ export default {
 		},
 	},
 	beforeRouteLeave(to, from, next) {
-	this.$store.commit('setPasswordModalFlg',false)
-	this.$store.commit('setNickModalFlg',false)
-	this.$store.commit('setDelModalFlg',false)
+		this.$store.commit('setPasswordModalFlg',false)
+		this.$store.commit('setNickModalFlg',false)
+		this.$store.commit('setDelModalFlg',false)
+		this.$store.commit('setUserFlg',false)
+		next();
 	},
 }
 </script>

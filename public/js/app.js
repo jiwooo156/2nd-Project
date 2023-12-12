@@ -22412,7 +22412,12 @@ __webpack_require__.r(__webpack_exports__);
   name: 'MainComponent',
   components: {},
   methods: {},
-  created: function created() {}
+  created: function created() {
+    console.log('main : created');
+  },
+  updated: function updated() {
+    console.log('main : updated');
+  }
 });
 
 /***/ }),
@@ -22786,6 +22791,8 @@ __webpack_require__.r(__webpack_exports__);
     this.$store.commit('setPasswordModalFlg', false);
     this.$store.commit('setNickModalFlg', false);
     this.$store.commit('setDelModalFlg', false);
+    this.$store.commit('setUserFlg', false);
+    next();
   }
 });
 
@@ -23676,6 +23683,7 @@ var routes = [{
   // 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.localFlg) {
+      console.log('routes : userchk > /');
       next('/');
     } else {
       next();
@@ -23687,6 +23695,7 @@ var routes = [{
   // 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_store_js__WEBPACK_IMPORTED_MODULE_5__["default"].state.userFlg) {
+      console.log('routes : user > userchk');
       next('/userchk');
     } else {
       next();
@@ -23990,7 +23999,10 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
           localStorage.clear();
           context.commit('setLocalFlg', false);
           context.commit('setNowUser', '');
+          context.commit('setUserFlg', false);
+          console.log('code : 0');
           _router_js__WEBPACK_IMPORTED_MODULE_1__["default"].push('/main');
+          console.log('code : push main');
         }
       })["catch"](function (err) {
         alert("로그아웃중 오류가 발생했습니다." + err.response.data.errorMsg);
@@ -24100,6 +24112,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
         if (res.data.code === "0") {
           context.commit('setNickModalFlg', false);
           context.commit('setNickFlg', 0);
+          localStorage.setItem('nick', nick.value);
           context.commit('setNowUser', nick.value);
           alert('정상처리되었습니다');
           nick.value = null;

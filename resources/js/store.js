@@ -286,9 +286,12 @@ const store = createStore({
 				.then(res => {
 					if(res.data.code === "0"){	
 						localStorage.clear();
-						context.commit('setLocalFlg',false)
-						context.commit('setNowUser','')
-						router.push('/main')
+						context.commit('setLocalFlg',false);
+						context.commit('setNowUser','');
+						context.commit('setUserFlg',false);
+						console.log('code : 0');
+						router.push('/main');
+						console.log('code : push main');
 					}
 				})
 				.catch(err => {
@@ -415,6 +418,7 @@ const store = createStore({
 					if(res.data.code === "0"){	
 						context.commit('setNickModalFlg',false);
 						context.commit('setNickFlg',0)
+						localStorage.setItem('nick', nick.value);
 						context.commit('setNowUser',nick.value)
 						alert('정상처리되었습니다');
 						nick.value = null;
