@@ -15,6 +15,7 @@
                 >
                 <router-link 
                     to="/userchk"
+                    class="header_username"
                 >{{ $store.state.NowUser }}</router-link>
                 <div
                     class="pointer"

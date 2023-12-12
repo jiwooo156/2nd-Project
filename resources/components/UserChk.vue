@@ -31,7 +31,7 @@
 			@click="chk_pw"
 			class="userChk_button"
 			>확인</button>
-		<button class="userChk_button"><router-link to="/main">취소</router-link></button>
+		<button class="userChk_button"><router-link class="userChk_button" to="/main">취소</router-link></button>
 	</div>
 </template>
 <script>
