@@ -4,7 +4,7 @@
 	v-if="$store.state.openPwModal"
 >
 	<div class="user_white-bg">
-		<div class="user_box">
+		<div class="user_box_password">
 			<h3>비밀번호 수정</h3>
 			<br>
 			<label for="user_del_reason">변경하실 비밀번호 : </label>
@@ -17,13 +17,12 @@
 			<span v-show="user_com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
 			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20">
 		</div>
-			<br>
-			<br>
-			<div class="user_button_box">
-			<button class="userChk_button_confirm"
-				@click="userpwchange"
-			>변경</button>
-			<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>		
+			<br><br>			
+			<div class="user_button_box_password">
+				<button class="userChk_button_confirm"
+					@click="userpwchange"
+				>변경</button>
+				<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>		
 			</div>
 	</div>	
 </div>
@@ -31,7 +30,8 @@
 	v-if="$store.state.openNickModal"
 >
 	<div class="user_white-bg">		
-		<h3>닉네임 수정</h3>
+		<h3 class="user_h3_nick">닉네임 수정</h3>
+		<div class="user_box_nick">
 		<span
 			v-if="$store.state.nickFlg === 1" 
 			class="sign_commsg"
@@ -57,18 +57,21 @@
 				@click="del_nick_chk"
 			>다시쓰기</button>		
 		<br>
-		<br>	
-			<button class="userChk_button_confirm"
-				@click="usernickchange"
-			>변경</button>
-			<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
+		<br>
+		</div>	
+			<div class="user_button_box_nick">
+				<button class="userChk_button_confirm"
+					@click="usernickchange"
+				>변경</button>
+				<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
+			</div>
 	</div>
 </div>
 <div class="user_black-bg" 
 	v-if="$store.state.openDelModal"
 	>
 	<div class="user_white-bg">
-			<h3>회원 탈퇴</h3>
+			<h3 class="user_h3_userout">회원 탈퇴</h3>
 			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
 			<br><br>
 			<label for="user_del_reason">탈퇴사유 : </label>
@@ -86,10 +89,12 @@
 				maxlength="50"
 			>
 		<br>
+		<div class="user_button_box_userout">
 			<button class="userChk_button_negative"
 				@click="userout"
 			>탈퇴</button>
 			<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
+		</div>
 	</div>
 </div>
 
@@ -193,7 +198,7 @@ export default {
 		del_val(){
 			let reason = document.querySelector('#user_del_reason')
 			console.log(reason.value)
-			console.log("정상	")
+			console.log("정상")
 			console.log(this.delinput)
 			if(reason.value === "기타"){
 				this.delinput = true
