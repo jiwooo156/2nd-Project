@@ -42,7 +42,7 @@ export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,
     },
     methods: {
         logout(){
