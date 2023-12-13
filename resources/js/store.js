@@ -473,7 +473,7 @@ const store = createStore({
 			
 			})
 			.catch(err => {
-				alert(err.response.data.errorMsg)
+				alert(err.response.data)
 			})
 		},
 	},

@@ -24,8 +24,9 @@ return new class extends Migration
             $table->string('nick', 8);
             $table->timestamps();
             $table->softDeletes();  
-            $table->char('del_flg', 1)->nullable();
-            $table->string('del_msg', 50)->nullable();
+            // $table->char('del_flg', 1)->nullable();
+            // $table->string('del_msg', 50)->nullable();
+            // 1213 최정훈 수정  테이블 추가
         });
     }
 

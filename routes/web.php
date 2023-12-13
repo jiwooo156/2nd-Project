@@ -18,10 +18,20 @@ use Illuminate\Support\Facades\Log; //로그확인추가
 
 // Route::middleware('apiChkToken')->middleware('myValidation')->prefix('signin')->group(function() {
 // 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
-Route::middleware('myValidation')->prefix('signin')->group(function() {
+Route::middleware('myValidation')->prefix('authemail')->group(function() {
     Route::get('/', function () {
-    return view('welcome');
+        return view('welcome');
+    });
+    Route::post('/', [UserController::class, 'sendemailauth']);
 });
+
+Route::get('/signinchk', [UserController::class, 'tokenchk']);
+
+Route::middleware('myValidation')->prefix('signin')->group(function() {
+    Route::get('/', function (Request $req) {
+        Log::debug('signin email: '.$req->email);
+        return view('welcome')->with("email",$req->email);
+    })->name('signin.get');
     Route::get('/email', [UserController::class, 'emailchk']);
     Route::get('/nick', [UserController::class, 'nickchk']);
     Route::post('/', [UserController::class, 'store']);

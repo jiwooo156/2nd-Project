@@ -248,6 +248,7 @@ export default {
 		this.$store.commit('setNickModalFlg',false)
 		this.$store.commit('setDelModalFlg',false)
 		this.$store.commit('setUserFlg',false)
+		this.$store.commit('setNickFlg',0)
 		next();
 	},
 }

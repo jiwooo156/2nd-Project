@@ -15,13 +15,14 @@ import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
 import RegionComponent from './RegionComponent.vue'
 import HeaderComponent from './HeaderComponent.vue'
+import AuthComponent from './AuthComponent.vue'
 import UserChk from './UserChk.vue'
 
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,HeaderComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,HeaderComponent,RegionComponent,AuthComponent
     },
     methods: {
 

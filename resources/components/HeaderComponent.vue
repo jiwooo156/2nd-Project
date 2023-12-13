@@ -1,6 +1,6 @@
 <template>
     <!-- 헤더 영역 -->
-    <div class="header" v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'">
+    <div class="header" v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'">
         <div class="header_head">
             <router-link to="/main" class="header_logo">
                 이의이승
@@ -18,7 +18,7 @@
         >
             <router-link to="/login"
             >로그인</router-link>
-            <router-link to="/signin"
+            <router-link to="/authemail"
             >회원가입</router-link>
         </div>
         <div
