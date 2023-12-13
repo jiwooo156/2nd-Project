@@ -5,6 +5,7 @@ import LoginComponent from '../components/LoginComponent.vue';
 import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
+import AuthComponent from '../components/AuthComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import store from './store.js'
 const routes = [
@@ -23,6 +24,17 @@ const routes = [
 	{
 		path: "/login",
 		component: LoginComponent,
+		beforeEnter: (to, from, next) => {
+			if (store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		},
+	},
+	{
+		path: "/authemail",
+		component : AuthComponent,
 		beforeEnter: (to, from, next) => {
 			if (store.state.localFlg) {
 				next('/');

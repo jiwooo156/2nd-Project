@@ -171,8 +171,6 @@ export default {
 		this.$store.commit('setErrMsg',[]);
 		this.$store.commit('setNickFlg',0);
 		this.$store.commit('setEmailFlg',0);	
-		let boo = localStorage.getItem('nick') ?  true : false;
-		this.$store.commit('setLocalFlg', boo);
 	},
 
 	methods: {
@@ -253,7 +251,7 @@ export default {
 		},
 		nameval(){
 			const VAR = /^.{2,10}$/;
-			const VAR1 = /^[가-힣]$/
+			const VAR1 = /^[가-힣]+$/
 			const VAR2 = /^[가-힣]{2,10}$/;
 			if(this.name===""){
 				this.err_name1 = false;
@@ -399,6 +397,8 @@ export default {
 	},
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','')
+		this.$store.commit('setNickFlg',0)
+		this.$store.commit('setEmailFlg',0)
 		next();
 	},
 }
