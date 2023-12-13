@@ -459,23 +459,37 @@ margin-top:130px;
 	gap: 20px;
 }
 /* 지역 슬라이드 */
-.region_slide {
-	display: inline-flex;
-	line-height: 100px;
+.region_slider_frame {
+	text-align: center;	
 	background-color: #7DF4B2;
+	position: relative;
 }
-.region_slide_list {
-	list-style: none;
+.region_slider_container {
+	overflow: hidden;
+}
+.region_slider {
+	display: flex;
 	background-color: #4BAF4B;
 }
-.region_slide_list li {
+.region_slide {
+	min-width: 100px;
+	box-sizing: border-box;
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
 	background-color: #FF92B1;
 	text-align: center;
 	line-height: 100px;
-	float: left;
+}
+.region_slider_left {
+	position: absolute;
+	left: 0;
+	top: 41%;
+}
+.region_slider_right {
+	position: absolute;
+	right: 0;
+	top: 41%;
 }
 /* 지역 검색바 */
 .region_search {
@@ -527,4 +541,15 @@ margin-top:130px;
 /* 해당 지역 관광지 전체 */
 .region_total_tour {
 	background-color: #FFC81E;
+}
+/* 더보기 버튼 */
+.region_btn_more button {
+	background-color: #FF92B1;
+	border: none;
+	color: white;
+	padding: 10px 50px;
+	display: inline-block;
+	text-align: center;
+	border-radius: 20px;
+	font-size: large;
 }
