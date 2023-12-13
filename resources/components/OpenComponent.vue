@@ -22,7 +22,7 @@ export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,HeaderComponent,RegionComponent,AuthComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent
     },
     methods: {
 
