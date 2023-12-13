@@ -3,18 +3,6 @@
 		<div class="login_header">
 			<router-link :to="'/main'" class="login_header_a pointer">이의이승</router-link>
 		</div>
-		<!-- <div class="region_slide">
-			<ul class="region_slide_list">
-				<li id="lastClone"><a href="">경주시</a></li>
-				<li><a href="">포항시</a></li>
-				<li><a href="">영천시</a></li>
-				<li><a href="">김천시</a></li>
-				<li><a href="">안동시</a></li>
-				<li><a href="">구미시</a></li>
-				<li><a href="">영주시</a></li>
-				<li id="firstClone"><a href="">문경시</a></li>	
-			</ul>
-		</div> -->
 		<div class="region_slider_frame">
 			<div class="region_slider_container">
 				<div class="region_slider" :style="{ transform: 'translateX(' + slidePosition + 'px)' }">
@@ -38,7 +26,11 @@
 					<option value="Mungyeong">문경시</option>
 				</select>
 				<input type="date" value="2023-01-01">
+				-
 				<input type="date" value="2023-12-31">
+				<input type="submit">
+				<br>
+				<input type="textarea">
 				<input type="submit">
 			</form>
 		</div>
@@ -179,10 +171,10 @@ export default {
 	},
 	methods: {
 		nextSlide() {
-		this.slidePosition -= 1000; // Adjust the slide width as needed
+		this.slidePosition -= 1000;
 		},
 		prevSlide() {
-		this.slidePosition += 1000; // Adjust the slide width as needed
+		this.slidePosition += 1000;
 		}
 	}
 }

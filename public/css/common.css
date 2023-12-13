@@ -493,9 +493,14 @@ margin-top:130px;
 }
 /* 지역 검색바 */
 .region_search {
+	width: 100vw;
 	text-align: center;
 	margin: 5% auto;
 	background-color: #8AB78A;
+}
+.region_search_form {
+	/* width: 90%; */
+	background-color: #8572EE;
 }
 .region_recommend, .region_total {
 	display: flex;
