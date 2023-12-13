@@ -8,20 +8,59 @@
 textarea{
 	resize: none
 }
-
 .pointer:hover{
 	cursor: pointer;
 }
 .center{
 	text-align: center;
 }
+
+
+/* 헤더 */
 .header{
-    background-color: #00000000;
+	background-color: #00000000;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+	text-decoration: none;
 }
-.hidden-header{
-	display: none;
+.header_head{
+    display: flex;
+    width: 90%;
 }
 
+.header_logo{
+	min-width: 140px;
+    text-decoration: none;
+    color: #000;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.header_menu{
+	display: flex;
+    width: 70%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.header_foot{
+	min-width: 150px;
+    display: flex;
+}
+
+.header_foot div, .header_foot a{
+	text-decoration: none;
+    padding: 8px;
+    color: #000;
+    font-weight: 600;
+}
+
+/* 헤더 */
+.header_username{
+	text-decoration: none;
+	color:#000;
+}
 /* 로그인페이지 */
 
 .login_bg{
@@ -138,11 +177,6 @@ textarea{
 	color: #000;
 }
 
-
-
-
-
-
 /* signin */
 .sign_bg{
     background-color: #F2F1F1;
@@ -181,9 +215,9 @@ textarea{
 	position: relative;
 }
 .sign_chk_btn{
-    position: absolute;
-    top: 22.5px;
-    right: 3px;
+	position: absolute;
+    top: 29.5px;
+    right: 4px;
     border: none;
     background-color: #d9d9d9;
     padding: 7px;
@@ -247,6 +281,7 @@ text-align: center;
 	border:1px solid #B7B7B7;
 	border-top: 4px solid red;
 	border-bottom: none;	
+	
 }
 .user_vacant_box{
 	width:90%;
@@ -288,12 +323,14 @@ text-align: center;
 	float:right;
 	background-color: #d9d9d9;
 	cursor: pointer;
+	border-radius:5px;
 }
 .user_button_exit{
 	width:50px;
 	padding:5px;
 	background-color: #d9d9d9;
 	border:none;
+	border-radius:5px;
 	cursor: pointer;
 }
 /* 모달 */
@@ -307,11 +344,86 @@ text-align: center;
     padding: 20px;
 }
 .user_white-bg{
-	box-sizing: border-box;
-	width:100%;
-	background-color: white;
-	border-radius: 8px;
-	padding:20px;
+    box-sizing: border-box;
+    width: 45%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 0 auto;
+	height: 585px;
+}
+.user_box_password{
+	margin-top: 90px;
+}
+.user_button_box_password{
+margin-top:130px;
+}
+.user_h3_nick{
+	margin-top: 66px;
+}
+.user_box_nick{
+	margin-top: 130px;
+}
+.user_button_box_nick{
+	margin-top:130px;
+}
+.user_h3_userout{
+	margin-top:89px;
+}
+.user_button_box_userout{
+	margin-top:20px;
+}
+#user_pw{
+	margin-left:20px;
+}
+#user_pw_chk{
+	margin-left:52px;
+	margin-top: 30px;
+}
+#user_nick{
+	margin-left:20px;
+}
+#user_del_reason{
+	margin-left: 12px;
+    width: 279px;
+}
+#user_del_reason_input{
+    margin-top: 15px;
+    margin-left: 104px;
+    height: 150px;
+    width: 300px;
+}
+.userChk_button_confirm{
+	box-sizing: content-box;
+	width:80px;
+	border:none;
+	border-radius:5px;
+	padding: 5px;
+	background-color: #d9d9d9;
+	cursor: pointer;
+	margin:5px;
+	margin-right:40px;
+	text-decoration: none;
+	color: blue;
+}
+
+.userChk_button_negative{
+	box-sizing: content-box;
+	width:80px;
+	border-radius:5px;
+	border: none;
+	padding: 5px;
+	background-color: #d9d9d9;
+	cursor: pointer;
+	margin:5px;
+	text-decoration: none;
+	color: red;
+}
+#user_del_reason_input::placeholder{
+	text-align: center;
+}
+.user_warningText{
+	color:red;
 }
 /* 유저확인 */
 .userChk_container{
@@ -322,18 +434,20 @@ text-align: center;
 }
 .userChk_button{
 	box-sizing: content-box;
-	width:50px;
+	width:80px;
 	border:none;
+	border-radius:5px;
 	padding: 5px;
 	background-color: #d9d9d9;
 	cursor: pointer;
 	margin:5px;
+	text-decoration: none;
+	color: #000;
 }
 
-
-
-
-
+#userchk_pw::placeholder{
+	text-align: center;
+}
 
 /* 지역 페이지 */
 /* 지역 페이지 전체 */

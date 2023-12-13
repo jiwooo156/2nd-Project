@@ -37,19 +37,35 @@ class UserController extends Controller
     // 회원가입
     public function store(Request $req)
     {
-        $data = $req->only('email','name','password','birthdate','phone','gender','nick');
-        $data['password'] = Hash::make($data['password']);
-        $result = User::create($data);
+        $result = User::where('email',$req->email)->orwhere('nick',$req->nick)->first();
+        // 악성 유저 대응용
         if($result){
-            return response()->json([
-                'code' => '0'
-                ,'data' => $result
-            ], 200);
+            if($req->email===$result->email){
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '중복된 이메일 입니다.'
+                ], 400);
+            }else if($req->nick===$result->nick){
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '중복된 닉네임 입니다.'
+                ], 400);
+            }
         }else{
-            return response()->json([
-                'code' => 'E05',
-                'errorMsg' => '회원가입에 실패했습니다.'
-            ], 400);
+            $data = $req->only('email','name','password','birthdate','phone','gender','nick');
+            $data['password'] = Hash::make($data['password']);
+            $result = User::create($data);
+            if($result){
+                return response()->json([
+                    'code' => '0'
+                    ,'data' => $result
+                ], 200);
+            }else{
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '회원가입에 실패했습니다.'
+                ], 400);
+            }
         }
     }
 
@@ -57,14 +73,14 @@ class UserController extends Controller
     public function login(Request $req)
     {
         $result = User::where('email',$req->email)->first();
-        if(!(Hash::check($req->password, $result->password))){
-            $errorMsg = ['비밀번호를 확인해주세요'];
+        if(!$result){
+            $errorMsg = ['존재하지않는 이메일 입니다.'];
             return response()->json([
                 'code' => 'E06'
                 ,'errorMsg' => $errorMsg
             ], 400);
-        }else if(!$result){
-            $errorMsg = ['존재하지않는 이메일 입니다.'];
+        }else if(!(Hash::check($req->password, $result->password))){
+            $errorMsg = ['비밀번호를 확인해주세요'];
             return response()->json([
                 'code' => 'E06'
                 ,'errorMsg' => $errorMsg
@@ -72,7 +88,7 @@ class UserController extends Controller
         }
         if($result){
             Auth::login($result);
-            $test = Auth::user();
+            Auth::user();
             return response()->json([
                 'code' => '0',
                 'data' => $result
@@ -97,7 +113,6 @@ class UserController extends Controller
             // ->cookie('nick', $result->nick, 1440, null, null, false, false);
             // 1211 최정훈 수정 쿠키사용x
         }
-
     }
     // 로그아웃
     public function logout(Request $req){
@@ -152,7 +167,7 @@ class UserController extends Controller
                 'code' => '0',
                 'data' => $result
             ], 200);
-        } catch(Excepion $e){
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E08',
@@ -160,5 +175,48 @@ class UserController extends Controller
             ], 400);
         }
     }
-
+    // 닉네임변경
+    public function changenick(Request $req){
+        try {
+            DB::beginTransaction();
+            $auth = Auth::user();
+            $result = User::where('email',$auth->email)->first();
+            $result->nick = $req->nick;
+            $result->save();
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        } catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => ["닉네임 변경에 실패했습니다"]
+            ], 400);
+        }
+    }
+    public function deluser(Request $req){
+        try {
+            DB::beginTransaction();
+            $auth = Auth::user();
+            $result = User::where('email',$auth->email)->first();
+            $result->del_flg = $req->del_flg;
+            $result->del_msg = $req->del_msg;
+            $result->save();
+            Log::debug($result->id);
+            User::destroy($result->id);
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        } catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => ["닉네임 변경에 실패했습니다"]
+            ], 400);
+        }
+    }
 }

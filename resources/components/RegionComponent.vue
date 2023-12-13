@@ -200,44 +200,44 @@ export default {
 		// },
 	}
 }
-	const carouselSlide = document.querySelector('.region_slide_list');
-	const carouselList = document.querySelectorAll('.region_slide_list li');
+	// const carouselSlide = document.querySelector('.region_slide_list');
+	// const carouselList = document.querySelectorAll('.region_slide_list li');
 
-	const prevBtn = document.querySelector('#region_slide_prev');
-	const nextBtn = document.querySelector('#region_slide_next');
+	// const prevBtn = document.querySelector('#region_slide_prev');
+	// const nextBtn = document.querySelector('#region_slide_next');
 
-	let counter = 1;
-	const size = carouselList[0].clientWidth;
-	carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+	// let counter = 1;
+	// const size = carouselList[0].clientWidth;
+	// carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
 
-	// Buttons
-	nextBtn.addEventListener('click', ()=> {
-		if(counter >= carouselList.length -1) return;
-		carouselSlide.style.transition = "transform 0.4s ease-in-out";
-		counter++;
-		carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
-	});
+	// // Buttons
+	// nextBtn.addEventListener('click', ()=> {
+	// 	if(counter >= carouselList.length -1) return;
+	// 	carouselSlide.style.transition = "transform 0.4s ease-in-out";
+	// 	counter++;
+	// 	carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+	// });
 
-	prevBtn.addEventListener('click', ()=> {
-		if(counter <= 0) return;
-		carouselSlide.style.transition = "transform 0.4s ease-in-out";
-		counter--;
-		carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
-	});
+	// prevBtn.addEventListener('click', ()=> {
+	// 	if(counter <= 0) return;
+	// 	carouselSlide.style.transition = "transform 0.4s ease-in-out";
+	// 	counter--;
+	// 	carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+	// });
 
-	// Jump to First/Last Slide
-	carouselSlide.addEventListener('transitionend', () => {
-		console.log(carouselList[counter]);
-		if (carouselList[counter].id === 'lastClone'){
-			carouselSlide.style.transition = 'none'; // 트랜지션 효과 없애기
-			counter = carouselList.length -2; // couter 초기화
-			carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)'; // 실제 마지막 이미지로 이동.
-		} else if (carouselList[counter].id === 'firstClone') {
-			carouselSlide.style.transition = 'none';
-			counter = carouselList.length - counter; // couter 초기화
-			carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
-		}
-	});
+	// // Jump to First/Last Slide
+	// carouselSlide.addEventListener('transitionend', () => {
+	// 	console.log(carouselList[counter]);
+	// 	if (carouselList[counter].id === 'lastClone'){
+	// 		carouselSlide.style.transition = 'none'; // 트랜지션 효과 없애기
+	// 		counter = carouselList.length -2; // couter 초기화
+	// 		carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)'; // 실제 마지막 이미지로 이동.
+	// 	} else if (carouselList[counter].id === 'firstClone') {
+	// 		carouselSlide.style.transition = 'none';
+	// 		counter = carouselList.length - counter; // couter 초기화
+	// 		carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+	// 	}
+	// });
 </script>
 <style>
 	/* .region_slide{
@@ -252,14 +252,14 @@ export default {
 	width: 100%;
 	height: 450px;
 	} */
-	#prevBtn{
+	/* #prevBtn{
 	position:absolute;
 	top: 50%;
 	left: 0;
 	transform: translate(0%, -50%);
 	width: 20px;
 	height: 36px;
-	/* background: url(img/carousel_prevBtn.png) no-repeat; */
+	background: url(img/carousel_prevBtn.png) no-repeat;
 	text-indent: -9999px;
 	}
 	#nextBtn{
@@ -269,7 +269,7 @@ export default {
 	transform: translate(0%, -50%);
 	width: 20px;
 	height: 36px;
-	/* background: url(img/carousel_nextBtn.png) no-repeat; */
+	background: url(img/carousel_nextBtn.png) no-repeat;
 	text-indent: -9999px;
-	}
+	} */
 </style>

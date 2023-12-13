@@ -48,6 +48,7 @@ const routes = [
 		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
 		beforeEnter: (to, from, next) => {
 			if (!store.state.localFlg) {
+				console.log('routes : userchk > /');
 				next('/');
 			} else {
 				next();
@@ -60,6 +61,7 @@ const routes = [
 		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
 		beforeEnter: (to, from, next) => {
 			if (!store.state.userFlg) {
+				console.log('routes : user > userchk');
 				next('/userchk');
 			} else {
 				next();

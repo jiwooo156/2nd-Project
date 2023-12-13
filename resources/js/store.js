@@ -143,11 +143,38 @@ const store = createStore({
 			}else{
 				alert("이메일 인증을 해주세요")
 			}
+		},	
+		// 닉네임 중복확인2(닉네임 변경용)
+		actionNickChk2(context){
+				let nick = document.querySelector('#user_nick').value
+				const URL = '/signin/nick?nick='+nick
+				axios.get(URL)
+				.then(res => {
+					context.commit('setErrMsg','');
+					if(res.data.code === "0"){
+						if(res.data.data.length === 0){
+							context.commit('setNickFlg',1);
+							document.querySelector('#user_nick').readOnly = true;
+							document.querySelector('#user_nick').style.backgroundColor = 'rgb(169 183 200)';		
+						}else if(res.data.data.length > 0){
+							console.log("있을때")
+							context.commit('setNickFlg',2);
+						}
+					}else{
+						console.log('else')
+					}
+				})
+				.catch(err => {
+					console.log("캐치")
+					context.commit('setNickFlg',0);
+					context.commit('setErrMsg',err.response.data.errorMsg);
+				
+				})
 		},
 
 		// 회원가입
 		actionSignIn(context){
-			if(context.state.emailFlg===1){
+			if(context.state.emailFlg===1&&context.state.nickFlg===1){
 				let email = document.querySelector('#signin_email')
 				let pw = document.querySelector('#signin_pw')
 				let pwchk = document.querySelector('#signin_pw_chk')
@@ -259,9 +286,12 @@ const store = createStore({
 				.then(res => {
 					if(res.data.code === "0"){	
 						localStorage.clear();
-						context.commit('setLocalFlg',false)
-						context.commit('setNowUser','')
-						router.push('/main')
+						context.commit('setLocalFlg',false);
+						context.commit('setNowUser','');
+						context.commit('setUserFlg',false);
+						console.log('code : 0');
+						router.push('/main');
+						console.log('code : push main');
 					}
 				})
 				.catch(err => {
@@ -369,7 +399,83 @@ const store = createStore({
 					console.log("캐치")
 					alert(err.response.data.errorMsg);
 				})
-		}
+		},
+		// 유저페이지 닉네임변경
+		actionChangeNick(context){
+			if(context.state.nickFlg === 1){
+				let nick = document.querySelector('#user_nick');
+				const URL = '/user/nchk'
+				const HEADER = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				const formData = new FormData();
+				formData.append('nick', nick.value);
+
+				axios.post(URL,formData,HEADER)
+				.then(res => {
+					if(res.data.code === "0"){	
+						context.commit('setNickModalFlg',false);
+						context.commit('setNickFlg',0)
+						localStorage.setItem('nick', nick.value);
+						context.commit('setNowUser',nick.value)
+						alert('정상처리되었습니다');
+						nick.value = null;
+					}else{
+						alert(res.data.errorMsg)
+					}
+				})
+				.catch(err => {
+					alert(err.response.data.errorMsg)
+				})
+			}else{
+				alert("중복확인을 눌러주세요")
+			}
+		},
+		// 유저 탈퇴
+		actiondeluser(context){
+			let delflg = "0";
+			let delmsg = "";
+			let delreason = document.querySelector('#user_del_reason');
+			delmsg = delreason.value;
+			if(delmsg === "서비스 불만족"){
+				delflg = "1";
+			}else if(delmsg === "원하는 정보가 없음"){
+				delflg = "2";
+			}else if(delmsg === "불건전한 내용"){
+				delflg = "3";
+			}else if(delmsg === "기타"){
+				let msg = document.querySelector('#user_del_reason_input').value;
+				if(msg === ""){
+					msg = "미입력"
+				}
+				delmsg = msg
+			}
+			const URL = '/user/del'
+			const HEADER = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('del_flg', delflg);
+			formData.append('del_msg', delmsg);
+
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				if(res.data.code === "0"){
+					alert("정상적으로 탈퇴 되었습니다");
+					context.dispatch('actionLogout');
+				}else{
+					alert("회원탈퇴중 오류가 발생했습니다.");
+				}
+			
+			})
+			.catch(err => {
+				alert(err.response.data.errorMsg)
+			})
+		},
 	},
 });
 
