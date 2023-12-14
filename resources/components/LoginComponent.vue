@@ -17,7 +17,7 @@
 						<div class="login_and">또는</div>
 						<button class="login_kakao pointer">kakao로 로그인</button>
 						<div class="login_sign">
-							<router-link :to="'/signin'" class="pointer">회원가입</router-link>
+							<router-link :to="'/authemail'" class="pointer">회원가입</router-link>
 						</div>
 					</div>
 				</div>

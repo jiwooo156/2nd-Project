@@ -294,6 +294,37 @@ class UserController extends Controller
                     'errorMsg' => '이메일 전송 중 오류가 발생했습니다'
                 ], 400);
             }
+        }else if($result[0]->auth_flg==="1"){
+            Log::debug("이미한사람");
+            // 이미 이메일 인증이 된사람일 경우
+            // 방법1
+            try {
+            DB::beginTransaction();
+            $result[0]->auth_flg = "0";
+            $result[0]->auth_end = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+            $result[0]->auth_token = $uuid;
+            $result[0]->save();
+            Log::debug("바뀜");
+            Log::debug($result[0]->auth_end);
+            DB::commit();
+            $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+            Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
+                $message->to($req->email)->subject('이의이승페이지 이메일인증');
+                $message->from('dldmldltmd@gmail.com');
+            });
+            return response()->json([
+                'code' => '0'
+            ], 200); 
+        } catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => '이메일 전송 중 오류가 발생했습니다'
+            ], 400);
+        }
+        // 방법2
+        // 바로 이어서 가입페이지로
+        // return redirect('/signin')->cookie('auth_id', $result[0]->id, 720, null, null, false, false);
         }
     }
     // 이메일인증
@@ -342,7 +373,68 @@ class UserController extends Controller
                 ,'errorMsg' => '오류가 발생했습니다. 다시한번 확인해주세요'
             ], 200);
         }
-        
-    
+    }
+    // 시간리셋
+    public function addtime(Request $req)
+    {
+        $result = Authenticate::where('email',$req->email)->get();
+        if(count($result) === 1){
+            try {
+                DB::beginTransaction();
+                $result[0]->auth_end = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                $result[0]->save();
+                Log::debug($result[0]->auth_end);
+                DB::commit();
+                return response()->json([
+                    'code' => '0'
+                ], 200); 
+            } catch(Exception $e){
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E09',
+                    'errorMsg' => '시간연장중 오류가 발생했습니다'
+                ], 400);
+            }
+        }else{
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => '문제발생'
+            ], 400);
+        }
+    }
+    // 인증메일 재발송
+    public function resendemailauth(Request $req)
+    {
+        $uuid = Str::uuid();
+        $result = Authenticate::where('email',$req->email)->get();
+        if(count($result) === 1){
+            try {
+                DB::beginTransaction();
+                $result[0]->auth_end = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                $result[0]->auth_token = $uuid;
+                $result[0]->save();
+                Log::debug($result[0]->auth_end);
+                DB::commit();
+                $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+                Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
+                    $message->to($req->email)->subject('이의이승페이지 이메일인증');
+                    $message->from('dldmldltmd@gmail.com');
+                });
+                return response()->json([
+                    'code' => '0'
+                ], 200); 
+            } catch(Exception $e){
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E09',
+                    'errorMsg' => '이메일 전송 중 오류가 발생했습니다'
+                ], 400);
+            }
+        }else{
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => '문제발생'
+            ], 400);
+        }
     }
 }

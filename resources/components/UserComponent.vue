@@ -99,11 +99,6 @@
 </div>
 
 <div class="user_container">
-	<div class="user_userInfo">		
-		<div class="user_userInfo_text_center">
-			<h1 class="user_h1">회원 정보</h1>
-		</div>
-	</div> 
 	<br>
 	<div class="user_subcontainer">
 		<div class="user_box_top_red_center">
@@ -161,7 +156,6 @@ export default {
 			this.pwchkval()
 		},
 	},
-
 	data() {
 		return {
 			user_pw: "",
@@ -175,7 +169,6 @@ export default {
 			delinput: false,
 		}
 	},
-
 	created() {
 		this.$store.dispatch('actionGetUser')
 	},

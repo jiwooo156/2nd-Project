@@ -11,6 +11,7 @@ const store = createStore({
 	// state() : data를 저장하는 영역
 	state() {
 		return {
+			emailFlg: 0,
 			nickFlg: 0,
 			varErr: [],
 			localFlg: false,
