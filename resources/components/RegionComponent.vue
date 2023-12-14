@@ -40,33 +40,38 @@
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/jjangu.jpg" alt="">
+							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
 						</div>
 						<div class="region_title">
-							<a >추천축제제목1</a>
+							<a href="">추천축제제목1</a>
 						</div>
 						<div class="region_period">20231212-20231212</div>
-						<p class="region_heart"></p>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/jjangu.jpg" alt="">
+							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
 						</div>
-						<div class="region_title">추천축제제목2</div>
+						<div class="region_title">
+							<a href="">추천축제제목2</a>
+						</div>
 						<div class="region_period">내용2</div>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/jjangu.jpg" alt="">
+							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
 						</div>
-						<div class="region_title">추천축제제목3</div>
+						<div class="region_title">
+							<a href="">추천축제제목3</a>
+						</div>
 						<div class="region_period">내용3</div>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/jjangu.jpg" alt="">
+							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
 						</div>
-						<div class="region_title">추천축제제목4</div>
+						<div class="region_title">
+							<a href="">추천축제제목4</a>
+						</div>
 						<div class="region_period">내용4</div>
 					</div>
 				</div>
@@ -102,6 +107,14 @@
 				</div>
 			</div>
 			<div class="region_total">
+				<div class="region_total_line">
+					<div class="region_total_cityname">
+						지역명
+					</div>
+					<div class="region_total_citycomment">
+						지역별로 추천 해 드릴게요!
+					</div>
+				</div>
 				<div class="region_total_festival">
 					<div class="region_list">
 						<div class="region_img">
@@ -109,6 +122,7 @@
 						</div>
 						<div class="region_title">지역축제제목1</div>
 						<div class="region_period">내용1</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -116,6 +130,7 @@
 						</div>
 						<div class="region_title">지역축제제목2</div>
 						<div class="region_period">내용2</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -123,6 +138,7 @@
 						</div>
 						<div class="region_title">지역축제제목3</div>
 						<div class="region_period">내용3</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -130,6 +146,7 @@
 						</div>
 						<div class="region_title">지역축제제목4</div>
 						<div class="region_period">내용4</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 				</div>
 				<div class="region_total_tour">
@@ -139,6 +156,7 @@
 						</div>
 						<div class="region_title">지역관광지제목1</div>
 						<div class="region_period">내용1</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -146,6 +164,7 @@
 						</div>
 						<div class="region_title">지역관광지제목2</div>
 						<div class="region_period">내용2</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -153,6 +172,7 @@
 						</div>
 						<div class="region_title">지역관광지제목3</div>
 						<div class="region_period">내용3</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
@@ -160,6 +180,7 @@
 						</div>
 						<div class="region_title">지역관광지제목4</div>
 						<div class="region_period">내용4</div>
+						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 				</div>
 			</div>

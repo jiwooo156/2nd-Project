@@ -688,7 +688,7 @@ margin-top:130px;
 	align-items: center;
 	flex-direction: column;
 	gap: 20px;
-	margin: 90px 0 0;
+	margin: 150px 0 0;
 }
 /* 지역 슬라이드 */
 .region_slider_frame {
@@ -778,6 +778,7 @@ margin-top:130px;
 	flex-direction: column;
 	gap: 100px;
 }
+/* 추천목록, 지역목록 전체  */
 .region_recommend, .region_total {
 	display: flex;
 	justify-content: center;
@@ -786,14 +787,14 @@ margin-top:130px;
 	gap: 100px;
 }
 .region_recommend_festival {
-	background-color: #5CEEE6;
+	/* background-color: #5CEEE6; */
 	position: relative;
 }
 .region_comment {
 	background-color: #808080;
 	position: absolute;
 	display: inline-block;
-	left: 0;
+	left: 20px;
 	top: -50px;
 }
 .region_p1 {
@@ -802,11 +803,25 @@ margin-top:130px;
 .region_p2 {
 	font-size: large;
 }
+.region_total_line {
+	position: relative;
+}
+.region_total_cityname {
+	position: absolute;
+	left: 0;
+	top: 50px;
+}
+.region_total_citycomment {
+	position: absolute;
+	left: 30px;
+	top: 50px;
+}
 /* 지역 추천 게시물 separate */
 .region_list {
 	display: inline-block;
+	position: relative;
 	height: 400px;
-	background-color: #DCAD67;
+	/* background-color: #DCAD67; */
 }
 .region_img {
 	/* position: relative; */
@@ -833,8 +848,13 @@ margin-top:130px;
 .region_heart {
 	width: 20px;
 	height: 20px;
-	display: inline-block;
-	background: url('../img/emptyheart.png');
+	position: absolute;
+	right: 30px;
+	top: 250px;
+	color: #D14C6C;
+	border: none;
+	background-color: transparent;
+	/* display: inline-block; */
 }
 /* 지역 추천 관광지 */
 .region_recommend_tour {
@@ -851,10 +871,11 @@ margin-top:130px;
 }
 /* 더보기 버튼 */
 .region_btn_more button {
-	background-color: #FF92B1;
+	background-color: #D14C6C;
 	border: none;
 	color: white;
 	padding: 10px 50px;
+	margin: 20px 0;
 	display: inline-block;
 	text-align: center;
 	border-radius: 20px;
