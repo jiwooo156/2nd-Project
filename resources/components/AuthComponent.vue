@@ -36,9 +36,24 @@
 							class="sign_commsg"
 						>이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요</div>
 						<div
-							v-if="$store.state.emailFlg === 1" 
-							class="sign_errmsg"
+						v-if="$store.state.emailFlg === 1" 
+						class="sign_errmsg"
 						>{{this.auth_err}}</div>
+						<div
+						v-if="$store.state.emailFlg === 1" 
+						class="sign_errmsg"
+						>{{this.auth_re}}</div>
+						<button
+							v-if="$store.state.emailFlg === 1&&this.auth_flg"
+							@click="reset_auth_time"
+						>
+							시간연장
+						</button>
+						<span
+							v-if="$store.state.emailFlg === 1&&this.auth_flg"
+						>
+							남은시간 : {{  }}
+						</span>
 						<button class="pointer"
 							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)&&!(this.re_auth_email)"
 							@click="email_auth"
@@ -46,7 +61,7 @@
 						<button class="pointer"
 							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)&&(this.re_auth_email)"
 							@click="email_re_auth"
-						>인증메일 재발송</button>
+						>다시보내기</button>
 					</div>
 				</div>
 			</div>
@@ -70,6 +85,10 @@ export default {
 			auth_flg: false,
 			re_auth_email: false,
 			auth_err: "",
+			auth_re: "",
+			timer: "",
+			min: "",
+			sec: "",
 		}
 	},
 
@@ -87,8 +106,6 @@ export default {
 			const URL = '/authemail'
 			const HEADER = {
 				headers: {
-					// 'Authorization': 'Bearer team5',
-					// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
 					'Content-Type': 'multipart/form-data',
 				}
 			};
@@ -97,24 +114,24 @@ export default {
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){	
+					console.log("성공")
 					this.auth_flg = true;
 				}else{
+					console.log(res.data)
 					this.auth_err = res.data.errorMsg;
 					this.re_auth_email = true;
 				}
 			})
 			.catch(err => {
-				console.log(err.data.errorMsg);	
-				console.log(err.data);	
+				console.log("실패")
+				console.log(err.data.errorMsg);
 			})
 		},
 		// 이메일 다시보내기
 		email_re_auth(){
-			const URL = '/authemail/re'
+			const URL = '/authemail/resend'
 			const HEADER = {
 				headers: {
-					// 'Authorization': 'Bearer team5',
-					// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
 					'Content-Type': 'multipart/form-data',
 				}
 			};
@@ -122,10 +139,38 @@ export default {
 			formData.append('email', this.auth_email);
 			axios.post(URL,formData,HEADER)
 			.then(res => {
-				
+				if(res.data.code === "0"){	
+					this.auth_err = '';
+					this.auth_flg = true;
+				}else{
+					this.auth_err = res.data.errorMsg;
+				}
 			})
 			.catch(err => {
-
+				router.push('/error');
+			})
+		},
+		// 시간연장
+		reset_auth_time(){
+			const URL = '/authemail/time'
+			const HEADER = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('email', this.auth_email);
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				if(res.data.code === "0"){	
+					console.log("성공")
+				}else{
+					console.log(res.data)
+					console.log("엘스")
+				}
+			})
+			.catch(err => {
+				console.log("실패")
 			})
 		},
 		// 이메일중복확인
@@ -157,14 +202,18 @@ export default {
 			this.$store.commit('setEmailFlg',0);
 			document.querySelector('#auth_email').readOnly = false;
 			document.querySelector('#auth_email').removeAttribute('style');
+			this.auth_err = "",
+			this.auth_re = "",
 			this.auth_flg = false;
 		},
-		
+		// 타이머
+		timer(){
+
+		}
 	},
 	beforeRouteLeave(to, from, next) {
 		this.del_email_chk();
 		this.$store.commit('setErrMsg','');
-		this.auth_err = "",
 		next();
 	},
 }

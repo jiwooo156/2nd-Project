@@ -6243,8 +6243,13 @@ class BaseReactiveHandler {
       return isReadonly2;
     } else if (key === "__v_isShallow") {
       return shallow;
-    } else if (key === "__v_raw" && receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target)) {
-      return target;
+    } else if (key === "__v_raw") {
+      if (receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target) || // receiver is not the reactive proxy, but has the same prototype
+      // this means the reciever is a user proxy of the reactive proxy
+      Object.getPrototypeOf(target) === Object.getPrototypeOf(receiver)) {
+        return target;
+      }
+      return;
     }
     const targetIsArray = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(target);
     if (!isReadonly2) {
@@ -7485,13 +7490,16 @@ function queuePostFlushCb(cb) {
   }
   queueFlush();
 }
-function flushPreFlushCbs(seen, i = isFlushing ? flushIndex + 1 : 0) {
+function flushPreFlushCbs(instance, seen, i = isFlushing ? flushIndex + 1 : 0) {
   if (true) {
     seen = seen || /* @__PURE__ */ new Map();
   }
   for (; i < queue.length; i++) {
     const cb = queue[i];
     if (cb && cb.pre) {
+      if (instance && cb.id !== instance.uid) {
+        continue;
+      }
       if ( true && checkRecursiveUpdates(seen, cb)) {
         continue;
       }
@@ -8683,6 +8691,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
       }
       const { vnode: vnode2, activeBranch, parentComponent: parentComponent2, container: container2, isSVG: isSVG2 } = suspense;
       triggerEvent(vnode2, "onFallback");
+      const anchor2 = next(activeBranch);
       const mountFallback = () => {
         if (!suspense.isInFallback) {
           return;
@@ -8691,7 +8700,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
           null,
           fallbackVNode,
           container2,
-          next(activeBranch),
+          anchor2,
           parentComponent2,
           null,
           // fallback tree will not have suspense context
@@ -13081,7 +13090,7 @@ function baseCreateRenderer(options, createHydrationFns) {
     updateProps(instance, nextVNode.props, prevProps, optimized);
     updateSlots(instance, nextVNode.children, optimized);
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.pauseTracking)();
-    flushPreFlushCbs();
+    flushPreFlushCbs(instance);
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.resetTracking)();
   };
   const patchChildren = (n1, n2, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized = false) => {
@@ -14970,7 +14979,7 @@ function isMemoSame(cached, memo) {
   return true;
 }
 
-const version = "3.3.10";
+const version = "3.3.11";
 const _ssrUtils = {
   createComponentInstance,
   setupComponent,
@@ -15826,7 +15835,9 @@ function shouldSetAsProp(el, key, value, isSVG) {
   }
   if (key === "width" || key === "height") {
     const tag = el.tagName;
-    return !(tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE");
+    if (tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE") {
+      return false;
+    }
   }
   if (isNativeOn(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
     return false;
@@ -17161,19 +17172,28 @@ const replacer = (_key, val) => {
     return replacer(_key, val.value);
   } else if (isMap(val)) {
     return {
-      [`Map(${val.size})`]: [...val.entries()].reduce((entries, [key, val2]) => {
-        entries[`${key} =>`] = val2;
-        return entries;
-      }, {})
+      [`Map(${val.size})`]: [...val.entries()].reduce(
+        (entries, [key, val2], i) => {
+          entries[stringifySymbol(key, i) + " =>"] = val2;
+          return entries;
+        },
+        {}
+      )
     };
   } else if (isSet(val)) {
     return {
-      [`Set(${val.size})`]: [...val.values()]
+      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
     };
+  } else if (isSymbol(val)) {
+    return stringifySymbol(val);
   } else if (isObject(val) && !isArray(val) && !isPlainObject(val)) {
     return String(val);
   }
   return val;
+};
+const stringifySymbol = (v, i = "") => {
+  var _a;
+  return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
 };
 
 
@@ -19354,7 +19374,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       auth_email: "",
-      auth_flg: false
+      auth_flg: false,
+      re_auth_email: false,
+      auth_err: "",
+      auth_re: "",
+      timer: "",
+      min: "",
+      sec: ""
     };
   },
   created: function created() {},
@@ -19366,8 +19392,6 @@ __webpack_require__.r(__webpack_exports__);
       var URL = '/authemail';
       var HEADER = {
         headers: {
-          // 'Authorization': 'Bearer team5',
-          // 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
           'Content-Type': 'multipart/form-data'
         }
       };
@@ -19375,35 +19399,82 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('email', this.auth_email);
       axios.post(URL, formData, HEADER).then(function (res) {
         if (res.data.code === "0") {
+          console.log("성공");
           _this.auth_flg = true;
         } else {
-          console.log('else');
+          console.log(res.data);
+          _this.auth_err = res.data.errorMsg;
+          _this.re_auth_email = true;
         }
       })["catch"](function (err) {
-        console.log('캐치');
+        console.log("실패");
+        console.log(err.data.errorMsg);
+      });
+    },
+    // 이메일 다시보내기
+    email_re_auth: function email_re_auth() {
+      var _this2 = this;
+      var URL = '/authemail/resend';
+      var HEADER = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData();
+      formData.append('email', this.auth_email);
+      axios.post(URL, formData, HEADER).then(function (res) {
+        if (res.data.code === "0") {
+          _this2.auth_err = '';
+          _this2.auth_flg = true;
+        } else {
+          _this2.auth_err = res.data.errorMsg;
+        }
+      })["catch"](function (err) {
+        router.push('/error');
+      });
+    },
+    // 시간연장
+    reset_auth_time: function reset_auth_time() {
+      var URL = '/authemail/time';
+      var HEADER = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData();
+      formData.append('email', this.auth_email);
+      axios.post(URL, formData, HEADER).then(function (res) {
+        if (res.data.code === "0") {
+          console.log("성공");
+        } else {
+          console.log(res.data);
+          console.log("엘스");
+        }
+      })["catch"](function (err) {
+        console.log("실패");
       });
     },
     // 이메일중복확인
     emailChk: function emailChk() {
-      var _this2 = this;
+      var _this3 = this;
       var URL = '/signin/email/?email=' + this.auth_email;
       axios.get(URL).then(function (res) {
-        _this2.$store.commit('setErrMsg', '');
+        _this3.$store.commit('setErrMsg', '');
         if (res.data.code === "0") {
           if (res.data.data.length === 0) {
-            _this2.$store.commit('setEmailFlg', 1);
+            _this3.$store.commit('setEmailFlg', 1);
             document.querySelector('#auth_email').readOnly = true;
             document.querySelector('#auth_email').style.backgroundColor = 'rgb(169 183 200)';
           } else if (res.data.data.length > 0) {
             console.log("있을때");
-            _this2.$store.commit('setEmailFlg', 2);
+            _this3.$store.commit('setEmailFlg', 2);
           }
         } else {
           console.log('else');
         }
       })["catch"](function (err) {
-        _this2.$store.commit('setEmailFlg', 0);
-        _this2.$store.commit('setErrMsg', err.response.data.errorMsg);
+        _this3.$store.commit('setEmailFlg', 0);
+        _this3.$store.commit('setErrMsg', err.response.data.errorMsg);
       });
     },
     // 이메일 중복확인 취소
@@ -19411,8 +19482,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit('setEmailFlg', 0);
       document.querySelector('#auth_email').readOnly = false;
       document.querySelector('#auth_email').removeAttribute('style');
-      this.auth_flg = false;
-    }
+      this.auth_err = "", this.auth_re = "", this.auth_flg = false;
+    },
+    // 타이머
+    timer: function timer() {}
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     this.del_email_chk();
@@ -19612,6 +19685,7 @@ __webpack_require__.r(__webpack_exports__);
   name: 'SigninComponent',
   data: function data() {
     return {
+      email: "",
       pw: "",
       pw_chk: "",
       name: "",
@@ -19660,11 +19734,28 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    this.email = "";
     this.$store.commit('setErrMsg', []);
     this.$store.commit('setNickFlg', 0);
-    this.$store.commit('setEmailFlg', 0);
+    this.emailGet();
   },
   methods: {
+    // 이메일중복확인
+    emailGet: function emailGet() {
+      var _this = this;
+      var URL = '/signin/start';
+      axios.get(URL).then(function (res) {
+        _this.$store.commit('setErrMsg', '');
+        if (res.data.code === "0") {
+          console.log('정상');
+          _this.email = res.data.data.email;
+        } else {
+          console.log('else');
+        }
+      })["catch"](function (err) {
+        _this.$store.commit('setErrMsg', err.response.data.errorMsg);
+      });
+    },
     pwval: function pwval() {
       var VAR1 = /[a-zA-Z]/;
       var VAR2 = /\d+/;
@@ -19861,19 +19952,39 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.dispatch('actionSignIn');
       } else {
         if (!this.com_pw) {
-          alert("비밀번호 값을 확인해주세요\n영어,숫자,특수문자(?~!@#)를 1개이상 포함한 8~20글자 사이로 작성해주세요");
+          this.err_pw1 = true;
+          this.err_pw2 = false;
+          this.err_pw3 = false;
+          this.err_pw4 = false;
+          this.err_pw5 = false;
+          this.com_pw = false;
+          return;
         }
         if (!this.com_pw_chk) {
-          alert("비밀번호확인 값을 확인 해주세요\n비밀번호와 같은 값을 작성해 주세요");
+          this.err_pw_chk = true;
+          this.com_pw_chk = false;
+          return;
         }
         if (!this.com_name) {
-          alert("이름을 확인해 주세요\n한국어 2~10글자 사이로 작성해 주세요");
+          this.err_name1 = true;
+          this.err_name2 = false;
+          this.err_name3 = false;
+          this.com_name = false;
+          return;
         }
         if (!this.com_birthdate) {
-          alert("생년월일을 확인해주세요\n-를제외한 8자리 숫자를 작성해 주세요");
+          this.err_birthdate1 = false;
+          this.err_birthdate2 = true;
+          this.err_birthdate3 = false;
+          this.com_birthdate = false;
+          return;
         }
         if (!this.com_phone) {
-          alert("휴대폰 번호를 확인해 주세요\n-를제외한 11자리 숫자를 작성해 주세요");
+          this.err_phone1 = false;
+          this.err_phone2 = true;
+          this.err_phone3 = false;
+          this.com_phone = false;
+          return;
         }
       }
     }
@@ -19881,7 +19992,6 @@ __webpack_require__.r(__webpack_exports__);
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     this.$store.commit('setErrMsg', '');
     this.$store.commit('setNickFlg', 0);
-    this.$store.commit('setEmailFlg', 0);
     next();
   }
 });
@@ -20066,7 +20176,19 @@ var _hoisted_8 = {
 };
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 var _hoisted_10 = {
-  key: 5
+  key: 5,
+  "class": "sign_commsg"
+};
+var _hoisted_11 = {
+  key: 6,
+  "class": "sign_errmsg"
+};
+var _hoisted_12 = {
+  key: 7,
+  "class": "sign_errmsg"
+};
+var _hoisted_13 = {
+  key: 9
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
@@ -20105,13 +20227,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.del_email_chk && $options.del_email_chk.apply($options, arguments);
     })
-  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_9, _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, "이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 6,
-    "class": "pointer",
+  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_9, _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, "이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_err), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_re), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 8,
     onClick: _cache[3] || (_cache[3] = function () {
+      return $options.reset_auth_time && $options.reset_auth_time.apply($options, arguments);
+    })
+  }, " 시간연장 ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, " 남은시간 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && !this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 10,
+    "class": "pointer",
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.email_auth && $options.email_auth.apply($options, arguments);
     })
-  }, "인증메일 발송")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]);
+  }, "인증메일 발송")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 11,
+    "class": "pointer",
+    onClick: _cache[5] || (_cache[5] = function () {
+      return $options.email_re_auth && $options.email_re_auth.apply($options, arguments);
+    })
+  }, "다시보내기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]);
 }
 
 /***/ }),
@@ -20301,7 +20434,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.login && $options.login.apply($options, arguments);
     })
   }, "로그인"), _hoisted_6, _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    to: '/signin',
+    to: '/authemail',
     "class": "pointer"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -20443,21 +20576,12 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "sign_container"
 };
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_5 = {
   "class": "sign_relative"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "text",
-  placeholder: "ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ",
-  id: "signin_email",
-  autocomplete: "off"
-})], -1 /* HOISTED */);
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
-var _hoisted_7 = {
-  "class": "sign_errmsg"
 };
-var _hoisted_8 = {
-  "class": "sign_errmsg"
-};
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail", -1 /* HOISTED */);
+var _hoisted_7 = ["value"];
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
 var _hoisted_9 = {
   "class": "sign_errmsg"
 };
@@ -20468,41 +20592,47 @@ var _hoisted_11 = {
   "class": "sign_errmsg"
 };
 var _hoisted_12 = {
-  "class": "sign_commsg"
+  "class": "sign_errmsg"
 };
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호확인", -1 /* HOISTED */);
+var _hoisted_13 = {
+  "class": "sign_errmsg"
+};
 var _hoisted_14 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_15 = {
   "class": "sign_commsg"
 };
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "이름", -1 /* HOISTED */);
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호확인", -1 /* HOISTED */);
+var _hoisted_16 = {
+  "class": "sign_errmsg"
+};
 var _hoisted_17 = {
-  "class": "sign_errmsg"
+  "class": "sign_commsg"
 };
-var _hoisted_18 = {
-  "class": "sign_errmsg"
-};
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "이름", -1 /* HOISTED */);
 var _hoisted_19 = {
   "class": "sign_errmsg"
 };
 var _hoisted_20 = {
-  "class": "sign_commsg"
+  "class": "sign_errmsg"
 };
 var _hoisted_21 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_22 = {
+  "class": "sign_commsg"
+};
+var _hoisted_23 = {
   "class": "sign_relative"
 };
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "닉네임", -1 /* HOISTED */);
-var _hoisted_23 = {
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "닉네임", -1 /* HOISTED */);
+var _hoisted_25 = {
   key: 0,
   "class": "sign_commsg"
 };
-var _hoisted_24 = {
+var _hoisted_26 = {
   key: 1,
   "class": "sign_errmsg"
 };
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
   placeholder: "한글,영어,숫자 2~8",
   id: "signin_nick",
@@ -20510,36 +20640,36 @@ var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   minlength: "2",
   maxlength: "8"
 }, null, -1 /* HOISTED */);
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
-var _hoisted_27 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_28 = {
-  "class": "sign_errmsg"
-};
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
 var _hoisted_29 = {
   "class": "sign_errmsg"
 };
 var _hoisted_30 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_31 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_32 = {
   "class": "sign_commsg"
 };
-var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "전화번호", -1 /* HOISTED */);
-var _hoisted_32 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_33 = {
-  "class": "sign_errmsg"
-};
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "전화번호", -1 /* HOISTED */);
 var _hoisted_34 = {
   "class": "sign_errmsg"
 };
 var _hoisted_35 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_36 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_37 = {
   "class": "sign_commsg"
 };
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "성별"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "성별"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
   id: "signin_gender"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "남자"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "여자")])], -1 /* HOISTED */);
-var _hoisted_37 = {
+var _hoisted_39 = {
   "class": "sign_footer_box center"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -20552,7 +20682,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("이의이승")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_7, "8~20글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_8, "영어를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_9, "숫자를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, "특수문자(?~!@#)를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw4]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, "비밀번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw5]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, "사용가능한 비밀번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    id: "signin_email",
+    autocomplete: "off",
+    readonly: "",
+    value: $data.email
+  }, null, 8 /* PROPS */, _hoisted_7)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_9, "8~20글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, "영어를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, "숫자를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, "특수문자(?~!@#)를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw4]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, "비밀번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw5]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, "사용가능한 비밀번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     placeholder: "영어,숫자,특수문자(!?~@#)최소1개포함 8~20",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
@@ -20562,7 +20698,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off",
     minlength: "8",
     maxlength: "20"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_16, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_17, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     placeholder: "비밀번호와 동일",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
@@ -20572,7 +20708,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off",
     minlength: "8",
     maxlength: "20"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_17, "2~10글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_18, "한국어만 사용 가능 합니다", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_20, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, "2~10글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_20, "한국어만 사용 가능 합니다", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_21, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_22, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "한글 2~10",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
@@ -20582,26 +20718,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off",
     minlength: "2",
     maxlength: "10"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [_hoisted_22, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    key: 2
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_25, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_26, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: item,
       "class": "sign_errmsg"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_25, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 3,
+  }), 128 /* KEYED_FRAGMENT */)), _hoisted_27, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 2,
     "class": "sign_chk_btn pointer",
     onClick: _cache[3] || (_cache[3] = function () {
       return $options.nick_chk && $options.nick_chk.apply($options, arguments);
     })
   }, "중복확인")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 4,
+    key: 3,
     "class": "sign_chk_btn pointer",
     onClick: _cache[4] || (_cache[4] = function () {
       return $options.del_nick_chk && $options.del_nick_chk.apply($options, arguments);
     })
-  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_27, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_28, "생년월일을 8자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_29, "생년월일 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_30, "사용가능한 생년월일 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_29, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_30, "생년월일을 8자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_31, "생년월일 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, "사용가능한 생년월일 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "YYYYMMDD",
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
@@ -20611,7 +20745,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off",
     minlength: "8",
     maxlength: "8"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_33, "휴대폰번호는 11자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, "휴대폰번호는 11자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_36, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_37, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "휴대폰번호",
     "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
@@ -20621,7 +20755,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "off",
     minlength: "11",
     maxlength: "11"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "sign_footer_btn pointer",
     onClick: _cache[7] || (_cache[7] = function () {
       return $options.signin && $options.signin.apply($options, arguments);
@@ -21051,7 +21185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
 /* harmony import */ var _components_MainComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MainComponent.vue */ "./resources/components/MainComponent.vue");
 /* harmony import */ var _components_LoginComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/LoginComponent.vue */ "./resources/components/LoginComponent.vue");
 /* harmony import */ var _components_SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/SigninComponent.vue */ "./resources/components/SigninComponent.vue");
@@ -21061,7 +21195,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_UserChk_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/UserChk.vue */ "./resources/components/UserChk.vue");
 /* harmony import */ var _components_ErrorComponent_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/ErrorComponent.vue */ "./resources/components/ErrorComponent.vue");
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
+/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
+/* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_9__);
 /* 기본셋팅 1204 최정훈 */
+
 
 
 
@@ -21108,7 +21245,7 @@ var routes = [{
   path: "/signin",
   component: _components_SigninComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_store_js__WEBPACK_IMPORTED_MODULE_8__["default"].state.localFlg) {
+    if (!vue_cookies__WEBPACK_IMPORTED_MODULE_9___default().get('auth_id')) {
       next('/');
     } else {
       next();
@@ -21139,8 +21276,8 @@ var routes = [{
     }
   }
 }];
-var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_9__.createRouter)({
-  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_9__.createWebHistory)(),
+var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_10__.createRouter)({
+  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_10__.createWebHistory)(),
   routes: routes
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -21226,12 +21363,53 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
   },
   // actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
   actions: _defineProperty(_defineProperty(_defineProperty(_defineProperty({
-    // 이메일 중복확인
-    actionEmailChk: function actionEmailChk(context) {
-      var email = document.querySelector('#signin_email').value;
-      // const URL = '/api/signin/email'
+    // // 이메일 중복확인
+    // actionEmailChk(context){
+    // 	let email = document.querySelector('#signin_email').value
+    // 	// const URL = '/api/signin/email'
+    // 	// 1211 최정훈 수정 api로 안보내고 web으로 변경
+    // 	// const URL = '/signin/email'
+    // 	// const HEADER = {
+    // 	// 	headers: {
+    // 	// 		// 'Authorization': 'Bearer team5',
+    // 	// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+    // 	// 		'Content-Type': 'multipart/form-data',
+    // 	// 	}
+    // 	// };
+    // 	// const formData = new FormData();
+    // 	// formData.append('email', email);
+    // 	// axios.get(URL, formData, HEADER)
+    // 	// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+    // 	const URL = '/signin/email/?email='+email
+    // 	axios.get(URL)
+    // 	.then(res => {
+    // 		context.commit('setErrMsg','');
+    // 		if(res.data.code === "0"){
+    // 			if(res.data.data.length === 0){
+    // 				context.commit('setEmailFlg',1);
+    // 				document.querySelector('#signin_email').readOnly = true;
+    // 				document.querySelector('#signin_email').style.backgroundColor = 'rgb(169 183 200)';		
+    // 			}else if(res.data.data.length > 0){
+    // 				console.log("있을때")
+    // 				context.commit('setEmailFlg',2);
+    // 			}
+    // 		}else{
+    // 			console.log('else')
+    // 		}
+    // 	})
+    // 	.catch(err => {
+    // 		context.commit('setEmailFlg',0);
+    // 		context.commit('setErrMsg',err.response.data.errorMsg);
+    // 	})
+    // },
+    // 1214 수정 최정훈
+    // 이메일 인증 과정으로 대체
+    // 닉네임 중복확인
+    actionNickChk: function actionNickChk(context) {
+      var nick = document.querySelector('#signin_nick').value;
+      // const URL = '/api/signin/nick'
       // 1211 최정훈 수정 api로 안보내고 web으로 변경
-      // const URL = '/signin/email'
+      // const URL = '/signin/nick'
       // const HEADER = {
       // 	headers: {
       // 		// 'Authorization': 'Bearer team5',
@@ -21240,68 +21418,27 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
       // 	}
       // };
       // const formData = new FormData();
-      // formData.append('email', email);
-      // axios.get(URL, formData, HEADER)
+      // formData.append('nick', nick);
       // 1211 최정훈 수정 get형식이 옳은방식이라 수정
-      var URL = '/signin/email/?email=' + email;
+      var URL = '/signin/nick?nick=' + nick;
       axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
         context.commit('setErrMsg', '');
         if (res.data.code === "0") {
           if (res.data.data.length === 0) {
-            context.commit('setEmailFlg', 1);
-            document.querySelector('#signin_email').readOnly = true;
-            document.querySelector('#signin_email').style.backgroundColor = 'rgb(169 183 200)';
+            context.commit('setNickFlg', 1);
+            document.querySelector('#signin_nick').readOnly = true;
+            document.querySelector('#signin_nick').style.backgroundColor = 'rgb(169 183 200)';
           } else if (res.data.data.length > 0) {
             console.log("있을때");
-            context.commit('setEmailFlg', 2);
+            context.commit('setNickFlg', 2);
           }
         } else {
           console.log('else');
         }
       })["catch"](function (err) {
-        context.commit('setEmailFlg', 0);
+        context.commit('setNickFlg', 0);
         context.commit('setErrMsg', err.response.data.errorMsg);
       });
-    },
-    // 닉네임 중복확인
-    actionNickChk: function actionNickChk(context) {
-      if (context.state.emailFlg === 1) {
-        var nick = document.querySelector('#signin_nick').value;
-        // const URL = '/api/signin/nick'
-        // 1211 최정훈 수정 api로 안보내고 web으로 변경
-        // const URL = '/signin/nick'
-        // const HEADER = {
-        // 	headers: {
-        // 		// 'Authorization': 'Bearer team5',
-        // 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
-        // 		'Content-Type': 'multipart/form-data',
-        // 	}
-        // };
-        // const formData = new FormData();
-        // formData.append('nick', nick);
-        // 1211 최정훈 수정 get형식이 옳은방식이라 수정
-        var URL = '/signin/nick?nick=' + nick;
-        axios__WEBPACK_IMPORTED_MODULE_0___default().get(URL).then(function (res) {
-          context.commit('setErrMsg', '');
-          if (res.data.code === "0") {
-            if (res.data.data.length === 0) {
-              context.commit('setNickFlg', 1);
-              document.querySelector('#signin_nick').readOnly = true;
-              document.querySelector('#signin_nick').style.backgroundColor = 'rgb(169 183 200)';
-            } else if (res.data.data.length > 0) {
-              console.log("있을때");
-              context.commit('setNickFlg', 2);
-            }
-          } else {
-            console.log('else');
-          }
-        })["catch"](function (err) {
-          context.commit('setNickFlg', 0);
-          context.commit('setErrMsg', err.response.data.errorMsg);
-        });
-      } else {
-        alert("이메일 인증을 해주세요");
-      }
     },
     // 닉네임 중복확인2(닉네임 변경용)
     actionNickChk2: function actionNickChk2(context) {
@@ -21329,7 +21466,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
     },
     // 회원가입
     actionSignIn: function actionSignIn(context) {
-      if (context.state.emailFlg === 1 && context.state.nickFlg === 1) {
+      if (context.state.nickFlg === 1) {
         var email = document.querySelector('#signin_email');
         var pw = document.querySelector('#signin_pw');
         var pwchk = document.querySelector('#signin_pw_chk');

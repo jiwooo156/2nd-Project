@@ -23,6 +23,8 @@ Route::middleware('myValidation')->prefix('authemail')->group(function() {
         return view('welcome');
     });
     Route::post('/', [UserController::class, 'sendemailauth']);
+    Route::post('/resend', [UserController::class, 'resendemailauth']);
+    Route::post('/time', [UserController::class, 'addtime']);
 });
 
 Route::get('/signinchk', [UserController::class, 'tokenchk']);
