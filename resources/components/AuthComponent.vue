@@ -32,12 +32,21 @@
 						>다시쓰기</button>
 						<br>
 						<div
-						v-if="$store.state.emailFlg === 1&&this.auth_flg" 
+							v-if="$store.state.emailFlg === 1&&this.auth_flg"
+							class="sign_commsg"
 						>이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요</div>
+						<div
+							v-if="$store.state.emailFlg === 1" 
+							class="sign_errmsg"
+						>{{this.auth_err}}</div>
 						<button class="pointer"
-							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)"
+							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)&&!(this.re_auth_email)"
 							@click="email_auth"
 						>인증메일 발송</button>
+						<button class="pointer"
+							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)&&(this.re_auth_email)"
+							@click="email_re_auth"
+						>인증메일 재발송</button>
 					</div>
 				</div>
 			</div>
@@ -59,6 +68,8 @@ export default {
 		return {
 			auth_email: "",
 			auth_flg: false,
+			re_auth_email: false,
+			auth_err: "",
 		}
 	},
 
@@ -88,12 +99,33 @@ export default {
 				if(res.data.code === "0"){	
 					this.auth_flg = true;
 				}else{
-					console.log('else');
-				
+					this.auth_err = res.data.errorMsg;
+					this.re_auth_email = true;
 				}
 			})
 			.catch(err => {
-				console.log('캐치')
+				console.log(err.data.errorMsg);	
+				console.log(err.data);	
+			})
+		},
+		// 이메일 다시보내기
+		email_re_auth(){
+			const URL = '/authemail/re'
+			const HEADER = {
+				headers: {
+					// 'Authorization': 'Bearer team5',
+					// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+					'Content-Type': 'multipart/form-data',
+				}
+			};
+			const formData = new FormData();
+			formData.append('email', this.auth_email);
+			axios.post(URL,formData,HEADER)
+			.then(res => {
+				
+			})
+			.catch(err => {
+
 			})
 		},
 		// 이메일중복확인
@@ -127,10 +159,12 @@ export default {
 			document.querySelector('#auth_email').removeAttribute('style');
 			this.auth_flg = false;
 		},
+		
 	},
 	beforeRouteLeave(to, from, next) {
 		this.del_email_chk();
 		this.$store.commit('setErrMsg','');
+		this.auth_err = "",
 		next();
 	},
 }
