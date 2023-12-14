@@ -1,15 +1,12 @@
 <template>
 	<div class="region_frame">
-		<div class="login_header">
-			<router-link :to="'/main'" class="login_header_a pointer">이의이승</router-link>
-		</div>
 		<div class="region_slider_frame">
 			<div class="region_slider_container">
 				<div class="region_slider" :style="{ transform: 'translateX(' + slidePosition + 'px)' }">
 					<div class="region_slide" v-for="(item, index) in items" :key="index">{{ item }}</div>
 				</div>
-				<button class="region_slider_left" @click="prevSlide">Previous</button>
-				<button class="region_slider_right" @click="nextSlide">Next</button>
+				<img class="region_slider_left" src="/img/prev.png" @click="prevSlide">
+				<img class="region_slider_right" src="/img/next.png" @click="nextSlide">
 			</div>
 		</div>
 		<div class="region_search">
@@ -25,132 +22,145 @@
 					<option value="Yeongju">영주시</option>
 					<option value="Mungyeong">문경시</option>
 				</select>
-				<input type="date" value="2023-01-01">
+				<input class="region_date" v-model="startDate" type="date" value="2023-01-01">
 				-
-				<input type="date" value="2023-12-31">
-				<input type="submit">
+				<input class="region_date" v-model="endDate" type="date" value="2023-12-31">
+				<button class="region_form_btn" @click="getSelectedDates()">검색</button>
 				<br>
-				<input type="textarea">
-				<input type="submit">
+				<input class="region_text" type="text" placeholder="키워드로 검색 해 보세요">
+				<button class="region_form_btn" type="submit">검색</button>
 			</form>
 		</div>
-		<div class="region_recommend">
-			<div class="region_recommend_festival">
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_1.jpg" alt="">
+		<div class="region_list_frame">
+			<div class="region_recommend">
+				<div class="region_recommend_festival">
+					<div class="region_comment">
+						<p class="region_p1">이런 축제</p>
+						<p class="region_p2">추천드려요</p>
 					</div>
-					<div class="region_title">제목1</div>
-					<div class="region_period">내용1</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/jjangu.jpg" alt="">
+						</div>
+						<div class="region_title">
+							<a >추천축제제목1</a>
+						</div>
+						<div class="region_period">20231212-20231212</div>
+						<p class="region_heart"></p>
+					</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/jjangu.jpg" alt="">
+						</div>
+						<div class="region_title">추천축제제목2</div>
+						<div class="region_period">내용2</div>
+					</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/jjangu.jpg" alt="">
+						</div>
+						<div class="region_title">추천축제제목3</div>
+						<div class="region_period">내용3</div>
+					</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/jjangu.jpg" alt="">
+						</div>
+						<div class="region_title">추천축제제목4</div>
+						<div class="region_period">내용4</div>
+					</div>
 				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_1.jpg" alt="">
+				<div class="region_recommend_tour">
+					<div class="region_comment">
+						<p class="region_p1">이런 관광지</p>
+						<p class="region_p2">추천드려요</p>
 					</div>
-					<div class="region_title">제목2</div>
-					<div class="region_period">내용2</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_1.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_2.jpg" alt="">
+						</div>
+						<div class="region_title">추천관광지제목1</div>
 					</div>
-					<div class="region_title">제목3</div>
-					<div class="region_period">내용3</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_1.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_2.jpg" alt="">
+						</div>
+						<div class="region_title">추천관광지제목2</div>
 					</div>
-					<div class="region_title">제목4</div>
-					<div class="region_period">내용4</div>
-				</div>
-			</div>
-			<div class="region_recommend_tour">
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_2.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_2.jpg" alt="">
+						</div>
+						<div class="region_title">추천관광지제목3</div>
 					</div>
-					<div class="region_title">제목1</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_2.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_2.jpg" alt="">
+						</div>
+						<div class="region_title">추천관광지제목4</div>
 					</div>
-					<div class="region_title">제목2</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_2.jpg" alt="">
-					</div>
-					<div class="region_title">제목3</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_2.jpg" alt="">
-					</div>
-					<div class="region_title">제목4</div>
-				</div>
-			</div>
-		</div>
-		<div class="region_total">
-			<div class="region_total_festival">
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_3.jpg" alt="">
-					</div>
-					<div class="region_title">제목1</div>
-					<div class="region_period">내용1</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_3.jpg" alt="">
-					</div>
-					<div class="region_title">제목2</div>
-					<div class="region_period">내용2</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_3.jpg" alt="">
-					</div>
-					<div class="region_title">제목3</div>
-					<div class="region_period">내용3</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_3.jpg" alt="">
-					</div>
-					<div class="region_title">제목4</div>
-					<div class="region_period">내용4</div>
 				</div>
 			</div>
-			<div class="region_total_tour">
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_4.jpg" alt="">
+			<div class="region_total">
+				<div class="region_total_festival">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_3.jpg" alt="">
+						</div>
+						<div class="region_title">지역축제제목1</div>
+						<div class="region_period">내용1</div>
 					</div>
-					<div class="region_title">제목1</div>
-					<div class="region_period">내용1</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_3.jpg" alt="">
+						</div>
+						<div class="region_title">지역축제제목2</div>
+						<div class="region_period">내용2</div>
+					</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_3.jpg" alt="">
+						</div>
+						<div class="region_title">지역축제제목3</div>
+						<div class="region_period">내용3</div>
+					</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_3.jpg" alt="">
+						</div>
+						<div class="region_title">지역축제제목4</div>
+						<div class="region_period">내용4</div>
+					</div>
 				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_4.jpg" alt="">
+				<div class="region_total_tour">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_4.jpg" alt="">
+						</div>
+						<div class="region_title">지역관광지제목1</div>
+						<div class="region_period">내용1</div>
 					</div>
-					<div class="region_title">제목2</div>
-					<div class="region_period">내용2</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_4.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_4.jpg" alt="">
+						</div>
+						<div class="region_title">지역관광지제목2</div>
+						<div class="region_period">내용2</div>
 					</div>
-					<div class="region_title">제목3</div>
-					<div class="region_period">내용3</div>
-				</div>
-				<div class="region_list">
-					<div class="region_img">
-						<img src="/img/item_4.jpg" alt="">
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_4.jpg" alt="">
+						</div>
+						<div class="region_title">지역관광지제목3</div>
+						<div class="region_period">내용3</div>
 					</div>
-					<div class="region_title">제목4</div>
-					<div class="region_period">내용4</div>
+					<div class="region_list">
+						<div class="region_img">
+							<img src="/img/item_4.jpg" alt="">
+						</div>
+						<div class="region_title">지역관광지제목4</div>
+						<div class="region_period">내용4</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -175,7 +185,11 @@ export default {
 		},
 		prevSlide() {
 		this.slidePosition += 1000;
-		}
+		},
+		getSelectedDates() {
+          var startDate = this.startDate;
+          var endDate = this.endDate;
+        }
 	}
 }
 </script>
