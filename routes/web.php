@@ -28,12 +28,12 @@ Route::middleware('myValidation')->prefix('authemail')->group(function() {
 Route::get('/signinchk', [UserController::class, 'tokenchk']);
 
 Route::middleware('myValidation')->prefix('signin')->group(function() {
-    Route::get('/', function (Request $req) {
-        Log::debug('signin email: '.$req->email);
-        return view('welcome')->with("email",$req->email);
-    })->name('signin.get');
+    Route::get('/', function () {
+        return view('welcome');
+    });
     Route::get('/email', [UserController::class, 'emailchk']);
     Route::get('/nick', [UserController::class, 'nickchk']);
+    Route::get('/start', [UserController::class, 'emailload']);
     Route::post('/', [UserController::class, 'store']);
 });
 Route::middleware('myValidation')->prefix('login')->group(function() {

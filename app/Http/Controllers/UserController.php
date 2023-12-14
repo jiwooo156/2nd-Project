@@ -43,6 +43,8 @@ class UserController extends Controller
     {
         $result = User::where('email',$req->email)->orwhere('nick',$req->nick)->first();
         // 악성 유저 대응용
+        $req->cookie('auth_id');
+        $result1 = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
         if($result){
             if($req->email===$result->email){
                 return response()->json([
@@ -56,18 +58,26 @@ class UserController extends Controller
                 ], 400);
             }
         }else{
-            $data = $req->only('email','name','password','birthdate','phone','gender','nick');
-            $data['password'] = Hash::make($data['password']);
-            $result = User::create($data);
-            if($result){
-                return response()->json([
-                    'code' => '0'
-                    ,'data' => $result
-                ], 200);
+            if($req->email===$result1[0]->email){
+                $data = $req->only('email','name','password','birthdate','phone','gender','nick');
+                $data['password'] = Hash::make($data['password']);
+                $result = User::create($data);
+                if($result){
+                    $response = response()->json([
+                        'code' => '0'
+                        ,'data' => $result
+                    ], 200);
+                    return $response->cookie('auth_id', null, -1);
+                }else{
+                    return response()->json([
+                        'code' => 'E05',
+                        'errorMsg' => '회원가입에 실패했습니다.'
+                    ], 400);
+                }
             }else{
                 return response()->json([
                     'code' => 'E05',
-                    'errorMsg' => '회원가입에 실패했습니다.'
+                    'errorMsg' => '오류발생.'
                 ], 400);
             }
         }
@@ -241,11 +251,9 @@ class UserController extends Controller
         $db_data['email'] = $req->email;
         $db_data['auth_token'] = $uuid;
         $result = Authenticate::where('email',$req->email)->get();
-        Log::debug($result);
-        Log::debug(count($result));
         if(count($result) < 1){
+            Log::debug("없을때");
             $total_result = Authenticate::create($db_data);
-            Log::debug("성공");
             $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
             Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
                 $message->to($req->email)->subject('이의이승페이지 이메일인증');
@@ -255,17 +263,40 @@ class UserController extends Controller
                 'code' => '0'
             ], 200);
         }
-        if($total_result){
-    
-        } else {
-            
-            Log::debug("실패   ");
+        if(count($result)===1&&$result[0]->auth_flg==="0"&&$result[0]->auth_end > date("Y-m-d H:i:s")){
+            Log::debug("과거");
             return response()->json([
-                'code' => 'E10',
-                'errorMsg' => ['이메일 인증 중 오류 발생']
-            ], 400);
+                'code' => 'E12',
+                'errorMsg' => '이미 인증을 위한 메일이 발송되었습니다'
+            ], 200);
+        }else if(count($result)===1&&$result[0]->auth_flg==="0"&&$result[0]->auth_end < date("Y-m-d H:i:s")){
+            Log::debug("미래");
+            try {
+                DB::beginTransaction();
+                $result[0]->auth_end = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                $result[0]->auth_token = $uuid;
+                $result[0]->save();
+                Log::debug("바뀜");
+                Log::debug($result[0]->auth_end);
+                DB::commit();
+                $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+                Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
+                    $message->to($req->email)->subject('이의이승페이지 이메일인증');
+                    $message->from('dldmldltmd@gmail.com');
+                });
+                return response()->json([
+                    'code' => '0'
+                ], 200); 
+            } catch(Exception $e){
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E09',
+                    'errorMsg' => '이메일 전송 중 오류가 발생했습니다'
+                ], 400);
+            }
         }
     }
+    // 이메일인증
     public function tokenchk(Request $req){
         Log::debug("진입");
         $result = Authenticate::where('auth_token', $req->auth_token)
@@ -279,22 +310,39 @@ class UserController extends Controller
                 $result->save();
                 DB::commit();    
                 Log::debug("커밋완료");
-                return redirect()->route('signin.get', ["email" => $result->email]);
+                return redirect('/signin')->cookie('auth_id', $result->id, 720, null, null, false, false);
             } catch(Exception $e){
                 DB::rollback();
                 return response()->json([
                     'code' => 'E11',
                     'errorMsg' => ["이메일인증에 실패하셨습니다"]
                 ], 400);
-                Log::debug("커밋실패");
             }
         }else{
             return response()->json([
                 'code' => 'E11',
-                'errorMsg' => ["이메일인증에 실패하셨습니다"]
+                'errorMsg' => "이메일인증에 실패하셨습니다"
             ], 400);
         }
-
-
+    }
+    // 이메일가져오기
+    public function emailload(Request $req)
+    {
+        $req->cookie('auth_id');
+        Log::debug($req->cookie('auth_id'));
+        $result = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
+        if(count($result)>0){
+            return response()->json([
+                'code' => '0'
+                ,'data' => $result[0]
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 'E15'
+                ,'errorMsg' => '오류가 발생했습니다. 다시한번 확인해주세요'
+            ], 200);
+        }
+        
+    
     }
 }

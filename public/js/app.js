@@ -6243,13 +6243,8 @@ class BaseReactiveHandler {
       return isReadonly2;
     } else if (key === "__v_isShallow") {
       return shallow;
-    } else if (key === "__v_raw") {
-      if (receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target) || // receiver is not the reactive proxy, but has the same prototype
-      // this means the reciever is a user proxy of the reactive proxy
-      Object.getPrototypeOf(target) === Object.getPrototypeOf(receiver)) {
-        return target;
-      }
-      return;
+    } else if (key === "__v_raw" && receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target)) {
+      return target;
     }
     const targetIsArray = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(target);
     if (!isReadonly2) {
@@ -7490,16 +7485,13 @@ function queuePostFlushCb(cb) {
   }
   queueFlush();
 }
-function flushPreFlushCbs(instance, seen, i = isFlushing ? flushIndex + 1 : 0) {
+function flushPreFlushCbs(seen, i = isFlushing ? flushIndex + 1 : 0) {
   if (true) {
     seen = seen || /* @__PURE__ */ new Map();
   }
   for (; i < queue.length; i++) {
     const cb = queue[i];
     if (cb && cb.pre) {
-      if (instance && cb.id !== instance.uid) {
-        continue;
-      }
       if ( true && checkRecursiveUpdates(seen, cb)) {
         continue;
       }
@@ -8691,7 +8683,6 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
       }
       const { vnode: vnode2, activeBranch, parentComponent: parentComponent2, container: container2, isSVG: isSVG2 } = suspense;
       triggerEvent(vnode2, "onFallback");
-      const anchor2 = next(activeBranch);
       const mountFallback = () => {
         if (!suspense.isInFallback) {
           return;
@@ -8700,7 +8691,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
           null,
           fallbackVNode,
           container2,
-          anchor2,
+          next(activeBranch),
           parentComponent2,
           null,
           // fallback tree will not have suspense context
@@ -13090,7 +13081,7 @@ function baseCreateRenderer(options, createHydrationFns) {
     updateProps(instance, nextVNode.props, prevProps, optimized);
     updateSlots(instance, nextVNode.children, optimized);
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.pauseTracking)();
-    flushPreFlushCbs(instance);
+    flushPreFlushCbs();
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.resetTracking)();
   };
   const patchChildren = (n1, n2, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized = false) => {
@@ -14979,7 +14970,7 @@ function isMemoSame(cached, memo) {
   return true;
 }
 
-const version = "3.3.11";
+const version = "3.3.10";
 const _ssrUtils = {
   createComponentInstance,
   setupComponent,
@@ -15835,9 +15826,7 @@ function shouldSetAsProp(el, key, value, isSVG) {
   }
   if (key === "width" || key === "height") {
     const tag = el.tagName;
-    if (tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE") {
-      return false;
-    }
+    return !(tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE");
   }
   if (isNativeOn(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
     return false;
@@ -17172,28 +17161,19 @@ const replacer = (_key, val) => {
     return replacer(_key, val.value);
   } else if (isMap(val)) {
     return {
-      [`Map(${val.size})`]: [...val.entries()].reduce(
-        (entries, [key, val2], i) => {
-          entries[stringifySymbol(key, i) + " =>"] = val2;
-          return entries;
-        },
-        {}
-      )
+      [`Map(${val.size})`]: [...val.entries()].reduce((entries, [key, val2]) => {
+        entries[`${key} =>`] = val2;
+        return entries;
+      }, {})
     };
   } else if (isSet(val)) {
     return {
-      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
+      [`Set(${val.size})`]: [...val.values()]
     };
-  } else if (isSymbol(val)) {
-    return stringifySymbol(val);
   } else if (isObject(val) && !isArray(val) && !isPlainObject(val)) {
     return String(val);
   }
   return val;
-};
-const stringifySymbol = (v, i = "") => {
-  var _a;
-  return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
 };
 
 
@@ -20346,7 +20326,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><div class=\"main\"><div class=\"main_1\"><!-- &lt;img class=&quot;main_sl&quot; src=&quot;./img/maru.png&quot; alt=&quot;메인이미지&quot; /&gt; --><div class=\"main_1_box\"><div class=\"main_txt\"> 놀러오세요! 경상도, 좋아요!<br>블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div><!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   --><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_txt\">축제정보</div><div class=\"main_2_line\"></div><!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! --><img class=\"main_2_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_2_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div><!-- 빈공간 많으면 머시기 넣을지 생각하기 --><!-- &lt;div class=&quot;mian_shap&quot;&gt;#머시기 #머시기 #머시기&lt;/div&gt; --><!-- 반응형 사라질 때 노란효과 없애기 --><div></div></div><!-- &lt;div class=&quot;main_2_news&quot;&gt; --><!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! --><!-- 뉴스 가져오기 a링크 --><!-- &lt;/div&gt; --></div><div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_3_left\"><div class=\"main_2_box_txt\">관광정보</div><div class=\"main_2_line\"></div></div><div class=\"main_3_mid\"><img class=\"main_3_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_3_txt\"> 경상도에서 인기있는<br> 관광지를 만나보세요! </div></div><!-- &lt;div class=&quot;main_3_news&quot;&gt; --><!-- 가운데로 오게 해주세요 제발 --><!-- &lt;/div&gt; --></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_4_left\"><div class=\"main_2_box_txt\">행사정보</div><div class=\"main_2_line\"></div></div><img class=\"main_4_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_4_txt\"> 경상도에서 진행 중인<br> 행사를 만나보세요! </div></div><!-- &lt;div class=&quot;main_4_news&quot;&gt; --><!-- 위에랑 동일하지만 슬라이드 효과른 넣을게요 --><!-- &lt;/div&gt; --></div><!-- 똑같이 줬는데 왜 자꾸 얘만 떨어질까 ?? --><div class=\"main_5\"><div class=\"main_5_box\"><div class=\"main_5_left\"><div class=\"main_2_box_txt\">소통광장</div><div class=\"main_2_line\"></div></div></div><!-- 색연필은 맨 위로 올라감 -_- --><img class=\"main_5_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_5_txt\"> &#39;가가가가?&#39; 다양한<br> 재미를 공유해 보세요! </div></div></div><div><footer class=\"footer\">푸터 띄우기</footer></div></div><div class=\"main_topBtn\"></div>", 2);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><div class=\"main\"><div class=\"main_1\"><!-- &lt;img class=&quot;main_sl&quot; src=&quot;./img/maru.png&quot; alt=&quot;메인이미지&quot; /&gt; --><div class=\"main_1_box\"><div class=\"main_txt\"><div class=\"main_txt_up\"> 놀러오세요! 경상도, 좋아요!<br></div><div class=\"main_txt_down\"> 블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div></div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div><!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   --><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_left\"><div class=\"main_2_sub\"><div class=\"main_2_sub_tit\">축제정보</div><div class=\"main_2_sub_line\"></div></div><!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! --><div class=\"main_2_sub_con\"><div class=\"main_2_sub_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div></div><!-- 빈공간 많으면 머시기 넣을지 생각하기 --><div class=\"main_shap\">크리스마스 우리 함께 즐겨볼까요🎅</div><!-- 반응형 사라질 때 노란효과 없애기 --></div><div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"색연필\"></div><div class=\"main_2_box_right\"><!-- &lt;div class=&quot;main_2_news&quot;&gt;뉴스&lt;/div&gt; --></div><!-- &lt;div class=&quot;main_2_news&quot;&gt; --><!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! --><!-- 뉴스 가져오기 a링크 --><!-- &lt;/div&gt; --></div></div><div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_2_box_left\"><div class=\"main_2_sub\"><div class=\"main_2_sub_tit\">관광정보</div><div class=\"main_2_sub_line\"></div></div><div class=\"main_3_sub_con\"><div class=\"main_3_sub_txt\"> 경상도에서 다양한<br> 관광지를 만나보세요! </div></div><div class=\"main_shap\">경상도에 이렇게 갈 곳이 많다구요😎</div></div><div><img class=\"main_3_sub_y\" src=\"/img/yellow.png\" alt=\"색연필\"></div><div class=\"main_2_box_right\"></div></div></div><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_left\"><div class=\"main_2_sub\"><div class=\"main_2_sub_tit\">유저광장</div><div class=\"main_2_sub_line\"></div></div><div class=\"main_2_sub_con\"><div class=\"main_2_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div></div><div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"색연필\"></div><div class=\"main_2_box_right\"></div></div></div></div><div><footer class=\"footer\">푸터 띄우기</footer></div></div><div class=\"main_topBtn\"></div>", 2);
 function render(_ctx, _cache) {
   return _hoisted_1;
 }

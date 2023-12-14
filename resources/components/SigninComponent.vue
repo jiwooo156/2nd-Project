@@ -8,7 +8,7 @@
 				<div class="sign_container">
 					<div class="sign_relative">
 						<span>E-mail</span>
-						<input type="text" placeholder="ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ" id="signin_email" autocomplete='off'>
+						<input type="text" id="signin_email" autocomplete="off" readonly :value="email">
 					</div>
 					<div>
 						<span>비밀번호</span>
@@ -46,7 +46,6 @@
 						>이미 사용중인 닉네임 입니다.</span>
 						<span
 							v-for="item in $store.state.varErr" :key="item"
-							v-if="$store.state.emailFlg === 1" 
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
 						<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8">
@@ -99,6 +98,7 @@ export default {
 
 	data() {
 		return {
+			email: "",
 			pw: "",
 			pw_chk: "",
 			name: "",
@@ -147,12 +147,30 @@ export default {
 		},
 	},
 	created() {
+		this.email= "";
 		this.$store.commit('setErrMsg',[]);
-		this.$store.commit('setNickFlg',0);
-		this.$store.commit('setEmailFlg',0);	
+		this.$store.commit('setNickFlg',0);	
+		this.emailGet()
 	},
 
 	methods: {
+		// 이메일중복확인
+		emailGet(){
+		const URL = '/signin/start'
+		axios.get(URL)
+		.then(res => {
+			this.$store.commit('setErrMsg','');
+			if(res.data.code === "0"){
+				console.log('정상')
+				this.email = res.data.data.email
+			}else{
+				console.log('else')
+			}
+		})
+		.catch(err => {
+			this.$store.commit('setErrMsg',err.response.data.errorMsg);
+		})
+		},
 		pwval(){
 			const VAR1 = /[a-zA-Z]/
 			const VAR2 = /\d+/
@@ -349,19 +367,39 @@ export default {
 				this.$store.dispatch('actionSignIn');
 			}else{
 				if(!this.com_pw){
-					alert("비밀번호 값을 확인해주세요\n영어,숫자,특수문자(?~!@#)를 1개이상 포함한 8~20글자 사이로 작성해주세요")
+					this.err_pw1 = true;
+					this.err_pw2 = false;
+					this.err_pw3 = false;
+					this.err_pw4 = false;
+					this.err_pw5 = false;
+					this.com_pw = false;
+					return;
 				}
 				if(!this.com_pw_chk){
-					alert("비밀번호확인 값을 확인 해주세요\n비밀번호와 같은 값을 작성해 주세요")
+					this.err_pw_chk = true;
+					this.com_pw_chk = false;
+					return;
 				}
 				if(!this.com_name){
-					alert("이름을 확인해 주세요\n한국어 2~10글자 사이로 작성해 주세요")
+					this.err_name1 = true;
+					this.err_name2 = false;
+					this.err_name3 = false;
+					this.com_name = false;
+					return;
 				}
 				if(!this.com_birthdate){
-					alert("생년월일을 확인해주세요\n-를제외한 8자리 숫자를 작성해 주세요")
+					this.err_birthdate1 = false;
+					this.err_birthdate2 = true;
+					this.err_birthdate3 = false;
+					this.com_birthdate = false;
+				return
 				}
 				if(!this.com_phone){
-					alert("휴대폰 번호를 확인해 주세요\n-를제외한 11자리 숫자를 작성해 주세요")
+					this.err_phone1 = false;
+					this.err_phone2 = true;
+					this.err_phone3 = false;
+					this.com_phone = false;
+					return
 				}
 			}
 		}
@@ -369,7 +407,6 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','')
 		this.$store.commit('setNickFlg',0)
-		this.$store.commit('setEmailFlg',0)
 		next();
 	},
 }
