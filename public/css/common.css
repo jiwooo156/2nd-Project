@@ -106,7 +106,6 @@ body, html, a, button, table, input, select, textarea {
 	line-height: 4.5rem;
   }
   .main_txt_up {
-	/* font-size: 3rem; */
 	color: #f2cc0f;
   }
   .main_txt_down {
@@ -117,7 +116,6 @@ body, html, a, button, table, input, select, textarea {
 	height: 160px;
 	width: 160px;
 	margin: 200px 50px;
-	/* float: right; */
 	position: fixed;
 	right: 0;
 	z-index: 10;
@@ -155,26 +153,32 @@ body, html, a, button, table, input, select, textarea {
 	height: 100vh;  
 	width: 100%;  
 	background-color: #fff;
-	display: flex;
 	position: relative;
-  }
-  .main_2_box_left {
+	/* display: flex; */
+}
+  .main_box_left {
 	display: flex;
 	position: relative;
 	flex-direction: column;
 	z-index: 1;
   }
+  .main_box_right {
+	/* display: flex; */
+	/* position: relative; */
+	/* flex-direction: column; */
+  }
   .main_2_box {
-	width: 40%;
+	width: 100%;
 	height: 100vh;
 	padding: 110px 0 0 100px;
+	display: flex;
   }
-  .main_2_sub_tit {
+  .main_sub_tit {
 	margin: 0 0 1rem;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	display: inline-block;
   }
-  .main_2_sub_line {
+  .main_sub_line {
 	content: "";
 	display: inline-block;
 	margin-left: 0.8rem;
@@ -184,10 +188,10 @@ body, html, a, button, table, input, select, textarea {
 	background-color: #222;
 	vertical-align: middle;
   }
-  .main_2_sub_txt {
+  .main_sub_txt {
 	display: block;
 	font-weight: 500;
-	width: 600px;
+	width: 550px;
   }
   .main_sub_y {
 	width: 10rem;
@@ -198,14 +202,42 @@ body, html, a, button, table, input, select, textarea {
 	z-index: -1;
   }
   .main_shap {
-	top: 400px;
-	font-size: 1.3rem;
+	margin: 3px 0;
+	padding-left: 5px;
+	font-size: 1.4rem;
   }
-  .main_2_news {
+.main_2_news {
+	display: flex;
+	margin-top: 70px; 
+	margin-left: 40px;
+	height: 60vh;
+	flex-direction: row;
+    flex-wrap: wrap;
+}
+.main_2_news_l {
+	width: 500px;
+	margin: 0 10px 10px 0;
+	border-radius: 10px;
+	height: 280px;
+	text-align: center;
+	padding: 30px;
+	background-color: #f8f8f8;
+}
+.art_plus {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1rem;
+}
+.article {
+	color: #D14C6C;
+	display: inline-block;
+}
+.plus_icon {
+	color: #D14C6C;
+	display: inline-block;
+	size: 5px;
+}
 
-	background-color: #222;
-
-  }
   /* 메인 세번째 */
   .main_3 {
 	height: 100vh;  
@@ -220,13 +252,6 @@ body, html, a, button, table, input, select, textarea {
 	padding: 110px 0 0 100px;
 	position: relative;
   }
-  .main_3_txt {
-	display: block;
-	font-size: 2.5rem;
-	font-weight: 500;
-	z-index: 10;
-	position: absolute;
-  }
   .main_3_sub_y {
 	width: 13rem;
 	height: 10rem;
@@ -240,12 +265,6 @@ body, html, a, button, table, input, select, textarea {
 	font-weight: 500;
 	width: 600px;
   }
-  .main_3_news {
-	margin: 220px auto;
-	background-color: #222;
-	width: 1500px;
-	height: 400px;
-  }
   /* 메인 네번째 */
   .main_4 {
 	height: 100vh;  
@@ -255,25 +274,10 @@ body, html, a, button, table, input, select, textarea {
   .main_4_box {
 	width: 40%;
 	height: 100vh;
-	padding: 180px 80px;
+	padding: 110px 0 0 100px;
 	position: relative;
   }
-  .main_4_txt {
-	display: block;
-	font-size: 2.5rem;
-	font-weight: 500;
-	z-index: 10;
-	position: absolute;
-  }
-  .main_4_y {
-	width: 8rem;
-	height: 8rem;
-	position: absolute;
-	top: 255px;
-	left: 50px;
-  }
-  /* 공통 */
-  
+
   /* 푸터 */
   .footer {
 	background-color: rgba(128, 128, 128, 0.274);
