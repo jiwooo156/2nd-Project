@@ -23,23 +23,24 @@
 			<!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   -->
 			<div class="main_2">
         <div class="main_2_box">
-          <div class="main_2_box_left">
+          <div class="main_2_box_left"
+              data-aos="fade-down"
+              data-aos-easing="linear"
+              data-aos-duration="1300">
             <div class="main_2_sub">
               <div class="main_2_sub_tit">축제정보</div>
               <div class="main_2_sub_line"></div>
             </div>
-            <!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! -->
             <div class="main_2_sub_con">
               <div class="main_2_sub_txt">
                 경상도에서 인기있는<br />
                 축제를 만나보세요!
               </div>
             </div>
-            <!-- 빈공간 많으면 머시기 넣을지 생각하기 -->
             <div class="main_shap">크리스마스 우리 함께 즐겨볼까요🎅</div>
             <!-- 반응형 사라질 때 노란효과 없애기 -->
+            <img class="main_sub_y" src="/img/yellow.png" alt="색연필" />
           </div>
-          <div><img class="main_sub_y" src="/img/yellow.png" alt="색연필" /></div>
           <div class="main_2_box_right">
             <!-- <div class="main_2_news">뉴스</div> -->
           </div>
@@ -51,7 +52,10 @@
 			</div>
 			<div class="main_3">
 				<div class="main_3_box">
-          <div class="main_2_box_left">
+          <div class="main_2_box_left"
+              data-aos="fade-down"
+              data-aos-easing="linear"
+              data-aos-duration="1300">
             <div class="main_2_sub">
               <div class="main_2_sub_tit">관광정보</div>
               <div class="main_2_sub_line"></div>
@@ -63,15 +67,18 @@
               </div>
             </div>
             <div class="main_shap">경상도에 이렇게 갈 곳이 많다구요😎</div>
+            <img class="main_3_sub_y" src="/img/yellow.png" alt="색연필" />
           </div>
-          <div><img class="main_3_sub_y" src="/img/yellow.png" alt="색연필" /></div>
           <div class="main_2_box_right">
           </div>
 				</div>
 			</div>
 			<div class="main_2">
         <div class="main_2_box">
-          <div class="main_2_box_left">
+          <div class="main_2_box_left"
+              data-aos="fade-down"
+              data-aos-easing="linear"
+              data-aos-duration="1300">
             <div class="main_2_sub">
               <div class="main_2_sub_tit">유저광장</div>
               <div class="main_2_sub_line"></div>
@@ -83,8 +90,8 @@
               </div>
             </div>
             <div class="main_shap">'가가가가?'같은 경상도식 유머가 있어요🤗</div>
+            <img class="main_sub_y" src="/img/yellow.png" alt="색연필" />
           </div>
-          <div><img class="main_sub_y" src="/img/yellow.png" alt="색연필" /></div>
           <div class="main_2_box_right">
           </div>
 				</div>

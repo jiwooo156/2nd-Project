@@ -6,6 +6,8 @@ import OpenComponent from '../components/OpenComponent.vue';
 import store from './store.js';
 import VueCookies from "vue-cookies";
 import router from './router.js';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const app = createApp({
 	components: {
@@ -16,6 +18,7 @@ const app = createApp({
 .use(router)
 .use(VueCookies);  //쿠키사용
 
+AOS.init();
 app.config.globalProperties.$cookies.config("1d");   //쿠키사용기간 ("1d") = 하루
 app.mount('#app');  //마운트 처리
 

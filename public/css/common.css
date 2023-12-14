@@ -168,13 +168,7 @@ body, html, a, button, table, input, select, textarea {
 	width: 40%;
 	height: 100vh;
 	padding: 110px 0 0 100px;
-	/* position: relative; */
   }
-  /* .main_2_box_txt {
-	margin: 0 0 1rem;
-	font-size: 1rem;
-	display: inline-block;
-  } */
   .main_2_sub_tit {
 	margin: 0 0 1rem;
 	font-size: 1rem;
@@ -190,41 +184,18 @@ body, html, a, button, table, input, select, textarea {
 	background-color: #222;
 	vertical-align: middle;
   }
-  /* .main_2_line {
-	content: "";
-	display: inline-block;
-	margin-left: 0.8rem;
-	width: 5rem;
-	height: 1px;
-	background-color: #222;
-	vertical-align: middle;
-  } */
-  /* .main_2_txt {
-	display: block;
-	font-size: 2.5rem;
-	font-weight: 500;
-	z-index: 2;
-	position: absolute;
-  } */
   .main_2_sub_txt {
 	display: block;
 	font-weight: 500;
 	width: 600px;
   }
-  /* .main_2_y {
-	width: 8rem;
-	height: 8rem;
-	position: absolute;
-	top: 255px;
-	left: 50px;
-  } */
   .main_sub_y {
 	width: 10rem;
 	height: 10rem;
 	position: absolute;
-    top: 190px;
-    left: 77px;
-	z-index: 0;
+	top: 82px;
+    left: -25px;
+	z-index: -1;
   }
   .main_shap {
 	top: 400px;
@@ -260,9 +231,9 @@ body, html, a, button, table, input, select, textarea {
 	width: 13rem;
 	height: 10rem;
 	position: absolute;
-    top: 190px;
-    left: 77px;
-	z-index: 0;
+	top: 82px;
+    left: -25px;
+	z-index: -1;
   }
   .main_3_sub_txt {
 	display: block;
