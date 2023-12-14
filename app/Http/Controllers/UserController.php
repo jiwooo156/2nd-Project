@@ -374,7 +374,7 @@ class UserController extends Controller
             ], 200);
         }
     }
-    // 시간리셋
+    // 인증시간연장
     public function addtime(Request $req)
     {
         $result = Authenticate::where('email',$req->email)->get();
