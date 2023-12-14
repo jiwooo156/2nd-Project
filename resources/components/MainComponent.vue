@@ -35,7 +35,7 @@
                 축제를 만나보세요!
               </div>
             </div>
-            <div class="main_shap">크리스마스 우리 함께 즐겨볼까요🎅</div>
+            <div class="main_shap">크리스마스, 우리 함께 즐겨요🎅</div>
             <!-- 반응형 사라질 때 노란색연필 없애기 -->
             <img class="main_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
@@ -43,16 +43,37 @@
             <div class="main_2_news">
               <div class="main_2_news_l">
                 <div class="art_plus">
-                  <h3 class="article">보도자료</h3>
-                  <div class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></div>
+                  <h3 class="article">경상북도</h3>
+                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
                 </div>
-                <h3 class="art_tit">내년에도 지역 체류여행은 계속된다. 군내ㅇ행 기상도 'ㅁ락믐'</h3>
-                <p class="art_con">내년에도 지역 체류여행은 계속된다. 국내여행 기상도 '맑음'...</p>
-                <p class="art_date">2023-12-12</p>
+                <div class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</div>
+                <div class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</div>
+                <p class="art_date">2023.12.01 - 2023.12.10</p>
               </div>
-              <div class="main_2_news_l">dd</div>
-              <div class="main_2_news_l">d</div>
-              <div class="main_2_news_l">d</div>
+              <div class="main_2_news_l"><div class="art_plus">
+                  <h3 class="article">경상북도</h3>
+                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+                </div>
+                <div class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</div>
+                <div class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</div>
+                <p class="art_date">2023.12.01 - 2023.12.10</p>
+              </div>
+              <div class="main_2_news_l"><div class="art_plus">
+                  <h3 class="article">경상남도</h3>
+                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+                </div>
+                <div class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</div>
+                <div class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</div>
+                <p class="art_date">2023.12.23 - 2024.02.28</p>
+              </div>
+              <div class="main_2_news_l"><div class="art_plus">
+                  <h3 class="article">경상남도</h3>
+                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
+                </div>
+                <div class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</div>
+                <div class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</div>
+                <p class="art_date">2023.12.23 - 2024.02.28</p>
+              </div>
             </div>
           </div>
 				</div>

@@ -18970,7 +18970,7 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "main_2_box"
 };
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">축제정보</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div></div><div class=\"main_shap\">크리스마스 우리 함께 즐겨볼까요🎅</div><!-- 반응형 사라질 때 노란색연필 없애기 --><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div>", 1);
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">축제정보</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div></div><div class=\"main_shap\">크리스마스, 우리 함께 즐겨요🎅</div><!-- 반응형 사라질 때 노란색연필 없애기 --><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div>", 1);
 var _hoisted_6 = {
   "class": "main_box_right"
 };
@@ -18985,40 +18985,104 @@ var _hoisted_9 = {
 };
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "article"
-}, "보도자료", -1 /* HOISTED */);
+}, "경상북도", -1 /* HOISTED */);
 var _hoisted_11 = {
+  href: "#",
   "class": "plus_icon"
 };
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "art_tit"
-}, "내년에도 지역 체류여행은 계속된다. 군내ㅇ행 기상도 'ㅁ락믐'", -1 /* HOISTED */);
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+}, "포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장", -1 /* HOISTED */);
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "art_con"
-}, "내년에도 지역 체류여행은 계속된다. 국내여행 기상도 '맑음'...", -1 /* HOISTED */);
+}, "해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...", -1 /* HOISTED */);
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "art_date"
-}, "2023-12-12", -1 /* HOISTED */);
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+}, "2023.12.01 - 2023.12.10", -1 /* HOISTED */);
+var _hoisted_15 = {
   "class": "main_2_news_l"
-}, "dd", -1 /* HOISTED */);
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+var _hoisted_16 = {
+  "class": "art_plus"
+};
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "article"
+}, "경상북도", -1 /* HOISTED */);
+var _hoisted_18 = {
+  href: "#",
+  "class": "plus_icon"
+};
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_tit"
+}, "포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장", -1 /* HOISTED */);
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_con"
+}, "해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...", -1 /* HOISTED */);
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "art_date"
+}, "2023.12.01 - 2023.12.10", -1 /* HOISTED */);
+var _hoisted_22 = {
   "class": "main_2_news_l"
-}, "d", -1 /* HOISTED */);
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+var _hoisted_23 = {
+  "class": "art_plus"
+};
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "article"
+}, "경상남도", -1 /* HOISTED */);
+var _hoisted_25 = {
+  href: "#",
+  "class": "plus_icon"
+};
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_tit"
+}, "합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제", -1 /* HOISTED */);
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_con"
+}, "실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...", -1 /* HOISTED */);
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "art_date"
+}, "2023.12.23 - 2024.02.28", -1 /* HOISTED */);
+var _hoisted_29 = {
   "class": "main_2_news_l"
-}, "d", -1 /* HOISTED */);
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">관광정보</div><div class=\"main_sub_line\"></div></div><div class=\"main_3_sub_con\"><div class=\"main_3_sub_txt\"> 경상도에서 다양한<br> 관광지를 만나보세요! </div></div><div class=\"main_shap\">경상도에 이렇게 갈 곳이 많다구요😎</div><img class=\"main_3_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div>", 2);
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
+};
+var _hoisted_30 = {
+  "class": "art_plus"
+};
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "article"
+}, "경상남도", -1 /* HOISTED */);
+var _hoisted_32 = {
+  href: "#",
+  "class": "plus_icon"
+};
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_tit"
+}, "합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제", -1 /* HOISTED */);
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "art_con"
+}, "실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...", -1 /* HOISTED */);
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "art_date"
+}, "2023.12.23 - 2024.02.28", -1 /* HOISTED */);
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">관광정보</div><div class=\"main_sub_line\"></div></div><div class=\"main_3_sub_con\"><div class=\"main_3_sub_txt\"> 경상도에서 다양한<br> 관광지를 만나보세요! </div></div><div class=\"main_shap\">경상도에 이렇게 갈 곳이 많다구요😎</div><img class=\"main_3_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div>", 2);
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
   "class": "footer"
 }, "푸터 띄우기")], -1 /* HOISTED */);
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache) {
   var _component_font_awesome_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("font-awesome-icon");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'plus']
-  })])]), _hoisted_12, _hoisted_13, _hoisted_14]), _hoisted_15, _hoisted_16, _hoisted_17])])])]), _hoisted_18]), _hoisted_20]), _hoisted_21], 64 /* STABLE_FRAGMENT */);
+  })])]), _hoisted_12, _hoisted_13, _hoisted_14]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'plus']
+  })])]), _hoisted_19, _hoisted_20, _hoisted_21]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'plus']
+  })])]), _hoisted_26, _hoisted_27, _hoisted_28]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'plus']
+  })])]), _hoisted_33, _hoisted_34, _hoisted_35])])])])]), _hoisted_36]), _hoisted_38]), _hoisted_39], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
