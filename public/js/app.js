@@ -6243,13 +6243,8 @@ class BaseReactiveHandler {
       return isReadonly2;
     } else if (key === "__v_isShallow") {
       return shallow;
-    } else if (key === "__v_raw") {
-      if (receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target) || // receiver is not the reactive proxy, but has the same prototype
-      // this means the reciever is a user proxy of the reactive proxy
-      Object.getPrototypeOf(target) === Object.getPrototypeOf(receiver)) {
-        return target;
-      }
-      return;
+    } else if (key === "__v_raw" && receiver === (isReadonly2 ? shallow ? shallowReadonlyMap : readonlyMap : shallow ? shallowReactiveMap : reactiveMap).get(target)) {
+      return target;
     }
     const targetIsArray = (0,_vue_shared__WEBPACK_IMPORTED_MODULE_0__.isArray)(target);
     if (!isReadonly2) {
@@ -7490,16 +7485,13 @@ function queuePostFlushCb(cb) {
   }
   queueFlush();
 }
-function flushPreFlushCbs(instance, seen, i = isFlushing ? flushIndex + 1 : 0) {
+function flushPreFlushCbs(seen, i = isFlushing ? flushIndex + 1 : 0) {
   if (true) {
     seen = seen || /* @__PURE__ */ new Map();
   }
   for (; i < queue.length; i++) {
     const cb = queue[i];
     if (cb && cb.pre) {
-      if (instance && cb.id !== instance.uid) {
-        continue;
-      }
       if ( true && checkRecursiveUpdates(seen, cb)) {
         continue;
       }
@@ -8691,7 +8683,6 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
       }
       const { vnode: vnode2, activeBranch, parentComponent: parentComponent2, container: container2, isSVG: isSVG2 } = suspense;
       triggerEvent(vnode2, "onFallback");
-      const anchor2 = next(activeBranch);
       const mountFallback = () => {
         if (!suspense.isInFallback) {
           return;
@@ -8700,7 +8691,7 @@ function createSuspenseBoundary(vnode, parentSuspense, parentComponent, containe
           null,
           fallbackVNode,
           container2,
-          anchor2,
+          next(activeBranch),
           parentComponent2,
           null,
           // fallback tree will not have suspense context
@@ -13090,7 +13081,7 @@ function baseCreateRenderer(options, createHydrationFns) {
     updateProps(instance, nextVNode.props, prevProps, optimized);
     updateSlots(instance, nextVNode.children, optimized);
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.pauseTracking)();
-    flushPreFlushCbs(instance);
+    flushPreFlushCbs();
     (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_0__.resetTracking)();
   };
   const patchChildren = (n1, n2, container, anchor, parentComponent, parentSuspense, isSVG, slotScopeIds, optimized = false) => {
@@ -14979,7 +14970,7 @@ function isMemoSame(cached, memo) {
   return true;
 }
 
-const version = "3.3.11";
+const version = "3.3.10";
 const _ssrUtils = {
   createComponentInstance,
   setupComponent,
@@ -15835,9 +15826,7 @@ function shouldSetAsProp(el, key, value, isSVG) {
   }
   if (key === "width" || key === "height") {
     const tag = el.tagName;
-    if (tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE") {
-      return false;
-    }
+    return !(tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "SOURCE");
   }
   if (isNativeOn(key) && (0,_vue_shared__WEBPACK_IMPORTED_MODULE_1__.isString)(value)) {
     return false;
@@ -17172,28 +17161,19 @@ const replacer = (_key, val) => {
     return replacer(_key, val.value);
   } else if (isMap(val)) {
     return {
-      [`Map(${val.size})`]: [...val.entries()].reduce(
-        (entries, [key, val2], i) => {
-          entries[stringifySymbol(key, i) + " =>"] = val2;
-          return entries;
-        },
-        {}
-      )
+      [`Map(${val.size})`]: [...val.entries()].reduce((entries, [key, val2]) => {
+        entries[`${key} =>`] = val2;
+        return entries;
+      }, {})
     };
   } else if (isSet(val)) {
     return {
-      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
+      [`Set(${val.size})`]: [...val.values()]
     };
-  } else if (isSymbol(val)) {
-    return stringifySymbol(val);
   } else if (isObject(val) && !isArray(val) && !isPlainObject(val)) {
     return String(val);
   }
   return val;
-};
-const stringifySymbol = (v, i = "") => {
-  var _a;
-  return isSymbol(v) ? `Symbol(${(_a = v.description) != null ? _a : i})` : v;
 };
 
 
@@ -19496,31 +19476,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/MainComponent.vue?vue&type=script&lang=js":
-/*!****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/MainComponent.vue?vue&type=script&lang=js ***!
-  \****************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'MainComponent',
-  components: {},
-  methods: {},
-  created: function created() {
-    console.log('main : created');
-  },
-  updated: function updated() {
-    console.log('main : updated');
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/OpenComponent.vue?vue&type=script&lang=js":
 /*!****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/OpenComponent.vue?vue&type=script&lang=js ***!
@@ -20312,13 +20267,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": ""
-};
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "메인", -1 /* HOISTED */);
-var _hoisted_3 = [_hoisted_2];
-function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [].concat(_hoisted_3));
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><!-- &lt;div&gt;\r\n\t\t\t&lt;header class=&quot;header&quot;&gt;\r\n\t\t\t\t&lt;div class=&quot;header_left&quot;&gt;\r\n\t\t\t\t\t&lt;h1 class=&quot;logo&quot;&gt;&lt;a href=&quot;#&quot;&gt;안냥&lt;/a&gt;&lt;/h1&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t\t&lt;div class=&quot;header_mid&quot;&gt;\r\n\t\t\t\t\t&lt;nav class=&quot;lnb&quot;&gt;\r\n\t\t\t\t\t\t&lt;ul class=&quot;nav&quot;&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;홈이야요&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;블루베리&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;스우므디&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;경상도오&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;경상남도구&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;경상북돈디&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;배고프당&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;마아라탕&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;먹구시펑&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t&lt;/nav&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t\t&lt;div class=&quot;header_right&quot;&gt;\r\n\t\t\t\t\t&lt;ul class=&quot;gnb&quot;&gt;\r\n\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t&lt;a href=&quot;#&quot;&gt;로그인&lt;/a&gt;\r\n\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t&lt;a href=&quot;#&quot;&gt;회원가입&lt;/a&gt;\r\n\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t&lt;/header&gt;\r\n\t\t\t&lt;a href=&quot;javascript:void(0);&quot; class=&quot;menu_btn&quot;&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;i class=&quot;sound_only&quot;&gt;메뉴&lt;/i&gt;\r\n\t\t\t&lt;/a&gt;\r\n\t\t&lt;/div&gt; --><div class=\"main\"><div class=\"main_1\"><!-- &lt;img class=&quot;main_sl&quot; src=&quot;./img/maru.png&quot; alt=&quot;메인이미지&quot; /&gt; --><div class=\"main_1_box\"><div class=\"main_txt\"> 놀러오세요! 경상도, 좋아요!<br>블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div><!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   --><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_txt\">축제정보</div><div class=\"main_2_line\"></div><!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! --><img class=\"main_2_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_2_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div><!-- 빈공간 많으면 머시기 넣을지 생각하기 --><!-- &lt;div class=&quot;mian_shap&quot;&gt;#머시기 #머시기 #머시기&lt;/div&gt; --><!-- 반응형 사라질 때 노란효과 없애기 --><div></div></div><div class=\"main_2_news\"><!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! --><!-- 뉴스 가져오기 a링크 --></div></div><div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_3_left\"><div class=\"main_2_box_txt\">관광정보</div><div class=\"main_2_line\"></div></div><div class=\"main_3_mid\"><img class=\"main_3_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_3_txt\"> 경상도에서 인기있는<br> 관광지를 만나보세요! </div></div><div class=\"main_3_news\"><!-- 가운데로 오게 해주세요 제발 --></div></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_4_left\"><div class=\"main_2_box_txt\">행사정보</div><div class=\"main_2_line\"></div></div><img class=\"main_4_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_4_txt\"> 경상도에서 진행 중인<br> 행사를 만나보세요! </div></div><div class=\"main_4_news\"><!-- 위에랑 동일하지만 슬라이드 효과른 넣을게요 --></div></div><!-- 똑같이 줬는데 왜 자꾸 얘만 떨어질까 ?? --><div class=\"main_5\"><div class=\"main_5_box\"><div class=\"main_5_left\"><div class=\"main_2_box_txt\">소통광장</div><div class=\"main_2_line\"></div></div></div><!-- 색연필은 맨 위로 올라감 -_- --><img class=\"main_5_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_5_txt\"> &#39;가가가가?&#39; 다양한<br> 재미를 공유해 보세요! </div></div></div><div><footer class=\"footer\">푸터 띄우기</footer></div></div><div class=\"main_topBtn\"></div>", 2);
+function render(_ctx, _cache) {
+  return _hoisted_1;
 }
 
 /***/ }),
@@ -39311,14 +39262,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _MainComponent_vue_vue_type_template_id_10ba9c23__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MainComponent.vue?vue&type=template&id=10ba9c23 */ "./resources/components/MainComponent.vue?vue&type=template&id=10ba9c23");
-/* harmony import */ var _MainComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainComponent.vue?vue&type=script&lang=js */ "./resources/components/MainComponent.vue?vue&type=script&lang=js");
-/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
-
-
+const script = {}
 
 ;
-const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_MainComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_MainComponent_vue_vue_type_template_id_10ba9c23__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/components/MainComponent.vue"]])
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(script, [['render',_MainComponent_vue_vue_type_template_id_10ba9c23__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/components/MainComponent.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -39511,22 +39460,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LoginComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LoginComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./LoginComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/LoginComponent.vue?vue&type=script&lang=js");
- 
-
-/***/ }),
-
-/***/ "./resources/components/MainComponent.vue?vue&type=script&lang=js":
-/*!************************************************************************!*\
-  !*** ./resources/components/MainComponent.vue?vue&type=script&lang=js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MainComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_MainComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./MainComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/MainComponent.vue?vue&type=script&lang=js");
  
 
 /***/ }),
