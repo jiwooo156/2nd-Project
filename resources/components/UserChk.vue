@@ -1,13 +1,4 @@
 <template>
-
-	<div class="user_container">
-		<div class="user_userInfo">		
-			<div class="user_userInfo_text_center">
-				<h1 class="user_h1">회원 정보</h1>
-				
-			</div>
-		</div> 
-	</div>
 	<br>
 	<div class="userChk_container">
 		<div class="user_subcontainer">
