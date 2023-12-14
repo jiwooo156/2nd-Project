@@ -39,7 +39,7 @@
             <div class="main_shap">크리스마스 우리 함께 즐겨볼까요🎅</div>
             <!-- 반응형 사라질 때 노란효과 없애기 -->
           </div>
-          <div><img class="main_2_sub_y" src="/img/yellow.png" alt="색연필" /></div>
+          <div><img class="main_sub_y" src="/img/yellow.png" alt="색연필" /></div>
           <div class="main_2_box_right">
             <!-- <div class="main_2_news">뉴스</div> -->
           </div>
@@ -82,9 +82,9 @@
                 재미를 공유해봐요!
               </div>
             </div>
-            <div class="main_shap">'가가가가?'같은 사투리 유머도 있죠🤗</div>
+            <div class="main_shap">'가가가가?'같은 경상도식 유머가 있어요🤗</div>
           </div>
-          <div><img class="main_2_sub_y" src="/img/yellow.png" alt="색연필" /></div>
+          <div><img class="main_sub_y" src="/img/yellow.png" alt="색연필" /></div>
           <div class="main_2_box_right">
           </div>
 				</div>
