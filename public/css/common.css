@@ -28,11 +28,12 @@ body, html, a, button, table, input, select, textarea {
 .header{
 	width: 100%;
     background-color: #00000000;
-    padding: 20px;
+    padding: 35px 20px;
     display: flex;
     justify-content: space-between;
     text-decoration: none;
-    position: absolute;
+    position: fixed;
+	border-bottom: solid 1px #000000;
     top: 0px;
     z-index: 99;
 }
@@ -78,7 +79,7 @@ body, html, a, button, table, input, select, textarea {
 
 /* 메인 */
 .main {
-	font-size: 2.5rem;
+	font-size: 3.2rem;
 }
 /* 메인 첫번째 */
 .main_1 {
@@ -98,11 +99,18 @@ body, html, a, button, table, input, select, textarea {
   }
   .main_txt {
 	float: left;
-	/* font-size: 2.5rem; */
+	margin: 0 100px;
+	padding: 290px 0 0;
 	color: #fff;
-	font-weight: bold;
-	margin: 50px;
-	padding: 300px 0 0;
+	font-weight: 600;
+	line-height: 4.5rem;
+  }
+  .main_txt_up {
+	/* font-size: 3rem; */
+	color: #f2cc0f;
+  }
+  .main_txt_down {
+	font-size: 3rem;
   }
   .main_wea {
 	display: block;
@@ -112,6 +120,7 @@ body, html, a, button, table, input, select, textarea {
 	/* float: right; */
 	position: fixed;
 	right: 0;
+	z-index: 10;
   }
   .main_wea_up {
 	height: 50px;  
@@ -119,7 +128,7 @@ body, html, a, button, table, input, select, textarea {
 	text-align: center;
 	background-color: rgba(92, 98, 102, 0.6);
 	border-radius: 20px 20px 0px 0px;
-	font-size: 26px;
+	font-size: 24px;
 	height: 36px;
 	padding: 0 11px;
 	margin: 0 0 1px;
@@ -130,7 +139,7 @@ body, html, a, button, table, input, select, textarea {
 	text-align: center;
 	background-color: rgba(92, 98, 102, 0.6);
 	border-radius: 0px 0px 20px 20px;
-	font-size: 26px;
+	font-size: 24px;
   }
   
   
@@ -147,19 +156,41 @@ body, html, a, button, table, input, select, textarea {
 	width: 100%;  
 	background-color: #fff;
 	display: flex;
+	position: relative;
+  }
+  .main_2_box_left {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	z-index: 1;
   }
   .main_2_box {
 	width: 40%;
 	height: 100vh;
-	padding: 180px 80px;
-	position: relative;
+	padding: 110px 0 0 100px;
+	/* position: relative; */
   }
-  .main_2_box_txt {
+  /* .main_2_box_txt {
+	margin: 0 0 1rem;
+	font-size: 1rem;
+	display: inline-block;
+  } */
+  .main_2_sub_tit {
 	margin: 0 0 1rem;
 	font-size: 1rem;
 	display: inline-block;
   }
-  .main_2_line {
+  .main_2_sub_line {
+	content: "";
+	display: inline-block;
+	margin-left: 0.8rem;
+	margin-top: 1rem;
+	width: 8rem;
+	height: 1px;
+	background-color: #222;
+	vertical-align: middle;
+  }
+  /* .main_2_line {
 	content: "";
 	display: inline-block;
 	margin-left: 0.8rem;
@@ -167,42 +198,55 @@ body, html, a, button, table, input, select, textarea {
 	height: 1px;
 	background-color: #222;
 	vertical-align: middle;
-  }
-  .main_2_txt {
+  } */
+  /* .main_2_txt {
 	display: block;
 	font-size: 2.5rem;
 	font-weight: 500;
-	z-index: 10;
+	z-index: 2;
 	position: absolute;
+  } */
+  .main_2_sub_txt {
+	display: block;
+	font-weight: 500;
+	width: 600px;
   }
-  .main_2_y {
+  /* .main_2_y {
 	width: 8rem;
 	height: 8rem;
 	position: absolute;
 	top: 255px;
 	left: 50px;
-  }
-  .mian_shap {
+  } */
+  .main_sub_y {
+	width: 10rem;
+	height: 10rem;
 	position: absolute;
+    top: 190px;
+    left: 77px;
+	z-index: 0;
+  }
+  .main_shap {
 	top: 400px;
+	font-size: 1.3rem;
   }
   .main_2_news {
-	margin: 200px 80px 0px 50px;
-	width: 60%;
-	height: 70%;
+
 	background-color: #222;
-	/* float:right; */
+
   }
   /* 메인 세번째 */
   .main_3 {
 	height: 100vh;  
 	width: 100%;  
 	background-color: rgba(128, 128, 128, 0.5);
+	display: flex;
+	position: relative;
   }
   .main_3_box {
 	width: 40%;
 	height: 100vh;
-	padding: 180px 80px;
+	padding: 110px 0 0 100px;
 	position: relative;
   }
   .main_3_txt {
@@ -212,12 +256,18 @@ body, html, a, button, table, input, select, textarea {
 	z-index: 10;
 	position: absolute;
   }
-  .main_3_y {
-	width: 10.5rem;
-	height: 8rem;
+  .main_3_sub_y {
+	width: 13rem;
+	height: 10rem;
 	position: absolute;
-	top: 255px;
-	left: 50px;
+    top: 190px;
+    left: 77px;
+	z-index: 0;
+  }
+  .main_3_sub_txt {
+	display: block;
+	font-weight: 500;
+	width: 600px;
   }
   .main_3_news {
 	margin: 220px auto;
@@ -251,38 +301,13 @@ body, html, a, button, table, input, select, textarea {
 	top: 255px;
 	left: 50px;
   }
-  /* 메인 다섯번째 */
-  .main_5 {
-	height: 70vh;  
-	width: 100%;  
-	background-color: rgba(128, 128, 128, 0.5);
-  }
-  .main_5_box {
-	width: 40%;
-	height: 70vh;
-	padding: 180px 80px;
-	position: relative;
-  }
-  .main_5_txt {
-	display: block;
-	font-size: 2.5rem;
-	font-weight: 500;
-	z-index: 10;
-	position: absolute;
-  }
-  .main_5_y {
-	width: 8rem;
-	height: 8rem;
-	position: absolute;
-	top: 255px;
-	left: 50px;
-  }
   /* 공통 */
   
   /* 푸터 */
   .footer {
-	background-color: #000;
+	background-color: rgba(128, 128, 128, 0.274);
 	color: #fff;
+	height: 100px;
   }
   
   /* 반응형 */
@@ -291,6 +316,7 @@ body, html, a, button, table, input, select, textarea {
   /* .main_topBtn {
   
   } */
+
 /* 로그인페이지 */
 
 .login_bg{
@@ -787,4 +813,22 @@ margin-top:130px;
 	text-align: center;
 	border-radius: 20px;
 	font-size: large;
+}
+/* 에러페이지 */
+.error_wasands::after{
+	width: 100%;
+	height: 100%;
+	content: "";
+	background: url("../img/샌즈.jpeg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	opacity: 0.6;
+}
+.error_txtmsg{
+	text-align: center;
+	margin-top: 220px;
 }

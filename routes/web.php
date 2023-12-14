@@ -77,6 +77,10 @@ Route::get('/user', function () {
 Route::get('/region', function () {
     return view('welcome');
 });
+Route::get('/error', function () {
+    return view('welcome');
+});
+
 
 
 // 잘못된 URL입력시
