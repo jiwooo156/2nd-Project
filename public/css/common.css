@@ -149,7 +149,9 @@ input[type=password]::placeholder {
 	border-radius: 0px 0px 20px 20px;
 	font-size: 24px;
   }
-  
+  .animate__animated.animate__lightSpeedInRight {
+	--animate-duration: 1.3s;
+  }
   
   /* 반응형 */
   /* @media screen and (max-width: 740px) {
