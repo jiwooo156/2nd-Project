@@ -61,12 +61,54 @@ const store = createStore({
 
 	// actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
 	actions: {
-		// 이메일 중복확인
-		actionEmailChk(context){
-			let email = document.querySelector('#signin_email').value
-			// const URL = '/api/signin/email'
+		// // 이메일 중복확인
+		// actionEmailChk(context){
+		// 	let email = document.querySelector('#signin_email').value
+		// 	// const URL = '/api/signin/email'
+		// 	// 1211 최정훈 수정 api로 안보내고 web으로 변경
+		// 	// const URL = '/signin/email'
+		// 	// const HEADER = {
+		// 	// 	headers: {
+		// 	// 		// 'Authorization': 'Bearer team5',
+		// 	// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+		// 	// 		'Content-Type': 'multipart/form-data',
+		// 	// 	}
+		// 	// };
+		// 	// const formData = new FormData();
+		// 	// formData.append('email', email);
+		// 	// axios.get(URL, formData, HEADER)
+		// 	// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+		// 	const URL = '/signin/email/?email='+email
+		// 	axios.get(URL)
+		// 	.then(res => {
+		// 		context.commit('setErrMsg','');
+		// 		if(res.data.code === "0"){
+		// 			if(res.data.data.length === 0){
+		// 				context.commit('setEmailFlg',1);
+		// 				document.querySelector('#signin_email').readOnly = true;
+		// 				document.querySelector('#signin_email').style.backgroundColor = 'rgb(169 183 200)';		
+		// 			}else if(res.data.data.length > 0){
+		// 				console.log("있을때")
+		// 				context.commit('setEmailFlg',2);
+		// 			}
+		// 		}else{
+		// 			console.log('else')
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		context.commit('setEmailFlg',0);
+		// 		context.commit('setErrMsg',err.response.data.errorMsg);
+		// 	})
+		// },
+		// 1214 수정 최정훈
+		// 이메일 인증 과정으로 대체
+
+		// 닉네임 중복확인
+		actionNickChk(context){
+			let nick = document.querySelector('#signin_nick').value
+			// const URL = '/api/signin/nick'
 			// 1211 최정훈 수정 api로 안보내고 web으로 변경
-			// const URL = '/signin/email'
+			// const URL = '/signin/nick'
 			// const HEADER = {
 			// 	headers: {
 			// 		// 'Authorization': 'Bearer team5',
@@ -75,74 +117,30 @@ const store = createStore({
 			// 	}
 			// };
 			// const formData = new FormData();
-			// formData.append('email', email);
-			// axios.get(URL, formData, HEADER)
+			// formData.append('nick', nick);
 			// 1211 최정훈 수정 get형식이 옳은방식이라 수정
-			const URL = '/signin/email/?email='+email
+			const URL = '/signin/nick?nick='+nick
 			axios.get(URL)
 			.then(res => {
 				context.commit('setErrMsg','');
 				if(res.data.code === "0"){
 					if(res.data.data.length === 0){
-						context.commit('setEmailFlg',1);
-						document.querySelector('#signin_email').readOnly = true;
-						document.querySelector('#signin_email').style.backgroundColor = 'rgb(169 183 200)';		
+						context.commit('setNickFlg',1);
+						document.querySelector('#signin_nick').readOnly = true;
+						document.querySelector('#signin_nick').style.backgroundColor = 'rgb(169 183 200)';		
 					}else if(res.data.data.length > 0){
 						console.log("있을때")
-						context.commit('setEmailFlg',2);
+						context.commit('setNickFlg',2);
 					}
 				}else{
 					console.log('else')
 				}
 			})
 			.catch(err => {
-				context.commit('setEmailFlg',0);
+				context.commit('setNickFlg',0);
 				context.commit('setErrMsg',err.response.data.errorMsg);
+			
 			})
-		},
-
-		// 닉네임 중복확인
-		actionNickChk(context){
-			if(context.state.emailFlg===1){
-				let nick = document.querySelector('#signin_nick').value
-				// const URL = '/api/signin/nick'
-				// 1211 최정훈 수정 api로 안보내고 web으로 변경
-				// const URL = '/signin/nick'
-				// const HEADER = {
-				// 	headers: {
-				// 		// 'Authorization': 'Bearer team5',
-				// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
-				// 		'Content-Type': 'multipart/form-data',
-				// 	}
-				// };
-				// const formData = new FormData();
-				// formData.append('nick', nick);
-				// 1211 최정훈 수정 get형식이 옳은방식이라 수정
-				const URL = '/signin/nick?nick='+nick
-				axios.get(URL)
-				.then(res => {
-					context.commit('setErrMsg','');
-					if(res.data.code === "0"){
-						if(res.data.data.length === 0){
-							context.commit('setNickFlg',1);
-							document.querySelector('#signin_nick').readOnly = true;
-							document.querySelector('#signin_nick').style.backgroundColor = 'rgb(169 183 200)';		
-						}else if(res.data.data.length > 0){
-							console.log("있을때")
-							context.commit('setNickFlg',2);
-						}
-					}else{
-						console.log('else')
-					}
-				})
-				.catch(err => {
-					context.commit('setNickFlg',0);
-					context.commit('setErrMsg',err.response.data.errorMsg);
-				
-				})
-			}else{
-				alert("이메일 인증을 해주세요")
-			}
 		},	
 		// 닉네임 중복확인2(닉네임 변경용)
 		actionNickChk2(context){
@@ -174,7 +172,7 @@ const store = createStore({
 
 		// 회원가입
 		actionSignIn(context){
-			if(context.state.emailFlg===1&&context.state.nickFlg===1){
+			if(context.state.nickFlg===1){
 				let email = document.querySelector('#signin_email')
 				let pw = document.querySelector('#signin_pw')
 				let pwchk = document.querySelector('#signin_pw_chk')

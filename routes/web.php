@@ -23,17 +23,19 @@ Route::middleware('myValidation')->prefix('authemail')->group(function() {
         return view('welcome');
     });
     Route::post('/', [UserController::class, 'sendemailauth']);
+    Route::post('/resend', [UserController::class, 'resendemailauth']);
+    Route::post('/time', [UserController::class, 'addtime']);
 });
 
 Route::get('/signinchk', [UserController::class, 'tokenchk']);
 
 Route::middleware('myValidation')->prefix('signin')->group(function() {
-    Route::get('/', function (Request $req) {
-        Log::debug('signin email: '.$req->email);
-        return view('welcome')->with("email",$req->email);
-    })->name('signin.get');
+    Route::get('/', function () {
+        return view('welcome');
+    });
     Route::get('/email', [UserController::class, 'emailchk']);
     Route::get('/nick', [UserController::class, 'nickchk']);
+    Route::get('/start', [UserController::class, 'emailload']);
     Route::post('/', [UserController::class, 'store']);
 });
 Route::middleware('myValidation')->prefix('login')->group(function() {
@@ -77,6 +79,10 @@ Route::get('/user', function () {
 Route::get('/region', function () {
     return view('welcome');
 });
+Route::get('/error', function () {
+    return view('welcome');
+});
+
 
 
 // 잘못된 URL입력시

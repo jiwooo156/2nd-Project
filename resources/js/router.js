@@ -7,7 +7,9 @@ import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
 import UserChk from '../components/UserChk.vue';
+import ErrorComponent from '../components/ErrorComponent.vue';
 import store from './store.js'
+import VueCookies from "vue-cookies";
 const routes = [
 	{
 		path: "/",
@@ -16,6 +18,10 @@ const routes = [
 	{
 		path: "/main",
 		component : MainComponent
+	},
+	{
+		path: "/error",
+		component : ErrorComponent
 	},
 	{
 		path: "/region",
@@ -47,7 +53,7 @@ const routes = [
 		path: "/signin",
 		component : SigninComponent,
 		beforeEnter: (to, from, next) => {
-			if (store.state.localFlg) {
+			if (!(VueCookies.get('auth_id'))) {
 				next('/');
 			} else {
 				next();
