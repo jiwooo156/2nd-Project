@@ -1,67 +1,5 @@
 <template>
 	<div>
-		<!-- <div>
-			<header class="header">
-				<div class="header_left">
-					<h1 class="logo"><a href="#">안냥</a></h1>
-				</div>
-				<div class="header_mid">
-					<nav class="lnb">
-						<ul class="nav">
-							<li>
-								<a href="#" target="_self">홈이야요</a>
-								<ul class="depth1">
-									<li>
-										<a href="#" target="_self" onclick="">블루베리</a>
-									</li>
-									<li>
-										<a href="#" target="_self" onclick="">스우므디</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="#" target="_self">경상도오</a>
-								<ul class="depth1">
-									<li>
-										<a href="#" target="_self" onclick="">경상남도구</a>
-									</li>
-									<li>
-										<a href="#" target="_self" onclick="">경상북돈디</a>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="#" target="_self">배고프당</a>
-								<ul class="depth1">
-									<li>
-										<a href="#" target="_self" onclick="">마아라탕</a>
-									</li>
-									<li>
-										<a href="#" target="_self" onclick="">먹구시펑</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				<div class="header_right">
-					<ul class="gnb">
-						<li>
-							<a href="#">로그인</a>
-						</li>
-						<li>
-							<a href="#">회원가입</a>
-						</li>
-					</ul>
-				</div>
-			</header>
-			<a href="javascript:void(0);" class="menu_btn">
-				<span></span>
-				<span></span>
-				<span></span>
-				<i class="sound_only">메뉴</i>
-			</a>
-		</div> -->
 		<div class="main">
 			<div class="main_1">
 				<!-- <img class="main_sl" src="./img/maru.png" alt="메인이미지" /> -->
@@ -93,10 +31,10 @@
 					<!-- 반응형 사라질 때 노란효과 없애기 -->
 					<div></div>
 				</div>
-				<div class="main_2_news">
+				<!-- <div class="main_2_news"> -->
 					<!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! -->
 					<!-- 뉴스 가져오기 a링크 -->
-				</div>
+				<!-- </div> -->
 			</div>
 			<div class="main_3">
 				<div class="main_3_box">
@@ -111,9 +49,9 @@
 							관광지를 만나보세요!
 						</div>
 					</div>
-					<div class="main_3_news">
+					<!-- <div class="main_3_news"> -->
 						<!-- 가운데로 오게 해주세요 제발 -->
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 			<div class="main_4">
@@ -128,9 +66,9 @@
 						행사를 만나보세요!
 					</div>
 				</div>
-				<div class="main_4_news">
+				<!-- <div class="main_4_news"> -->
 					<!-- 위에랑 동일하지만 슬라이드 효과른 넣을게요 -->
-				</div>
+				<!-- </div> -->
 			</div>
 			<!-- 똑같이 줬는데 왜 자꾸 얘만 떨어질까 ?? -->
 			<div class="main_5">

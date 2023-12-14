@@ -8,28 +8,7 @@
 				<div class="sign_container">
 					<div class="sign_relative">
 						<span>E-mail</span>
-						<span
-							v-if="$store.state.emailFlg === 1" 
-							class="sign_commsg"
-						>사용 가능한 이메일 입니다.</span>
-						<span
-							v-if="$store.state.emailFlg === 2" 
-							class="sign_errmsg"
-						>이미 사용중인 이메일 입니다.</span>
-						<span
-							v-for="item in $store.state.varErr" :key="item"
-							v-if="$store.state.emailFlg !== 1" 
-							class="sign_errmsg"
-						>{{ item[0] }}</span>
 						<input type="text" placeholder="ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ" id="signin_email" autocomplete='off'>
-						<button class="sign_chk_btn pointer"
-							v-if="$store.state.emailFlg !== 1" 
-							@click="email_chk"
-						>중복확인</button>
-						<button class="sign_chk_btn pointer"
-							v-if="$store.state.emailFlg === 1" 
-							@click="del_email_chk"
-						>다시쓰기</button>
 					</div>
 					<div>
 						<span>비밀번호</span>
@@ -356,14 +335,6 @@ export default {
 			this.err_phone2 = false;
 			this.err_phone3 = false;
 			this.com_phone = true;
-		},
-		email_chk(){
-			this.$store.dispatch('actionEmailChk');
-		},
-		del_email_chk(){
-			this.$store.commit('setEmailFlg',0);
-			document.querySelector('#signin_email').readOnly = false;
-			document.querySelector('#signin_email').removeAttribute('style')
 		},
 		nick_chk(){
 			this.$store.dispatch('actionNickChk');

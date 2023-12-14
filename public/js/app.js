@@ -19868,14 +19868,6 @@ __webpack_require__.r(__webpack_exports__);
       this.err_phone3 = false;
       this.com_phone = true;
     },
-    email_chk: function email_chk() {
-      this.$store.dispatch('actionEmailChk');
-    },
-    del_email_chk: function del_email_chk() {
-      this.$store.commit('setEmailFlg', 0);
-      document.querySelector('#signin_email').readOnly = false;
-      document.querySelector('#signin_email').removeAttribute('style');
-    },
     nick_chk: function nick_chk() {
       this.$store.dispatch('actionNickChk');
     },
@@ -20354,7 +20346,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><!-- &lt;div&gt;\r\n\t\t\t&lt;header class=&quot;header&quot;&gt;\r\n\t\t\t\t&lt;div class=&quot;header_left&quot;&gt;\r\n\t\t\t\t\t&lt;h1 class=&quot;logo&quot;&gt;&lt;a href=&quot;#&quot;&gt;안냥&lt;/a&gt;&lt;/h1&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t\t&lt;div class=&quot;header_mid&quot;&gt;\r\n\t\t\t\t\t&lt;nav class=&quot;lnb&quot;&gt;\r\n\t\t\t\t\t\t&lt;ul class=&quot;nav&quot;&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;홈이야요&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;블루베리&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;스우므디&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;경상도오&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;경상남도구&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;경상북돈디&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot;&gt;배고프당&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t&lt;ul class=&quot;depth1&quot;&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;마아라탕&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t\t\t\t&lt;a href=&quot;#&quot; target=&quot;_self&quot; onclick=&quot;&quot;&gt;먹구시펑&lt;/a&gt;\r\n\t\t\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t\t&lt;/nav&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t\t&lt;div class=&quot;header_right&quot;&gt;\r\n\t\t\t\t\t&lt;ul class=&quot;gnb&quot;&gt;\r\n\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t&lt;a href=&quot;#&quot;&gt;로그인&lt;/a&gt;\r\n\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t\t&lt;li&gt;\r\n\t\t\t\t\t\t\t&lt;a href=&quot;#&quot;&gt;회원가입&lt;/a&gt;\r\n\t\t\t\t\t\t&lt;/li&gt;\r\n\t\t\t\t\t&lt;/ul&gt;\r\n\t\t\t\t&lt;/div&gt;\r\n\t\t\t&lt;/header&gt;\r\n\t\t\t&lt;a href=&quot;javascript:void(0);&quot; class=&quot;menu_btn&quot;&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;span&gt;&lt;/span&gt;\r\n\t\t\t\t&lt;i class=&quot;sound_only&quot;&gt;메뉴&lt;/i&gt;\r\n\t\t\t&lt;/a&gt;\r\n\t\t&lt;/div&gt; --><div class=\"main\"><div class=\"main_1\"><!-- &lt;img class=&quot;main_sl&quot; src=&quot;./img/maru.png&quot; alt=&quot;메인이미지&quot; /&gt; --><div class=\"main_1_box\"><div class=\"main_txt\"> 놀러오세요! 경상도, 좋아요!<br>블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div><!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   --><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_txt\">축제정보</div><div class=\"main_2_line\"></div><!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! --><img class=\"main_2_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_2_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div><!-- 빈공간 많으면 머시기 넣을지 생각하기 --><!-- &lt;div class=&quot;mian_shap&quot;&gt;#머시기 #머시기 #머시기&lt;/div&gt; --><!-- 반응형 사라질 때 노란효과 없애기 --><div></div></div><div class=\"main_2_news\"><!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! --><!-- 뉴스 가져오기 a링크 --></div></div><div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_3_left\"><div class=\"main_2_box_txt\">관광정보</div><div class=\"main_2_line\"></div></div><div class=\"main_3_mid\"><img class=\"main_3_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_3_txt\"> 경상도에서 인기있는<br> 관광지를 만나보세요! </div></div><div class=\"main_3_news\"><!-- 가운데로 오게 해주세요 제발 --></div></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_4_left\"><div class=\"main_2_box_txt\">행사정보</div><div class=\"main_2_line\"></div></div><img class=\"main_4_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_4_txt\"> 경상도에서 진행 중인<br> 행사를 만나보세요! </div></div><div class=\"main_4_news\"><!-- 위에랑 동일하지만 슬라이드 효과른 넣을게요 --></div></div><!-- 똑같이 줬는데 왜 자꾸 얘만 떨어질까 ?? --><div class=\"main_5\"><div class=\"main_5_box\"><div class=\"main_5_left\"><div class=\"main_2_box_txt\">소통광장</div><div class=\"main_2_line\"></div></div></div><!-- 색연필은 맨 위로 올라감 -_- --><img class=\"main_5_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_5_txt\"> &#39;가가가가?&#39; 다양한<br> 재미를 공유해 보세요! </div></div></div><div><footer class=\"footer\">푸터 띄우기</footer></div></div><div class=\"main_topBtn\"></div>", 2);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div><div class=\"main\"><div class=\"main_1\"><!-- &lt;img class=&quot;main_sl&quot; src=&quot;./img/maru.png&quot; alt=&quot;메인이미지&quot; /&gt; --><div class=\"main_1_box\"><div class=\"main_txt\"> 놀러오세요! 경상도, 좋아요!<br>블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div><!-- 왼쪽 축제정보-- 이거 한 묶음, 왼쪽 색연필 + 경상도!랑 #한 묶음, 보도뉴스들 한 묶음 총 세개로 플렉스 넣기   --><div class=\"main_2\"><div class=\"main_2_box\"><div class=\"main_2_box_txt\">축제정보</div><div class=\"main_2_line\"></div><!-- main_2_txt 같은 곳에 공통 애니 효과 넣을 거임!! --><img class=\"main_2_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_2_txt\"> 경상도에서 인기있는<br> 축제를 만나보세요! </div><!-- 빈공간 많으면 머시기 넣을지 생각하기 --><!-- &lt;div class=&quot;mian_shap&quot;&gt;#머시기 #머시기 #머시기&lt;/div&gt; --><!-- 반응형 사라질 때 노란효과 없애기 --><div></div></div><!-- &lt;div class=&quot;main_2_news&quot;&gt; --><!-- 네모 박스가 세로로 줄어들 때 자꾸 줄어들어억!! --><!-- 뉴스 가져오기 a링크 --><!-- &lt;/div&gt; --></div><div class=\"main_3\"><div class=\"main_3_box\"><div class=\"main_3_left\"><div class=\"main_2_box_txt\">관광정보</div><div class=\"main_2_line\"></div></div><div class=\"main_3_mid\"><img class=\"main_3_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_3_txt\"> 경상도에서 인기있는<br> 관광지를 만나보세요! </div></div><!-- &lt;div class=&quot;main_3_news&quot;&gt; --><!-- 가운데로 오게 해주세요 제발 --><!-- &lt;/div&gt; --></div></div><div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_4_left\"><div class=\"main_2_box_txt\">행사정보</div><div class=\"main_2_line\"></div></div><img class=\"main_4_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_4_txt\"> 경상도에서 진행 중인<br> 행사를 만나보세요! </div></div><!-- &lt;div class=&quot;main_4_news&quot;&gt; --><!-- 위에랑 동일하지만 슬라이드 효과른 넣을게요 --><!-- &lt;/div&gt; --></div><!-- 똑같이 줬는데 왜 자꾸 얘만 떨어질까 ?? --><div class=\"main_5\"><div class=\"main_5_box\"><div class=\"main_5_left\"><div class=\"main_2_box_txt\">소통광장</div><div class=\"main_2_line\"></div></div></div><!-- 색연필은 맨 위로 올라감 -_- --><img class=\"main_5_y\" src=\"/img/yellow.png\" alt=\"색연필\"><div class=\"main_5_txt\"> &#39;가가가가?&#39; 다양한<br> 재미를 공유해 보세요! </div></div></div><div><footer class=\"footer\">푸터 띄우기</footer></div></div><div class=\"main_topBtn\"></div>", 2);
 function render(_ctx, _cache) {
   return _hoisted_1;
 }
@@ -20471,76 +20463,66 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "sign_container"
 };
-var _hoisted_5 = {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "sign_relative"
-};
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail", -1 /* HOISTED */);
-var _hoisted_7 = {
-  key: 0,
-  "class": "sign_commsg"
-};
-var _hoisted_8 = {
-  key: 1,
-  "class": "sign_errmsg"
-};
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
   placeholder: "ㅁㅁㅁ@ㅁㅁㅁ.ㅁㅁ",
   id: "signin_email",
   autocomplete: "off"
-}, null, -1 /* HOISTED */);
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
+})], -1 /* HOISTED */);
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호", -1 /* HOISTED */);
+var _hoisted_7 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_8 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_9 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_10 = {
+  "class": "sign_errmsg"
+};
 var _hoisted_11 = {
   "class": "sign_errmsg"
 };
 var _hoisted_12 = {
-  "class": "sign_errmsg"
+  "class": "sign_commsg"
 };
-var _hoisted_13 = {
-  "class": "sign_errmsg"
-};
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호확인", -1 /* HOISTED */);
 var _hoisted_14 = {
   "class": "sign_errmsg"
 };
 var _hoisted_15 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_16 = {
   "class": "sign_commsg"
 };
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "비밀번호확인", -1 /* HOISTED */);
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "이름", -1 /* HOISTED */);
+var _hoisted_17 = {
+  "class": "sign_errmsg"
+};
 var _hoisted_18 = {
   "class": "sign_errmsg"
 };
 var _hoisted_19 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_20 = {
   "class": "sign_commsg"
 };
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "이름", -1 /* HOISTED */);
 var _hoisted_21 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_22 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_23 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_24 = {
-  "class": "sign_commsg"
-};
-var _hoisted_25 = {
   "class": "sign_relative"
 };
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "닉네임", -1 /* HOISTED */);
-var _hoisted_27 = {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "닉네임", -1 /* HOISTED */);
+var _hoisted_23 = {
   key: 0,
   "class": "sign_commsg"
 };
-var _hoisted_28 = {
+var _hoisted_24 = {
   key: 1,
   "class": "sign_errmsg"
 };
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
   placeholder: "한글,영어,숫자 2~8",
   id: "signin_nick",
@@ -20548,10 +20530,20 @@ var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   minlength: "2",
   maxlength: "8"
 }, null, -1 /* HOISTED */);
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
-var _hoisted_31 = {
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "생년월일", -1 /* HOISTED */);
+var _hoisted_27 = {
   "class": "sign_errmsg"
 };
+var _hoisted_28 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_29 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_30 = {
+  "class": "sign_commsg"
+};
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "전화번호", -1 /* HOISTED */);
 var _hoisted_32 = {
   "class": "sign_errmsg"
 };
@@ -20559,25 +20551,15 @@ var _hoisted_33 = {
   "class": "sign_errmsg"
 };
 var _hoisted_34 = {
+  "class": "sign_errmsg"
+};
+var _hoisted_35 = {
   "class": "sign_commsg"
 };
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "전화번호", -1 /* HOISTED */);
-var _hoisted_36 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_37 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_38 = {
-  "class": "sign_errmsg"
-};
-var _hoisted_39 = {
-  "class": "sign_commsg"
-};
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "성별"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "성별"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
   id: "signin_gender"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "남자"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "여자")])], -1 /* HOISTED */);
-var _hoisted_41 = {
+var _hoisted_37 = {
   "class": "sign_footer_box center"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -20590,97 +20572,78 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("이의이승")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_7, "사용 가능한 이메일 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8, "이미 사용중인 이메일 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    key: 2
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
-      key: item,
-      "class": "sign_errmsg"
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_9, _ctx.$store.state.emailFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 3,
-    "class": "sign_chk_btn pointer",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.email_chk && $options.email_chk.apply($options, arguments);
-    })
-  }, "중복확인")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 4,
-    "class": "sign_chk_btn pointer",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.del_email_chk && $options.del_email_chk.apply($options, arguments);
-    })
-  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, "8~20글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, "영어를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, "숫자를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, "특수문자(?~!@#)를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw4]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, "비밀번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw5]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_16, "사용가능한 비밀번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_7, "8~20글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_8, "영어를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_9, "숫자를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, "특수문자(?~!@#)를 1글자 이상 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw4]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_11, "비밀번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw5]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, "사용가능한 비밀번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     placeholder: "영어,숫자,특수문자(!?~@#)최소1개포함 8~20",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.pw = $event;
     }),
     id: "signin_pw",
     autocomplete: "off",
     minlength: "8",
     maxlength: "20"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_18, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, "비밀번호와 일치하지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, "비밀번호와 일치합니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_pw_chk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "password",
     placeholder: "비밀번호와 동일",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.pw_chk = $event;
     }),
     id: "signin_pw_chk",
     autocomplete: "off",
     minlength: "8",
     maxlength: "20"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_21, "2~10글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_22, "한국어만 사용 가능 합니다", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_23, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_24, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.pw_chk]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_17, "2~10글자 사이로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_18, "한국어만 사용 가능 합니다", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_19, "이름 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_name3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_20, "사용가능한 이름 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_name]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "한글 2~10",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.name = $event;
     }),
     id: "signin_name",
     autocomplete: "off",
     minlength: "2",
     maxlength: "10"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_27, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [_hoisted_22, _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, "사용 가능한 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, "이미 사용중인 닉네임 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 2
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: item,
       "class": "sign_errmsg"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_29, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_25, _ctx.$store.state.nickFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 3,
     "class": "sign_chk_btn pointer",
-    onClick: _cache[5] || (_cache[5] = function () {
+    onClick: _cache[3] || (_cache[3] = function () {
       return $options.nick_chk && $options.nick_chk.apply($options, arguments);
     })
   }, "중복확인")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.nickFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 4,
     "class": "sign_chk_btn pointer",
-    onClick: _cache[6] || (_cache[6] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.del_nick_chk && $options.del_nick_chk.apply($options, arguments);
     })
-  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_31, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, "생년월일을 8자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_33, "생년월일 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, "사용가능한 생년월일 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_27, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_28, "생년월일을 8자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_29, "생년월일 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_birthdate3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_30, "사용가능한 생년월일 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_birthdate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "YYYYMMDD",
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.birthdate = $event;
     }),
     id: "signin_birthdate",
     autocomplete: "off",
     minlength: "8",
     maxlength: "8"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_36, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_37, "휴대폰번호는 11자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_38, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_39, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.birthdate]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_32, "-를 제외한 값을 입력해 주세요", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_33, "휴대폰번호는 11자리로 작성해 주세요.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone2]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, "전화번호 형식이 올바르지 않습니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.err_phone3]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_35, "사용가능한 전화번호 입니다.", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.com_phone]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "휴대폰번호",
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.phone = $event;
     }),
     id: "signin_phone",
     autocomplete: "off",
     minlength: "11",
     maxlength: "11"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.phone]])]), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "sign_footer_btn pointer",
-    onClick: _cache[9] || (_cache[9] = function () {
+    onClick: _cache[7] || (_cache[7] = function () {
       return $options.signin && $options.signin.apply($options, arguments);
     })
   }, "회원가입"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
