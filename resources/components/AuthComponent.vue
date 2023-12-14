@@ -52,7 +52,7 @@
 						<span
 							v-if="$store.state.emailFlg === 1&&this.auth_flg"
 						>
-							남은시간 : {{  }}
+							남은시간 : {{this.timer}}
 						</span>
 						<button class="pointer"
 							v-if="$store.state.emailFlg === 1&&!(this.auth_flg)&&!(this.re_auth_email)"
@@ -69,6 +69,7 @@
 	</div>
 </template>
 <script>
+
 export default {
 	name: 'AuthComponent',
 	props: {
@@ -79,18 +80,17 @@ export default {
 
 	},
 
-	data() {
-		return {
-			auth_email: "",
-			auth_flg: false,
-			re_auth_email: false,
-			auth_err: "",
-			auth_re: "",
-			timer: "",
-			min: "",
-			sec: "",
-		}
-	},
+		data() {
+			return {
+				timerId: null, 
+				auth_email: "",
+				auth_flg: false,
+				re_auth_email: false,
+				auth_err: "",
+				auth_re: "",
+				timer: "",
+			}
+		},
 
 	created() {
 
@@ -116,6 +116,8 @@ export default {
 				if(res.data.code === "0"){	
 					console.log("성공")
 					this.auth_flg = true;
+					this.timer1();
+					console.log("타이머실행")
 				}else{
 					console.log(res.data)
 					this.auth_err = res.data.errorMsg;
@@ -140,14 +142,18 @@ export default {
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){	
+					console.log("이메일 다시보내기 댄")
 					this.auth_err = '';
 					this.auth_flg = true;
+					this.timer1();
+					
 				}else{
+					console.log("이메일 다시보내기 앨스")
 					this.auth_err = res.data.errorMsg;
 				}
 			})
 			.catch(err => {
-				router.push('/error');
+				console.log("이메일 다시보내기 캐치")
 			})
 		},
 		// 시간연장
@@ -163,7 +169,7 @@ export default {
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){	
-					console.log("성공")
+					this.timer1();
 				}else{
 					console.log(res.data)
 					console.log("엘스")
@@ -207,14 +213,39 @@ export default {
 			this.auth_flg = false;
 		},
 		// 타이머
-		timer(){
+		timer1() {
+			if (this.timerId) {
+				clearInterval(this.timerId);
+			}
+			let minutes = 5;
+			let seconds = 0;
+			const updateTimer = () => {
+				this.timer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+				if (minutes === 0 && seconds === 0) {
+					clearInterval(this.timerId);
+				} else {
+					if (seconds === 0) {
+						minutes--;
+						seconds = 59;
+					} else {
+						seconds--;
+					}
+				}
+			};
+			this.timerId = setInterval(updateTimer, 1000);
+		},
 
-		}
+		// 타이머 초기화 메서드 호출
+		resettimer() {
+			this.timer1();
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		this.del_email_chk();
 		this.$store.commit('setErrMsg','');
+		this.resettimer();
 		next();
 	},
-}
+			
+		}
 </script>

@@ -17874,14 +17874,13 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
+      timerId: null,
       auth_email: "",
       auth_flg: false,
       re_auth_email: false,
       auth_err: "",
       auth_re: "",
-      timer: "",
-      min: "",
-      sec: ""
+      timer: ""
     };
   },
   created: function created() {},
@@ -17902,6 +17901,8 @@ __webpack_require__.r(__webpack_exports__);
         if (res.data.code === "0") {
           console.log("성공");
           _this.auth_flg = true;
+          _this.timer1();
+          console.log("타이머실행");
         } else {
           console.log(res.data);
           _this.auth_err = res.data.errorMsg;
@@ -17925,17 +17926,21 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('email', this.auth_email);
       axios.post(URL, formData, HEADER).then(function (res) {
         if (res.data.code === "0") {
+          console.log("이메일 다시보내기 댄");
           _this2.auth_err = '';
           _this2.auth_flg = true;
+          _this2.timer1();
         } else {
+          console.log("이메일 다시보내기 앨스");
           _this2.auth_err = res.data.errorMsg;
         }
       })["catch"](function (err) {
-        router.push('/error');
+        console.log("이메일 다시보내기 캐치");
       });
     },
     // 시간연장
     reset_auth_time: function reset_auth_time() {
+      var _this3 = this;
       var URL = '/authemail/time';
       var HEADER = {
         headers: {
@@ -17946,7 +17951,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('email', this.auth_email);
       axios.post(URL, formData, HEADER).then(function (res) {
         if (res.data.code === "0") {
-          console.log("성공");
+          _this3.timer1();
         } else {
           console.log(res.data);
           console.log("엘스");
@@ -17957,25 +17962,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     // 이메일중복확인
     emailChk: function emailChk() {
-      var _this3 = this;
+      var _this4 = this;
       var URL = '/signin/email/?email=' + this.auth_email;
       axios.get(URL).then(function (res) {
-        _this3.$store.commit('setErrMsg', '');
+        _this4.$store.commit('setErrMsg', '');
         if (res.data.code === "0") {
           if (res.data.data.length === 0) {
-            _this3.$store.commit('setEmailFlg', 1);
+            _this4.$store.commit('setEmailFlg', 1);
             document.querySelector('#auth_email').readOnly = true;
             document.querySelector('#auth_email').style.backgroundColor = 'rgb(169 183 200)';
           } else if (res.data.data.length > 0) {
             console.log("있을때");
-            _this3.$store.commit('setEmailFlg', 2);
+            _this4.$store.commit('setEmailFlg', 2);
           }
         } else {
           console.log('else');
         }
       })["catch"](function (err) {
-        _this3.$store.commit('setEmailFlg', 0);
-        _this3.$store.commit('setErrMsg', err.response.data.errorMsg);
+        _this4.$store.commit('setEmailFlg', 0);
+        _this4.$store.commit('setErrMsg', err.response.data.errorMsg);
       });
     },
     // 이메일 중복확인 취소
@@ -17986,11 +17991,37 @@ __webpack_require__.r(__webpack_exports__);
       this.auth_err = "", this.auth_re = "", this.auth_flg = false;
     },
     // 타이머
-    timer: function timer() {}
+    timer1: function timer1() {
+      var _this5 = this;
+      if (this.timerId) {
+        clearInterval(this.timerId);
+      }
+      var minutes = 5;
+      var seconds = 0;
+      var updateTimer = function updateTimer() {
+        _this5.timer = "".concat(minutes, ":").concat(seconds < 10 ? '0' : '').concat(seconds);
+        if (minutes === 0 && seconds === 0) {
+          clearInterval(_this5.timerId);
+        } else {
+          if (seconds === 0) {
+            minutes--;
+            seconds = 59;
+          } else {
+            seconds--;
+          }
+        }
+      };
+      this.timerId = setInterval(updateTimer, 1000);
+    },
+    // 타이머 초기화 메서드 호출
+    resettimer: function resettimer() {
+      this.timer1();
+    }
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
     this.del_email_chk();
     this.$store.commit('setErrMsg', '');
+    this.resettimer();
     next();
   }
 });
@@ -18737,7 +18768,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = function () {
       return $options.reset_auth_time && $options.reset_auth_time.apply($options, arguments);
     })
-  }, " 시간연장 ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, " 남은시간 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && !this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, " 시간연장 ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, " 남은시간 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.timer), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && !this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 10,
     "class": "pointer",
     onClick: _cache[4] || (_cache[4] = function () {
@@ -19104,13 +19135,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_1 = {
+  key: 0,
   "class": "footer"
-}, null, -1 /* HOISTED */);
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_HeaderComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("HeaderComponent");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HeaderComponent), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 메인 영역 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 푸터 영역 "), _hoisted_1], 64 /* STABLE_FRAGMENT */);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HeaderComponent), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 메인 영역 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 푸터 영역 "), _ctx.$route.fullPath != '/login' && _ctx.$route.fullPath != '/signin' && _ctx.$route.fullPath != '/authemail' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
