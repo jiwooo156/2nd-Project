@@ -4,7 +4,7 @@
     <router-view></router-view>
 
     <!-- 푸터 영역 -->
-    <div class="footer">
+    <div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'">
 
     </div>
 </template>
