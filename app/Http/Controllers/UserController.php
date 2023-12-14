@@ -240,12 +240,11 @@ class UserController extends Controller
         $uuid = Str::uuid();
         $db_data['email'] = $req->email;
         $db_data['auth_token'] = $uuid;
-        Log::debug("토큰완료");
-        Log::debug( $db_data['auth_token']);
-        Log::debug($db_data['email']);
-        $result = Authenticate::create($db_data);
+        $result = Authenticate::where('email',$req->email)->get();
         Log::debug($result);
-        if($result){
+        Log::debug(count($result));
+        if(count($result) < 1){
+            $total_result = Authenticate::create($db_data);
             Log::debug("성공");
             $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
             Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
@@ -255,7 +254,11 @@ class UserController extends Controller
             return response()->json([
                 'code' => '0'
             ], 200);
+        }
+        if($total_result){
+    
         } else {
+            
             Log::debug("실패   ");
             return response()->json([
                 'code' => 'E10',
