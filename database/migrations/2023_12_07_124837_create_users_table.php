@@ -15,16 +15,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('email', 50)->unique();
+            $table->string('email', 50);
             $table->string('password');
             $table->string('name', 10);
             $table->char('gender', 1);
             $table->string('phone', 11);
             $table->char('birthdate', 8);
             $table->string('nick', 8);
-            $table->string('access_token', 100);
             $table->timestamps();
             $table->softDeletes();  
+            // $table->char('del_flg', 1)->nullable();
+            // $table->string('del_msg', 50)->nullable();
+            // 1213 최정훈 수정  테이블 추가
         });
     }
 

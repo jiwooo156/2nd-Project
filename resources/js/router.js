@@ -4,7 +4,10 @@ import MainComponent from '../components/MainComponent.vue';
 import LoginComponent from '../components/LoginComponent.vue';
 import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
-
+import RegionComponent from '../components/RegionComponent.vue';
+import AuthComponent from '../components/AuthComponent.vue';
+import UserChk from '../components/UserChk.vue';
+import store from './store.js'
 const routes = [
 	{
 		path: "/",
@@ -15,16 +18,67 @@ const routes = [
 		component : MainComponent
 	},
 	{
+		path: "/region",
+		component : RegionComponent
+	},
+	{
 		path: "/login",
-		component : LoginComponent
+		component: LoginComponent,
+		beforeEnter: (to, from, next) => {
+			if (store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		},
+	},
+	{
+		path: "/authemail",
+		component : AuthComponent,
+		beforeEnter: (to, from, next) => {
+			if (store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		},
 	},
 	{
 		path: "/signin",
-		component : SigninComponent
+		component : SigninComponent,
+		beforeEnter: (to, from, next) => {
+			if (store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		},
+	},
+	{
+		path: "/userchk",
+		component : UserChk,
+		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+		beforeEnter: (to, from, next) => {
+			if (!store.state.localFlg) {
+				console.log('routes : userchk > /');
+				next('/');
+			} else {
+				next();
+			}
+		}		
 	},
 	{
 		path: "/user",
-		component : UserComponent
+		component : UserComponent,
+		// 1211 최정훈 추가 유저페이지는 로그인 했을때만 이동가능
+		beforeEnter: (to, from, next) => {
+			if (!store.state.userFlg) {
+				console.log('routes : user > userchk');
+				next('/userchk');
+			} else {
+				next();
+			}
+		}		
 	},
 ];
 

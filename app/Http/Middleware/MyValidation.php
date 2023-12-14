@@ -28,11 +28,14 @@ class MyValidation
         $arrBaseKey = [
             'email'
             ,'name'
-            ,'pw'
+            ,'password'
             ,'pw_chk'
             ,'phone'
             ,'gender' 
-            ,'birthdate'
+            ,'birthdate' 
+            ,'nick'
+            ,'del_flg'
+            ,'del_msg'
             ,'nick'
             ,'title'
             ,'content'
@@ -42,11 +45,18 @@ class MyValidation
         $arrBaseValidation = [
             'email' => 'required|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
             ,'name'     => 'required|regex:/^[가-힣]+$/u|min:2|max:10'
-            ,'pw' => 'required|regex:/^(?=.*[a-z])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/u'
-            ,'pw_chk' => 'same:pw'
+            ,'password' => 'required|regex:/^(?=.*[a-z])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/u'
+            ,'pw_chk' => 'same:password'
             ,'phone' => 'required|regex:/^010([0-9]{4})([0-9]{4})$/u'
             ,'gender' => 'required|in:M,F'
-            ,'birthdate' => 'required|regex:/^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/|date_format:Ymd|before_or_equal:today'
+            ,'birthdate' => [
+                'required',
+                'regex:/^(19\d\d|20[0-2]\d)(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/',
+                'date_format:Ymd',
+                'before_or_equal:' . now()->format('Ymd'),
+            ]
+            ,'del_flg' => 'required|in:0,1,2,3,4,5,6,7,8,9'
+            ,'del_msg' => 'required|max:50|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'nick' => 'required|regex:/^[a-zA-Z가-힣0-9]{2,8}$/u'
             ,'title' => 'required|max:100|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'content' => 'required|max:1000|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
@@ -60,11 +70,10 @@ class MyValidation
                 $arrRequestParam[$val] = $request->$val;
             } else {
                 unset($arrBaseValidation[$val]);
-            }
-            Log::debug("리퀘스트 파라미터 획득",$arrRequestParam);     
-            Log::debug("유효성 체크 리스트 획득",$arrBaseValidation);    
+            } 
         }
-    
+        Log::debug("리퀘스트 파라미터 획득",$arrRequestParam);     
+        Log::debug("유효성 체크 리스트 획득",$arrBaseValidation);    
 
          // 유효성 검사
         $validator = Validator::make($arrRequestParam,$arrBaseValidation);

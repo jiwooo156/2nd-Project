@@ -9,8 +9,13 @@ export default {
     setup () {
         
 
-        return {}
-    }
+    },
+    created() {
+		console.log('main : created');
+    },
+    updated() {
+		console.log('main : updated');
+    },
 }
 </script>
 

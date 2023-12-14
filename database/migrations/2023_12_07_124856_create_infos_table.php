@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
-            $table->string('nick', 8);
+            // $table->string('nick', 8);
+            // 1213 최정훈 수정  관리자가 작성하는 영역이라 유저닉네임 필요x
             $table->string('title', 30);
             $table->string('content', 2000);
             $table->string('img1', 100);

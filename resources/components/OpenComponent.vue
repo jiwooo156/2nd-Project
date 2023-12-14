@@ -1,8 +1,5 @@
 <template>
-	<!-- 헤더 영역 -->
-	<div class="header">
-        <h1>헤더</h1>
-	</div>
+    <HeaderComponent></HeaderComponent>
     <!-- 메인 영역 -->
     <router-view></router-view>
 
@@ -16,18 +13,37 @@ import MainComponent from './MainComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
+import RegionComponent from './RegionComponent.vue'
+import HeaderComponent from './HeaderComponent.vue'
+import AuthComponent from './AuthComponent.vue'
+import UserChk from './UserChk.vue'
 
 export default {
 
     name: 'OpenComponent',
     components: {
-		MainComponent,LoginComponent,SigninComponent,UserComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent
     },
     methods: {
 
+        localStoragechk(){
+            let boo = localStorage.getItem('nick') ?  true : false;
+            if(boo){
+                this.$store.commit('setLocalFlg', boo);
+                this.$store.commit('setNowUser', localStorage.getItem('nick'));
+            }
+        }
     },
     created() {
-
+        this.localStoragechk()
     },
+    updated(){
+        this.localStoragechk()
+    },
+    data() {
+        return {
+
+        }
+    }, 
 }
 </script>
