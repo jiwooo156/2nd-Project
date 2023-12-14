@@ -26,11 +26,15 @@ body, html, a, button, table, input, select, textarea {
 
 /* 헤더 */
 .header{
-	background-color: #00000000;
+	width: 100%;
+    background-color: #00000000;
     padding: 20px;
     display: flex;
     justify-content: space-between;
-	text-decoration: none;
+    text-decoration: none;
+    position: absolute;
+    top: 0px;
+    z-index: 99;
 }
 .header_head{
     display: flex;
@@ -53,8 +57,9 @@ body, html, a, button, table, input, select, textarea {
 }
 
 .header_foot{
-	min-width: 150px;
+    min-width: 150px;
     display: flex;
+    justify-content: flex-end;
 }
 
 .header_foot div, .header_foot a{
@@ -440,9 +445,9 @@ body, html, a, button, table, input, select, textarea {
 	position: relative;
 }
 .sign_chk_btn{
-	position: absolute;
-    top: 29.5px;
-    right: 4px;
+    position: absolute;
+    top: 22.5px;
+    right: 3px;
     border: none;
     background-color: #d9d9d9;
     padding: 7px;
