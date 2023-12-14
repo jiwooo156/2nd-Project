@@ -17,12 +17,12 @@ import RegionComponent from './RegionComponent.vue'
 import HeaderComponent from './HeaderComponent.vue'
 import AuthComponent from './AuthComponent.vue'
 import UserChk from './UserChk.vue'
-
+import ErrorComponent from './ErrorComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent
     },
     methods: {
 

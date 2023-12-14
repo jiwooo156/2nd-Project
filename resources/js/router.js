@@ -7,6 +7,7 @@ import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
 import UserChk from '../components/UserChk.vue';
+import ErrorComponent from '../components/ErrorComponent.vue';
 import store from './store.js'
 const routes = [
 	{
@@ -16,6 +17,10 @@ const routes = [
 	{
 		path: "/main",
 		component : MainComponent
+	},
+	{
+		path: "/error",
+		component : ErrorComponent
 	},
 	{
 		path: "/region",
