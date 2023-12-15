@@ -19193,11 +19193,39 @@ var _hoisted_51 = {
   "class": "main_hot3_txt"
 };
 var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("다양한 야간관광 특화도시!"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("경상도의 아름다운 야경")], -1 /* HOISTED */);
-var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div>", 1);
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
+var _hoisted_53 = {
+  "class": "main_4"
+};
+var _hoisted_54 = {
+  "class": "main_4_box"
+};
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"><div class=\"main_gg\"><img src=\"/img/com.png\" alt=\"gaga\"></div></div>", 1);
+var _hoisted_56 = {
+  "class": "main_box_right"
+};
+var _hoisted_57 = {
+  "class": "main_4_menu"
+};
+var _hoisted_58 = {
+  href: "#"
+};
+var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_60 = {
+  href: "#"
+};
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_62 = {
+  href: "#"
+};
+var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_64 = {
+  href: "#"
+};
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
   "class": "footer"
 }, "푸터 띄우기")], -1 /* HOISTED */);
-var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache) {
@@ -19219,7 +19247,15 @@ function render(_ctx, _cache) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 댕댕이와 경상도여행")]), _hoisted_48])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_49, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'circle'],
     "class": "icon_cir_3"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 낮 보다 아름다운 밤")]), _hoisted_52])])])])])])]), _hoisted_53]), _hoisted_54]), _hoisted_55], 64 /* STABLE_FRAGMENT */);
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 낮 보다 아름다운 밤")]), _hoisted_52])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("자유"), _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'comments']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("질문"), _hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'leaf']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("정보"), _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'file-pen']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'triangle-exclamation']
+  })])])])])])]), _hoisted_66]), _hoisted_67], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
