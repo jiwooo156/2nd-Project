@@ -18835,15 +18835,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("header", {
+var _hoisted_1 = {
+  key: 0
+};
+var _hoisted_2 = {
   "class": "header"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+var _hoisted_3 = {
   "class": "header_left"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
-  "class": "logo"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  href: "#"
-}, "안냥")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "header_mid"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", {
   "class": "lnb"
@@ -18888,22 +18889,63 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   href: "#",
   target: "_self",
   onclick: ""
-}, "먹구시펑")])])])])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+}, "먹구시펑")])])])])])], -1 /* HOISTED */);
+var _hoisted_5 = {
+  key: 0,
   "class": "header_right"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+};
+var _hoisted_6 = {
   "class": "gnb"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  href: "#"
-}, "로그인")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  href: "#"
-}, "회원가입")])])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+};
+var _hoisted_7 = {
+  key: 1,
+  "class": "header_right"
+};
+var _hoisted_8 = {
+  "class": "gnb"
+};
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
   href: "javascript:void(0);",
   "class": "menu_btn"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "sound_only"
-}, "메뉴")])], -1 /* HOISTED */);
+}, "메뉴")], -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), _hoisted_1], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 헤더 영역 "), _ctx.$route.fullPath != '/login' && _ctx.$route.fullPath != '/signin' && _ctx.$route.fullPath != '/authemail' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("header", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/main",
+    "class": "logo"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("안냥")];
+    }),
+    _: 1 /* STABLE */
+  })]), _hoisted_4, !_ctx.$store.state.localFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/login"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("로그인")];
+    }),
+    _: 1 /* STABLE */
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/authemail"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("회원가입")];
+    }),
+    _: 1 /* STABLE */
+  })])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.localFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: "/userchk"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$store.state.NowUser), 1 /* TEXT */)];
+    }),
+    _: 1 /* STABLE */
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    onClick: _cache[0] || (_cache[0] = function () {
+      return $options.logout && $options.logout.apply($options, arguments);
+    })
+  }, "로그아웃")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_9])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
 }
 
 /***/ }),
@@ -19247,18 +19289,184 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "region_form_btn",
   type: "submit"
 }, "검색", -1 /* HOISTED */);
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"region_list_frame\"><div class=\"region_recommend\"><div class=\"region_recommend_festival\"><div class=\"region_comment\"><p class=\"region_p1\">이런 축제</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/jjangu.jpg\" alt=\"\"></div><div class=\"region_title\"><a>추천축제제목1</a></div><div class=\"region_period\">20231212-20231212</div><p class=\"region_heart\"></p></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/jjangu.jpg\" alt=\"\"></div><div class=\"region_title\">추천축제제목2</div><div class=\"region_period\">내용2</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/jjangu.jpg\" alt=\"\"></div><div class=\"region_title\">추천축제제목3</div><div class=\"region_period\">내용3</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/jjangu.jpg\" alt=\"\"></div><div class=\"region_title\">추천축제제목4</div><div class=\"region_period\">내용4</div></div></div><div class=\"region_recommend_tour\"><div class=\"region_comment\"><p class=\"region_p1\">이런 관광지</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목1</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목2</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목3</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목4</div></div></div></div><div class=\"region_total\"><div class=\"region_total_festival\"><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_3.jpg\" alt=\"\"></div><div class=\"region_title\">지역축제제목1</div><div class=\"region_period\">내용1</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_3.jpg\" alt=\"\"></div><div class=\"region_title\">지역축제제목2</div><div class=\"region_period\">내용2</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_3.jpg\" alt=\"\"></div><div class=\"region_title\">지역축제제목3</div><div class=\"region_period\">내용3</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_3.jpg\" alt=\"\"></div><div class=\"region_title\">지역축제제목4</div><div class=\"region_period\">내용4</div></div></div><div class=\"region_total_tour\"><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_4.jpg\" alt=\"\"></div><div class=\"region_title\">지역관광지제목1</div><div class=\"region_period\">내용1</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_4.jpg\" alt=\"\"></div><div class=\"region_title\">지역관광지제목2</div><div class=\"region_period\">내용2</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_4.jpg\" alt=\"\"></div><div class=\"region_title\">지역관광지제목3</div><div class=\"region_period\">내용3</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_4.jpg\" alt=\"\"></div><div class=\"region_title\">지역관광지제목4</div><div class=\"region_period\">내용4</div></div></div></div></div><div class=\"region_btn_more\"><button>더보기</button></div>", 2);
+var _hoisted_10 = {
+  "class": "region_list_frame"
+};
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"region_recommend\"><div class=\"region_recommend_festival\"><div class=\"region_comment\"><p class=\"region_p1\">이런 축제</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_list\"><div class=\"region_img\"><a href=\"\"><img src=\"/img/jjangu.jpg\" alt=\"\"></a></div><div class=\"region_title\"><a href=\"\">추천축제제목1</a></div><div class=\"region_period\">20231212-20231212</div></div><div class=\"region_list\"><div class=\"region_img\"><a href=\"\"><img src=\"/img/jjangu.jpg\" alt=\"\"></a></div><div class=\"region_title\"><a href=\"\">추천축제제목2</a></div><div class=\"region_period\">내용2</div></div><div class=\"region_list\"><div class=\"region_img\"><a href=\"\"><img src=\"/img/jjangu.jpg\" alt=\"\"></a></div><div class=\"region_title\"><a href=\"\">추천축제제목3</a></div><div class=\"region_period\">내용3</div></div><div class=\"region_list\"><div class=\"region_img\"><a href=\"\"><img src=\"/img/jjangu.jpg\" alt=\"\"></a></div><div class=\"region_title\"><a href=\"\">추천축제제목4</a></div><div class=\"region_period\">내용4</div></div></div><div class=\"region_recommend_tour\"><div class=\"region_comment\"><p class=\"region_p1\">이런 관광지</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목1</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목2</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목3</div></div><div class=\"region_list\"><div class=\"region_img\"><img src=\"/img/item_2.jpg\" alt=\"\"></div><div class=\"region_title\">추천관광지제목4</div></div></div></div>", 1);
+var _hoisted_12 = {
+  "class": "region_total"
+};
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_total_line"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_total_cityname"
+}, " 지역명 "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_total_citycomment"
+}, " 지역별로 추천 해 드릴게요! ")], -1 /* HOISTED */);
+var _hoisted_14 = {
+  "class": "region_total_festival"
+};
+var _hoisted_15 = {
+  "class": "region_list"
+};
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_3.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역축제제목1", -1 /* HOISTED */);
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용1", -1 /* HOISTED */);
+var _hoisted_19 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_20 = {
+  "class": "region_list"
+};
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_3.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역축제제목2", -1 /* HOISTED */);
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용2", -1 /* HOISTED */);
+var _hoisted_24 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_25 = {
+  "class": "region_list"
+};
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_3.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역축제제목3", -1 /* HOISTED */);
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용3", -1 /* HOISTED */);
+var _hoisted_29 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_30 = {
+  "class": "region_list"
+};
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_3.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역축제제목4", -1 /* HOISTED */);
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용4", -1 /* HOISTED */);
+var _hoisted_34 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_35 = {
+  "class": "region_total_tour"
+};
+var _hoisted_36 = {
+  "class": "region_list"
+};
+var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_4.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역관광지제목1", -1 /* HOISTED */);
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용1", -1 /* HOISTED */);
+var _hoisted_40 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_41 = {
+  "class": "region_list"
+};
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_4.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역관광지제목2", -1 /* HOISTED */);
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용2", -1 /* HOISTED */);
+var _hoisted_45 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_46 = {
+  "class": "region_list"
+};
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_4.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역관광지제목3", -1 /* HOISTED */);
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용3", -1 /* HOISTED */);
+var _hoisted_50 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_51 = {
+  "class": "region_list"
+};
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_img"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/img/item_4.jpg",
+  alt: ""
+})], -1 /* HOISTED */);
+var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_title"
+}, "지역관광지제목4", -1 /* HOISTED */);
+var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_period"
+}, "내용4", -1 /* HOISTED */);
+var _hoisted_55 = {
+  href: "#",
+  "class": "region_heart"
+};
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "region_btn_more"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", null, "더보기")], -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    to: '/main',
-    "class": "login_header_a pointer"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("이의이승")];
-    }),
-    _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  var _component_font_awesome_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("font-awesome-icon");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "region_slider",
     style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
       transform: 'translateX(' + $data.slidePosition + 'px)'
@@ -19299,7 +19507,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return $options.getSelectedDates();
     })
-  }, "검색"), _hoisted_7, _hoisted_8, _hoisted_9])]), _hoisted_10]);
+  }, "검색"), _hoisted_7, _hoisted_8, _hoisted_9])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, _hoisted_17, _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, _hoisted_22, _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, _hoisted_27, _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, _hoisted_32, _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, _hoisted_38, _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [_hoisted_42, _hoisted_43, _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, _hoisted_48, _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [_hoisted_52, _hoisted_53, _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'heart']
+  })])])])])]), _hoisted_56]);
 }
 
 /***/ }),

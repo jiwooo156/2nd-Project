@@ -1,9 +1,9 @@
 <template>
     <!-- 헤더 영역 -->
-    <div>
+    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'">
 		<header class="header">
 			<div class="header_left">
-				<h1 class="logo"><a href="#">안냥</a></h1>
+				<router-link to="/main" class="logo" >안냥</router-link>
 			</div>
 			<div class="header_mid">
 				<nav class="lnb">
@@ -44,16 +44,28 @@
 					</ul>
 				</nav>
 			</div>
-			<div class="header_right">
+			<div class="header_right" v-if="!$store.state.localFlg">
 				<ul class="gnb">
 					<li>
-						<a href="#">로그인</a>
+						<router-link to="/login">로그인</router-link>
 					</li>
 					<li>
-						<a href="#">회원가입</a>
+						<router-link to="/authemail">회원가입</router-link>
 					</li>
 				</ul>
 			</div>
+            <div class="header_right" v-if="$store.state.localFlg">
+				<ul class="gnb">
+                    <li>
+                        <router-link to="/userchk">{{ $store.state.NowUser }}</router-link>
+                    </li>
+					<li>
+						<div @click="logout">로그아웃</div>
+					</li>
+				</ul>
+			</div>
+
+
 		</header>
 		<a href="javascript:void(0);" class="menu_btn">
 			<span></span>
