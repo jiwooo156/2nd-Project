@@ -98,6 +98,41 @@
             <img class="main_3_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
           <div class="main_box_right">
+            <ul class="main_hot3">
+              <li>
+                <a href="#" target="관광">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_1.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle',]" class="icon_cir_1"/> 근대역사문화거리</span>
+                    <p>100여년 전의 역사가 공존하는<br> 특별하고 소중한 시간 여행</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" target="여행">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_2.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_2"/> 댕댕이와 경상도여행</span>
+                    <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" target="야경">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_3.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_3"/> 낮 보다 아름다운 밤</span>
+                    <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
           </div>
 				</div>
 			</div>
