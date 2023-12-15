@@ -57,13 +57,14 @@
             <div class="header_right" v-if="$store.state.localFlg">
 				<ul class="gnb">
                     <li>
-                        <router-link to="/userchk">{{ $store.state.NowUser }}</router-link>
+                        <router-link to="/userchk">
+                            <font-awesome-icon :icon="['fas', 'user']" class="header_icon"/>
+                            {{ $store.state.NowUser }}
+                        </router-link>
                     </li>
 					<li @click="logout">로그아웃</li>
 				</ul>
 			</div>
-
-
 		</header>
 		<a href="javascript:void(0);" class="menu_btn">
 			<span></span>
@@ -71,7 +72,7 @@
 			<span></span>
 			<i class="sound_only">메뉴</i>
 		</a>
-	</div>
+    </div>
 </template>
 <script>
 export default {

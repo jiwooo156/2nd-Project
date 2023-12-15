@@ -22,20 +22,24 @@ class UserController extends Controller
     public function emailchk(Request $req)
     {
         $result = User::select('email')->where('email',$req->email)->get();
-        return response()->json([
-            'code' => '0'
-            ,'data' => $result
-        ], 200);
+        if($result){
+            return response()->json([
+                'code' => '0'
+                ,'data' => $result
+            ], 200);
+        }
     }
 
     // 닉네임중복확인
     public function nickchk(Request $req)
     {
         $result = User::select('nick')->where('nick',$req->nick)->get();
-        return response()->json([
-            'code' => '0'
-            ,'data' => $result
-        ], 200);
+        if($result){
+            return response()->json([
+                'code' => '0'
+                ,'data' => $result
+            ], 200);
+        }
     }
 
     // 회원가입
@@ -49,12 +53,12 @@ class UserController extends Controller
             if($req->email===$result->email){
                 return response()->json([
                     'code' => 'E05',
-                    'errorMsg' => '중복된 이메일 입니다.'
+                    'errorMsg' => '이미사용 중인 이메일 입니다.'
                 ], 400);
             }else if($req->nick===$result->nick){
                 return response()->json([
                     'code' => 'E05',
-                    'errorMsg' => '중복된 닉네임 입니다.'
+                    'errorMsg' => '이미 사용중인 닉네임 입니다.'
                 ], 400);
             }
         }else{
@@ -142,6 +146,7 @@ class UserController extends Controller
         $auth = Auth::user();
         $result = User::where('email',$auth->email)->first();
         if(!(Hash::check($req->password, $result->password))){
+            Log::debug("비밀번호 미일치");
             $errorMsg = ["비밀번호가 일치하지 않습니다"];
             return response()->json([
                 'code' => 'E07',
@@ -149,6 +154,7 @@ class UserController extends Controller
             ], 400);
         }
         if($result){
+            Log::debug("비밀번호 일치");
             return response()->json([
                 'code' => '0',
                 'data' => $result
@@ -191,23 +197,40 @@ class UserController extends Controller
     }
     // 닉네임변경
     public function changenick(Request $req){
-        try {
-            DB::beginTransaction();
-            $auth = Auth::user();
-            $result = User::where('email',$auth->email)->first();
-            $result->nick = $req->nick;
-            $result->save();
-            DB::commit();
-            return response()->json([
-                'code' => '0',
-                'data' => $result
-            ], 200);
-        } catch(Exception $e){
-            DB::rollback();
-            return response()->json([
-                'code' => 'E09',
-                'errorMsg' => ["닉네임 변경에 실패했습니다"]
-            ], 400);
+        $result = User::where('nick',$req->nick)->first();
+        // 악성 유저 대응용
+        Log::debug($result);
+        if($result){
+            if($req->nick===$result->nick){
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '중복된 닉네임 입니다.'
+                ], 400);
+            }else{
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '오류발생.'
+                ], 400);
+            }
+        }else{
+            try {
+                DB::beginTransaction();
+                $auth = Auth::user();
+                $result = User::where('email',$auth->email)->first();
+                $result->nick = $req->nick;
+                $result->save();
+                DB::commit();
+                return response()->json([
+                    'code' => '0',
+                    'data' => $result
+                ], 200);
+            } catch(Exception $e){
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E09',
+                    'errorMsg' => ["닉네임 변경에 실패했습니다"]
+                ], 400);
+            }
         }
     }
     // 회원탈퇴
@@ -344,16 +367,12 @@ class UserController extends Controller
                 return redirect('/signin')->cookie('auth_id', $result->id, 720, null, null, false, false);
             } catch(Exception $e){
                 DB::rollback();
-                return response()->json([
-                    'code' => 'E11',
-                    'errorMsg' => ["이메일인증에 실패하셨습니다"]
-                ], 400);
+                $err = "인증에 실패하였습니다."."\n"."기존페이지로 돌아가 다시 인증을 받아주세요";      
+                return $err;
             }
         }else{
-            return response()->json([
-                'code' => 'E11',
-                'errorMsg' => "이메일인증에 실패하셨습니다"
-            ], 400);
+            $err = "인증이 만료된 URL입니다."."\n"."기존페이지로 돌아가 다시 인증을 받아주세요";      
+            return $err;
         }
     }
     // 이메일가져오기

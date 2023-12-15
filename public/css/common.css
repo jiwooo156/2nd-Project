@@ -217,6 +217,13 @@ input[type=password]::placeholder {
   a {
 	text-decoration:none
   }
+}
+
+.header_icon{
+	size: 1px;
+}
+
+
 /* 메인 */
 .main {
 	font-size: 3.8rem;
@@ -678,12 +685,17 @@ input[type=password]::placeholder {
 	color: #B7B7B7;
 }
 
+.sign_email_input{
+	background-color: #d8d8d8;
+    color: #7a7a7a;
+}
+
 .sign_relative{
 	position: relative;
 }
 .sign_chk_btn{
-    position: absolute;
-    top: 22.5px;
+	position: absolute;
+    top: 3.4px;
     right: 3px;
     border: none;
     background-color: #d9d9d9;
