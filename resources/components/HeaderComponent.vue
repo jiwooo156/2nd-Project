@@ -59,9 +59,7 @@
                     <li>
                         <router-link to="/userchk">{{ $store.state.NowUser }}</router-link>
                     </li>
-					<li>
-						<div @click="logout">로그아웃</div>
-					</li>
+					<li @click="logout">로그아웃</li>
 				</ul>
 			</div>
 
