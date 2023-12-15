@@ -9,7 +9,7 @@
             </div>
             <div class="main_txt_down">
               블루베리스무디 맛있어요.<br />이의이승이
-              뭐냐구요 ?<br />일단, 와보면 알아요!
+              뭐냐구요?<br />일단, 와보면 알아요!
             </div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
@@ -98,6 +98,41 @@
             <img class="main_3_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
           <div class="main_box_right">
+            <ul class="main_hot3">
+              <li>
+                <a href="#" target="관광">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_1.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle',]" class="icon_cir_1"/> 근대역사문화거리</span>
+                    <p>100여년 전의 역사가 공존하는<br> 특별하고 소중한 시간 여행</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" target="여행">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_2.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_2"/> 댕댕이와 경상도여행</span>
+                    <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" target="야경">
+                  <div class="main_hot3_img">
+                    <img src="/img/topic_3.png">
+                  </div>
+                  <div class="main_hot3_txt">
+                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_3"/> 낮 보다 아름다운 밤</span>
+                    <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
+                  </div>
+                </a>
+              </li>
+            </ul>
           </div>
 				</div>
 			</div>
@@ -120,7 +155,14 @@
             <div class="main_shap">'가가가가?'같은 경상도식 유머가 있어요🤗</div>
             <img class="main_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
+          <div class="main_gg"><img src="/img/com.png" alt="gaga"></div>
           <div class="main_box_right">
+            <div class="main_4_menu">
+              <a href="#">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></a>
+              <a href="#">질문<br>게시판<font-awesome-icon :icon="['fas', 'leaf']" /></a>
+              <a href="#">정보<br>게시판<font-awesome-icon :icon="['fas', 'file-pen']" /></a>
+              <a href="#">건의<br>게시판<font-awesome-icon :icon="['fas', 'triangle-exclamation']" /></a>
+            </div>
           </div>
 				</div>
 			</div>
