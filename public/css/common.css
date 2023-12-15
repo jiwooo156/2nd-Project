@@ -762,8 +762,6 @@ input[type=password]::placeholder {
 
 
 
-
-
 /* 유저페이지 */
 .user_container{
 	width:95%;
@@ -784,6 +782,9 @@ text-align: center;
 /* 두번째 "회원정보" 텍스트   */
 .user_subcontainer{
 	display: flex;
+}
+.user_h2{
+	margin-top:10px;
 }
 .user_box_top_red_center{
 	width:50%;
@@ -849,34 +850,32 @@ text-align: center;
 	box-sizing: border-box;
     text-align: center;
     background-color: #00000099;
-    width: 100%;
+    width: 100%;	
     height: 100%;
     position: fixed;
-    padding: 20px;
+    margin-top: 110px;
 }
 .user_white-bg{
     box-sizing: border-box;
-    width: 45%;
+	margin: 0 auto;
+	margin-top: 20px;
+    width: 95%;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    margin: 0 auto;
 	height: 585px;
 }
 .user_box_password{
 	margin-top: 90px;
 }
 .user_button_box_password{
-margin-top:130px;
+margin-top:10px;
 }
 .user_h3_nick{
 	margin-top: 66px;
 }
-.user_box_nick{
-	margin-top: 130px;
-}
 .user_button_box_nick{
-	margin-top:130px;
+	margin-top:40px;
 }
 .user_h3_userout{
 	margin-top:89px;
@@ -895,12 +894,12 @@ margin-top:130px;
 	margin-left:20px;
 }
 #user_del_reason{
-	margin-left: 12px;
+	
     width: 279px;
 }
 #user_del_reason_input{
     margin-top: 15px;
-    margin-left: 104px;
+    margin-left: 10px;
     height: 150px;
     width: 300px;
 }

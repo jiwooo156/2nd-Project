@@ -107,7 +107,7 @@
 	<br>
 	<div class="user_subcontainer">
 		<div class="user_box_top_red_center">
-			<h2>회원 정보</h2>
+			<h2 class="user_h2">회원 정보</h2>
 		</div>
 		<div class="user_vacant_box"></div>
 	</div>
