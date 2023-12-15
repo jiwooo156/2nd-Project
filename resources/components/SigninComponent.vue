@@ -373,33 +373,28 @@ export default {
 					this.err_pw4 = false;
 					this.err_pw5 = false;
 					this.com_pw = false;
-					return;
 				}
 				if(!this.com_pw_chk){
 					this.err_pw_chk = true;
 					this.com_pw_chk = false;
-					return;
 				}
 				if(!this.com_name){
 					this.err_name1 = true;
 					this.err_name2 = false;
 					this.err_name3 = false;
 					this.com_name = false;
-					return;
 				}
 				if(!this.com_birthdate){
 					this.err_birthdate1 = false;
 					this.err_birthdate2 = true;
 					this.err_birthdate3 = false;
 					this.com_birthdate = false;
-				return
 				}
 				if(!this.com_phone){
 					this.err_phone1 = false;
 					this.err_phone2 = true;
 					this.err_phone3 = false;
 					this.com_phone = false;
-					return
 				}
 			}
 		}
