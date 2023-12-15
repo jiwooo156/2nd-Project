@@ -7,7 +7,9 @@
             </router-link>
             <div class="header_menu">
                 <router-link to="/main">홈</router-link>
-                <div>메뉴</div>
+                <router-link to="/region" class="header_logo">
+                    이의이승
+                </router-link>
                 <div>메뉴</div>
                 <div>메뉴</div>
             </div>
@@ -27,7 +29,7 @@
         >
             <router-link 
                 to="/userchk"
-            >{{ $store.state.NowUser }}</router-link>
+            ><font-awesome-icon :icon="['fas', 'user']" class="header_icon"/>{{ $store.state.NowUser }}</router-link>
             <div
                 class="pointer"
                 @click="logout"

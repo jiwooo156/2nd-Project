@@ -21,6 +21,7 @@
 							v-if="$store.state.emailFlg !== 1" 
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
+						<div class="sign_relative">
 						<input type="text" placeholder="사용하실 이메일을 입력해주세요" autocomplete='off' v-model="auth_email" id="auth_email">
 						<button class="sign_chk_btn pointer"
 							v-if="$store.state.emailFlg !== 1" 
@@ -30,11 +31,16 @@
 							v-if="$store.state.emailFlg === 1" 
 							@click="del_email_chk"
 						>다시쓰기</button>
+						</div>
 						<br>
 						<div
 							v-if="$store.state.emailFlg === 1&&this.auth_flg"
 							class="sign_commsg"
 						>이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요</div>
+						<div
+							v-if="timeout_flg"
+							class="sign_errmsg"
+						>인증시간이 만료되었습니다.</div>
 						<div
 						v-if="$store.state.emailFlg === 1" 
 						class="sign_errmsg"
@@ -48,6 +54,12 @@
 							@click="reset_auth_time"
 						>
 							시간연장
+						</button>
+						<button
+							v-if="$store.state.emailFlg === 1&&this.auth_flg"
+							@click="this.timeout_flg=true"
+						>
+							트루
 						</button>
 						<span
 							v-if="$store.state.emailFlg === 1&&this.auth_flg"
@@ -89,6 +101,7 @@ export default {
 				auth_err: "",
 				auth_re: "",
 				timer: "",
+				timeout_flg: false
 			}
 		},
 
@@ -115,6 +128,7 @@ export default {
 			.then(res => {
 				if(res.data.code === "0"){	
 					console.log("성공")
+					this.$store.commit('setEmailFlg',1);
 					this.auth_flg = true;
 					this.timer1();
 					console.log("타이머실행")
@@ -145,8 +159,8 @@ export default {
 					console.log("이메일 다시보내기 댄")
 					this.auth_err = '';
 					this.auth_flg = true;
-					this.timer1();
-					
+					this.timeout_flg = false;
+					this.timer1();	
 				}else{
 					console.log("이메일 다시보내기 앨스")
 					this.auth_err = res.data.errorMsg;
@@ -208,9 +222,12 @@ export default {
 			this.$store.commit('setEmailFlg',0);
 			document.querySelector('#auth_email').readOnly = false;
 			document.querySelector('#auth_email').removeAttribute('style');
+			this.timerstop()
+			this.re_auth_email = false
 			this.auth_err = "",
 			this.auth_re = "",
 			this.auth_flg = false;
+			this.timeout_flg=false;
 		},
 		// 타이머
 		timer1() {
@@ -221,7 +238,11 @@ export default {
 			let seconds = 0;
 			const updateTimer = () => {
 				this.timer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+				console.log(this.timer );
 				if (minutes === 0 && seconds === 0) {
+					this.auth_flg=false;
+					this.re_auth_email=true;
+					this.timeout_flg=true;
 					clearInterval(this.timerId);
 				} else {
 					if (seconds === 0) {
@@ -234,16 +255,15 @@ export default {
 			};
 			this.timerId = setInterval(updateTimer, 1000);
 		},
+		timerstop(){
+			clearInterval(this.timerId);
+		}
 
-		// 타이머 초기화 메서드 호출
-		resettimer() {
-			this.timer1();
-		},
 	},
 	beforeRouteLeave(to, from, next) {
 		this.del_email_chk();
 		this.$store.commit('setErrMsg','');
-		this.resettimer();
+		this.timerstop();
 		next();
 	},
 			

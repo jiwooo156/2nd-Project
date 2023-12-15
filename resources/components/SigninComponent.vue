@@ -8,7 +8,7 @@
 				<div class="sign_container">
 					<div class="sign_relative">
 						<span>E-mail</span>
-						<input type="text" id="signin_email" autocomplete="off" readonly :value="email">
+						<input type="text" id="signin_email" autocomplete="off" readonly :value="email" class="sign_email_input">
 					</div>
 					<div>
 						<span>비밀번호</span>
@@ -34,7 +34,7 @@
 						<span v-show="com_name" class="sign_commsg">사용가능한 이름 입니다.</span>
 						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10">
 					</div>
-					<div class="sign_relative">
+					<div>
 						<span>닉네임</span>
 						<span
 							v-if="$store.state.nickFlg === 1" 
@@ -48,15 +48,17 @@
 							v-for="item in $store.state.varErr" :key="item"
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
-						<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8">
-						<button class="sign_chk_btn pointer"
-							v-if="$store.state.nickFlg !== 1" 
-							@click="nick_chk"
-						>중복확인</button>
-						<button class="sign_chk_btn pointer"
-							v-if="$store.state.nickFlg === 1" 
-							@click="del_nick_chk"
-						>다시쓰기</button>
+						<div class="sign_relative">
+							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8">
+							<button class="sign_chk_btn pointer"
+								v-if="$store.state.nickFlg !== 1" 
+								@click="nick_chk"
+							>중복확인</button>
+							<button class="sign_chk_btn pointer"
+								v-if="$store.state.nickFlg === 1" 
+								@click="del_nick_chk"
+							>다시쓰기</button>
+						</div>
 					</div>
 					<div>
 						<span>생년월일</span>
@@ -76,7 +78,7 @@
 					</div>
 					<div>
 						<span>성별</span>
-						<select id="signin_gender">
+						<select id="signin_gender" placeholder="지역">
 							<option>남자</option>
 							<option>여자</option>
 						</select>	
@@ -154,7 +156,7 @@ export default {
 	},
 
 	methods: {
-		// 이메일중복확인
+		// 이메일정보 가져오기
 		emailGet(){
 		const URL = '/signin/start'
 		axios.get(URL)

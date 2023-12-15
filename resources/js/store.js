@@ -142,34 +142,6 @@ const store = createStore({
 			
 			})
 		},	
-		// 닉네임 중복확인2(닉네임 변경용)
-		actionNickChk2(context){
-				let nick = document.querySelector('#user_nick').value
-				const URL = '/signin/nick?nick='+nick
-				axios.get(URL)
-				.then(res => {
-					context.commit('setErrMsg','');
-					if(res.data.code === "0"){
-						if(res.data.data.length === 0){
-							context.commit('setNickFlg',1);
-							document.querySelector('#user_nick').readOnly = true;
-							document.querySelector('#user_nick').style.backgroundColor = 'rgb(169 183 200)';		
-						}else if(res.data.data.length > 0){
-							console.log("있을때")
-							context.commit('setNickFlg',2);
-						}
-					}else{
-						console.log('else')
-					}
-				})
-				.catch(err => {
-					console.log("캐치")
-					context.commit('setNickFlg',0);
-					context.commit('setErrMsg',err.response.data.errorMsg);
-				
-				})
-		},
-
 		// 회원가입
 		actionSignIn(context){
 			if(context.state.nickFlg===1){
@@ -211,11 +183,11 @@ const store = createStore({
 						alert("회원가입에 성공 했습니다.");
 						router.push('/login')
 					}else{
-						context.commit('setErrMsg',res.data.errorMsg);
+						alert(res.data.errorMsg);
 					}
 				})
 				.catch(err => {
-					context.commit('setErrMsg',err.response.data.errorMsg);
+					alert(err.response.data.errorMsg);
 				})
 			}else{
 				alert("닉네임 인증을 해주세요")
@@ -328,17 +300,6 @@ const store = createStore({
 			})
 		},
 		// 유저정보페이지 비밀번호 체크
-		actionGetUser(context){
-			const URL = '/userinfo'
-			axios.get(URL)
-			.then(res => {
-				context.commit('setUserInfo',res.data.data);
-			})
-			.catch(err => {
-				console.log("캐치")
-			})
-		},
-		// 유저정보페이지 비밀번호 체크
 		actionUserChk(context){
 			let pw = document.querySelector('#userchk_pw').value;
 			const URL = '/userchk'
@@ -394,8 +355,7 @@ const store = createStore({
 					}
 				})
 				.catch(err => {
-					console.log("캐치")
-					alert(err.response.data.errorMsg);
+					alert("비밀번호의 값을 다시한번 확인해주세요");
 				})
 		},
 		// 유저페이지 닉네임변경
