@@ -4,6 +4,7 @@
 	margin: 0;
 	box-sizing: border-box;
 	text-decoration: none; 
+	font-family:Cafe24Ssurround;
 }
 textarea{
 	resize: none
@@ -27,9 +28,16 @@ input[type=password] {
     font-weight: normal;
     font-style: normal;
 }
-body, html, a, button, table, input, select, textarea {
-	font-family:Cafe24Ssurround
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* body, html, a, button, table, input, select, textarea {
+	font-family:Cafe24Ssurround;
+} */
 input[type=password]::placeholder {
 	font-family:Cafe24Ssurround
 }
@@ -102,6 +110,7 @@ input[type=password]::placeholder {
   .skip_nav a:focus,.skip_nav a:active{
 	top:0;
   } 
+
   .header {
 	width:100%;
 	height:100px;
@@ -121,10 +130,11 @@ input[type=password]::placeholder {
   }
   .logo {
 	display: flex;
-	width: 13rem;
+	width: 9rem;
 	align-items: center;
 	background: url("/img/logo.png") center center no-repeat;
 	background-size:contain;font-size: 0;
+	margin-left: 1.5rem;
   }
   .logo a{
 	display: block;
@@ -144,12 +154,15 @@ input[type=password]::placeholder {
 	display: flex;
 	padding: 0 3.5rem;
 	align-items: center;
-	font-size: 2.2rem;
+	font-size: 1.3rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   
   .header .nav > li:hover > a{
 	color: var(--sub-02-color);
 	font-weight: 800;
+	
   }
   .gnb{
 	display: flex;
@@ -160,13 +173,14 @@ input[type=password]::placeholder {
   .gnb li{
 	margin-left: 2rem;
   }
-  .gnb li:first-child{
-	margin-left: 0;
+  .gnb li:last-child{
+	margin-right: 1.5rem;
   }
   .gnb li a{
-	font-size: 1.5rem;
-	font-weight: 500;
+	font-size: 1.1rem;
 	color: #3a3a3a;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   .header .depth1{
 	position:absolute;
@@ -185,11 +199,13 @@ input[type=password]::placeholder {
 	text-align: center;
   }
   .header .depth1 li a{
-	font-size: 1.6rem;
-	font-weight: 400;
+	font-size: 1rem;
+	/* font-weight: 500; */
 	margin-bottom: 1rem;
 	color: #000;
 	display: block;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   .header .depth1 li a:hover{
 	font-weight: 700;
@@ -217,7 +233,6 @@ input[type=password]::placeholder {
   a {
 	text-decoration:none
   }
-
 
 .header_icon{
 	size: 1px;
@@ -250,13 +265,14 @@ input[type=password]::placeholder {
 	padding: 290px 0 0;
 	color: #fff;
 	font-weight: 600;
-	line-height: 4.5rem;
+	line-height: 6rem;
   }
   .main_txt_up {
 	color: #f2cc0f;
+	font-size: 4.4rem;
   }
   .main_txt_down {
-	font-size: 3rem;
+	font-size: 4rem;
   }
   .main_wea {
 	display: block;
@@ -350,6 +366,8 @@ input[type=password]::placeholder {
 	margin: 3px 0;
 	padding-left: 5px;
 	font-size: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
 .main_2_news {
 	display: flex;
@@ -361,7 +379,7 @@ input[type=password]::placeholder {
 }
 .main_2_news_l {
 	width: 500px;
-	margin: 0 10px 10px 0;
+	margin: 0 1.5rem 1.5rem 0;
 	border-radius: 10px;
 	height: 280px;
 	padding: 30px;
@@ -388,10 +406,14 @@ input[type=password]::placeholder {
 .art_con {
 	font-size: 1.3rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
 .art_date {
 	font-size: 0.8rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
   /* 메인 세번째 */
   .main_3 {
@@ -425,6 +447,10 @@ input[type=password]::placeholder {
 	gap:50px;
 	margin-top: 2rem;
 }
+.main_hot3_txt p {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+}
 .main_hot3_txt {
 	font-size: 1.8rem;
 }
@@ -448,11 +474,12 @@ input[type=password]::placeholder {
 	line-height: 1.8rem;
 }
 .main_hot3 li {
-	border: 1px solid rgba(53, 53, 53, 0.7);
-	border-radius: 3px;
+	border: 1px solid rgba(53, 53, 53, 0.5);
+	border-radius: 5px;
 } 
 .main_hot3 li:hover {
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.7);
+
 } 
 .main_hot3 li a {
 	direction: none;
@@ -473,6 +500,7 @@ input[type=password]::placeholder {
 	font-size: 1.4rem;
 	color: #ff9500;
 }
+
   /* 메인 네번째 */
   .main_4 {
 	height: 100vh;  
@@ -488,7 +516,8 @@ input[type=password]::placeholder {
   .main_gg {
 	width: 650px;
 	height: 300px;
-	margin: 20px 0 0 20px;
+	margin: 16rem 0 0;
+	position: absolute;
   }
   .main_gg img {
 	width: 100%;
@@ -501,22 +530,25 @@ input[type=password]::placeholder {
     flex-wrap: wrap;
 	width: 800px;
     height: 150px;
-	margin: 8rem 0 0 9.5rem;
+	margin: 9rem 0 0 16rem;
   }
   .main_4_menu a {
 	color: #000000cb;
 	background-color: #f8f8f8;
 	border-radius: 10px;
-    width: 325px;
+    width: 335px;
     height: 140px;
-	margin: 1rem;
+	margin: 0 1.5rem 1.5rem 0;
 	padding: 2.5rem;
 	display: flex;
 	justify-content: space-between;
     align-items: center;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   .main_4_menu a:hover {
 	background-color: rgba(209, 77, 108, 0.2);
+	transition: background 0.5s ease-in-out;
   }
   .main_4_box {
 	display: flex;
