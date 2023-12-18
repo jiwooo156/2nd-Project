@@ -27,7 +27,6 @@ class InfoController extends Controller
         ], 200);
     }
 }
-<?php
 
 namespace App\Http\Controllers;
 
