@@ -1,6 +1,6 @@
 <template>
     <!-- 헤더 영역 -->
-    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'">
+    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
 		<header class="header">
 			<div class="header_left">
 				<router-link to="/main" class="logo" >안냥</router-link>
@@ -57,12 +57,14 @@
             <div class="header_right" v-if="$store.state.localFlg">
 				<ul class="gnb">
                     <li>
-                        <router-link to="/userchk">
-                            <font-awesome-icon :icon="['fas', 'user']" class="header_icon"/>
+                        <router-link to="/userchk" class="header_icon">
+                            <div>
+                                <font-awesome-icon :icon="['fas', 'circle-user']"/>
+                            </div>
                             {{ $store.state.NowUser }}
                         </router-link>
                     </li>
-					<li @click="logout">로그아웃</li>
+					<li @click="logout" class="pointer gnb_logout">로그아웃</li>
 				</ul>
 			</div>
 		</header>
