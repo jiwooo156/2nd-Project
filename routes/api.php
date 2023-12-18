@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController; //유저컨틀롤러 추가
+use App\Http\Controllers\InfoController; //축제 및 관광 인포 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------

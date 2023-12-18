@@ -2,11 +2,8 @@
     <HeaderComponent></HeaderComponent>
     <!-- 메인 영역 -->
     <router-view></router-view>
-
     <!-- 푸터 영역 -->
-    <div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'">
-
-    </div>
+    <FooterComponent></FooterComponent>
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
@@ -18,11 +15,12 @@ import HeaderComponent from './HeaderComponent.vue'
 import AuthComponent from './AuthComponent.vue'
 import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
+import FooterComponent from './FooterComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,
     },
     methods: {
 
