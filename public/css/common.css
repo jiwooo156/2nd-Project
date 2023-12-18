@@ -20,6 +20,25 @@ input[type=password] {
 }
 
 
+/* ===================================== */
+/* 미디어쿼리 프레임 */
+/* pc */
+@media only screen and (min-width: 1024px) {
+
+}
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+
+}
+/* ===================================== */
+
+
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -167,7 +186,6 @@ input[type=password]::placeholder {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	cursor: pointer;
   }
   .gnb li{
 	margin-left: 2rem;
@@ -175,11 +193,12 @@ input[type=password]::placeholder {
   .gnb li:last-child{
 	margin-right: 1.5rem;
   }
-  .gnb li a{
-	font-size: 1.1rem;
-	color: #3a3a3a;
-	font-family: 'Cafe24SsurroundAir';
-	font-weight: bolder;
+  .gnb li a, .gnb_logout{
+	font-weight: 900;
+    display: flex;
+    font-size: 1.1rem;
+    color: #3a3a3a;
+    font-family: 'Cafe24SsurroundAir';
   }
   .header .depth1{
 	position:absolute;
@@ -753,6 +772,55 @@ input[type=password]::placeholder {
 
 /* auth */
 
+/* pc */
+@media only screen and (min-width: 1024px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 60px auto;
+	}
+	.auth_check_msg {
+		height: 250px;
+	}
+}
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 80px auto;
+	}
+	.auth_check_msg {
+		height: 230px;
+	}
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	.auth_check{
+		grid-template-columns: 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 50px auto;
+	}
+	.auth_container{
+		display: flex;
+    	flex-direction: column-reverse;
+	}
+	.auth_check_msg {
+		height: 200px;
+	}
+	.auth_errmsg{
+		font-family: 'Cafe24SsurroundAir';
+		font-weight: 600;
+	}
+}
+.auth_errmsg{
+	color: red;
+}
 .auth_container_input{
     width: 100%;
     padding: 9px;
@@ -785,6 +853,9 @@ input[type=password]::placeholder {
 .auth_input_div label{
     padding: 0px 5px 0px 10px;
 }
+.auth_input_div span{
+	color: rgb(22, 168, 32);
+}
 .auth_frame{
 	margin: 0 auto;
     width: 95%;
@@ -793,7 +864,6 @@ input[type=password]::placeholder {
 
 .auth_check{
 	display: grid;
-	grid-template-columns: 1fr 1fr;
 	grid-gap: 20px;
 }
 .auth_check_left ,.sign_check_right{
@@ -810,13 +880,13 @@ input[type=password]::placeholder {
     border: 1px solid #000;
     overflow: scroll;
     overflow-x: hidden;
-    height: 250px;
 	padding: 10px;
 }
 
 .auth_input_div{
-	display: flex;
+    display: flex;
     justify-content: flex-end;
+    margin-top: 5px;
 }
 
 

@@ -11,10 +11,9 @@
 					에러가 발생하였습니다
 				</div>
 				<div class="error_main">
-					<div class="error_title">에러코드 : <span>E00</span></div>
-					<div class="error_content">동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세</div>
+					<div class="error_title">에러코드 : <span>E404</span></div>
+					<div class="error_content">페이지를 찾을수 없습니다.</div>
 				</div>
-	
 			</div>
 			<br>
 			<router-link :to="'/main'" class="error_btn">메인으로</router-link>
