@@ -4,6 +4,9 @@
 	v-if="$store.state.openPwModal"
 >
 	<div class="user_white-bg">
+		<div class="user_pwchange_box">
+			<p>비밀번호는 <span class="user_pwchange_guide">영어,숫자,특수문자(!?~@#)최소1개포함 8~20</span>으로 등록하셔야 합니다.</p>
+		</div>			
 		<div class="user_box_password">
 			<h3>비밀번호 수정</h3>
 			<br>
@@ -34,42 +37,44 @@
 	v-if="$store.state.openNickModal"
 >
 	<div class="user_white-bg">		
-		<h3 class="user_h3_nick">닉네임 수정</h3>
-		<div class="user_box_nick">
-		<span
-			v-if="$store.state.nickFlg === 1" 
-			class="sign_commsg"
-		>사용 가능한 닉네임 입니다.</span>
-		<span
-			v-if="$store.state.nickFlg === 2" 
-			class="sign_errmsg"
-		>이미 사용중인 닉네임 입니다.</span>
-		<span
-			v-for="item in $store.state.varErr" :key="item"
-			v-if="$store.state.nickFlg === 0" 
-			class="sign_errmsg"
-		>{{ item[0] }}</span>
-		<br>
-		<label for="user_del_reason">변경하실 닉네임 : </label>
-			<input type="text" id="user_nick"  placeholder="한글,영어,숫자 2~8" v-model="nick">
-			<button class="userChk_button"
-				v-if="$store.state.nickFlg !== 1" 
-				@click="nick_chk"
-			>중복확인</button>
+		<div class="user_nickChange_box">
+			<h3 class="user_h3_nick">닉네임 수정</h3>
+			<div class="user_box_nick">
+				<span
+					v-if="$store.state.nickFlg === 1" 
+					class="sign_commsg"
+				>사용 가능한 닉네임 입니다.</span>
+				<span
+					v-if="$store.state.nickFlg === 2" 
+					class="sign_errmsg"
+				>이미 사용중인 닉네임 입니다.</span>
+				<span
+					v-for="item in $store.state.varErr" :key="item"
+					v-if="$store.state.nickFlg === 0" 
+					class="sign_errmsg"
+				>{{ item[0] }}</span>
+				<br>
+				<label for="user_del_reason">변경하실 닉네임 : </label>
+					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" v-model="nick">
+					<button class="userChk_button"
+						v-if="$store.state.nickFlg !== 1" 
+						@click="nick_chk"
+					>중복확인</button>
+			</div>
 			<br>		
 			<button class="userChk_button"
 				v-if="$store.state.nickFlg === 1" 
 				@click="del_nick_chk"
 			>다시쓰기</button>		
-		<br>
-		<br>
-		</div>	
+			<br><br>		
+			
 			<div class="user_button_box_nick">
 				<button class="userChk_button_confirm"
 					@click="usernickchange"
 				>변경</button>
 				<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
 			</div>
+		</div>	
 	</div>
 </div>
 <div class="user_black-bg" 
@@ -107,7 +112,7 @@
 	<br>
 	<div class="user_subcontainer">
 		<div class="user_box_top_red_center">
-			<h2>회원 정보</h2>
+			<h2 class="user_h2">회원 정보</h2>
 		</div>
 		<div class="user_vacant_box"></div>
 	</div>

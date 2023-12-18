@@ -10,26 +10,27 @@
 			</div>
 		</div>
 		<div class="region_search">
-			<form class="region_search_form" action="">
-				<select name="region_select_list" id="region_select_list">
-					<option selected>지역</option>
-					<option value="Gyeongju">경주시</option>
-					<option value="Pohang">포항시</option>
-					<option value="Yeongcheon">영천시</option>
-					<option value="Gimcheon">김천시</option>
-					<option value="Andong">안동시</option>
-					<option value="Gumi">구미시</option>
-					<option value="Yeongju">영주시</option>
-					<option value="Mungyeong">문경시</option>
+			<div class="region_search_form">
+				<select class="region_select_list" id="retion_select_list">
+					<option>지역</option>
+					<option v-for="city in cities" :key="city" :value="city">
+						{{ city }}
+					</option>
 				</select>
-				<input class="region_date" v-model="startDate" type="date" value="2023-01-01">
+				<input type="date" class="region_date" id="region_date" :value="'2023-01-01'"/>
 				-
-				<input class="region_date" v-model="endDate" type="date" value="2023-12-31">
-				<button class="region_form_btn" @click="getSelectedDates()">검색</button>
+				<input type="date" class="region_date" id="region_date" :value="'2023-12-31'"/>
+
 				<br>
-				<input class="region_text" type="text" placeholder="키워드로 검색 해 보세요">
+				<input class="region_text" id="region_text" type="text" placeholder="키워드로 검색 해 보세요">
 				<button class="region_form_btn" type="submit">검색</button>
-			</form>
+			</div>
+			<button class="region_category1">
+				<span>최신순</span>
+			</button>
+			<button class="region_category2"> 
+				<span>인기순</span>
+			</button>
 		</div>
 		<div class="region_list_frame">
 			<div class="region_recommend">
@@ -38,41 +39,43 @@
 						<p class="region_p1">이런 축제</p>
 						<p class="region_p2">추천드려요</p>
 					</div>
-					<div class="region_list">
+					<div class="region_list_grid">
+						<div class="region_list">
 						<div class="region_img">
-							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
+							<router-link :to="'/'"><img src="/img/jjangu.jpg"></router-link>
 						</div>
 						<div class="region_title">
-							<a href="">추천축제제목1</a>
+							<router-link :to="'/'">추천축제제목1</router-link>
 						</div>
 						<div class="region_period">20231212-20231212</div>
-					</div>
-					<div class="region_list">
-						<div class="region_img">
-							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
 						</div>
-						<div class="region_title">
-							<a href="">추천축제제목2</a>
+						<div class="region_list">
+							<div class="region_img">
+								<router-link :to="'/'"><img src="/img/jjangu.jpg"></router-link>
+							</div>
+							<div class="region_title">
+								<router-link :to="'/'">추천축제제목2</router-link>
+							</div>
+							<div class="region_period">내용2</div>
 						</div>
-						<div class="region_period">내용2</div>
-					</div>
-					<div class="region_list">
-						<div class="region_img">
-							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
+						<div class="region_list">
+							<div class="region_img">
+								<router-link :to="'/'"><img src="/img/jjangu.jpg"></router-link>
+							</div>
+							<div class="region_title">
+								<router-link :to="'/'">추천축제제목3</router-link>
+							</div>
+							<div class="region_period">내용3</div>
 						</div>
-						<div class="region_title">
-							<a href="">추천축제제목3</a>
+						<div class="region_list">
+							<div class="region_img">
+								<router-link :to="'/'"><img src="/img/jjangu.jpg"></router-link>
+							</div>
+							<div class="region_title">
+								<router-link :to="'/'">추천축제제목4</router-link>
+							</div>
+							<div class="region_period">내용4</div>
 						</div>
-						<div class="region_period">내용3</div>
-					</div>
-					<div class="region_list">
-						<div class="region_img">
-							<a href=""><img src="/img/jjangu.jpg" alt=""></a>
-						</div>
-						<div class="region_title">
-							<a href="">추천축제제목4</a>
-						</div>
-						<div class="region_period">내용4</div>
 					</div>
 				</div>
 				<div class="region_recommend_tour">
@@ -82,111 +85,134 @@
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_2.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_2.jpg"></router-link>
 						</div>
-						<div class="region_title">추천관광지제목1</div>
+						<div class="region_title">
+							<router-link :to="'/'">추천관광지제목1</router-link>
+						</div>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_2.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_2.jpg"></router-link>
 						</div>
-						<div class="region_title">추천관광지제목2</div>
+						<div class="region_title">
+							<router-link :to="'/'">추천관광지제목2</router-link>
+						</div>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_2.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_2.jpg"></router-link>
 						</div>
-						<div class="region_title">추천관광지제목3</div>
+						<div class="region_title">
+							<router-link :to="'/'">추천관광지제목3</router-link>
+						</div>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_2.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_2.jpg"></router-link>
 						</div>
-						<div class="region_title">추천관광지제목4</div>
+						<div class="region_title">
+							<router-link :to="'/'">추천관광지제목4</router-link>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="region_total">
-				<div class="region_total_line">
-					<div class="region_total_cityname">
-						지역명
-					</div>
-					<div class="region_total_citycomment">
-						지역별로 추천 해 드릴게요!
-					</div>
+				<div class="region_comment2">
+					<p class="region_p3">지역명</p>
+					<p class="region_p4">지역별로 추천 해 드릴게요!</p>
 				</div>
 				<div class="region_total_festival">
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_3.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_3.jpg"></router-link>
 						</div>
-						<div class="region_title">지역축제제목1</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역축제제목1</router-link>
+						</div>
 						<div class="region_period">내용1</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_3.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_3.jpg"></router-link>
 						</div>
-						<div class="region_title">지역축제제목2</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역축제제목2</router-link>
+						</div>
 						<div class="region_period">내용2</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_3.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_3.jpg"></router-link>
 						</div>
-						<div class="region_title">지역축제제목3</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역축제제목3</router-link>
+						</div>
 						<div class="region_period">내용3</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_3.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_3.jpg"></router-link>
 						</div>
-						<div class="region_title">지역축제제목4</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역축제제목4</router-link>
+						</div>
 						<div class="region_period">내용4</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 				</div>
 				<div class="region_total_tour">
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_4.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_4.jpg"></router-link>
 						</div>
-						<div class="region_title">지역관광지제목1</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역관광지제목1</router-link>
+						</div>
 						<div class="region_period">내용1</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_4.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_4.jpg"></router-link>
 						</div>
-						<div class="region_title">지역관광지제목2</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역관광지제목4</router-link>
+						</div>
 						<div class="region_period">내용2</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_4.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_4.jpg"></router-link>
 						</div>
-						<div class="region_title">지역관광지제목3</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역관광지제목4</router-link>
+						</div>
 						<div class="region_period">내용3</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 					<div class="region_list">
 						<div class="region_img">
-							<img src="/img/item_4.jpg" alt="">
+							<router-link :to="'/'"><img src="/img/item_4.jpg"></router-link>
 						</div>
-						<div class="region_title">지역관광지제목4</div>
+						<div class="region_title">
+							<router-link :to="'/'">지역관광지제목4</router-link>
+						</div>
 						<div class="region_period">내용4</div>
-						<button href="#" class="region_heart"><font-awesome-icon :icon="['fas', 'heart']" /></button>
+						<button type="submit" class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></button>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="region_search_result">
+
+		</div>
 		<div class="region_btn_more">
-			<button>더보기</button>
+			<button class="pointer">더보기</button>
 		</div>
 	</div>
 </template>
@@ -197,7 +223,10 @@ export default {
 		return {
 			setting: '',
 			items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10'],
-			slidePosition: 0
+			slidePosition: 0,
+			cities: ['포항시','경주시','김천시','안동시','구미시','영주시','영천시','상주시','문경시','경산시','의성군','청송군','영양군','영덕군','청도군','고령군','성주군','칠곡군','예천군','봉화군','울진군','울릉군'],
+			startDate: '',
+			endDate: '',
 		}
 	},
 	methods: {

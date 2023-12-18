@@ -18225,7 +18225,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       setting: '',
       items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10'],
-      slidePosition: 0
+      slidePosition: 0,
+      cities: ['포항시', '경주시', '김천시', '안동시', '구미시', '영주시', '영천시', '상주시', '문경시', '경산시', '의성군', '청송군', '영양군', '영덕군', '청도군', '고령군', '성주군', '칠곡군', '예천군', '봉화군', '울진군', '울릉군'],
+      startDate: '',
+      endDate: ''
     };
   },
   methods: {
@@ -19223,7 +19226,7 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "main"
 };
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_1\"><div class=\"main_1_box\"><div class=\"main_txt\"><div class=\"main_txt_up animate__animated animate__lightSpeedInRight\"> 놀러오세요! 경상도, 좋아요!<br></div><div class=\"main_txt_down\"> 블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요 ?<br>일단, 와보면 알아요! </div></div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div>", 1);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_1\"><div class=\"main_1_box\"><div class=\"main_txt\"><div class=\"main_txt_up animate__animated animate__lightSpeedInRight\"> 놀러오세요! 경상도, 좋아요!<br></div><div class=\"main_txt_down\"> 블루베리스무디 맛있어요.<br>이의이승이 뭐냐구요?<br>일단, 와보면 알아요! </div></div><!-- 날씨는 반응형 태블릿 때 사라짐 --><div class=\"main_wea\"><div class=\"main_wea_up\">날씨 위</div><div class=\"main_wea_down\">날씨 아래</div></div></div></div>", 1);
 var _hoisted_3 = {
   "class": "main_2"
 };
@@ -19377,11 +19380,39 @@ var _hoisted_51 = {
   "class": "main_hot3_txt"
 };
 var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("다양한 야간관광 특화도시!"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("경상도의 아름다운 야경")], -1 /* HOISTED */);
-var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_4\"><div class=\"main_4_box\"><div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_box_right\"></div></div></div>", 1);
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
+var _hoisted_53 = {
+  "class": "main_4"
+};
+var _hoisted_54 = {
+  "class": "main_4_box"
+};
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_gg\"><img src=\"/img/com.png\" alt=\"gaga\"></div>", 2);
+var _hoisted_57 = {
+  "class": "main_box_right"
+};
+var _hoisted_58 = {
+  "class": "main_4_menu"
+};
+var _hoisted_59 = {
+  href: "#"
+};
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_61 = {
+  href: "#"
+};
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_63 = {
+  href: "#"
+};
+var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_65 = {
+  href: "#"
+};
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
   "class": "footer"
 }, "푸터 띄우기")], -1 /* HOISTED */);
-var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache) {
@@ -19403,7 +19434,15 @@ function render(_ctx, _cache) {
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 댕댕이와 경상도여행")]), _hoisted_48])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_49, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'circle'],
     "class": "icon_cir_3"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 낮 보다 아름다운 밤")]), _hoisted_52])])])])])])]), _hoisted_53]), _hoisted_54]), _hoisted_55], 64 /* STABLE_FRAGMENT */);
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 낮 보다 아름다운 밤")]), _hoisted_52])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("자유"), _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'comments']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("질문"), _hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'leaf']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("정보"), _hoisted_64, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'file-pen']
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+    icon: ['fas', 'triangle-exclamation']
+  })])])])])])]), _hoisted_67]), _hoisted_68], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -19456,17 +19495,34 @@ var _hoisted_4 = {
   "class": "region_search"
 };
 var _hoisted_5 = {
-  "class": "region_search_form",
-  action: ""
+  "class": "region_search_form"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<select name=\"region_select_list\" id=\"region_select_list\"><option selected>지역</option><option value=\"Gyeongju\">경주시</option><option value=\"Pohang\">포항시</option><option value=\"Yeongcheon\">영천시</option><option value=\"Gimcheon\">김천시</option><option value=\"Andong\">안동시</option><option value=\"Gumi\">구미시</option><option value=\"Yeongju\">영주시</option><option value=\"Mungyeong\">문경시</option></select>", 1);
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_6 = {
+  "class": "region_select_list",
+  id: "retion_select_list"
+};
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "지역", -1 /* HOISTED */);
+var _hoisted_8 = ["value"];
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "date",
+  "class": "region_date",
+  id: "region_date",
+  value: '2023-01-01'
+}, null, -1 /* HOISTED */);
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  type: "date",
+  "class": "region_date",
+  id: "region_date",
+  value: '2023-12-31'
+}, null, -1 /* HOISTED */);
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   "class": "region_text",
+  id: "region_text",
   type: "text",
   placeholder: "키워드로 검색 해 보세요"
 }, null, -1 /* HOISTED */);
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "region_form_btn",
   type: "submit"
 }, "검색", -1 /* HOISTED */);
@@ -19669,17 +19725,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.nextSlide && $options.nextSlide.apply($options, arguments);
     })
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "region_date",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.startDate = $event;
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_6, [_hoisted_7, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.cities, function (city) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      key: city,
+      value: city
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(city), 9 /* TEXT, PROPS */, _hoisted_8);
+  }), 128 /* KEYED_FRAGMENT */))]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" - "), _hoisted_10, _hoisted_11, _hoisted_12, _hoisted_13]), _hoisted_14, _hoisted_15]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: '/'
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_23];
     }),
-    type: "date",
-    value: "2023-01-01"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.startDate]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" - "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "region_date",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.endDate = $event;
+    _: 1 /* STABLE */
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: '/'
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("추천축제제목1")];
     }),
     type: "date",
     value: "2023-12-31"
@@ -20131,7 +20193,9 @@ var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "user_subcontainer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "user_box_top_red_center"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "회원 정보")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+  "class": "user_h2"
+}, "회원 정보")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "user_vacant_box"
 })], -1 /* HOISTED */);
 var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);

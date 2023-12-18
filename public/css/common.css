@@ -4,6 +4,7 @@
 	margin: 0;
 	box-sizing: border-box;
 	text-decoration: none; 
+	font-family:Cafe24Ssurround;
 }
 textarea{
 	resize: none
@@ -27,9 +28,16 @@ input[type=password] {
     font-weight: normal;
     font-style: normal;
 }
-body, html, a, button, table, input, select, textarea {
-	font-family:Cafe24Ssurround
+@font-face {
+    font-family: 'Cafe24SsurroundAir';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* body, html, a, button, table, input, select, textarea {
+	font-family:Cafe24Ssurround;
+} */
 input[type=password]::placeholder {
 	font-family:Cafe24Ssurround
 }
@@ -102,6 +110,7 @@ input[type=password]::placeholder {
   .skip_nav a:focus,.skip_nav a:active{
 	top:0;
   } 
+
   .header {
 	width:100%;
 	height:100px;
@@ -121,10 +130,11 @@ input[type=password]::placeholder {
   }
   .logo {
 	display: flex;
-	width: 13rem;
+	width: 9rem;
 	align-items: center;
 	background: url("/img/logo.png") center center no-repeat;
 	background-size:contain;font-size: 0;
+	margin-left: 1.5rem;
   }
   .logo a{
 	display: block;
@@ -144,12 +154,15 @@ input[type=password]::placeholder {
 	display: flex;
 	padding: 0 3.5rem;
 	align-items: center;
-	font-size: 2.2rem;
+	font-size: 1.3rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   
   .header .nav > li:hover > a{
 	color: var(--sub-02-color);
 	font-weight: 800;
+	
   }
   .gnb{
 	display: flex;
@@ -159,13 +172,15 @@ input[type=password]::placeholder {
   .gnb li{
 	margin-left: 2rem;
   }
-  .gnb li:first-child{
-	margin-left: 0;
+  .gnb li:last-child{
+	margin-right: 1.5rem;
   }
   .gnb li a,.gnb_logout{
 	font-size: 1.5rem;
 	font-weight: 500;
 	color: #3a3a3a;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   .header .depth1{
 	position:absolute;
@@ -184,11 +199,13 @@ input[type=password]::placeholder {
 	text-align: center;
   }
   .header .depth1 li a{
-	font-size: 1.6rem;
-	font-weight: 400;
+	font-size: 1rem;
+	/* font-weight: 500; */
 	margin-bottom: 1rem;
 	color: #000;
 	display: block;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
   .header .depth1 li a:hover{
 	font-weight: 700;
@@ -248,13 +265,14 @@ input[type=password]::placeholder {
 	padding: 290px 0 0;
 	color: #fff;
 	font-weight: 600;
-	line-height: 4.5rem;
+	line-height: 6rem;
   }
   .main_txt_up {
 	color: #f2cc0f;
+	font-size: 4.4rem;
   }
   .main_txt_down {
-	font-size: 3rem;
+	font-size: 4rem;
   }
   .main_wea {
 	display: block;
@@ -347,7 +365,9 @@ input[type=password]::placeholder {
   .main_shap {
 	margin: 3px 0;
 	padding-left: 5px;
-	font-size: 1.6rem;
+	font-size: 1.7rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
 .main_2_news {
 	display: flex;
@@ -359,7 +379,7 @@ input[type=password]::placeholder {
 }
 .main_2_news_l {
 	width: 500px;
-	margin: 0 10px 10px 0;
+	margin: 0 1.5rem 1.5rem 0;
 	border-radius: 10px;
 	height: 280px;
 	padding: 30px;
@@ -380,16 +400,20 @@ input[type=password]::placeholder {
 	size: 5px;
 }
 .art_tit {
-	font-size: 1.6rem;
+	font-size: 1.5rem;
 	margin-top: 1.6rem;
 }
 .art_con {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
 .art_date {
 	font-size: 0.8rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
   /* 메인 세번째 */
   .main_3 {
@@ -424,14 +448,14 @@ input[type=password]::placeholder {
 	margin-top: 2rem;
 }
 .main_hot3_txt {
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 }
 /* .main_hot3_top {
 	width: 100%;
 } */
 .main_hot3_img {
 	width: 530px;
-    height: 280px;
+    height: 270px;
 }
 .main_hot3_img img {
 	width:100%;
@@ -441,16 +465,19 @@ input[type=password]::placeholder {
  	margin:1.5rem 0 1.5rem 2.2rem;
 }
 .main_hot3_txt p {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	margin: 0.8rem 0 0 2.5rem;
 	line-height: 1.8rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
 .main_hot3 li {
-	border: 1px solid rgba(53, 53, 53, 0.7);
-	border-radius: 3px;
+	border: 1px solid rgba(53, 53, 53, 0.5);
+	border-radius: 5px;
 } 
 .main_hot3 li:hover {
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.7);
+
 } 
 .main_hot3 li a {
 	direction: none;
@@ -471,6 +498,7 @@ input[type=password]::placeholder {
 	font-size: 1.4rem;
 	color: #ff9500;
 }
+
   /* 메인 네번째 */
   .main_4 {
 	height: 100vh;  
@@ -483,7 +511,46 @@ input[type=password]::placeholder {
 	padding: 110px 0 0 100px;
 	position: relative;
   }
-
+  .main_gg {
+	width: 650px;
+	height: 300px;
+	margin: 16rem 0 0;
+	position: absolute;
+  }
+  .main_gg img {
+	width: 100%;
+	height: 100%;
+  }
+  .main_4_menu {
+	display: flex;
+	font-size: 2.4rem;
+	flex-direction: row;
+    flex-wrap: wrap;
+	width: 800px;
+    height: 150px;
+	margin: 9rem 0 0 16rem;
+  }
+  .main_4_menu a {
+	color: #000000cb;
+	background-color: #f8f8f8;
+	border-radius: 10px;
+    width: 335px;
+    height: 140px;
+	margin: 0 1.5rem 1.5rem 0;
+	padding: 2.5rem;
+	display: flex;
+	justify-content: space-between;
+    align-items: center;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+  }
+  .main_4_menu a:hover {
+	background-color: rgba(209, 77, 108, 0.2);
+	transition: background 0.5s ease-in-out;
+  }
+  .main_4_box {
+	display: flex;
+  }
   /* 푸터 */
   .footer {
 	background-color: rgba(128, 128, 128, 0.274);
@@ -693,8 +760,6 @@ input[type=password]::placeholder {
 
 
 
-
-
 /* 유저페이지 */
 .user_container{
 	width:95%;
@@ -716,14 +781,18 @@ text-align: center;
 .user_subcontainer{
 	display: flex;
 }
+.user_h2{
+	margin-top:10px;
+}
 .user_box_top_red_center{
-	width:50%;
-	height:50px;
-	text-align: center;
-	border:1px solid #B7B7B7;
-	border-top: 4px solid red;
-	border-bottom: none;	
-	margin-top: 113px;
+	width: 50%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #B7B7B7;
+    border-top: 4px solid red;
+    border-bottom: none;
+    margin-top: 113px;
+    border-radius: 5px 5px 0 0;
 }
 .user_vacant_box{
 	width:90%;
@@ -780,34 +849,43 @@ text-align: center;
 	box-sizing: border-box;
     text-align: center;
     background-color: #00000099;
-    width: 100%;
+    width: 100%;	
     height: 100%;
     position: fixed;
-    padding: 20px;
+    margin-top: 81px;
 }
 .user_white-bg{
     box-sizing: border-box;
-    width: 45%;
+	margin: 0 auto;
+    width: 95%;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    margin: 0 auto;
 	height: 585px;
 }
+.user_pwchange_box{
+	border: none;
+    height: 70px;
+    padding: 20px;
+    background: #d7d7d7;
+    border-radius: 5px;
+}
+.user_nickChange_box{
+	border: none;
+    border-radius: 10px;
+    background-color: #b7b7b7;
+}
+.user_pwchange_guide{
+	color: red;
+}
 .user_box_password{
-	margin-top: 90px;
+	margin-top: 35px;
 }
 .user_button_box_password{
-margin-top:130px;
+margin-top:10px;
 }
 .user_h3_nick{
 	margin-top: 66px;
-}
-.user_box_nick{
-	margin-top: 130px;
-}
-.user_button_box_nick{
-	margin-top:130px;
 }
 .user_h3_userout{
 	margin-top:89px;
@@ -826,12 +904,12 @@ margin-top:130px;
 	margin-left:20px;
 }
 #user_del_reason{
-	margin-left: 12px;
+	
     width: 279px;
 }
 #user_del_reason_input{
     margin-top: 15px;
-    margin-left: 104px;
+    margin-left: 10px;
     height: 150px;
     width: 300px;
 }
@@ -848,7 +926,6 @@ margin-top:130px;
 	text-decoration: none;
 	color: blue;
 }
-
 .userChk_button_negative{
 	box-sizing: content-box;
 	width:80px;
@@ -886,14 +963,16 @@ margin-top:130px;
 	text-decoration: none;
 	color: #000;
 }
-
+#userchk_pw{
+	border-radius: 5px;
+}
 #userchk_pw::placeholder{
 	text-align: center;
 }
 
 /* 지역 페이지 */
 /* 지역 페이지 전체 */
-.region_frame {
+.region_frame { 
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -904,7 +983,7 @@ margin-top:130px;
 /* 지역 슬라이드 */
 .region_slider_frame {
 	text-align: center;	
-	background-color: #7DF4B2;
+	/* background-color: #7DF4B2; */
 	position: relative;
 }
 .region_slider_container {
@@ -912,7 +991,7 @@ margin-top:130px;
 }
 .region_slider {
 	display: flex;
-	background-color: #4BAF4B;
+	/* background-color: #4BAF4B; */
 }
 .region_slide {
 	min-width: 100px;
@@ -945,14 +1024,15 @@ margin-top:130px;
 	width: 100vw;
 	text-align: center;
 	margin: 5% auto;
-	background-color: #8AB78A;
+	/* background-color: #8AB78A; */
+	/* 최신순,인기순 버튼에 */
+	position: relative;
 }
 .region_search_form {
-	background-color: #8572EE;
+	/* background-color: #8572EE; */
 	line-height: 50px;
-
 }
-#region_select_list {
+.region_select_list {
 	width: 150px;
 	height: 30px;
 	border-radius: 15px;
@@ -965,6 +1045,30 @@ margin-top:130px;
 	border-radius: 15px;
 	text-align: center;
 	font-size: large;
+}
+.region_category1 {
+	width: 60px;
+	height: 30px;
+	border: none;
+	background: none;
+	text-align: center;
+	font-size: large;
+	position: absolute;
+	right: 23vw;
+	top: 15vh;
+	cursor: pointer;
+}
+.region_category2 {
+	width: 60px;
+	height: 30px;
+	border: none;
+	background: none;
+	text-align: center;
+	font-size: large;
+	position: absolute;
+	right: 28vw;
+	top: 15vh;
+	cursor: pointer;
 }
 .region_text {
 	width: 450px;
@@ -991,18 +1095,22 @@ margin-top:130px;
 }
 /* 추천목록, 지역목록 전체  */
 .region_recommend, .region_total {
-	display: flex;
+	/* display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: center; */
 	flex-direction: column;
 	gap: 100px;
+}
+.region_list_grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 .region_recommend_festival {
 	/* background-color: #5CEEE6; */
 	position: relative;
 }
 .region_comment {
-	background-color: #808080;
+	/* background-color: #808080; */
 	position: absolute;
 	display: inline-block;
 	left: 20px;
@@ -1014,18 +1122,19 @@ margin-top:130px;
 .region_p2 {
 	font-size: large;
 }
-.region_total_line {
+.region_total {
 	position: relative;
 }
-.region_total_cityname {
+.region_comment2 {
 	position: absolute;
-	left: 0;
-	top: 50px;
+	left: 20px;
+	top: -50px;
 }
-.region_total_citycomment {
-	position: absolute;
-	left: 30px;
-	top: 50px;
+.region_p3 {
+	font-size: large;
+}
+.region_p4 {
+	font-size: medium;
 }
 /* 지역 추천 게시물 separate */
 .region_list {
@@ -1036,7 +1145,7 @@ margin-top:130px;
 }
 .region_img {
 	/* position: relative; */
-	width: 250px;
+	/* width: 250px; */
 	height: 188px;
 	margin: 30px 15px;
 }
@@ -1069,16 +1178,16 @@ margin-top:130px;
 }
 /* 지역 추천 관광지 */
 .region_recommend_tour {
-	background-color: #94EB3E;
+	/* background-color: #94EB3E; */
 	position: relative;
 }
 /* 해당 지역 축제 전체 */
 .region_total_festival {
-	background-color: #FFB6C1;
+	/* background-color: #FFB6C1; */
 }
 /* 해당 지역 관광지 전체 */
 .region_total_tour {
-	background-color: #FFC81E;
+	/* background-color: #FFC81E; */
 }
 /* 더보기 버튼 */
 .region_btn_more button {
