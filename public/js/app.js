@@ -18244,26 +18244,11 @@ __webpack_require__.r(__webpack_exports__);
   name: 'MainComponent',
   data: function data() {
     return {
-      id: "",
-      title: "",
-      content: "",
-      img1: "",
-      // img2: "",
-      // img3: "",
-      // hits: "",
-      ns_flg: "",
-      // states_flg: "",
-      // main_flg: "",
-      // place: "",
-      start_at: "",
-      end_at: ""
-      // created_at: "",
-      // updated_at: "",
-      // deleted_at: ""
+      infoList: []
     };
   },
   created: function created() {
-    this.GetMain();
+    this.$store.dispatch('actionGetMainInfo');
   },
   methods: {
     // 메인에 나타날 데이터 불러오기
@@ -21222,6 +21207,15 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.createStore)({
   },
   // actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
   actions: _defineProperty(_defineProperty(_defineProperty(_defineProperty({
+    // 메인 데이터 불러오기
+    actionGetMainInfo: function actionGetMainInfo(context) {
+      var url = '/api/main';
+      axios__WEBPACK_IMPORTED_MODULE_3__["default"].get(url).then(function (res) {
+        context.commit('setMainInfo');
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
     // // 이메일 중복확인
     // actionEmailChk(context){
     // 	let email = document.querySelector('#signin_email').value

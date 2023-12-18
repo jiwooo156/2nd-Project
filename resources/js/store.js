@@ -61,6 +61,17 @@ const store = createStore({
 
 	// actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
 	actions: {
+		// 메인 데이터 불러오기
+		actionGetMainInfo(context) {
+			const url = '/api/main';
+			axios.get(url)
+			.then(res => {
+				context.commit('setMainInfo')
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
 		// // 이메일 중복확인
 		// actionEmailChk(context){
 		// 	let email = document.querySelector('#signin_email').value
