@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController; //유저컨틀롤러 추가
 use Illuminate\Support\Facades\Log; //로그확인추가
+use App\Http\Controllers\InfoController; //축제 및 관광 인포 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------
@@ -69,10 +70,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::get('/main', function () {
+// 1218 차민지 추가 메인에서 사용될 라우터 생성
+// 컨트롤러 생성하고 문지기인 라우터를 연결해줘야 함
+Route::get('/main', function () { //메인 시작 경로
     return view('welcome');
 });
+// 라우터 확인용 test
+//?달면 null허용한다는 뜻
+// Route::get('/main/{name?}', [InfoController::class, 'maininfo'])->name('main.info');
+
 Route::get('/user', function () {
     return view('welcome');
 });

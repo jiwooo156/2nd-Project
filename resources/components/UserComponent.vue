@@ -11,18 +11,18 @@
 			<h3>비밀번호 수정</h3>
 			<br>
 			<label for="user_del_reason">변경하실 비밀번호 : </label>
+			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20"><br>
 			<span v-show="user_err_pw1" class="sign_errmsg">8~20글자 사이로 작성해 주세요.</span>
 			<span v-show="user_err_pw2" class="sign_errmsg">영어를 1글자 이상 작성해 주세요.</span>
 			<span v-show="user_err_pw3" class="sign_errmsg">숫자를 1글자 이상 작성해 주세요.</span>
 			<span v-show="user_err_pw4" class="sign_errmsg">특수문자(?~!@#)를 1글자 이상 작성해 주세요.</span>
 			<span v-show="user_err_pw5" class="sign_errmsg">비밀번호 형식이 올바르지 않습니다.</span>
-			<span v-show="user_com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>
-			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20">		
+			<span v-show="user_com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>		
 			<br>	
 			<label for="user_del_reason">비밀번호 확인 : </label>
+			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20"><br>
 			<span v-show="user_err_pw_chk" class="sign_errmsg">비밀번호와 일치하지 않습니다.</span>
 			<span v-show="user_com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
-			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20">
 		</div>
 			<br><br>			
 			<div class="user_button_box_password">
@@ -54,7 +54,7 @@
 					class="sign_errmsg"
 				>{{ item[0] }}</span>
 				<br>
-				<label for="user_del_reason">변경하실 닉네임 : </label>
+				<label for="user_del_reason">변경하실 닉네임</label><br>
 					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" v-model="nick">
 			</div>
 			<br><br>		
@@ -72,29 +72,31 @@
 	v-if="$store.state.openDelModal"
 	>
 	<div class="user_white-bg">
-			<h3 class="user_h3_userout">회원 탈퇴</h3>
+		<div class="user_withdraw">
+		<h3 class="user_h3_userout">회원 탈퇴</h3>
 			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
-			<br><br>
-			<label for="user_del_reason">탈퇴사유 : </label>
-			<select name="reason" id="user_del_reason" v-model="delreason">
-				<option>서비스 불만족</option>
-				<option>원하는 정보가 없음</option>
-				<option>불건전한 내용</option>
-				<option>기타</option>
-			</select>
+				<br><br>
+				<label for="user_del_reason">탈퇴사유 : </label>
+				<select name="reason" id="user_del_reason" v-model="delreason">
+					<option>서비스 불만족</option>
+					<option>원하는 정보가 없음</option>
+					<option>불건전한 내용</option>
+					<option>기타</option>
+				</select>
+				<br>
+				<input type="text"
+					id="user_del_reason_input"
+					v-if="delinput"
+					placeholder="직접입력 50자 내외"
+					maxlength="50"
+				>
 			<br>
-			<input type="text"
-				id="user_del_reason_input"
-				v-if="delinput"
-				placeholder="직접입력 50자 내외"
-				maxlength="50"
-			>
-		<br>
-		<div class="user_button_box_userout">
-			<button class="userChk_button_negative"
-				@click="userout"
-			>탈퇴</button>
-			<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
+			<div class="user_button_box_userout">
+				<button class="userChk_button_negative"
+					@click="userout"
+				>탈퇴</button>
+				<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
+		</div>
 		</div>
 	</div>
 </div>

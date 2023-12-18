@@ -179,6 +179,14 @@
 			</div>
     </div>
 		<div>
+      <!-- test -->
+      <div>
+        <ul>
+          <li v-for="info in infos" :key="info">
+            {{ info.title }}
+          </li>
+        </ul>
+      </div>
 			<footer class="footer">푸터 띄우기</footer>
 		</div>
 	</div>
@@ -190,31 +198,16 @@ export default {
   name: 'MainComponent',
   data() {
     return {
-      id: "",
-      title: "",
-      content: "",
-      img1: "",
-      img2: "",
-      img3: "",
-      hits: "",
-      ns_flg: "",
-      states_flg: "",
-      main_flg: "",
-      place: "",
-      start_at: "",
-      end_at: "",
-      created_at: "",
-      updated_at: "",
-      deleted_at: ""
-    }
+      infoList: []
+    };
   },
   created() {
-    this.GetMain()
+    this.$store.dispatch('actionGetMainInfo');
   },
   methods: {
     // 메인에 나타날 데이터 불러오기
     GetMain(){
-			const URL = '/maininfo'
+			const URL = '/main'
 			axios.get(URL)
 			.then(res => {
 				this.$store.commit('setMainInfo',res.data.data);
