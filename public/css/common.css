@@ -755,6 +755,7 @@ input[type=password]::placeholder {
     overflow: scroll;
     overflow-x: hidden;
     height: 250px;
+	padding: 10px;
 }
 
 .auth_input_div{
@@ -1162,6 +1163,8 @@ margin-top:130px;
 	border-radius: 20px;
 	font-size: large;
 }
+
+
 /* 에러페이지 */
 @font-face {
     font-family: 'EF_jejudoldam';
