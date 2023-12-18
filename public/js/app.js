@@ -18248,18 +18248,18 @@ __webpack_require__.r(__webpack_exports__);
       title: "",
       content: "",
       img1: "",
-      img2: "",
-      img3: "",
-      hits: "",
+      // img2: "",
+      // img3: "",
+      // hits: "",
       ns_flg: "",
-      states_flg: "",
-      main_flg: "",
-      place: "",
+      // states_flg: "",
+      // main_flg: "",
+      // place: "",
       start_at: "",
-      end_at: "",
-      created_at: "",
-      updated_at: "",
-      deleted_at: ""
+      end_at: ""
+      // created_at: "",
+      // updated_at: "",
+      // deleted_at: ""
     };
   },
   created: function created() {
@@ -18269,7 +18269,7 @@ __webpack_require__.r(__webpack_exports__);
     // 메인에 나타날 데이터 불러오기
     GetMain: function GetMain() {
       var _this = this;
-      var URL = '/maininfo';
+      var URL = '/main';
       axios.get(URL).then(function (res) {
         _this.$store.commit('setMainInfo', res.data.data);
       })["catch"](function (err) {
@@ -19621,9 +19621,9 @@ var _hoisted_57 = {
   href: "#"
 };
 var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
+var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
   "class": "footer"
-}, "푸터 띄우기")], -1 /* HOISTED */);
+}, "푸터 띄우기", -1 /* HOISTED */);
 var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
@@ -19654,7 +19654,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     icon: ['fas', 'file-pen']
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'triangle-exclamation']
-  })])])])])])]), _hoisted_59]), _hoisted_60], 64 /* STABLE_FRAGMENT */);
+  })])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.infos, function (info) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: info
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(info.title), 1 /* TEXT */);
+  }), 128 /* KEYED_FRAGMENT */))])]), _hoisted_59])]), _hoisted_60], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

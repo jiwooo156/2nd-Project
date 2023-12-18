@@ -264,13 +264,14 @@ input[type=password]::placeholder {
 	padding: 290px 0 0;
 	color: #fff;
 	font-weight: 600;
-	line-height: 4.5rem;
+	line-height: 6rem;
   }
   .main_txt_up {
 	color: #f2cc0f;
+	font-size: 4.4rem;
   }
   .main_txt_down {
-	font-size: 3rem;
+	font-size: 4rem;
   }
   .main_wea {
 	display: block;

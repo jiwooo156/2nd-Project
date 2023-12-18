@@ -47,7 +47,8 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // 필요 없다고 반장님이 지우라 함
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    // ];
 }
