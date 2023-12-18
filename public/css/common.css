@@ -958,9 +958,9 @@ margin-top:130px;
 }
 #user_del_reason_input{
     margin-top: 15px;
-    margin-left: 104px;
+    margin-left: auto;
     height: 150px;
-    width: 300px;
+    width: 316px;
 }
 .userChk_button_confirm{
 	box-sizing: content-box;
