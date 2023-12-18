@@ -17868,10 +17868,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _ConsentComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConsentComponent.vue */ "./resources/components/ConsentComponent.vue");
+/* harmony import */ var _SecConsent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SecConsent.vue */ "./resources/components/SecConsent.vue");
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'AuthComponent',
   props: {},
-  components: {},
+  components: {
+    ConsentComponent: _ConsentComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    SecConsent: _SecConsent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   data: function data() {
     return {
       timerId: null,
@@ -17881,13 +17888,31 @@ __webpack_require__.r(__webpack_exports__);
       auth_err: "",
       auth_re: "",
       timer: "",
-      timeout_flg: false
+      timeout_flg: false,
+      input_left: false,
+      input_right: false,
+      input_all: false,
+      emailFlg: false,
+      errorMsg: []
     };
+  },
+  watch: {
+    input_all: function input_all() {
+      this.inputAll();
+      this.inputRight();
+      this.inputLeft();
+    },
+    input_left: function input_left() {
+      this.inputLeft();
+    },
+    input_right: function input_right() {
+      this.inputRight();
+    }
   },
   created: function created() {},
   mounted: function mounted() {},
   methods: {
-    // 이메일인증
+    // 이메일인증보내기
     email_auth: function email_auth() {
       var _this = this;
       var URL = '/authemail';
@@ -17901,18 +17926,20 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(URL, formData, HEADER).then(function (res) {
         if (res.data.code === "0") {
           console.log("성공");
-          _this.$store.commit('setEmailFlg', 1);
+          _this.emailFlg = true;
           _this.auth_flg = true;
+          console.log(_this.emailFlg = true);
           _this.timer1();
           console.log("타이머실행");
-        } else {
-          console.log(res.data);
+        } else if (res.data.code === "E12") {
+          console.log("엘스");
           _this.auth_err = res.data.errorMsg;
           _this.re_auth_email = true;
         }
       })["catch"](function (err) {
         console.log("실패");
-        console.log(err.data.errorMsg);
+        console.log(err.response.data.errorMsg);
+        _this.errorMsg = err.response.data.errorMsg;
       });
     },
     // 이메일 다시보내기
@@ -17929,6 +17956,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(URL, formData, HEADER).then(function (res) {
         if (res.data.code === "0") {
           console.log("이메일 다시보내기 댄");
+          _this2.emailFlg = true;
           _this2.auth_err = '';
           _this2.auth_flg = true;
           _this2.timeout_flg = false;
@@ -17963,55 +17991,60 @@ __webpack_require__.r(__webpack_exports__);
         console.log("실패");
       });
     },
-    // 이메일중복확인
-    emailChk: function emailChk() {
-      var _this4 = this;
-      var URL = '/signin/email/?email=' + this.auth_email;
-      axios.get(URL).then(function (res) {
-        _this4.$store.commit('setErrMsg', '');
-        if (res.data.code === "0") {
-          if (res.data.data.length === 0) {
-            _this4.$store.commit('setEmailFlg', 1);
-            document.querySelector('#auth_email').readOnly = true;
-            document.querySelector('#auth_email').style.backgroundColor = 'rgb(169 183 200)';
-          } else if (res.data.data.length > 0) {
-            console.log("있을때");
-            _this4.$store.commit('setEmailFlg', 2);
-          }
-        } else {
-          console.log('else');
-        }
-      })["catch"](function (err) {
-        _this4.$store.commit('setEmailFlg', 0);
-        _this4.$store.commit('setErrMsg', err.response.data.errorMsg);
-      });
-    },
-    // 이메일 중복확인 취소
-    del_email_chk: function del_email_chk() {
-      this.$store.commit('setEmailFlg', 0);
-      document.querySelector('#auth_email').readOnly = false;
-      document.querySelector('#auth_email').removeAttribute('style');
-      this.timerstop();
-      this.re_auth_email = false;
-      this.auth_err = "", this.auth_re = "", this.auth_flg = false;
-      this.timeout_flg = false;
-    },
+    // // 이메일중복확인
+    // emailChk(){
+    // 	const URL = '/signin/email/?email='+this.auth_email
+    // 	axios.get(URL)
+    // 	.then(res => {
+    // 		this.$store.commit('setErrMsg','');
+    // 		if(res.data.code === "0"){
+    // 			if(res.data.data.length === 0){
+    // 				this.$store.commit('setEmailFlg',1);
+    // 				document.querySelector('#auth_email').readOnly = true;
+    // 				document.querySelector('#auth_email').style.backgroundColor = 'rgb(169 183 200)';		
+    // 			}else if(res.data.data.length > 0){
+    // 				console.log("있을때")
+    // 				this.$store.commit('setEmailFlg',2);
+    // 			}
+    // 		}else{
+    // 			console.log('else')
+    // 		}
+    // 	})
+    // 	.catch(err => {
+    // 		this.$store.commit('setEmailFlg',0);
+    // 		this.$store.commit('setErrMsg',err.response.data.errorMsg);
+    // 	})
+    // },
+    // 1218 수정 최정훈 멘토님이말씀하신대로 기능 한개로 통합
+    // // 이메일 중복확인 취소
+    // del_email_chk(){
+    // 	this.$store.commit('setEmailFlg',0);
+    // 	document.querySelector('#auth_email').readOnly = false;
+    // 	document.querySelector('#auth_email').removeAttribute('style');
+    // 	this.timerstop()
+    // 	this.re_auth_email = false
+    // 	this.auth_err = "",
+    // 	this.auth_re = "",
+    // 	this.auth_flg = false;
+    // 	this.timeout_flg=false;
+    // },
+    // 1218 수정 최정훈 멘토님이말씀하신대로 기능 한개로 통합
     // 타이머
     timer1: function timer1() {
-      var _this5 = this;
+      var _this4 = this;
       if (this.timerId) {
         clearInterval(this.timerId);
       }
       var minutes = 5;
       var seconds = 0;
       var updateTimer = function updateTimer() {
-        _this5.timer = "".concat(minutes, ":").concat(seconds < 10 ? '0' : '').concat(seconds);
-        console.log(_this5.timer);
+        _this4.timer = "".concat(minutes, ":").concat(seconds < 10 ? '0' : '').concat(seconds);
+        console.log(_this4.timer);
         if (minutes === 0 && seconds === 0) {
-          _this5.auth_flg = false;
-          _this5.re_auth_email = true;
-          _this5.timeout_flg = true;
-          clearInterval(_this5.timerId);
+          // this.auth_flg=false;
+          _this4.re_auth_email = true;
+          _this4.timeout_flg = true;
+          clearInterval(_this4.timerId);
         } else {
           if (seconds === 0) {
             minutes--;
@@ -18025,14 +18058,70 @@ __webpack_require__.r(__webpack_exports__);
     },
     timerstop: function timerstop() {
       clearInterval(this.timerId);
+    },
+    inputLeft: function inputLeft() {
+      console.log("함수실행 래프트");
+      console.log("함수실행 래프트" + this.input_left);
+      if (this.input_right && this.input_left) {
+        this.input_all = true;
+      } else if (!this.input_left) {
+        this.input_all = false;
+      }
+    },
+    inputRight: function inputRight() {
+      console.log("함수실행 라이트");
+      console.log("함수실행 라이트" + this.input_right);
+      if (this.input_right && this.input_left) {
+        this.input_all = true;
+      } else if (!this.input_right) {
+        this.input_all = false;
+      } else if (!this.input_left) {
+        this.input_all = false;
+      }
+    },
+    inputAll: function inputAll() {
+      console.log("함수실행 올");
+      console.log("함수실행 올" + this.input_all);
+      if (this.input_all) {
+        this.input_right = true;
+        this.input_left = true;
+      } else {
+        if (!this.input_right) {
+          this.input_right = false;
+        } else if (!this.input_left) {
+          this.input_left = false;
+        } else {
+          this.input_left = false;
+          this.input_right = false;
+        }
+      }
     }
   },
   beforeRouteLeave: function beforeRouteLeave(to, from, next) {
-    this.del_email_chk();
     this.$store.commit('setErrMsg', '');
     this.timerstop();
+    this.input_all = false;
+    this.input_right = false;
+    this.input_left = false;
     next();
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=script&lang=js":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=script&lang=js ***!
+  \*******************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'ConsentComponent'
 });
 
 /***/ }),
@@ -18295,6 +18384,23 @@ __webpack_require__.r(__webpack_exports__);
       var endDate = this.endDate;
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=script&lang=js":
+/*!*************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=script&lang=js ***!
+  \*************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'SecConsent'
 });
 
 /***/ }),
@@ -18890,52 +18996,91 @@ var _hoisted_1 = {
   "class": "sign_bg"
 };
 var _hoisted_2 = {
-  "class": "sign_frame"
+  "class": "auth_frame"
 };
 var _hoisted_3 = {
   "class": "sign_header center"
 };
 var _hoisted_4 = {
-  "class": "sign_container"
+  key: 0,
+  "class": "auth_container"
 };
 var _hoisted_5 = {
+  "class": "auth_check"
+};
+var _hoisted_6 = {
+  "class": "auth_check_left"
+};
+var _hoisted_7 = {
+  "class": "auth_check_msg"
+};
+var _hoisted_8 = {
+  "class": "auth_input_div"
+};
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "sign_check_input_left"
+}, "개인정보수집동의(필수)", -1 /* HOISTED */);
+var _hoisted_10 = {
+  "class": "auth_check_right"
+};
+var _hoisted_11 = {
+  "class": "auth_check_msg"
+};
+var _hoisted_12 = {
+  "class": "auth_input_div"
+};
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "auth_check_input_right"
+}, "유저약관(필수)", -1 /* HOISTED */);
+var _hoisted_14 = {
+  "class": "sign_all_agree"
+};
+var _hoisted_15 = {
+  "class": "auth_input_div"
+};
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "auth_check_input_all"
+}, "전체동의", -1 /* HOISTED */);
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_18 = {
+  key: 0,
+  "class": "auth_relative"
+};
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail 인증하기", -1 /* HOISTED */);
+var _hoisted_20 = {
   "class": "sign_relative"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "E-mail 인증하기", -1 /* HOISTED */);
-var _hoisted_7 = {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_22 = {
+  "class": "auth_success_div center"
+};
+var _hoisted_23 = {
   key: 0,
   "class": "sign_commsg"
 };
-var _hoisted_8 = {
+var _hoisted_24 = {
   key: 1,
-  "class": "sign_errmsg"
-};
-var _hoisted_9 = {
-  "class": "sign_relative"
-};
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_11 = {
-  key: 3,
   "class": "sign_commsg"
 };
-var _hoisted_12 = {
+var _hoisted_25 = {
+  key: 2,
+  "class": "sign_errmsg"
+};
+var _hoisted_26 = {
+  key: 3,
+  "class": "sign_errmsg"
+};
+var _hoisted_27 = {
   key: 4,
   "class": "sign_errmsg"
 };
-var _hoisted_13 = {
-  key: 5,
-  "class": "sign_errmsg"
-};
-var _hoisted_14 = {
-  key: 6,
-  "class": "sign_errmsg"
-};
-var _hoisted_15 = {
-  key: 9
+var _hoisted_28 = {
+  key: 6
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _this = this;
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
+  var _component_SecConsent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SecConsent");
+  var _component_ConsentComponent = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ConsentComponent");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: '/main',
     "class": "sign_header_a pointer"
@@ -18944,56 +19089,79 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("이의이승")];
     }),
     _: 1 /* STABLE */
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_7, "사용 가능한 이메일 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_8, "이미 사용중인 이메일 입니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    key: 2
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$store.state.varErr, function (item) {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [!this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SecConsent)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    id: "sign_check_input_left",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.input_left = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.input_left]]), _hoisted_9])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ConsentComponent)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    id: "auth_check_input_right",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.input_right = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.input_right]]), _hoisted_13])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    id: "auth_check_input_all",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.input_all = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.input_all]]), _hoisted_16]), _hoisted_17]), $data.input_all ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, [_hoisted_19, !this.emailFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.errorMsg, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
       key: item,
       "class": "sign_errmsg"
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item[0]), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }), 128 /* KEYED_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     placeholder: "사용하실 이메일을 입력해주세요",
     autocomplete: "off",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.auth_email = $event;
     }),
-    id: "auth_email"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.auth_email]]), _ctx.$store.state.emailFlg !== 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 0,
+    id: "auth_email",
+    "class": "auth_container_input"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.auth_email]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "sign_chk_btn pointer",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.emailChk && $options.emailChk.apply($options, arguments);
-    })
-  }, "중복확인")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 1,
-    "class": "sign_chk_btn pointer",
-    onClick: _cache[2] || (_cache[2] = function () {
-      return $options.del_email_chk && $options.del_email_chk.apply($options, arguments);
-    })
-  }, "다시쓰기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_10, _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, "이메일이 전송되었습니다.5분 이내로 이메일의 링크를 클릭해 주세요")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, "인증시간이 만료되었습니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_err), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_re), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 7,
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $options.reset_auth_time && $options.reset_auth_time.apply($options, arguments);
-    })
-  }, " 시간연장 ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 8,
-    onClick: _cache[4] || (_cache[4] = function ($event) {
-      return _this.timeout_flg = true;
-    })
-  }, " 트루 ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && this.auth_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15, " 남은시간 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.timer), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && !this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 10,
-    "class": "pointer",
-    onClick: _cache[5] || (_cache[5] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.email_auth && $options.email_auth.apply($options, arguments);
     })
-  }, "인증메일 발송")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$store.state.emailFlg === 1 && !this.auth_flg && this.re_auth_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 11,
-    "class": "pointer",
-    onClick: _cache[6] || (_cache[6] = function () {
+  }, "인증하기")]), _hoisted_21])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [$data.emailFlg && $data.auth_flg && !$data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, "이메일이 전송되었습니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.emailFlg && $data.auth_flg && !$data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, "5분 이내로 이메일의 링크를 클릭하여 회원가입을 이어가 주세요.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, "인증시간이 만료되었습니다.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data.emailFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_err), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data.emailFlg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.auth_re), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data.emailFlg && !$data.auth_flg && $data.re_auth_email || $data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 5,
+    "class": "pointer auth_button",
+    onClick: _cache[5] || (_cache[5] = function () {
       return $options.email_re_auth && $options.email_re_auth.apply($options, arguments);
     })
-  }, "다시보내기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]);
+  }, "다시보내기")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), this.emailFlg && this.auth_flg && !$data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 남은시간 : " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.timer) + " ", 1 /* TEXT */), this.emailFlg && this.auth_flg && !$data.timeout_flg ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    "class": "pointer auth_button",
+    onClick: _cache[6] || (_cache[6] = function () {
+      return $options.reset_auth_time && $options.reset_auth_time.apply($options, arguments);
+    })
+  }, "시간연장")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518 ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h1>서비스 이용약관</h1><h2>제1조(목적)</h2><p>이 약관은 이의이승 (이하 &#39;회사&#39; 라고 합니다)가 제공하는 제반 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.</p><h2>제2조(정의)</h2><p>이 약관에서 사용하는 주요 용어의 정의는 다음과 같습니다.</p><ul><li>&#39;서비스&#39;라 함은 구현되는 단말기(PC, TV, 휴대형단말기 등의 각종 유무선 장치를 포함)와 상관없이 &#39;이용자&#39;가 이용할 수 있는 회사가 제공하는 제반 서비스를 의미합니다.</li><li>&#39;이용자&#39;란 이 약관에 따라 회사가 제공하는 서비스를 받는 &#39;개인회원&#39; , &#39;기업회원&#39; 및 &#39;비회원&#39;을 말합니다.</li><li>&#39;개인회원&#39;은 회사에 개인정보를 제공하여 회원등록을 한 사람으로, 회사로부터 지속적으로 정보를 제공받고 &#39;회사&#39;가 제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.</li><li>&#39;기업회원&#39;은 회사에 기업정보 및 개인정보를 제공하여 회원등록을 한 사람으로, 회사로부터 지속적으로 정보를 제공받고 회사가 제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.</li><li>&#39;비회원&#39;은 회원가입 없이 회사가 제공하는 서비스를 이용하는 자를 말합니다.</li><li>&#39;아이디(ID)&#39;라 함은 회원의 식별과 서비스이용을 위하여 회원이 정하고 회사가 승인하는 문자 또는 문자와 숫자의 조합을 의미합니다.</li><li>&#39;비밀번호&#39;라 함은 회원이 부여받은 아이디와 일치되는 회원임을 확인하고 비밀의 보호를 위해 회원 자신이 정한 문자(특수문자 포함)와 숫자의 조합을 의미합니다.</li><li>&#39;콘텐츠&#39;란 정보통신망법의 규정에 따라 정보통신망에서 사용되는 부호 ·문자·음성·음향·이미지 등으로 정보 형태의 글, 사진, 동영상 및 각종 파일과 링크 등을 말합니다.</li></ul><h2>제3조(약관 외 준칙)</h2><p>이 약관에서 정하지 아니한 사항에 대해서는 법령 또는 회사가 정한 서비스의 개별약관, 운영정책 및 규칙 등(이하 세부지침)의 규정에 따릅니다. 또한 본 약관과 세부지침이 충돌할 경우에는 세부지침에 따릅니다.</p><h2>제4조(약관의 효력과 변경)</h2><p>이 약관은 이의이승(이)가 제공하는 모든 인터넷서비스에 게시하여 공시합니다. 회사는 &#39;전자상거래등에서의 소비자보호에 관한 법률(이하 &#39;전자상거래법&#39;이라 함)&#39;, &#39;약관의 규제에 관한 법률(이하&#39; 약관규제법&#39;이라 함)&#39;, &#39;정보통신망 이용촉진 및 정보보호 등에 관한 법률(이하 &#39;정보통신망법&#39;이라 함)&#39; 등 본 서비스와 관련된 법령에 위배되지 않는 범위에서 이 약관을 변경할 수 있으며, 회사는 약관이 변경되는 경우에 변경된 약관의 내용과 시행일을 정하여, 그 시행일로부터 최소 7일 (이용자에게 불리하거나 중대한 사항의 변경은 30일) 이전부터 시행일 후 상당한 기간 동안 공지하고, 기존 이용자에게는 변경된 약관, 적용일자 및 변경사유(변경될 내용 중 중요사항에 대한 설명을 포함)를 별도의 전자적 수단(전자우편, 문자메시지, 서비스 내 전자쪽지발송, 알림 메시지를 띄우는 등의 방법)으로 개별 통지합니다. 변경된 약관은 공지하거나 통지한 시행일로부터 효력이 발생합니다.</p><p>회사가 제1항에 따라 개정약관을 공지 또는 통지하는 경우 &#39;변경에 동의하지 아니한 경우 공지일 또는 통지를 받은 날로부터 7일(이용자에게 불리하거나 중대한 사항의 변경인 경우에는 30일) 내에 계약을 해지할 수 있으며, 계약해지의 의사표시를 하지 아니한 경우에는 변경에 동의한 것으로 본다.&#39; 라는 취지의 내용을 함께 통지합니다.</p><p>이용자가 제2항의 공지일 또는 통지를 받은 날로부터 7일(또는 이용자에게 불리하거나 중대한 사항의 변경인 경우에는 30일)내에 변경된 약관에 대해 거절의 의사를 표시하지 않았을 때에는 본 약관의 변경에 동의한 것으로 간주합니다.</p><h2>제5조(이용자에 대한 통지)</h2><p>회사는 이 약관에 별도 규정이 없는 한 이용자에게 전자우편, 문자메시지(SMS), 전자쪽지, 푸쉬(Push)알림 등의 전자적 수단을 이용하여 통지할 수 있습니다.</p><p>회사는 이용자 전체에 대한 통지의 경우 7일 이상 회사가 운영하는 웹사이트 내의 게시판에 게시함으로써 제1항의 통지에 갈음할 수 있습니다. 다만, 이용자 본인의 거래와 관련하여 중대한 영향을 미치는 사항에 대하여는 제1항의 개별 통지를 합니다.</p><p>회사는 이용자의 연락처 미기재, 변경 후 미수정, 오기재 등으로 인하여 개별 통지가 어려운 경우에 한하여 전항의 공지를 함으로써 개별 통지를 한 것으로 간주합니다.</p><h2>제6조(이용계약의 체결)</h2><p>이용계약은 다음의 경우에 체결됩니다.</p><ol><li>이용자가 회원으로 가입하고자 하는 경우 이용자가 약관의 내용에 대하여 동의를 한 다음 회원가입신청을 하고 회사가 이러한 신청에 대하여 승낙한 때</li><li>이용자가 회원 가입 없이 이용할 수 있는 서비스에 대하여 회원 가입의 신청없이 서비스를 이용하고자 하는 경우에는 회사 서비스 이용을 위해 결제하는 때</li><li>이용자가 회원가입 없이 이용할 수 있는 서비스에 대하여 회원가입의 신청없이 무료 서비스를 이용하고자 하는 경우에는 그 무료 서비스와 관련된 사항의 저장 등 부가서비스를 이용하면서 위 1호 및 2호의 절차를 진행한 때</li></ol><h2>제7조(회원가입에 대한 승낙)</h2><p>회사는 이용계약에 대한 요청이 있을 때 서비스 이용을 승낙함을 원칙으로 합니다. 전항에도 불구하고, 다음 각호의 사유에 해당하는 경우 회사는 회원가입을 보류하거나 거절하는 등 제한할 수 있습니다.</p><ol><li>가입신청자가 이 약관에 의하여 이전에 회원자격을 상실한 적이 있는 경우(단, 회사의 재가입 승낙을 얻은 경우에는 예외로 함)</li><li>실명이 아니거나 타인의 명의를 도용한 경우</li><li>회사가 정하는 필수정보를 누락하거나 허위로 기재한 경우</li><li>만 14세 미만의 아동, 만 19세 미만의 미성년자, 피한정후견인, 피성년후견인이 법정대리인의 동의를 얻지 않은 경우</li><li>이용자의 귀책사유로 인하여 승인이 불가능하거나 기타 이 약관 등 회사가 규정한 운영원칙을 위반한 경우</li><li>신용정보의 이용과 보호에 관한 법률에 따라 PC통신, 인터넷서비스의 신용불량자로 등록되어 있는 경우</li><li>정보통신윤리위원회에 PC통신, 인터넷서비스의 불량이용자로 등록되어 있는 경우</li><li>이미 사용 중인 회원정보 또는 공서양속을 저해하는 아이디를 사용하고자 하는 경우</li></ol><p>제1항에 따른 신청에 있어 회사는 서비스 제공에 필요한 경우 전문기관을 통한 실명확인 및 본인인증을 요청할 수 있습니다. 회사는 서비스 관련 설비의 여유가 없거나, 기술상 또는 업무상 문제가 있는 경우에는 승낙을 유보할 수 있습니다. 제2항과 제4항에 따라 서비스 이용을 승낙하지 아니하거나 유보한 경우, 회사는 원칙적으로 이를 서비스 이용 신청자에게 알리도록 합니다. 단, 회사의 귀책사유 없이 이용자에게 알릴 수 없는 경우에는 예외로 합니다. 이용계약의 성립 시기는 제6조 제1호의 경우에는 회사가 가입완료를 신청절차 상에서 표시한 시점, 제6조 제2호의 경우에는 결제가 완료되었다는 표시가 된 시점으로 합니다. 회사는 회원에 대해 회사정책에 따라 등급별로 구분하여 이용시간, 이용횟수, 서비스 메뉴 등을 세분하여 이용에 차등을 둘 수 있습니다. 회사는 회원에 대하여 &#39;영화및비디오물의진흥에관한법률&#39; 및 &#39;청소년보호법&#39; 등에 따른 등급 및 연령 준수를 위하여 이용제한이나 등급별 제한을 둘 수 있습니다.</p><h2>제8조(회원정보의 변경)</h2><p>회원은 개인정보관리화면을 통하여 언제든지 본인의 개인정보를 열람하고 수정할 수 있습니다. 다만, 서비스 관리를 위해 필요한 실명, 아이디 등은 수정이 불가능합니다. 회원은 회원가입신청 시 기재한 사항이 변경되었을 경우 온라인으로 수정을 하거나 전자우편 기타 방법으로 회사에 대하여 그 변경사항을 알려야 합니다. 제2항의 변경사항을 회사에 알리지 않아 발생한 불이익에 대하여는 회원에게 책임이 있습니다.</p><h2>제9조(회원정보의 관리 및 보호)</h2><p>회원의 아이디(ID)와 비밀번호에 관한 관리책임은 회원에게 있으며, 이를 제3자가 이용하도록 하여서는 안 됩니다. 회사는 회원의 아이디(ID)가 개인정보 유출 우려가 있거나, 반사회적 또는 공서양속에 어긋나거나, 회사 또는 서비스의 운영자로 오인할 우려가 있는 경우, 해당 아이디(ID)의 이용을 제한할 수 있습니다. 회원은 아이디(ID) 및 비밀번호가 도용되거나 제3자가 사용하고 있음을 인지한 경우에는 이를 즉시 회사에 통지하고 안내에 따라야 합니다. 제3항의 경우 해당 회원이 회사에 그 사실을 통지하지 않거나, 통지하였으나 회사의 안내에 따르지 않아 발생한 불이익에 대하여 회사는 책임지지 않습니다.</p><h2>제10조(회사의 의무)</h2><p>회사는 계속적이고 안정적인 서비스의 제공을 위하여 설비에 장애가 생기거나 멸실된 때에는 이를 지체 없이 수리 또는 복구하며, 다음 각 호의 사유 발생 시 부득이한 경우 예고 없이 서비스의 전부 또는 일부의 제공을 일시 중지할 수 있습니다. 이 경우 그 사유 및 중지 기간 등을 이용자에게 지체 없이 사후 공지합니다.</p><ol><li>시스템의 긴급점검, 증설, 교체, 시설의 보수 또는 공사를 하기 위하여 필요한 경우</li><li>새로운 서비스를 제공하기 위하여 시스템교체가 필요하다고 판단되는 경우</li><li>시스템 또는 기타 서비스 설비의 장애, 유무선 Network 장애 등으로 정상적인 서비스 제공이 불가능할 경우</li><li>국가비상사태, 정전, 불가항력적 사유로 인한 경우</li></ol><p>회사는 이용계약의 체결, 계약사항의 변경 및 해지 등 이용자와의 계약관련 절차 및 내용 등에 있어 이용자에게 편의를 제공하도록 노력합니다. 회사는 대표자의 성명, 상호, 주소, 전화번호, 모사전송번호(FAX), 통신판매업 신고번호, 이용약관, 개인정보취급방침 등을 이용자가 쉽게 알 수 있도록 온라인 서비스 초기화면에 게시합니다.</p><h2>제11조(개인정보보호)</h2><p>회사는 이용자들의 개인정보를 중요시하며, 정보통신망 이용촉진 및 정보보호 등에 관한 법률, 개인정보보호법 등 관련 법규를 준수하기 위해 노력합니다. 회사는 개인정보보호정책을 통하여 이용자가 제공하는 개인정보가 어떠한 용도와 방식으로 이용되고 있으며 개인정보보호를 위해 어떠한 조치가 취해지고 있는지 알려드립니다.</p><p>회사는 최종 사용일로부터 연속하여 1년 동안 서비스 사용 이력이 없는 경우 &#39;개인정보보호법&#39; 및 같은 법 시행령의 규정에 따라 이용자정보를 다른 이용자의 개인정보와 분리하여 별도로 저장 및 관리할 수 있습니다. 이때 분리 저장된 이용자의 개인정보는 이용자가 회원탈퇴신청 또는 개인정보삭제 요청을 할때까지 보관됩니다.</p><p>회사가 이용자의 개인정보의 보호 및 사용에 대해서 관련 법규 및 회사의 개인정보처리방침을 적용합니다. 다만, 회사에서 운영하는 웹 사이트 등에서 링크된 외부 웹페이지에서는 회사의 개인정보처리방침이 적용되지 않습니다.</p><h2>제12조(이용자의 의무)</h2><p>이용자는 이용자가입을 통해 이용신청을 하는 경우 사실에 근거하여 신청서를 작성해야 합니다. 이용자가 허위, 또는 타인의 정보를 등록한 경우 회사에 대하여 일체의 권리를 주장할 수 없으며, 회사는 이로 인하여 발생한 손해에 대하여 책임을 부담하지 않습니다.</p><p>이용자는 본 약관에서 규정하는 사항과 기타 회사가 정한 제반 규정, 회사가 공지하는 사항을 준수하여야 합니다. 또한 이용자는 회사의 업무를 방해하는 행위 및 회사의 명예를 훼손하는 행위를 하여서는 안 됩니다.</p><p>이용자는 주소, 연락처, 전자우편 주소 등 회원정보가 변경된 경우 즉시 온라인을 통해 이를 수정해야 합니다. 이 때 변경된 정보를 수정하지 않거나 수정이 지연되어 발생하는 책임은 이용자가 지게 됩니다.</p><p>이용자는 이용자에게 부여된 아이디와 비밀번호를 직접 관리해야 합니다. 이용자의 관리 소홀로 발생한 문제는 회사가 책임을 부담하지 않습니다.</p><p>이용자가 아이디, 닉네임, 기타 서비스 내에서 사용되는 명칭 등을 선정할 때에는 다음 각 호에 해당하는 행위를 해서는 안 됩니다.</p><ul><li>회사가 제공하는 서비스의 공식 운영자를 사칭하거나 이와 유사한 명칭을 사용하여 다른 이용자에게 혼란을 주는 행위</li><li>선정적이고 음란한 내용이 포함된 명칭을 사용하는 행위</li><li>제3자의 상표권, 저작권 등 권리를 침해할 가능성이 있는 명칭을 사용하는 행위</li><li>제3자의 명예를 훼손하거나, 그 업무를 방해할 가능성이 있는 명칭을 사용하는 행위</li><li>기타 반사회적이고 관계법령에 저촉되는 내용이 포함된 명칭을 사용하는 행위</li></ul><p>이용자는 회사의 명시적 동의가 없는 한 서비스 이용 권한, 기타 이용 계약상의 지위에 대하여 매도, 증여, 담보제공 등 처분행위를 할 수 없습니다. 본 조와 관련하여 서비스 이용에 있어 주의사항 등 그 밖의 자세한 내용은 운영정책으로 정하며, 이용자가 서비스 이용약관 및 운영정책을 위반하는 경우 서비스 이용제한, 민형사상의 책임 등 불이익이 발생할 수 있습니다.</p><h2>제13조(서비스의 제공)</h2><p>회사의 서비스는 연중무휴, 1일 24시간 제공을 원칙으로 합니다. 다만 회사 시스템의 유지 보수를 위한 점검, 통신장비의 교체 등 특별한 사유가 있는 경우 서비스의 전부 또는 일부에 대하여 일시적인 제공 중단이 발생할 수 있습니다.</p><p>회사가 제공하는 개별 서비스에 대한 구체적인 안내사항은 개별 서비스 화면에서 확인할 수 있습니다.</p><p>회사가 제공하는 구체적인 서비스의 내용은 본 약관에 별도로 첨부된 &#39;별표. 서비스의 내용&#39;과 같습니다.</p><h2>제14조(서비스의 제한 등)</h2><p>회사는 전시, 사변, 천재지변 또는 이에 준하는 국가비상사태가 발생하거나 발생할 우려가 있는 경우와 전기통신사업법에 의한 기간통신사업자가 전기통신서비스를 중지하는 등 부득이한 사유가 있는 경우에는 서비스의 전부 또는 일부를 제한하거나 중지할 수 있습니다.</p><p>무료서비스는 전항의 규정에도 불구하고, 회사의 운영정책 등의 사유로 서비스의 전부 또는 일부가 제한되거나 중지될 수 있으며, 유료로 전환될 수 있습니다.</p><p>회사는 서비스의 이용을 제한하거나 정지하는 때에는 그 사유 및 제한기간, 예정 일시 등을 지체없이 이용자에게 알립니다.</p><p>회사는 사전에 결제정보를 입력 받고, 무료로 제공중인 서비스를 유료로 전환할 경우, 그 사유와 유료 전환 예정 일시를 통지하고 유료 전환에 대한 이용자의 동의를 받습니다.</p><h2>제15조(서비스의 해제·해지 및 탈퇴 절차)</h2><p>이용자가 이용 계약을 해지하고자 할 때는 언제든지 홈페이지 상의 이용자 탈퇴 신청을 통해 이용계약 해지를 요청할 수 있습니다. 단, 신규가입 후 일정 시간 동안 서비스 부정이용 방지 등의 사유로 즉시 탈퇴가 제한될 수 있습니다.</p><p>회사는 이용자가 본 약관에서 정한 이용자의 의무를 위반한 경우 등 비정상적인 이용 또는 부당한 이용과 이용자 금지프로그램 사용하는 경우 또는 타인의 명예를 훼손하거나 모욕하는 방송과 게시물을 작성한 경우 이러한 행위를 금지하거나 삭제를 요청하였음에도 불구하고 최초의 금지 또는 삭제 요청을 포함하여 2회 이상 누적되는 경우 이용자에게 통지하고, 계약을 해지할 수 있습니다.</p><p>회사는 이용자의 청약철회, 해제 또는 해지의 의사표시를 수신한 후 그 사실을 이용자에게 회신합니다. 회신은 이용자가 회사에 대하여 통지한 방법 중 하나에 의하고, 이용자가 회사에 대하여 통지한 연락처가 존재하지 않는 경우에는 회신하지 않을 수 있습니다.</p><h2>제16조(손해배상)</h2><p>회사 또는 이용자는 상대방의 귀책에 따라 손해가 발생하는 경우 손해배상을 청구할 수 있습니다. 다만, 회사는 무료서비스의 장애, 제공 중단, 보관된 자료 멸실 또는 삭제, 변조 등으로 인한 손해에 대하여는 배상책임을 부담하지 않습니다.</p><p>회사가 제공하는 서비스의 이용과 관련하여 회사의 운영정책 및 개인 정보 보호정책, 기타 서비스별 이용약관에서 정하는 내용에 위반하지 않는 한 회사는 어떠한 손해에 대하여도 책임을 부담하지 않습니다.</p><h2>제17조(면책사항)</h2><p>회사는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에 관한 책임을 지지 않습니다. 회사는 이용자의 귀책사유로 인한 서비스 이용장애에 대하여 책임을 지지 지 않습니다. 회사는 이용자가 서비스를 이용하며 기대하는 수익을 얻지 못한 것에 대하여 책임 지지 않으며 서비스를 통하여 얻은 자료로 인한 손해 등에 대하여도 책임을 지지 않습니다. 회사는 이용자가 웹페이지에 게재한 내용의 신뢰도, 정확성 등 내용에 대해서는 책임지지 않으며, 이용자 상호간 또는 이용자와 제3자 상호간 서비스를 매개로 발생한 분쟁에 개입하지 않습니다.</p><h2>제18조(정보의 제공 및 광고의 게재)</h2><p>회사는 이용자가 서비스 이용 중 필요하다고 인정되는 각종 정보 및 광고를 배너 게재, 전자우편(E-Mail), 휴대폰 메세지, 전화, 우편 등의 방법으로 이용자에게 제공(또는 전송)할 수 있습니다. 다만, 이용자는 이를 원하지 않을 경우 회사가 제공하는 방법에 따라 수신을 거부할 수 있습니다. 이용자가 수신 거부를 한 경우에도 이용약관, 개인정보보호정책, 기타 이용자의 이익에 영향을 미칠 수 있는 중요한 사항의 변경 등 &#39;정보통신망이용촉진 및 정보보호 등에 관한 법률&#39;에서 정하는 사유 등 이용자가 반드시 알고 있어야 하는 사항에 대하여는 전자우편 등의 방법으로 정보를 제공할 수 있습니다. 제1항 단서에 따라 이용자가 수신 거부 조치를 취한 경우 이로 인하여 회사가 거래 관련 정보, 이용 문의에 대한 답변 등의 정보를 전달하지 못한 경우 회사는 이로 인한 책임이 없습니다. 회사는 &#39;정보통신망법&#39; 시행령에 따라 2년마다 영리 목적의 광고정 정보 전송에 대한 수신동의 여부를 확인합니다. 회사는 광고주의 판촉 활동에 이용자가 참여하거나, 거래의 결과로서 발생하는 손실 또는 손해에 대하여는 책임을 지지 않습니다.</p><h2>제19조(권리의 귀속)</h2><p>회사가 제공하는 서비스에 대한 저작권 등 지식재산권은 회사에 귀속됩니다. 회사는 서비스와 관련하여 이용자에게 회사가 정한 조건 따라 회사가 제공하는 서비스를 이용할 수 있는 권한만을 부여하며, 이용자는 이를 양도, 판매, 담보제공 하는 등 처분행위를 할 수 없습니다. 제1항의 규정에도 불구하고 이용자가 직접 작성한 콘텐츠 및 회사의 제휴계약에 따라 제공된 저작물에 대한 지식재산권은 회사에 귀속되지 않습니다.</p><h2>제20조(콘텐츠의 관리)</h2><p>회원이 작성 또는 창작한 콘텐츠가 &#39;개인정보보호법&#39; 및 &#39;저작권법&#39; 등 관련 법에 위반되는 내용을 포함하는 경우, 관리자는 관련 법이 정한 절차에 따라 해당 콘텐츠의 게시중단 및 삭제 등을 요청할 수 있으며, 회사는 관련 법에 따라 조치를 취하여야 합니다. 회사는 전항에 따른 권리자의 요청이 없는 경우라도 권리침해가 인정될 만한 사유가 있거나 기타 회사 정책 및 관련 법에 위반되는 경우에는 관련 법에 따라 해당 콘텐츠에 대해 임시조치 등을 취할 수 있습니다.</p><h2>제21조(콘텐츠의 저작권)</h2><p>이용자가 서비스 내에 게시한 콘텐츠의 저작권은 해당 콘텐츠의 저작자에게 귀속됩니다. 제1항에 불구하고 회사는 서비스의 운영, 전시, 전송, 배포, 홍보 등의 목적으로 별도의 허락 없이 무상으로 저작권법 및 공정한 거래관행에 합치되는 범위 내에서 다음 각 호와 같이 회원이 등록한 콘텐츠를 사용할 수 있습니다. 서비스 내에서 이용자가 작성한 콘텐츠의 복제, 수정, 전시, 전송, 배포 등 저작권을 침해하지 않는 범위 내의 2차적저작물 또는 편집 저작물 작성을 위한 사용. 다만, 해당 콘텐츠를 등록한 이용자가 해당 콘텐츠의 삭제 또는 사용 중지를 요청하는 경우 회사는 관련 법에 따라 보존해야하는 사항을 제외하고 관련 콘텐츠를 모두 삭제 또는 사용중지합니다. 서비스의 운영, 홍보, 서비스 개선 및 새로운 서비스 개발을 위한 범위 내의 사용 미디어, 통신사 등을 통한 홍보목적으로 이용자의 콘텐츠를 제공, 전시하도록 하는 등의 사용.</p><h2>제22조(관할법원 및 준거법)</h2><p>서비스와 관련하여 분쟁이 발생한 경우 관할법원은 회사 소재지 관할법원으로 정하며, 준거법은 대한민국의 법령을 적용합니다.</p><h2>부 칙</h2><p>제1조(시행일)<br> 본 약관은 2023.12.18부터 시행됩니다.</p>", 73);
+var _hoisted_74 = [_hoisted_1];
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [].concat(_hoisted_74));
 }
 
 /***/ }),
@@ -20164,6 +20332,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<h1>개인정보 수집 및 이용 동의 약관</h1><br><p>안녕하세요! 저희 이의이승 서비스를 이용해 주셔서 감사합니다. 본 동의 약관은 개인정보의 수집, 이용, 보호에 관한 사항을 안내합니다.</p><h2>1. 수집하는 개인정보 항목</h2><p>1) 필수 항목: 성명, 이메일 주소, 연락처</p><p>2) 선택 항목: 주소, 생년월일, 성별 등 추가 정보</p><h2>2. 개인정보의 수집 및 이용 목적</h2><p>1) 서비스 제공을 위한 회원 가입 및 관리</p><p>2) 서비스 이용에 따른 통계 및 분석</p><p>3) 고지사항 전달, 이벤트 및 광고성 정보 제공</p><h2>3. 개인정보의 보유 및 이용 기간</h2><p>1) 회원 탈퇴 시 또는 정보 제공 동의 철회 시까지</p><p>2) 관련 법령에 따라 보존할 필요가 있는 경우 해당 기간 동안</p><h2>4. 개인정보의 제공</h2><p>1) 회사는 이용자의 개인정보를 본인의 동의 없이 타인 또는 타기업, 기관에 제공하지 않습니다.</p><h2>5. 개인정보의 파기</h2><p>1) 수집한 개인정보의 수집 및 이용 목적이 달성된 경우, 지체 없이 파기됩니다.</p><p>2) 관련 법령에 따라 보존할 필요가 있는 경우, 그 기간 동안 보관 후 파기됩니다.</p><h2>6. 개인정보 수집 및 이용 동의 철회</h2><p>1) 개인정보 수집 및 이용에 대한 동의는 언제든지 철회할 수 있습니다.</p><p>2) 동의 철회 시에는 서비스 이용이 제한될 수 있습니다.</p><h2>7. 개인정보의 안전성 확보 조치</h2><p>1) 개인정보를 안전하게 관리하기 위한 기술 및 관리적 대책을 시행하고 있습니다.</p><p><strong>본 약관에 동의하시면, 서비스를 원활히 이용하실 수 있습니다.</strong></p><p><strong>동의하지 않을 경우, 일부 서비스 이용이 제한될 수 있습니다.</strong></p><p><em>본 약관은 2023년 12월 18일부터 시행됩니다.</em></p>", 26);
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return _hoisted_1;
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SigninComponent.vue?vue&type=template&id=4a335f1a":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SigninComponent.vue?vue&type=template&id=4a335f1a ***!
@@ -20977,7 +21165,6 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.createStore)({
   // state() : data를 저장하는 영역
   state: function state() {
     return {
-      emailFlg: 0,
       nickFlg: 0,
       varErr: [],
       localFlg: false,
@@ -20992,11 +21179,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.createStore)({
   },
   // mutations : 데이터 수정용 함수 저장 영역
   mutations: {
-    setEmailFlg: function setEmailFlg(state, _int) {
-      state.emailFlg = _int;
-    },
-    setNickFlg: function setNickFlg(state, _int2) {
-      state.nickFlg = _int2;
+    setNickFlg: function setNickFlg(state, _int) {
+      state.nickFlg = _int;
     },
     setErrMsg: function setErrMsg(state, data) {
       state.varErr = data;
@@ -41337,6 +41521,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/components/ConsentComponent.vue":
+/*!***************************************************!*\
+  !*** ./resources/components/ConsentComponent.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ConsentComponent_vue_vue_type_template_id_c8bdb518__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConsentComponent.vue?vue&type=template&id=c8bdb518 */ "./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518");
+/* harmony import */ var _ConsentComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConsentComponent.vue?vue&type=script&lang=js */ "./resources/components/ConsentComponent.vue?vue&type=script&lang=js");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ConsentComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ConsentComponent_vue_vue_type_template_id_c8bdb518__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/components/ConsentComponent.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/components/ErrorComponent.vue":
 /*!*************************************************!*\
   !*** ./resources/components/ErrorComponent.vue ***!
@@ -41533,6 +41745,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/components/SecConsent.vue":
+/*!*********************************************!*\
+  !*** ./resources/components/SecConsent.vue ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SecConsent_vue_vue_type_template_id_68e7bdba__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SecConsent.vue?vue&type=template&id=68e7bdba */ "./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba");
+/* harmony import */ var _SecConsent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SecConsent.vue?vue&type=script&lang=js */ "./resources/components/SecConsent.vue?vue&type=script&lang=js");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SecConsent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SecConsent_vue_vue_type_template_id_68e7bdba__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/components/SecConsent.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/components/SigninComponent.vue":
 /*!**************************************************!*\
   !*** ./resources/components/SigninComponent.vue ***!
@@ -41629,6 +41869,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AuthComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AuthComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./AuthComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/AuthComponent.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/components/ConsentComponent.vue?vue&type=script&lang=js":
+/*!***************************************************************************!*\
+  !*** ./resources/components/ConsentComponent.vue?vue&type=script&lang=js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ConsentComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ConsentComponent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ConsentComponent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -41745,6 +42001,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/components/SecConsent.vue?vue&type=script&lang=js":
+/*!*********************************************************************!*\
+  !*** ./resources/components/SecConsent.vue?vue&type=script&lang=js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SecConsent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SecConsent_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SecConsent.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/components/SigninComponent.vue?vue&type=script&lang=js":
 /*!**************************************************************************!*\
   !*** ./resources/components/SigninComponent.vue?vue&type=script&lang=js ***!
@@ -41805,6 +42077,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AuthComponent_vue_vue_type_template_id_79646094__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AuthComponent_vue_vue_type_template_id_79646094__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./AuthComponent.vue?vue&type=template&id=79646094 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/AuthComponent.vue?vue&type=template&id=79646094");
+
+
+/***/ }),
+
+/***/ "./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518":
+/*!*********************************************************************************!*\
+  !*** ./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518 ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ConsentComponent_vue_vue_type_template_id_c8bdb518__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ConsentComponent_vue_vue_type_template_id_c8bdb518__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ConsentComponent.vue?vue&type=template&id=c8bdb518 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/ConsentComponent.vue?vue&type=template&id=c8bdb518");
 
 
 /***/ }),
@@ -41917,6 +42205,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_RegionComponent_vue_vue_type_template_id_1d8c9d08__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_RegionComponent_vue_vue_type_template_id_1d8c9d08__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./RegionComponent.vue?vue&type=template&id=1d8c9d08 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/RegionComponent.vue?vue&type=template&id=1d8c9d08");
+
+
+/***/ }),
+
+/***/ "./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba":
+/*!***************************************************************************!*\
+  !*** ./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SecConsent_vue_vue_type_template_id_68e7bdba__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_SecConsent_vue_vue_type_template_id_68e7bdba__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./SecConsent.vue?vue&type=template&id=68e7bdba */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/components/SecConsent.vue?vue&type=template&id=68e7bdba");
 
 
 /***/ }),
