@@ -11,7 +11,6 @@ const store = createStore({
 	// state() : data를 저장하는 영역
 	state() {
 		return {
-			emailFlg: 0,
 			nickFlg: 0,
 			varErr: [],
 			localFlg: false,
@@ -26,9 +25,6 @@ const store = createStore({
 
 	// mutations : 데이터 수정용 함수 저장 영역
 	mutations: {
-		setEmailFlg(state, int){
-			state.emailFlg = int;
-		},
 		setNickFlg(state, int){
 			state.nickFlg = int;
 		},
