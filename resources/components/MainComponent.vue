@@ -41,39 +41,50 @@
           </div>
           <div class="main_box_right">
             <div class="main_2_news">
-              <div class="main_2_news_l">
-                <div class="art_plus">
-                  <h3 class="article">경상북도</h3>
-                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
-                </div>
-                <div class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</div>
-                <div class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</div>
-                <p class="art_date">2023.12.01 - 2023.12.10</p>
-              </div>
-              <div class="main_2_news_l"><div class="art_plus">
-                  <h3 class="article">경상북도</h3>
-                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
-                </div>
-                <div class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</div>
-                <div class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</div>
-                <p class="art_date">2023.12.01 - 2023.12.10</p>
-              </div>
-              <div class="main_2_news_l"><div class="art_plus">
-                  <h3 class="article">경상남도</h3>
-                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
-                </div>
-                <div class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</div>
-                <div class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</div>
-                <p class="art_date">2023.12.23 - 2024.02.28</p>
-              </div>
-              <div class="main_2_news_l"><div class="art_plus">
-                  <h3 class="article">경상남도</h3>
-                  <a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a>
-                </div>
-                <div class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</div>
-                <div class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</div>
-                <p class="art_date">2023.12.23 - 2024.02.28</p>
-              </div>
+              <ul class="main_2_news_l">
+                <ul class="art_plus">
+                  <li class="article">경상북도</li>
+                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                </ul>
+                <ul>
+                  <li class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</li>
+                  <li class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</li>
+                  <li class="art_date">2023.12.01 - 2023.12.10</li>
+                </ul>
+              </ul>
+              <ul class="main_2_news_l">
+                <ul class="art_plus">
+                  <li class="article">경상북도</li>
+                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                </ul>
+                <ul>
+                  <li class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</li>
+                  <li class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</li>
+                  <li class="art_date">2023.12.01 - 2023.12.10</li>
+                </ul>
+              </ul>
+              <ul class="main_2_news_l">
+                <ul class="art_plus">
+                  <li class="article">경상남도</li>
+                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                </ul>
+                <ul>
+                  <li class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</li>
+                  <li class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</li>
+                  <li class="art_date">2023.12.23 - 2024.02.28</li>
+                </ul>
+              </ul>
+              <ul class="main_2_news_l">
+                <ul class="art_plus">
+                  <li class="article">경상남도</li>
+                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                </ul>
+                <ul>
+                  <li class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</li>
+                  <li class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</li>
+                  <li class="art_date">2023.12.23 - 2024.02.28</li>
+                </ul>
+              </ul>
             </div>
           </div>
 				</div>
@@ -174,6 +185,47 @@
 	<div class="main_topBtn"></div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: 'MainComponent',
+  data() {
+    return {
+      id: "",
+      title: "",
+      content: "",
+      img1: "",
+      img2: "",
+      img3: "",
+      hits: "",
+      ns_flg: "",
+      states_flg: "",
+      main_flg: "",
+      place: "",
+      start_at: "",
+      end_at: "",
+      created_at: "",
+      updated_at: "",
+      deleted_at: ""
+    }
+  },
+  created() {
+    this.GetMain()
+  },
+  methods: {
+    // 메인에 나타날 데이터 불러오기
+    GetMain(){
+			const URL = '/maininfo'
+			axios.get(URL)
+			.then(res => {
+				this.$store.commit('setMainInfo',res.data.data);
+			})
+			.catch(err => {
+				alert("데이터 에러 발생")
+			})
+		},
+  },
+  
+}
+</script>
 
 <style lang="scss" scoped></style>
