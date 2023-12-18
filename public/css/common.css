@@ -176,7 +176,7 @@ input[type=password]::placeholder {
 	margin-right: 1.5rem;
   }
   .gnb li a,.gnb_logout{
-	font-size: 1.5rem;
+	font-size: 1.05rem;
 	font-weight: 500;
 	color: #3a3a3a;
 	font-family: 'Cafe24SsurroundAir';
@@ -393,6 +393,7 @@ input[type=password]::placeholder {
 .article {
 	color: #D14C6C;
 	display: inline-block;
+	font-size: larger;
 }
 .plus_icon {
 	color: #D14C6C;
@@ -474,10 +475,11 @@ input[type=password]::placeholder {
 .main_hot3 li {
 	border: 1px solid rgba(53, 53, 53, 0.5);
 	border-radius: 5px;
+	transition: all 0.2s linear;
 } 
 .main_hot3 li:hover {
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.7);
-
+	transform: scale(1.02);
 } 
 .main_hot3 li a {
 	direction: none;

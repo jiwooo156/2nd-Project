@@ -21,6 +21,7 @@ const store = createStore({
 			openPwModal: false,
 			openNickModal: false,
 			openDelModal: false,
+			mainInfo: [],
 		}
 	},
 
@@ -56,7 +57,10 @@ const store = createStore({
 		setDelModalFlg(state, boo){
 			state.openDelModal=boo;
 		},
-
+		setMainInfo(state, data){
+			state.mainInfo=data;
+		},
+		
 	},
 
 	// actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
