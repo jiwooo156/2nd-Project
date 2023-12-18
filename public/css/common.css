@@ -2093,6 +2093,3 @@ input[type=password]::placeholder {
 .error_title span{
     color: #d14c6c;
 }
-.error_content{
-	padding: 0px;
-}
