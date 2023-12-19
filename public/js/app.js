@@ -18258,20 +18258,24 @@ __webpack_require__.r(__webpack_exports__);
   name: 'MainComponent',
   data: function data() {
     return {
-      infoList: []
+      besthitsinfoList: [],
+      fixedinfoList: []
     };
   },
   created: function created() {
-    this.$store.dispatch('actionGetMainInfo');
+    this.getMain();
   },
   methods: {
     // 메인에 나타날 데이터 불러오기
-    GetMain: function GetMain() {
+    getMain: function getMain() {
       var _this = this;
-      var URL = '/main';
+      var URL = '/main/info';
       axios.get(URL).then(function (res) {
-        _this.$store.commit('setMainInfo', res.data.data);
+        console.log("댄");
+        _this.besthitsinfoList = res.data.hits;
+        _this.fixedinfoList = res.data.fixed;
       })["catch"](function (err) {
+        console.log("캐치");
         alert("데이터 에러 발생");
       });
     }
@@ -19435,10 +19439,10 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   id: "login_pw"
 })], -1 /* HOISTED */);
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "login_and"
+  "class": "login_and login_font"
 }, "또는", -1 /* HOISTED */);
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "login_kakao pointer"
+  "class": "login_kakao pointer login_font"
 }, "kakao로 로그인", -1 /* HOISTED */);
 var _hoisted_8 = {
   "class": "login_sign"
@@ -19454,13 +19458,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     _: 1 /* STABLE */
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "login_btn pointer",
+    "class": "login_btn pointer login_font",
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.login && $options.login.apply($options, arguments);
     })
   }, "로그인"), _hoisted_6, _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: '/authemail',
-    "class": "pointer"
+    "class": "pointer login_font"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("회원가입")];
@@ -19598,74 +19602,46 @@ var _hoisted_33 = {
   href: "#",
   target: "관광"
 };
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_34 = {
   "class": "main_hot3_img"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: "/img/topic_1.png"
-})], -1 /* HOISTED */);
-var _hoisted_35 = {
+};
+var _hoisted_35 = ["src"];
+var _hoisted_36 = {
   "class": "main_hot3_txt"
 };
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("100여년 전의 역사가 공존하는"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 특별하고 소중한 시간 여행")], -1 /* HOISTED */);
 var _hoisted_37 = {
-  href: "#",
-  target: "여행"
-};
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "main_hot3_img"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: "/img/topic_2.png"
-})], -1 /* HOISTED */);
-var _hoisted_39 = {
-  "class": "main_hot3_txt"
-};
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("전용시설에서 반려동물과"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("사계절 뛰어놀 수 있는 특별한 곳")], -1 /* HOISTED */);
-var _hoisted_41 = {
-  href: "#",
-  target: "야경"
-};
-var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "main_hot3_img"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: "/img/topic_3.png"
-})], -1 /* HOISTED */);
-var _hoisted_43 = {
-  "class": "main_hot3_txt"
-};
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("다양한 야간관광 특화도시!"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("경상도의 아름다운 야경")], -1 /* HOISTED */);
-var _hoisted_45 = {
   "class": "main_4"
 };
-var _hoisted_46 = {
+var _hoisted_38 = {
   "class": "main_4_box"
 };
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_gg\"><img src=\"/img/com.png\" alt=\"gaga\"></div>", 2);
-var _hoisted_49 = {
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"main_box_left\" data-aos=\"fade-down\" data-aos-easing=\"linear\" data-aos-duration=\"1300\"><div class=\"main_sub\"><div class=\"main_sub_tit\">유저광장</div><div class=\"main_sub_line\"></div></div><div class=\"main_sub_con\"><div class=\"main_sub_txt\"> 유저들과 다양한<br> 재미를 공유해봐요! </div></div><div class=\"main_shap\">&#39;가가가가?&#39;같은 경상도식 유머가 있어요🤗</div><img class=\"main_sub_y\" src=\"/img/yellow.png\" alt=\"pencil\"></div><div class=\"main_gg\"><img src=\"/img/com.png\" alt=\"gaga\"></div>", 2);
+var _hoisted_41 = {
   "class": "main_box_right"
 };
-var _hoisted_50 = {
+var _hoisted_42 = {
   "class": "main_4_menu"
 };
-var _hoisted_51 = {
+var _hoisted_43 = {
   href: "#"
 };
-var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_53 = {
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_45 = {
   href: "#"
 };
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_55 = {
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_47 = {
   href: "#"
 };
-var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_57 = {
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_49 = {
   href: "#"
 };
-var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
   "class": "footer"
 }, "푸터 띄우기", -1 /* HOISTED */);
-var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -19678,28 +19654,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     icon: ['fas', 'plus']
   })])])]), _hoisted_22]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'plus']
-  })])])]), _hoisted_27])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
-    icon: ['fas', 'circle'],
-    "class": "icon_cir_1"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 근대역사문화거리")]), _hoisted_36])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
-    icon: ['fas', 'circle'],
-    "class": "icon_cir_2"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 댕댕이와 경상도여행")]), _hoisted_40])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
-    icon: ['fas', 'circle'],
-    "class": "icon_cir_3"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 낮 보다 아름다운 밤")]), _hoisted_44])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("자유"), _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  })])])]), _hoisted_27])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_32, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.fixedinfoList, function (info) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: info
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      src: info.img1
+    }, null, 8 /* PROPS */, _hoisted_35)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+      icon: ['fas', 'circle'],
+      "class": "icon_cir_1"
+    }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(info.title), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(info.content), 1 /* TEXT */)])])]);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                <a href=\"#\" target=\"여행\">\r\n                  <div class=\"main_hot3_img\">\r\n                    <img src=\"/img/topic_2.png\">\r\n                  </div>\r\n                  <div class=\"main_hot3_txt\">\r\n                    <span><font-awesome-icon :icon=\"['fas', 'circle']\" class=\"icon_cir_2\"/> 댕댕이와 경상도여행</span>\r\n                    <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>\r\n                  </div>\r\n                </a>\r\n              </li>\r\n              <li>\r\n                <a href=\"#\" target=\"야경\">\r\n                  <div class=\"main_hot3_img\">\r\n                    <img src=\"/img/topic_3.png\">\r\n                  </div>\r\n                  <div class=\"main_hot3_txt\">\r\n                    <span><font-awesome-icon :icon=\"['fas', 'circle']\" class=\"icon_cir_3\"/> 낮 보다 아름다운 밤</span>\r\n                    <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>\r\n                  </div>\r\n                </a>\r\n              </li> ")])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("자유"), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'comments']
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("질문"), _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("질문"), _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'leaf']
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("정보"), _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("정보"), _hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'file-pen']
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'triangle-exclamation']
-  })])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.infos, function (info) {
+  })])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(this.besthitsinfoList, function (info) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: info
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(info.title), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))])]), _hoisted_59])]), _hoisted_60], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))])]), _hoisted_51])]), _hoisted_52], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

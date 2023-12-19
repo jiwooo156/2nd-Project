@@ -110,18 +110,18 @@
           </div>
           <div class="main_box_right">
             <ul class="main_hot3">
-              <li>
+              <li v-for="info in this.fixedinfoList" :key="info">
                 <a href="#" target="관광">
                   <div class="main_hot3_img">
-                    <img src="/img/topic_1.png">
+                    <img :src="info.img1">
                   </div>
                   <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle',]" class="icon_cir_1"/> 근대역사문화거리</span>
-                    <p>100여년 전의 역사가 공존하는<br> 특별하고 소중한 시간 여행</p>
+                    <span><font-awesome-icon :icon="['fas', 'circle',]" class="icon_cir_1"/>{{ info.title }}</span>
+                    <p>{{ info.content }}</p>
                   </div>
                 </a>
               </li>
-              <li>
+              <!-- <li>
                 <a href="#" target="여행">
                   <div class="main_hot3_img">
                     <img src="/img/topic_2.png">
@@ -142,7 +142,7 @@
                     <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
                   </div>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </div>
 				</div>
@@ -182,7 +182,7 @@
       <!-- test -->
       <div>
         <ul>
-          <li v-for="info in infos" :key="info">
+          <li v-for="info in this.besthitsinfoList" :key="info">
             {{ info.title }}
           </li>
         </ul>
@@ -198,21 +198,25 @@ export default {
   name: 'MainComponent',
   data() {
     return {
-      infoList: []
+      besthitsinfoList: [],
+      fixedinfoList: [],
     };
   },
   created() {
-    this.$store.dispatch('actionGetMainInfo');
+    this.getMain()
   },
   methods: {
     // 메인에 나타날 데이터 불러오기
-    GetMain(){
-			const URL = '/main'
+    getMain(){
+			const URL = '/main/info'
 			axios.get(URL)
 			.then(res => {
-				this.$store.commit('setMainInfo',res.data.data);
+        console.log("댄");
+				this.besthitsinfoList = res.data.hits
+				this.fixedinfoList = res.data.fixed
 			})
 			.catch(err => {
+        console.log("캐치");
 				alert("데이터 에러 발생")
 			})
 		},

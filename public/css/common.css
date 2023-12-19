@@ -39,7 +39,8 @@ input[type=password] {
 	font-family:Cafe24Ssurround;
 } */
 input[type=password]::placeholder {
-	font-family:Cafe24Ssurround
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 
 /* 헤더 */
@@ -176,7 +177,7 @@ input[type=password]::placeholder {
 	margin-right: 1.5rem;
   }
   .gnb li a,.gnb_logout{
-	font-size: 1.5rem;
+	font-size: 1.05rem;
 	font-weight: 500;
 	color: #3a3a3a;
 	font-family: 'Cafe24SsurroundAir';
@@ -566,6 +567,10 @@ input[type=password]::placeholder {
   } */
 
 /* 로그인페이지 */
+.login_font{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+}
 
 .login_bg{
     width: 100vw;
@@ -621,6 +626,8 @@ input[type=password]::placeholder {
     padding: 10px 0px;
     margin-bottom: 10px;
     font-size: 1rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 
 .login_box input::placeholder{
@@ -1205,6 +1212,7 @@ margin-top:10px;
 	border-radius: 20px;
 	font-size: large;
 }
+
 /* 에러페이지 */
 @font-face {
     font-family: 'EF_jejudoldam';
@@ -1214,6 +1222,7 @@ margin-top:10px;
 }
 /* pc */
 @media only screen and (min-width: 1024px) {
+	/* 에러페이지 */
 	.error_h1{
 	    font-size: 5rem;
     	margin-bottom: 2rem;
@@ -1247,6 +1256,7 @@ margin-top:10px;
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* 에러페이지 */
 	.error_h1{
 		font-size: 4rem;
 		margin-bottom: 2rem;
@@ -1280,6 +1290,7 @@ margin-top:10px;
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* 에러페이지 */
 	.error_h1{
 		font-size: 3rem;
 		margin-bottom: 3rem;
@@ -1346,6 +1357,120 @@ margin-top:10px;
 .error_title span{
     color: #d14c6c;
 }
-.error_content{
-	padding: 0px;
+
+
+/* auth */
+/* pc */
+@media only screen and (min-width: 1024px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 60px auto;
+	}
+	.auth_check_msg {
+		height: 250px;
+	}
+}
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 80px auto;
+	}
+	.auth_check_msg {
+		height: 230px;
+	}
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	.auth_check{
+		grid-template-columns: 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 50px auto;
+	}
+	.auth_container{
+		display: flex;
+    	flex-direction: column-reverse;
+	}
+	.auth_check_msg {
+		height: 200px;
+	}
+}
+
+.auth_container_input{
+    width: 100%;
+    padding: 9px;
+	outline: none;
+	border: none;
+}
+
+.auth_success_div{
+	width: 90%;
+    margin: 0 auto;
+    max-width: 800px;
+}
+.auth_success_div div{
+	font-size: 1.5rem;
+}
+.auth_button{
+	padding: 1px;
+}
+
+.auth_all_agree{
+	margin-top: 5px;
+}
+
+.auth_relative{
+	margin: 0 auto;
+    width: 100%;
+    max-width: 550px;
+}
+
+.auth_input_div label{
+    padding: 0px 5px 0px 10px;
+}
+.auth_input_div span{
+	color: rgb(22, 168, 32);
+}
+.auth_frame{
+	margin: 0 auto;
+    width: 95%;
+	max-width: 1100px;
+}
+
+.auth_check{
+	display: grid;
+	grid-gap: 20px;
+}
+.auth_check_left ,.sign_check_right{
+	display: flex;
+    flex-direction: column;
+}
+
+.auth_check_left label,.auth_check_right label{
+    padding: 0px 10px 0px 5px;
+}
+
+.auth_check_msg{
+    background-color: #fff;
+    border: 1px solid #000;
+    overflow: scroll;
+    overflow-x: hidden;
+	padding: 10px;
+}
+
+.auth_input_div{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.auth_errmsg{
+	color: red;
 }

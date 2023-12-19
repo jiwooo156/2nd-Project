@@ -72,9 +72,14 @@ Route::get('/', function () {
 
 // 1218 차민지 추가 메인에서 사용될 라우터 생성
 // 컨트롤러 생성하고 문지기인 라우터를 연결해줘야 함
-Route::get('/main', function () { //메인 시작 경로
-    return view('welcome');
+Route::middleware('myValidation')->prefix('main')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/info', [InfoController::class, 'getMainInfo']);
 });
+
+
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
 // Route::get('/main/{name?}', [InfoController::class, 'maininfo'])->name('main.info');
