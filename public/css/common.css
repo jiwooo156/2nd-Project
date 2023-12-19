@@ -506,6 +506,7 @@ input[type=password]::placeholder {
 .article {
 	color: #D14C6C;
 	display: inline-block;
+	font-size: larger;
 }
 .plus_icon {
 	color: #D14C6C;
@@ -587,10 +588,11 @@ input[type=password]::placeholder {
 .main_hot3 li {
 	border: 1px solid rgba(53, 53, 53, 0.5);
 	border-radius: 5px;
+	transition: all 0.2s linear;
 } 
 .main_hot3 li:hover {
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.7);
-
+	transform: scale(1.02);
 } 
 .main_hot3 li a {
 	direction: none;
@@ -920,7 +922,6 @@ text-align: center;
 .user_infocontainer{
 	width:100%;
 }
-
 .user_table{
 	border: 1px solid #B7B7B7;
 	border-right: none;
@@ -987,6 +988,11 @@ text-align: center;
 	border: none;
     border-radius: 10px;
     background-color: #b7b7b7;
+	height: 435px;
+	padding:50px;
+}
+.user_h3_nick{
+	margin-top:10px;
 }
 .user_withdraw{
 	background-color: #b7b7b7;
@@ -1000,9 +1006,6 @@ text-align: center;
 }
 .user_button_box_password{
 margin-top:10px;
-}
-.user_h3_nick{
-	margin-top: 66px;
 }
 .user_h3_userout{
 	margin-top:89px;

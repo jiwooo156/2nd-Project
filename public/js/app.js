@@ -20173,9 +20173,9 @@ var _hoisted_25 = {
 var _hoisted_26 = {
   "class": "user_nickChange_box"
 };
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "user_h3_nick"
-}, "닉네임 수정", -1 /* HOISTED */);
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "닉네임 수정")], -1 /* HOISTED */);
 var _hoisted_28 = {
   "class": "user_box_nick"
 };
