@@ -846,6 +846,10 @@ text-align: center;
 	cursor: pointer;
 }
 /* 모달 */
+.user_warning{
+	color:red;
+	font-size:60px;
+}
 .user_black-bg{
 	box-sizing: border-box;
     text-align: center;
@@ -895,7 +899,7 @@ text-align: center;
 margin-top:10px;
 }
 .user_h3_userout{
-	margin-top:89px;
+	margin-top:15px;
 }
 .user_button_box_userout{
 	margin-top:20px;

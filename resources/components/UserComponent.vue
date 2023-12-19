@@ -75,6 +75,7 @@
 	>
 	<div class="user_white-bg">
 		<div class="user_withdraw">
+			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning"/>
 		<h3 class="user_h3_userout">회원 탈퇴</h3>
 			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
