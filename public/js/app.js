@@ -18364,19 +18364,19 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       setting: '',
-      items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10'],
-      slidePosition: 0,
+      items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10', 'Item 11', 'Item 12', 'Item 13', 'Item 14', 'Item 15', 'Item 16'],
+      // slidePosition: 0,
       cities: ['경주시', '포항시', '영천시']
     };
   },
   created: function created() {},
   methods: {
-    nextSlide: function nextSlide() {
-      this.slidePosition -= 1000;
-    },
-    prevSlide: function prevSlide() {
-      this.slidePosition += 1000;
-    }
+    // nextSlide() {
+    // this.slidePosition -= 1000;
+    // },
+    // prevSlide() {
+    // this.slidePosition += 1000;
+    // },
   }
 });
 
@@ -19749,63 +19749,49 @@ var _hoisted_3 = {
   "class": "region_slider_container"
 };
 var _hoisted_4 = {
-  "class": "region_search_frame"
+  "class": "region_slider"
 };
 var _hoisted_5 = {
+  "class": "region_search_frame"
+};
+var _hoisted_6 = {
   id: "region_select_list"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "지역", -1 /* HOISTED */);
-var _hoisted_7 = ["value"];
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", null, "지역", -1 /* HOISTED */);
+var _hoisted_8 = ["value"];
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "date",
   id: "region_date",
   value: '2023-01-01'
 }, null, -1 /* HOISTED */);
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "date",
   id: "region_date",
   value: '2023-12-31'
 }, null, -1 /* HOISTED */);
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
   "class": "region_search_text",
   placeholder: "키워드로 검색 해 보세요"
 }, null, -1 /* HOISTED */);
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
   "class": "region_form_btn pointer"
 }, "검색", -1 /* HOISTED */);
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"region_recommend_festival_frame\"><div class=\"region_comment\"><p class=\"region_p1\">이런 축제</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_recommend_festival\"><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div></div></div><div class=\"region_recommend_tour_frame\"><div class=\"region_comment\"><p class=\"region_p1\">이런 관광지</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_recommend_tour\"><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div></div></div><div class=\"region_sort\"><button class=\"region_sort1 pointer\">인기순</button><!-- &lt;div class=&quot;region_sort_line&quot;&gt;&lt;/div&gt; --><button class=\"region_sort2 pointer\">최신순</button></div><div class=\"region_total_festival_frame\"><div class=\"region_total_festival_msg\"><p class=\"region_p4\">{해당지역}의 축제를 여기에서 확인 해 보세요!</p></div><div class=\"region_festival_container\"><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div></div></div><div class=\"region_total_tour_frame\"><div class=\"region_total_tour_msg\"><p class=\"region_p4\">{해당지역}의 관광지를 여기에서 확인 해 보세요!</p></div><div class=\"region_tour_container\"><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div></div></div><div class=\"region_more_btn\"><button type=\"submit\">더보기</button></div>", 6);
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"region_recommend_festival_frame\"><div class=\"region_comment\"><p class=\"region_p1\">이런 축제</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_recommend_festival\"><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div><div class=\"region_recom_festiv\"><img src=\"/img/item_1.jpg\"><div class=\"region_recom_festiv_title\">추천축제제목</div><div class=\"region_recom_festiv_period\">추천축제기간</div></div></div></div><div class=\"region_recommend_tour_frame\"><div class=\"region_comment\"><p class=\"region_p1\">이런 관광지</p><p class=\"region_p2\">추천드려요</p></div><div class=\"region_recommend_tour\"><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div><div class=\"region_recom_tour\"><img src=\"/img/item_2.jpg\"><div class=\"region_recom_tour_title\">추천관광지제목</div><div class=\"region_recom_tour_place\">추천관광지위치</div></div></div></div><div class=\"region_sort\"><button class=\"region_sort1 pointer\">인기순</button><!-- &lt;div class=&quot;region_sort_line&quot;&gt;&lt;/div&gt; --><button class=\"region_sort2 pointer\">최신순</button></div><div class=\"region_total_festival_frame\"><div class=\"region_total_festival_msg\"><p class=\"region_p4\">{해당지역}의 축제를 여기에서 확인 해 보세요!</p></div><div class=\"region_festival_container\"><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_festival\"><img src=\"/img/item_3.jpg\"><div class=\"region_festival_title\">지역축제제목</div><div class=\"region_festival_period\">지역축제기간</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div></div></div><div class=\"region_total_tour_frame\"><div class=\"region_total_tour_msg\"><p class=\"region_p4\">{해당지역}의 관광지를 여기에서 확인 해 보세요!</p></div><div class=\"region_tour_container\"><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div><div class=\"region_tour\"><img src=\"/img/item_4.jpg\"><div class=\"region_tour_title\">지역관광지제목</div><div class=\"region_tour_place\">지역관광지위치</div><button type=\"submit\" class=\"region_heart\">좋아요</button></div></div></div><div class=\"region_more_btn\"><button type=\"submit\">더보기</button></div>", 6);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "region_slider",
-    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
-      transform: 'translateX(' + $data.slidePosition + 'px)'
-    })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.items, function (item, index) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.items, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       "class": "region_slide",
-      key: index
+      key: item
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item), 1 /* TEXT */);
-  }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "region_slider_left pointer",
-    src: "/img/prev.png",
-    onClick: _cache[0] || (_cache[0] = function () {
-      return _ctx.prevslide && _ctx.prevslide.apply(_ctx, arguments);
-    })
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-    "class": "region_slider_right pointer",
-    src: "/img/next.png",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return _ctx.nextslide && _ctx.nextslide.apply(_ctx, arguments);
-    })
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_5, [_hoisted_6, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.cities, function (city) {
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div><img class=\"region_slider_left pointer\" src=\"/img/prev.png\" @click=\"prevslide\"></div>\r\n\t\t\t\t<div><img class=\"region_slider_right pointer\" src=\"/img/next.png\" @click=\"nextslide\"></div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_6, [_hoisted_7, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.cities, function (city) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: city,
       value: city
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(city), 9 /* TEXT, PROPS */, _hoisted_7);
-  }), 128 /* KEYED_FRAGMENT */))]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" - "), _hoisted_9, _hoisted_10, _hoisted_11, _hoisted_12])])]), _hoisted_13]);
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(city), 9 /* TEXT, PROPS */, _hoisted_8);
+  }), 128 /* KEYED_FRAGMENT */))]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" - "), _hoisted_10, _hoisted_11, _hoisted_12, _hoisted_13])]), _hoisted_14]);
 }
 
 /***/ }),
