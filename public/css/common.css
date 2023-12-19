@@ -165,7 +165,8 @@ input[type=password]::placeholder {
 	width: 9rem;
 	align-items: center;
 	background: url("/img/logo.png") center center no-repeat;
-	background-size:contain;font-size: 0;
+	background-size:contain;
+	font-size: 0;
 	margin-left: 1.5rem;
   }
   .logo a{
@@ -589,25 +590,99 @@ input[type=password]::placeholder {
   .footer {
 	background-color: #af52de;
 	width:100%;
-	font-size: 1rem;
+	font-size: 1.2rem;
   }
-  .footer_team p {
-	font-family: 'Cafe24SsurroundAir';
-	font-weight: bold;
+  .footer_team h4 {
+	/* font-family: 'Cafe24SsurroundAir'; */
+	display: flex;
+	justify-content: center;
   }
   .footer_team span {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
 	font-size: 0.8rem;
+	display: flex;
+	justify-content: center;
   }
 .footer_box {
-	width : 100px;
-	height: 100px;
-	background-color: #f5d682;
-	border: 1px solid red;
-	display: block;
+	width : 200px;
+	height: 70px;
+	display: flex;
+	border-radius: 0.3rem;
+	justify-content: space-evenly;
+    align-items: center;
 }
-  
+.footer_box div {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+}
+.footer_team_mem ul {
+	display: flex;
+	gap: 1.1rem;
+	justify-content: center;
+	margin: 1rem auto;
+}
+.footer_box_1 {
+	background-color: #C1CBED;
+	border: 0.1rem solid #3977BC;
+	color: #345D8C;
+}
+.footer_box_2 {
+	background-color: #CFE8DA;
+	border: 0.1rem solid #39B075;
+	color: #2B7550;
+}
+.footer_box_3 {
+	background-color: #FAECC3;
+	border: 0.1rem solid #F4C334;
+	color: #755D18;
+}
+.footer_box_4 {
+	background-color: #FFB4B4;
+	border: 0.1rem solid #ED5555;
+	color: #973131;
+}
+.footer_box span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+.footer_con {
+	display: flex;
+    flex-direction: column;
+	gap: 0.2rem;
+}
+.footer_con h4 {
+	display: flex;
+	justify-content: center;
+	/* font-size: 1.1rem; */
+}
+.footer_con span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: center;
+	gap: 0.2rem;
+  }
+.footer_img1 {
+	width: 7rem;
+	height: 5rem;
+}
+.footer_ref_left h4 {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+}
+.footer_ref_left span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: center;
+	gap: 0.2rem;
+}
   /* 버튼 */
   /* .main_topBtn {
   

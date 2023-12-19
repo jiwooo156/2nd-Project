@@ -92,7 +92,8 @@
           </div>
 				</div>
 			</div>
-			<div class="main_4">
+      <!-- 4차 때 기능 넣을 거임 -->
+			<!-- <div class="main_4">
         <div class="main_4_box">
           <div class="main_box_left"
               data-aos="fade-down"
@@ -121,7 +122,7 @@
             </div>
           </div>
 				</div>
-			</div>
+			</div> -->
     </div>
 	</div>
 	<div class="main_topBtn"></div>
