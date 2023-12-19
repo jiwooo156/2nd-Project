@@ -952,14 +952,16 @@ margin-top:10px;
 /* 지역 페이지 */
 /* 지역 페이지 전체 */
 .region_frame {
-	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 50px;
 }
-
 /* 지역 페이지 헤더 */
-/* .region_header_frame {
+.region_header_frame {
 	margin-top: 150px;
 	width: 95%;
-	/* background-color: aquamarine; */
 	display: flex;
 	max-width: 1000px;
 	flex-direction: column;
@@ -975,23 +977,9 @@ margin-top:10px;
 .region_slide {
     padding: 10px;
 }
-.region_heart {
-	width: 20px;
-	height: 20px;
-	float: left;
-}
-/* .region_slider_right {
-	width: 20px;
-	height: 20px;
-	float: right;
-} */
-
 /* 지역 페이지 검색바 */
 .region_search_frame {
-    display: flex;
-    justify-content: center;
     line-height: 50px;
-    flex-direction: column;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -1000,14 +988,17 @@ margin-top:10px;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: large;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 #region_date {
 	width: 20%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: medium;
+	/* font-size: medium; */
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 .region_search_text {
 	height: 30px;
@@ -1093,6 +1084,7 @@ margin-top:10px;
 }
 .region_more_btn {
 	text-align: center;
+	margin-bottom: 2%;
 }
 .region_more_btn button {
 	background-color: #D14C6C;
