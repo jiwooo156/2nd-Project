@@ -6,6 +6,7 @@ import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
+import DetailComponent from '../components/DetailComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
 import store from './store.js'
@@ -26,6 +27,10 @@ const routes = [
 	{
 		path: "/region",
 		component : RegionComponent
+	},
+	{
+		path: "/detail",
+		component : DetailComponent
 	},
 	{
 		path: "/login",

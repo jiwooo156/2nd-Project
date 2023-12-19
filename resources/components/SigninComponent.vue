@@ -2,7 +2,7 @@
 	<div class="sign_bg">
 		<div class="sign_frame">
 			<div  class="sign_header center" >
-				<router-link :to="'/main'" class="sign_header_a  pointer">이의이승</router-link>
+				<router-link :to="'/main'" class="sign_header_a  pointer"><img src="/img/logo.png" alt="" class="login_logo"></router-link>
 			</div>
 			<div>
 				<div class="sign_container">
@@ -87,6 +87,8 @@
 	</div>
 </template>
 <script>
+import VueCookies from "vue-cookies";    
+
 export default {
 	name: 'SigninComponent',
 
@@ -398,6 +400,7 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','')
 		this.$store.commit('setNickFlg',0)
+		VueCookies.remove('auth_id');
 		next();
 	},
 }

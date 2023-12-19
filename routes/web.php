@@ -80,6 +80,14 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
 });
 
 
+Route::middleware('myValidation')->prefix('detail')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/{id}', [InfoController::class, 'detailget']);
+});
+
+
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
 // Route::get('/main/{name?}', [InfoController::class, 'maininfo'])->name('main.info');

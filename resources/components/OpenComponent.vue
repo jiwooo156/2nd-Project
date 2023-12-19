@@ -16,11 +16,12 @@ import AuthComponent from './AuthComponent.vue'
 import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
 import FooterComponent from './FooterComponent.vue'
+import DetailComponent from './DetailComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
     },
     methods: {
 
