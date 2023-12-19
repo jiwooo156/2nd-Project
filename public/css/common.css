@@ -4,6 +4,7 @@
 	margin: 0;
 	box-sizing: border-box;
 	text-decoration: none; 
+	font-family:Cafe24Ssurround;
 }
 textarea{
 	resize: none
@@ -19,25 +20,119 @@ input[type=password] {
     font-family: initial;
 }
 
-
 /* ===================================== */
 /* 미디어쿼리 프레임 */
 /* pc */
 @media only screen and (min-width: 1024px) {
-
+	/* 지역페이지 */
+	.region_slider{
+		overflow: hidden;
+		width: 1200px;
+		height: 100px;
+		display: flex;
+		/* justify-content: center; */
+		gap: 20px;
+	}
+	.region_slide {
+		/* width: 100px;
+		height: 100px; */
+		border-radius: 50%;
+		background-color: #FF92B1;
+		text-align: center;
+		line-height: 100px;
+	}
+	.region_recommend_festival {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
+	.region_recommend_tour {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
+	.region_festival_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
+	.region_tour_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
 }
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-
+	/* 지역페이지 */
+	.region_slider{
+		/* overflow: hidden; */
+		width: 700px;
+		height: 50px;
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+	}
+	.region_slide {
+		/* width: 50px;
+		height: 50px; */
+		border-radius: 50%;
+		background-color: #FF92B1;
+		text-align: center;
+		line-height: 50px;
+	}
+	.region_recommend_festival {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_recommend_tour {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_festival_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_tour_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
 }
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
-
+	/* 지역페이지 */
+	.region_slider{
+		/* overflow: hidden; */
+		width: 500px;
+		height: 50px;
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+	}
+	.region_slide {
+		/* width: 50px;
+		height: 50px; */
+		border-radius: 50%;
+		background-color: #FF92B1;
+		text-align: center;
+		line-height: 50px;
+	}
+	.region_recommend_festival {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_recommend_tour {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_festival_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
+	.region_tour_container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	}
 }
 /* ===================================== */
-
 
 /* 폰트 */
 @font-face {
@@ -52,9 +147,10 @@ input[type=password] {
     font-weight: normal;
     font-style: normal;
 }
-body, html, a, button, table, input, select, textarea {
-	font-family:Cafe24Ssurround
-}
+
+/* body, html, a, button, table, input, select, textarea {
+	font-family:Cafe24Ssurround;
+} */
 input[type=password]::placeholder {
 	font-family:Cafe24Ssurround
 }
@@ -150,8 +246,7 @@ input[type=password]::placeholder {
 	width: 9rem;
 	align-items: center;
 	background: url("/img/logo.png") center center no-repeat;
-	background-size:contain;
-  font-size: 0;
+	background-size:contain;font-size: 0;
 	margin-left: 1.5rem;
   }
   .logo a{
@@ -186,7 +281,6 @@ input[type=password]::placeholder {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	cursor: pointer;
   }
   .gnb li{
 	margin-left: 2rem;
@@ -194,8 +288,9 @@ input[type=password]::placeholder {
   .gnb li:last-child{
 	margin-right: 1.5rem;
   }
-  .gnb li a{
-	font-size: 1.1rem;
+  .gnb li a,.gnb_logout{
+	font-size: 1.5rem;
+	font-weight: 500;
 	color: #3a3a3a;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
@@ -253,7 +348,7 @@ input[type=password]::placeholder {
   }
 
 .header_icon{
-	size: 1px;
+	display: flex;
 }
 
 
@@ -283,13 +378,14 @@ input[type=password]::placeholder {
 	padding: 290px 0 0;
 	color: #fff;
 	font-weight: 600;
-	line-height: 4.5rem;
+	line-height: 6rem;
   }
   .main_txt_up {
 	color: #f2cc0f;
+	font-size: 4.4rem;
   }
   .main_txt_down {
-	font-size: 3rem;
+	font-size: 4rem;
   }
   .main_wea {
 	display: block;
@@ -382,7 +478,9 @@ input[type=password]::placeholder {
   .main_shap {
 	margin: 3px 0;
 	padding-left: 5px;
-	font-size: 1.6rem;
+	font-size: 1.7rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
   }
 .main_2_news {
 	display: flex;
@@ -394,7 +492,7 @@ input[type=password]::placeholder {
 }
 .main_2_news_l {
 	width: 500px;
-	margin: 0 10px 10px 0;
+	margin: 0 1.5rem 1.5rem 0;
 	border-radius: 10px;
 	height: 280px;
 	padding: 30px;
@@ -408,7 +506,6 @@ input[type=password]::placeholder {
 .article {
 	color: #D14C6C;
 	display: inline-block;
-	font-size: larger;
 }
 .plus_icon {
 	color: #D14C6C;
@@ -416,16 +513,20 @@ input[type=password]::placeholder {
 	size: 5px;
 }
 .art_tit {
-	font-size: 1.6rem;
+	font-size: 1.5rem;
 	margin-top: 1.6rem;
 }
 .art_con {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
 .art_date {
 	font-size: 0.8rem;
 	margin-top: 1.6rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
   /* 메인 세번째 */
   .main_3 {
@@ -460,14 +561,14 @@ input[type=password]::placeholder {
 	margin-top: 2rem;
 }
 .main_hot3_txt {
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 }
 /* .main_hot3_top {
 	width: 100%;
 } */
 .main_hot3_img {
 	width: 530px;
-    height: 280px;
+    height: 270px;
 }
 .main_hot3_img img {
 	width:100%;
@@ -477,18 +578,19 @@ input[type=password]::placeholder {
  	margin:1.5rem 0 1.5rem 2.2rem;
 }
 .main_hot3_txt p {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	margin: 0.8rem 0 0 2.5rem;
 	line-height: 1.8rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
 }
 .main_hot3 li {
 	border: 1px solid rgba(53, 53, 53, 0.5);
 	border-radius: 5px;
-	transition: all 0.2s linear;
 } 
 .main_hot3 li:hover {
 	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.7);
-	transform: scale(1.02);
+
 } 
 .main_hot3 li a {
 	direction: none;
@@ -509,6 +611,7 @@ input[type=password]::placeholder {
 	font-size: 1.4rem;
 	color: #ff9500;
 }
+
   /* 메인 네번째 */
   .main_4 {
 	height: 100vh;  
@@ -561,7 +664,6 @@ input[type=password]::placeholder {
   .main_4_box {
 	display: flex;
   }
-
   /* 푸터 */
   .footer {
 	background-color: rgba(128, 128, 128, 0.274);
@@ -770,121 +872,6 @@ input[type=password]::placeholder {
 
 
 
-/* auth */
-
-/* pc */
-@media only screen and (min-width: 1024px) {
-	.auth_check{
-		grid-template-columns: 1fr 1fr;
-	}
-	.sign_header {
-		margin: 0px auto 60px auto;
-	}
-	.auth_check_msg {
-		height: 250px;
-	}
-}
-
-/* 태블릿 */
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-	.auth_check{
-		grid-template-columns: 1fr 1fr;
-	}
-	.sign_header {
-		margin: 0px auto 80px auto;
-	}
-	.auth_check_msg {
-		height: 230px;
-	}
-}
-
-/* 모바일 */
-@media only screen and (max-width: 767px) {
-	.auth_check{
-		grid-template-columns: 1fr;
-	}
-	.sign_header {
-		margin: 0px auto 50px auto;
-	}
-	.auth_container{
-		display: flex;
-    	flex-direction: column-reverse;
-	}
-	.auth_check_msg {
-		height: 200px;
-	}
-}
-
-.auth_container_input{
-    width: 100%;
-    padding: 9px;
-	outline: none;
-	border: none;
-}
-
-.auth_success_div{
-	width: 90%;
-    margin: 0 auto;
-    max-width: 800px;
-}
-.auth_success_div div{
-	font-size: 1.5rem;
-}
-.auth_button{
-	padding: 1px;
-}
-
-.auth_all_agree{
-	margin-top: 5px;
-}
-
-.auth_relative{
-	margin: 0 auto;
-    width: 100%;
-    max-width: 550px;
-}
-
-.auth_input_div label{
-    padding: 0px 5px 0px 10px;
-}
-.auth_input_div span{
-	color: rgb(22, 168, 32);
-}
-.auth_frame{
-	margin: 0 auto;
-    width: 95%;
-	max-width: 1100px;
-}
-
-.auth_check{
-	display: grid;
-	grid-gap: 20px;
-}
-.auth_check_left ,.sign_check_right{
-	display: flex;
-    flex-direction: column;
-}
-
-.auth_check_left label,.auth_check_right label{
-    padding: 0px 10px 0px 5px;
-}
-
-.auth_check_msg{
-    background-color: #fff;
-    border: 1px solid #000;
-    overflow: scroll;
-    overflow-x: hidden;
-	padding: 10px;
-}
-
-.auth_input_div{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 5px;
-}
-
-
-
 
 /* 유저페이지 */
 .user_container{
@@ -907,14 +894,18 @@ text-align: center;
 .user_subcontainer{
 	display: flex;
 }
+.user_h2{
+	margin-top:10px;
+}
 .user_box_top_red_center{
-	width:50%;
-	height:50px;
-	text-align: center;
-	border:1px solid #B7B7B7;
-	border-top: 4px solid red;
-	border-bottom: none;	
-	margin-top: 113px;
+	width: 50%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #B7B7B7;
+    border-top: 4px solid red;
+    border-bottom: none;
+    margin-top: 113px;
+    border-radius: 5px 5px 0 0;
 }
 .user_vacant_box{
 	width:90%;
@@ -971,34 +962,47 @@ text-align: center;
 	box-sizing: border-box;
     text-align: center;
     background-color: #00000099;
-    width: 100%;
+    width: 100%;	
     height: 100%;
     position: fixed;
-    padding: 20px;
+    margin-top: 81px;
 }
 .user_white-bg{
     box-sizing: border-box;
-    width: 45%;
+	margin: 0 auto;
+    width: 95%;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-    margin: 0 auto;
 	height: 585px;
 }
+.user_pwchange_box{
+	border: none;
+    height: 70px;
+    padding: 20px;
+    background: #d7d7d7;
+    border-radius: 5px;
+}
+.user_nickChange_box{
+	border: none;
+    border-radius: 10px;
+    background-color: #b7b7b7;
+}
+.user_withdraw{
+	background-color: #b7b7b7;
+	border-radius: 5px;
+}
+.user_pwchange_guide{
+	color: red;
+}
 .user_box_password{
-	margin-top: 90px;
+	margin-top: 35px;
 }
 .user_button_box_password{
-margin-top:130px;
+margin-top:10px;
 }
 .user_h3_nick{
 	margin-top: 66px;
-}
-.user_box_nick{
-	margin-top: 130px;
-}
-.user_button_box_nick{
-	margin-top:130px;
 }
 .user_h3_userout{
 	margin-top:89px;
@@ -1017,14 +1021,14 @@ margin-top:130px;
 	margin-left:20px;
 }
 #user_del_reason{
-	margin-left: 12px;
+	
     width: 279px;
 }
 #user_del_reason_input{
     margin-top: 15px;
-    margin-left: 104px;
     height: 150px;
-    width: 300px;
+    width: 353px;
+	padding: 20px;
 }
 .userChk_button_confirm{
 	box-sizing: content-box;
@@ -1039,7 +1043,6 @@ margin-top:130px;
 	text-decoration: none;
 	color: blue;
 }
-
 .userChk_button_negative{
 	box-sizing: content-box;
 	width:80px;
@@ -1077,119 +1080,15 @@ margin-top:130px;
 	text-decoration: none;
 	color: #000;
 }
-
+#userchk_pw{
+	border-radius: 5px;
+}
 #userchk_pw::placeholder{
 	text-align: center;
 }
 
-/* 지역페이지 미디어쿼리 PC */
-@media only screen and (min-width: 1024px) {
-	.region_slider{
-		overflow: hidden;
-		width: 1200px;
-		height: 100px;
-		display: flex;
-		/* justify-content: center; */
-		gap: 20px;
-	}
-	.region_slide {
-		width: 100px;
-		height: 100px;
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 100px;
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-}
-/* 지역페이지 미디어쿼리 태블릿 */
-@media all and (min-width:768px) and (max-width:1023px) { 
-	.region_slider{
-		/* overflow: hidden; */
-		width: 700px;
-		/* slideposition은 퍼센트로 */
-		height: 50px;
-		display: flex;
-		justify-content: center;
-		gap: 20px;
-	}
-	.region_slide {
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 50px;
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-  } 
-  /* 지역페이지 미디어쿼리 모바일 */
-  @media screen and (max-width: 767px) {
-	.region_slider{
-		/* overflow: hidden; */
-		width: 500px;
-		/* slideposition은 퍼센트로 */
-		height: 50px;
-		display: flex;
-		justify-content: center;
-		gap: 20px;
-	}
-	.region_slide {
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 50px;
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-  }
-  /* 지역페이지 전체 */
+/* 지역 페이지 */
+/* 지역 페이지 전체 */
 .region_frame {
 	display: flex;
 	justify-content: center;
@@ -1211,23 +1110,38 @@ margin-top:130px;
 	/* background-color: antiquewhite; */
 }
 .region_slider{
-	overflow: hidden;
+	/* overflow: hidden;
 	width: 1200px;
 	height: 100px;
 	display: flex;
-	/* justify-content: center; */
-	gap: 20px;
+	gap: 20px; */
+
+	/* display: grid; */
+    /* min-width: 600px;
+    max-width: 900px; */
+    margin: 0 auto;
+    /* text-align: center; */
+    white-space:nowrap;
+    overflow-x: scroll;
+    /* 넘치는거 삭제 */
+    /* -ms-overflow-style: none; */
+    /* grid-gap: 10px; */
+}
+.region_slide {
+	width: 100px;
+	height: 100px;
+	border-radius: 15%;
 }
 .region_heart {
 	width: 20px;
 	height: 20px;
 	float: left;
 }
-.region_slider_right {
+/* .region_slider_right {
 	width: 20px;
 	height: 20px;
 	float: right;
-}
+} */
 /* 지역 페이지 검색바 */
 .region_search_frame {
 	display: flex;
@@ -1373,6 +1287,7 @@ margin-top:130px;
 	border-radius: 20px;
 	font-size: large;
 }
+
 
 /* 에러페이지 */
 @font-face {
