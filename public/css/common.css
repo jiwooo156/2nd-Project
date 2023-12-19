@@ -26,20 +26,10 @@ input[type=password] {
 @media only screen and (min-width: 1024px) {
 	/* 지역페이지 */
 	.region_slider{
-		overflow: hidden;
-		width: 1200px;
-		height: 100px;
-		display: flex;
-		/* justify-content: center; */
-		gap: 20px;
+	
 	}
 	.region_slide {
-		/* width: 100px;
-		height: 100px; */
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 100px;
+	
 	}
 	.region_recommend_festival {
 		display: grid;
@@ -63,20 +53,10 @@ input[type=password] {
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
 	/* 지역페이지 */
 	.region_slider{
-		/* overflow: hidden; */
-		width: 700px;
-		height: 50px;
-		display: flex;
-		justify-content: center;
-		gap: 20px;
+
 	}
 	.region_slide {
-		/* width: 50px;
-		height: 50px; */
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 50px;
+
 	}
 	.region_recommend_festival {
 		display: grid;
@@ -100,20 +80,10 @@ input[type=password] {
 @media only screen and (max-width: 767px) {
 	/* 지역페이지 */
 	.region_slider{
-		/* overflow: hidden; */
-		width: 500px;
-		height: 50px;
-		display: flex;
-		justify-content: center;
-		gap: 20px;
+	
 	}
 	.region_slide {
-		/* width: 50px;
-		height: 50px; */
-		border-radius: 50%;
-		background-color: #FF92B1;
-		text-align: center;
-		line-height: 50px;
+	
 	}
 	.region_recommend_festival {
 		display: grid;
@@ -1114,37 +1084,22 @@ margin-top:10px;
 /* 지역 페이지 헤더 */
 .region_header_frame {
 	margin-top: 150px;
+	width: 95%;
 	/* background-color: aquamarine; */
 	display: flex;
+	max-width: 1000px;
 	flex-direction: column;
 	gap: 50px;
 }
 /* 지역 페이지 슬라이드 */
 .region_slider_container {
-	/* background-color: antiquewhite; */
+	width: 100%;
 }
 .region_slider{
-	/* overflow: hidden;
-	width: 1200px;
-	height: 100px;
 	display: flex;
-	gap: 20px; */
-
-	/* display: grid; */
-    /* min-width: 600px;
-    max-width: 900px; */
-    margin: 0 auto;
-    /* text-align: center; */
-    white-space:nowrap;
-    overflow-x: scroll;
-    /* 넘치는거 삭제 */
-    /* -ms-overflow-style: none; */
-    /* grid-gap: 10px; */
 }
 .region_slide {
-	width: 100px;
-	height: 100px;
-	border-radius: 15%;
+    padding: 10px;
 }
 .region_heart {
 	width: 20px;
@@ -1158,9 +1113,12 @@ margin-top:10px;
 } */
 /* 지역 페이지 검색바 */
 .region_search_frame {
-	display: flex;
-	justify-content: center;
-	line-height: 50px;
+    display: flex;
+    justify-content: center;
+    line-height: 50px;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
 }
 #region_select_list {
 	width: 150px;
@@ -1177,16 +1135,17 @@ margin-top:10px;
 	font-size: large;
 }
 .region_search_text {
-	width: 420px;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
+	width: 85%;
 	font-size: large;
 }
 .region_form_btn {
-	width: 50px;
+	width: 15%;
 	height: 30px;
 	border-radius: 5px;
+	width: 15%;
 	background-color: aqua;
 }
 
