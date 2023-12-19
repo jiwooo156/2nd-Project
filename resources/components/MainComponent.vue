@@ -41,48 +41,15 @@
           </div>
           <div class="main_box_right">
             <div class="main_2_news">
-              <ul class="main_2_news_l">
+              <ul v-for="info in this.besthitsinfoList" :key="info" class="main_2_news_l">
                 <ul class="art_plus">
-                  <li class="article">경상북도</li>
+                  <li class="article">{{ info.ns_flg }}</li>
                   <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
                 </ul>
                 <ul>
-                  <li class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</li>
-                  <li class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</li>
-                  <li class="art_date">2023.12.01 - 2023.12.10</li>
-                </ul>
-              </ul>
-              <ul class="main_2_news_l">
-                <ul class="art_plus">
-                  <li class="article">경상북도</li>
-                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
-                </ul>
-                <ul>
-                  <li class="art_tit">포항 구룡포 선착장에서 열리는 국내 최초의 부두 야시장</li>
-                  <li class="art_con">해녀조합과 함께하는 해녀 마켓, 전국 최고의 푸드트럭 만...</li>
-                  <li class="art_date">2023.12.01 - 2023.12.10</li>
-                </ul>
-              </ul>
-              <ul class="main_2_news_l">
-                <ul class="art_plus">
-                  <li class="article">경상남도</li>
-                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
-                </ul>
-                <ul>
-                  <li class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</li>
-                  <li class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</li>
-                  <li class="art_date">2023.12.23 - 2024.02.28</li>
-                </ul>
-              </ul>
-              <ul class="main_2_news_l">
-                <ul class="art_plus">
-                  <li class="article">경상남도</li>
-                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
-                </ul>
-                <ul>
-                  <li class="art_tit">합천 씨파크에서 남녀노소 전 연령대가 다양한 문화를 즐길 수 있는 겨울 축제</li>
-                  <li class="art_con">실내 난방을 포함, 몸만와서 즐길 수 있는 캠프닉 공간 이...</li>
-                  <li class="art_date">2023.12.23 - 2024.02.28</li>
+                  <li class="art_tit">{{ info.title }}</li>
+                  <li class="art_con">{{ info.content }}</li>
+                  <li class="art_date">{{ info.start_at }} ~ {{ info.end_at }}</li>
                 </ul>
               </ul>
             </div>
@@ -121,28 +88,6 @@
                   </div>
                 </a>
               </li>
-              <!-- <li>
-                <a href="#" target="여행">
-                  <div class="main_hot3_img">
-                    <img src="/img/topic_2.png">
-                  </div>
-                  <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_2"/> 댕댕이와 경상도여행</span>
-                    <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#" target="야경">
-                  <div class="main_hot3_img">
-                    <img src="/img/topic_3.png">
-                  </div>
-                  <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_3"/> 낮 보다 아름다운 밤</span>
-                    <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
-                  </div>
-                </a>
-              </li> -->
             </ul>
           </div>
 				</div>
@@ -179,14 +124,7 @@
 			</div>
     </div>
 		<div>
-      <!-- test -->
-      <div>
-        <ul>
-          <li v-for="info in this.besthitsinfoList" :key="info">
-            {{ info.title }}
-          </li>
-        </ul>
-      </div>
+
 			<footer class="footer">푸터 띄우기</footer>
 		</div>
 	</div>
