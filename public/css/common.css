@@ -807,7 +807,6 @@ text-align: center;
 .user_infocontainer{
 	width:100%;
 }
-
 .user_table{
 	border: 1px solid #B7B7B7;
 	border-right: none;
@@ -874,6 +873,11 @@ text-align: center;
 	border: none;
     border-radius: 10px;
     background-color: #b7b7b7;
+	height: 435px;
+	padding:50px;
+}
+.user_h3_nick{
+	margin-top:10px;
 }
 .user_withdraw{
 	background-color: #b7b7b7;
@@ -887,9 +891,6 @@ text-align: center;
 }
 .user_button_box_password{
 margin-top:10px;
-}
-.user_h3_nick{
-	margin-top: 66px;
 }
 .user_h3_userout{
 	margin-top:89px;

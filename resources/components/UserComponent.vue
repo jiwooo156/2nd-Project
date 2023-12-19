@@ -38,7 +38,9 @@
 >
 	<div class="user_white-bg">		
 		<div class="user_nickChange_box">
-			<h3 class="user_h3_nick">닉네임 수정</h3>
+			<div class="user_h3_nick">
+				<h3>닉네임 수정</h3>
+			</div>
 			<div class="user_box_nick">
 				<span
 					v-if="$store.state.nickFlg === 1" 
