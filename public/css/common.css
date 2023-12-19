@@ -2231,7 +2231,7 @@ text-align: center;
 }
 .user_pwchange_box{
 	border: none;
-    height: 70px;
+    height: 100px;
     padding: 20px;
     background: #d7d7d7;
     border-radius: 5px;
@@ -2280,7 +2280,7 @@ margin-top:10px;
 #user_del_reason_input{
     margin-top: 15px;
     height: 150px;
-    width: 353px;
+    width: 315px;
 	padding: 20px;
 }
 .userChk_button_confirm{
