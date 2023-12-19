@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Info;
+use Illuminate\Support\Facades\Log;
 
 class InfoController extends Controller
 {
@@ -14,25 +15,23 @@ class InfoController extends Controller
     // }
 
     // info 게시글 조회
-    public function getMainPost() {
+    public function getMainInfo() {
+        Log::debug("함수진입");
         // 모든 게시글을 조회
-        $infos = Info::all();
-
-        // Log 클래스를 사용하여 디버그 정보 기록
-        Log::debug($infos);
-
+        $hits = Info::
+        orderby('hits','desc')
+        ->limit(4)
+        ->get();
+        Log::debug("게시글 조회수 4개 조회값 = ".$hits);
+        $fixed = Info::where('id', 10)
+            ->orWhere('id', 30)
+            ->orWhere('id', 50)
+            ->get();  
+        Log::debug("게시글 조회 결과: " . $fixed);
         return response()->json([
             'code' => '0',
-            'data' => $infos
+            'hits' => $hits,
+            'fixed' => $fixed,
         ], 200);
     }
-}
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class InfoController extends Controller
-{
-    //
 }

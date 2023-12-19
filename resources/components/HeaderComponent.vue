@@ -23,10 +23,10 @@
 							<a href="#" target="_self">경상도오</a>
 							<ul class="depth1">
 								<li>
-									<a href="#" target="_self" onclick="">경상남도구</a>
+									<router-link to="/region">경상남도구</router-link>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">경상북돈디</a>
+									<router-link to="/region">경상북돈디</router-link>
 								</li>
 							</ul>
 						</li>

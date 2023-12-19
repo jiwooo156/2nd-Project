@@ -11,13 +11,13 @@
 						<input type="password" placeholder="비밀번호" id="login_pw">
 					</div>
 					<div>
-						<button class="login_btn pointer"
+						<button class="login_btn pointer login_font"
 							@click="login"
 						>로그인</button>
-						<div class="login_and">또는</div>
-						<button class="login_kakao pointer">kakao로 로그인</button>
+						<div class="login_and login_font">또는</div>
+						<button class="login_kakao pointer login_font">kakao로 로그인</button>
 						<div class="login_sign">
-							<router-link :to="'/authemail'" class="pointer">회원가입</router-link>
+							<router-link :to="'/authemail'" class="pointer login_font">회원가입</router-link>
 						</div>
 					</div>
 				</div>

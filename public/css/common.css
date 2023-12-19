@@ -38,7 +38,8 @@ input[type=password] {
 	font-family:Cafe24Ssurround;
 } */
 input[type=password]::placeholder {
-	font-family:Cafe24Ssurround
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 
 /* 헤더 */
@@ -175,7 +176,7 @@ input[type=password]::placeholder {
 	margin-right: 1.5rem;
   }
   .gnb li a,.gnb_logout{
-	font-size: 1.5rem;
+	font-size: 1.05rem;
 	font-weight: 500;
 	color: #3a3a3a;
 	font-family: 'Cafe24SsurroundAir';
@@ -484,17 +485,17 @@ input[type=password]::placeholder {
 	direction: none;
 	color: #000;
 } 
-.icon_cir_1 {
+.icon_cir_10 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #34c759;
 }
-.icon_cir_2 {
+.icon_cir_30 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #af52de;
 }
-.icon_cir_3 {
+.icon_cir_50 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #ff9500;
@@ -567,6 +568,10 @@ input[type=password]::placeholder {
   } */
 
 /* 로그인페이지 */
+.login_font{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+}
 
 .login_bg{
     width: 100vw;
@@ -622,6 +627,8 @@ input[type=password]::placeholder {
     padding: 10px 0px;
     margin-bottom: 10px;
     font-size: 1rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 
 .login_box input::placeholder{
@@ -845,6 +852,10 @@ text-align: center;
 	cursor: pointer;
 }
 /* 모달 */
+.user_warning{
+	color:red;
+	font-size:60px;
+}
 .user_black-bg{
 	box-sizing: border-box;
     text-align: center;
@@ -894,7 +905,7 @@ text-align: center;
 margin-top:10px;
 }
 .user_h3_userout{
-	margin-top:89px;
+	margin-top:15px;
 }
 .user_button_box_userout{
 	margin-top:20px;
@@ -985,21 +996,42 @@ margin-top:10px;
 /* 지역 페이지 헤더 */
 /* .region_header_frame {
 	margin-top: 150px;
-	background-color: aquamarine;
+	width: 95%;
+	/* background-color: aquamarine; */
 	display: flex;
+	max-width: 1000px;
 	flex-direction: column;
 	gap: 50px;
-	margin: 0 auto;
+}
+/* 지역 페이지 슬라이드 */
+.region_slider_container {
+	width: 100%;
+}
+.region_slider{
+	display: flex;
+}
+.region_slide {
+    padding: 10px;
+}
+.region_heart {
+	width: 20px;
+	height: 20px;
+	float: left;
+}
+/* .region_slider_right {
+	width: 20px;
+	height: 20px;
+	float: right;
 } */
 
 /* 지역 페이지 검색바 */
-.region_header_frame {
-	margin-top: 100px;
-}
-.region_search_container {
-	/* line-height: 50px; */
-	width: 100%;
-	margin: 0 auto;
+.region_search_frame {
+    display: flex;
+    justify-content: center;
+    line-height: 50px;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
 }
 #region_select_list {
 	width: 15%;
@@ -1016,16 +1048,17 @@ margin-top:10px;
 	font-size: medium;
 }
 .region_search_text {
-	width: 50%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
+	width: 85%;
 	font-size: large;
 }
 .region_form_btn {
-	width: 50px;
+	width: 15%;
 	height: 30px;
 	border-radius: 5px;
+	width: 15%;
 	background-color: aqua;
 }
 
@@ -1111,7 +1144,6 @@ margin-top:10px;
 	font-size: large;
 }
 
-
 /* 에러페이지 */
 @font-face {
     font-family: 'EF_jejudoldam';
@@ -1119,7 +1151,106 @@ margin-top:10px;
     font-weight: normal;
     font-style: normal;
 }
+/* pc */
+@media only screen and (min-width: 1024px) {
+	/* 에러페이지 */
+	.error_h1{
+	    font-size: 5rem;
+    	margin-bottom: 2rem;
+	}
+	.error_txtmsg{
+		margin-top: 200px;
+	}
+	.error_btn{
+		font-size: 40px;
+	}
+	.error_header{
+		font-size: 40px;
+	}
+	.error_title{
+		font-size: 2rem;
+    	padding: 1rem 0px 2rem 0px;
+	}
+	.error_main{
+		padding: 20px;
+		border: 3px solid #d14c6c;
+		border-radius: 20px;
+		margin: 20px auto;
+		max-width: 700px;
+		width: 50%;
+	}
+	.error_content{
+	    font-size: 1.5rem;
+    	line-height: 1.8rem;
+	}
+}
 
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* 에러페이지 */
+	.error_h1{
+		font-size: 4rem;
+		margin-bottom: 2rem;
+	}
+	.error_txtmsg{
+		margin-top: 150px;
+	}
+	.error_btn{
+		font-size: 35px;
+	}
+	.error_header{
+		font-size: 40px;
+	}
+	.error_title{
+		font-size: 2rem;
+    	padding: 1rem 0px 1.5rem 0px;
+	}
+	.error_main{
+		padding: 20px;
+		border: 3px solid #d14c6c;
+		border-radius: 20px;
+		margin: 20px auto;
+		max-width: 700px;
+		width: 65%;
+	}
+	.error_content{
+	    font-size: 1.5rem;
+    	line-height: 1.8rem;
+	}
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	/* 에러페이지 */
+	.error_h1{
+		font-size: 3rem;
+		margin-bottom: 3rem;
+	}
+	.error_txtmsg{
+		margin-top: 100px;
+	}
+	.error_btn{
+		font-size: 25px;
+	}
+	.error_header{
+		padding: 0px 20px;
+		font-size: 20px;
+	}
+	.error_title{
+		padding-bottom: 20px;
+		font-size: 2rem;
+	}
+	.error_main{
+		padding: 20px;
+		border: 3px solid #d14c6c;
+		border-radius: 20px;
+		margin: 20px;
+	}
+	.error_content{
+		padding: 20px;
+		font-size: 1.5rem;
+	}
+}
 .error_h1{
 	font-family: 'EF_jejudoldam';
 	font-weight: 500;
@@ -1157,32 +1288,120 @@ margin-top:10px;
 .error_title span{
     color: #d14c6c;
 }
-.error_content{
-	padding: 0px;
-}
 
 
-
-/* ===================================== */
-/* 미디어쿼리 프레임 */
+/* auth */
 /* pc */
 @media only screen and (min-width: 1024px) {
-
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 60px auto;
+	}
+	.auth_check_msg {
+		height: 250px;
+	}
 }
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-	/* 지역페이지 */
-	.region_container_list {
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 80px auto;
+	}
+	.auth_check_msg {
+		height: 230px;
 	}
 }
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
-	/* 지역페이지 */
-	.region_container_list {
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	.auth_check{
+		grid-template-columns: 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 50px auto;
+	}
+	.auth_container{
+		display: flex;
+    	flex-direction: column-reverse;
+	}
+	.auth_check_msg {
+		height: 200px;
 	}
 }
-/* ===================================== */
+
+.auth_container_input{
+    width: 100%;
+    padding: 9px;
+	outline: none;
+	border: none;
+}
+
+.auth_success_div{
+	width: 90%;
+    margin: 0 auto;
+    max-width: 800px;
+}
+.auth_success_div div{
+	font-size: 1.5rem;
+}
+.auth_button{
+	padding: 1px;
+}
+
+.auth_all_agree{
+	margin-top: 5px;
+}
+
+.auth_relative{
+	margin: 0 auto;
+    width: 100%;
+    max-width: 550px;
+}
+
+.auth_input_div label{
+    padding: 0px 5px 0px 10px;
+}
+.auth_input_div span{
+	color: rgb(22, 168, 32);
+}
+.auth_frame{
+	margin: 0 auto;
+    width: 95%;
+	max-width: 1100px;
+}
+
+.auth_check{
+	display: grid;
+	grid-gap: 20px;
+}
+.auth_check_left ,.sign_check_right{
+	display: flex;
+    flex-direction: column;
+}
+
+.auth_check_left label,.auth_check_right label{
+    padding: 0px 10px 0px 5px;
+}
+
+.auth_check_msg{
+    background-color: #fff;
+    border: 1px solid #000;
+    overflow: scroll;
+    overflow-x: hidden;
+	padding: 10px;
+}
+
+.auth_input_div{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.auth_errmsg{
+	color: red;
+}

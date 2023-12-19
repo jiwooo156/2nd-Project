@@ -1,21 +1,36 @@
 <template>
 	<div class="region_container">
 		<div class="region_header_frame">
-			<div class="region_search_container">
-				<select id="region_select_list">
-					<option>지역</option>
-					<option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
-				</select>
-				<input type="date" id="region_date" :value="'2023-01-01'">
-				-
-				<input type="date" id="region_date" :value="'2023-12-31'">
-				<br>
-				<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요">
-				<button class="region_form_btn pointer">검색</button>
+			<div class="region_slider_container">
+				<Carousel :itemsToShow="6" :wrapAround="true" :transition="800" :autoplay="2000">
+					<Slide v-for="item in items" :key="item">
+						<router-link to="main" class="carousel__item">{{ item }}</router-link>
+					</Slide>
+					<template #addons>
+						<Navigation />
+						<Pagination />
+					</template>
+				</Carousel>
 			</div>
+			<div class="region_search_frame center">
+				<div>
+					<select id="region_select_list">
+						<option>지역</option>
+						<option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+					</select>
+					<input type="date" id="region_date" :value="'2023-01-01'">
+					-
+					<input type="date" id="region_date" :value="'2023-12-31'">
+				</div>
+				<div>
+					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요">
+					<button type="submit" class="region_form_btn pointer">검색</button>
+				</div>
+			</div>
+		
 		</div>
-		<div class="region_container">
-			<div class="region_container_header">
+		<div class="region_recommend_festival_frame">
+			<div class="region_comment">
 				<p class="region_p1">이런 축제</p>
 				<p class="region_p2">추천드려요</p>
 			</div>
@@ -143,6 +158,10 @@
 	</div>
 </template>
 <script>
+import { defineComponent } from 'vue'
+import { Carousel, Pagination, Slide } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
+
 export default {
 	name: 'RegionComponent',
 	data() {
@@ -153,21 +172,60 @@ export default {
 			cities: ['경주시', '포항시', '영천시'],
 		}
 	},
-
+	components: {
+		Carousel,
+		Slide,
+		Pagination,
+  	},
 	created() {
 
 	},
 
 	methods: {
-		// nextSlide() {
-		// this.slidePosition -= 1000;
-		// },
-		// prevSlide() {
-		// this.slidePosition += 1000;
-		// },
+
 	},
+
+
 }
 </script>
-<style>
-	
+<style scoped>
+.carousel__slide {
+	padding: 5px 10px;
+}
+
+.carousel__viewport {
+	perspective: 2000px;
+}
+
+.carousel__track {
+	transform-style: preserve-3d;
+}
+
+.carousel__slide--sliding {
+	transition: 0.5s;
+}
+
+.carousel__slide {
+	opacity: 0.9;
+	transform: rotateY(-20deg) scale(0.9);
+}
+
+.carousel__slide--active ~ .carousel__slide {
+	transform: rotateY(20deg) scale(0.9);
+}
+
+.carousel__slide--prev {
+	opacity: 1;
+	transform: rotateY(-10deg) scale(0.95);
+}
+
+.carousel__slide--next {
+	opacity: 1;
+	transform: rotateY(10deg) scale(0.95);
+}
+
+.carousel__slide--active {
+	opacity: 1;
+	transform: rotateY(0) scale(1.1);
+}
 </style>
