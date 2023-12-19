@@ -605,6 +605,10 @@ input[type=password]::placeholder {
   } */
 
 /* 로그인페이지 */
+.login_logo{
+	width: 55%;
+}
+
 .login_font{
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
@@ -612,24 +616,11 @@ input[type=password]::placeholder {
 
 .login_bg{
     width: 100vw;
-    position: relative;
-    z-index: 1;
     padding: 130px 0px;
     min-height: 100vh;
+	background-color: #f8f8f8;
 }
-.login_bg::after {
-	width: 100vw;
-	height: 100vh;
-	content: "";
-	background: url("/img/login_bg.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: -1;
-	opacity: 0.6;
-}
+
 
 .login_frame{
     margin: 0 auto;
@@ -639,7 +630,7 @@ input[type=password]::placeholder {
 
 .login_header{
 	font-size: 2.3rem;
-    margin: 0px auto 80px auto;
+    margin: 20px auto 60px auto;
     font-weight: 900;
 }
 .login_header_a{
@@ -647,9 +638,10 @@ input[type=password]::placeholder {
 }
 
 .login_container{
-	border: 1px solid #E4E4E4;
-    padding: 40px;
-	background-color: white;
+	padding: 40px;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 60px;
 }
 
 .login_box{
@@ -679,6 +671,7 @@ input[type=password]::placeholder {
 	padding: 10px;
 	margin-top: 15px;
 	font-weight: 900;
+	font-size: 1rem;
 }
 
 .login_and{
@@ -717,13 +710,21 @@ input[type=password]::placeholder {
 }
 
 .login_sign{
-	text-align: left;
-    padding-top: 14px;
+    text-align: right;
+    padding-top: 16px;
+}
+
+.login_sign span{
+    font-family: 'Cafe24SsurroundAir';
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #000000d4;
+    padding-right: 12px;
 }
 
 .login_sign a{
-	font-size: 0.8rem;
-	color: #000;
+	font-size: 0.9rem;
+    color: #D14C6C;
 }
 
 /* signin */
@@ -754,10 +755,24 @@ input[type=password]::placeholder {
     padding: 9px;
 	outline: none;
 	border: none;
+	margin-bottom: 10px;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+	font-size: 1rem;
 }
 
 .sign_container input::placeholder{
 	color: #B7B7B7;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+}
+
+.sign_container span{
+    font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+	font-size: 0.9rem;
+	margin-bottom: 4px;
+	display: inline-block;
 }
 
 .sign_email_input{
@@ -765,18 +780,7 @@ input[type=password]::placeholder {
     color: #7a7a7a;
 }
 
-.sign_relative{
-	position: relative;
-}
-.sign_chk_btn{
-	position: absolute;
-    top: 3.4px;
-    right: 3px;
-    border: none;
-    background-color: #d9d9d9;
-    padding: 7px;
-    font-size: 11px;
-}
+
 
 .sign_footer_box{
 	display: flex;
@@ -786,11 +790,12 @@ input[type=password]::placeholder {
 
 .sign_footer_btn{
 	border: none;
+    border-radius: 50px;
     padding: 8px;
     width: 35%;
-    background-color: #DEDEDE;
-    font-size: 1.5rem;
-    color: #000;
+    background-color: #d14c6c;
+    font-size: 1.4rem;
+    color: #fff;
 }
 
 .sign_errmsg{
@@ -1336,11 +1341,12 @@ margin-top:10px;
 /* auth */
 /* pc */
 @media only screen and (min-width: 1024px) {
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 60px auto;
+		margin: 20px auto 50px auto
 	}
 	.auth_check_msg {
 		height: 250px;
@@ -1349,11 +1355,12 @@ margin-top:10px;
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 80px auto;
+		margin: 20px auto 50px auto
 	}
 	.auth_check_msg {
 		height: 230px;
@@ -1362,6 +1369,7 @@ margin-top:10px;
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr;
 	}
@@ -1374,6 +1382,17 @@ margin-top:10px;
 	}
 	.auth_check_msg {
 		height: 200px;
+	}
+
+	/* 로그인 */
+	.login_logo{
+		width: 65%;
+	}
+	.login_header {
+		margin: 15px auto 30px auto;
+	}
+	.login_container {
+		margin-top: 5px;
 	}
 }
 
@@ -1447,4 +1466,62 @@ margin-top:10px;
 
 .auth_errmsg{
 	color: red;
+}
+
+
+/* detail */
+.detail_frame{
+	margin: 100px auto;
+    width: 95%;
+    max-width: 1200px;
+}
+.detail_container{
+	padding: 0px;
+}
+.detail_header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: beige;
+}
+.detail_header_flex{
+	display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.detail_type{
+    padding: 10px;
+}
+.detail_title{
+	padding: 0px;
+}
+.detail_write_time{
+	padding: 0px;
+}
+.detail_body{
+	padding: 20px;
+    border: 1px solid;
+}
+.detail_content{
+	margin-top: 20px;
+}
+.detail_img{
+	display: grid;
+	grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+}
+.detail_img img{
+	width: 100%;
+}
+.detail_replie_container{
+	padding: 20px;
+	border: 1px solid #000;
+}
+.detail_replie_write_box{
+	padding: 5px 10px;
+}
+.detail_replie_container{
+	padding: 0px;
+}
+.detail_replie_read{
+	padding: 0px;
 }

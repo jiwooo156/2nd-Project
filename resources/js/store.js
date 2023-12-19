@@ -20,7 +20,7 @@ const store = createStore({
 			openPwModal: false,
 			openNickModal: false,
 			openDelModal: false,
-			mainInfo: [],
+			NowUser: "",
 		}
 	},
 
@@ -52,9 +52,6 @@ const store = createStore({
 		},
 		setDelModalFlg(state, boo){
 			state.openDelModal=boo;
-		},
-		setMainInfo(state, data){
-			state.mainInfo=data;
 		},
 		
 	},

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DateTimeInterface;
 
 class Info extends Model
 {
@@ -31,4 +32,7 @@ class Info extends Model
     ];
     protected $table = 'infos';
     // public $timestamps = true; 기본값
+    protected function serializeDate(DateTimeInterface $date){
+        return $date->format('Y-m-d H:i:s');
+    }
 }

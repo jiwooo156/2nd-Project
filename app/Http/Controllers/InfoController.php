@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Info;
+use App\Models\Replie;
 use Illuminate\Support\Facades\Log;
 
 class InfoController extends Controller
@@ -34,10 +35,21 @@ class InfoController extends Controller
             'fixed' => $fixed,
         ], 200);
     }
-    // public function sliderPrint() {
-    //     Log::debug("");
-    //     // 시군명 조회
-    //     $state = Info::
-    //     select('states_name')
-    // }
+    public function detailget(Request $req) {
+        Log::debug("함수진입");
+        Log::debug($req->id);
+        // 모든 게시글을 조회
+        $info_result = Info::
+        where('id',$req->id)
+        ->get();
+        $replie_result = Replie::
+        select('nick','content','created_at')
+        ->where('b_id',$req->id)
+        ->get();
+        return response()->json([
+            'code' => '0',
+            'data' => $info_result,
+            'replie' => $replie_result,
+        ], 200);
+    }
 }
