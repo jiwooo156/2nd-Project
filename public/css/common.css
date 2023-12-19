@@ -20,90 +20,6 @@ input[type=password] {
     font-family: initial;
 }
 
-/* ===================================== */
-/* 미디어쿼리 프레임 */
-/* pc */
-@media only screen and (min-width: 1024px) {
-	/* 지역페이지 */
-	.region_slider{
-	
-	}
-	.region_slide {
-	
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-}
-
-/* 태블릿 */
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-	/* 지역페이지 */
-	.region_slider{
-
-	}
-	.region_slide {
-
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-}
-
-/* 모바일 */
-@media only screen and (max-width: 767px) {
-	/* 지역페이지 */
-	.region_slider{
-	
-	}
-	.region_slide {
-	
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-}
-/* ===================================== */
-
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -1117,12 +1033,10 @@ margin-top:10px;
 	flex-direction: column;
 	gap: 50px;
 }
-
 /* 지역 페이지 헤더 */
 .region_header_frame {
 	margin-top: 150px;
 	width: 95%;
-	/* background-color: aquamarine; */
 	display: flex;
 	max-width: 1000px;
 	flex-direction: column;
@@ -1138,38 +1052,28 @@ margin-top:10px;
 .region_slide {
     padding: 10px;
 }
-.region_heart {
-	width: 20px;
-	height: 20px;
-	float: left;
-}
-/* .region_slider_right {
-	width: 20px;
-	height: 20px;
-	float: right;
-} */
 /* 지역 페이지 검색바 */
 .region_search_frame {
-    display: flex;
-    justify-content: center;
     line-height: 50px;
-    flex-direction: column;
     max-width: 600px;
     margin: 0 auto;
 }
 #region_select_list {
-	width: 150px;
+	width: 15%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: large;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 #region_date {
-	width: 150px;
+	width: 20%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: large;
+	/* font-size: medium; */
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 .region_search_text {
 	height: 30px;
@@ -1187,12 +1091,12 @@ margin-top:10px;
 }
 
 /* 추천 축제 */
-.region_recommend_festival_frame {
+.region_container {
 	/* background-color: beige; */
-	width: 100%;
-	/* gap: 20px; */
+	width: 90%;
+	margin: 0 auto 10vh auto;
 }
-.region_comment {
+.region_container_header {
 	margin-left: 10px;
 }
 .region_p1 {
@@ -1202,97 +1106,68 @@ margin-top:10px;
 	font-size: larger;
 	font-weight: bold;
 }
-.region_recommend_festival {
+.region_container_list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	grid-gap: 10px;
 }
-.region_recom_festiv {
+.region_container_body {
 	text-align: center;
+	margin: 0 auto;
 }
-.region_recom_festiv img {
-	width: 90%;
-}
-
-/* 추천 관광지 */
-.region_recommend_tour_frame {
-	/* background-color: beige; */
+.region_container_body img {
 	width: 100%;
 }
-.region_recommend_tour {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.region_recom_tour {
-	text-align: center;
-}
-.region_recom_tour img {
-	width: 90%;
-}
-
-/* 지역 축제 */
-.region_total_festival_frame {
-	/* background-color: #D2D2FF; */
-	width: 100%;
-}
-.region_total_festival_msg {
-	font-size: 20px;
+.region_title {
+	font-size: larger;
 	font-weight: bold;
-	text-align: center;
 }
+.region_content {
+	font-size: medium;
+	font-weight: lighter;
+}
+/* 지역 축제 */
 .region_sort {
-	margin-left: 45vw;
+	text-align: right;
+    width: 90%;
 }
 .region_sort button {
 	all: unset;
 }
 .region_sort1 {
 	display: inline-block;
+	padding-right: 10px;
 }
-.region_sort1 {
+.region_sort2 {
 	display: inline-block;
 }
-/* .region_sort_line {
-	display: inline-block;
-	border-left : thin solid #000;
-	height : 20px;
-} */
-.region_festival_container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.region_festival {
-	text-align: center;
-}
-.region_festival img {
-	width: 90%;
+.region_heart {
+	font-size: 24px;
+	color: #34c759;
+	border: none;
+	background: none;
+	float: right;
 }
 /* 지역 관광지 */
-.region_total_tour_frame {
-	/* background-color: #D2D2FF; */
-	width: 100%;
-}
-.region_total_tour_msg {
+.region_container_header2 {
 	font-size: 20px;
 	font-weight: bold;
 	text-align: center;
+} 
+.region_p4 {
+	margin-bottom: 2%;
 }
-.region_tour_container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.region_tour {
+.region_more_btn {
 	text-align: center;
-}
-.region_tour img {
-	width: 90%;
+	margin-bottom: 2%;
 }
 .region_more_btn button {
 	background-color: #D14C6C;
 	border: none;
 	color: white;
 	padding: 10px 50px;
-	margin: 20px 0;
-	display: inline-block;
+	/* margin: 20px 0; */
+	/* display: inline-block; */
 	text-align: center;
 	border-radius: 20px;
 	font-size: large;
