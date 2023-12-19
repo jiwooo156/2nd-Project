@@ -1169,7 +1169,7 @@ margin-top:10px;
 	border-radius: 20px;
 	font-size: 1.5rem;
 }
-
+/* 지역 미디어쿼리 */
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
 	/* 지역페이지 */

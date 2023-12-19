@@ -34,4 +34,10 @@ class InfoController extends Controller
             'fixed' => $fixed,
         ], 200);
     }
+    // public function sliderPrint() {
+    //     Log::debug("");
+    //     // 시군명 조회
+    //     $state = Info::
+    //     select('states_name')
+    // }
 }
