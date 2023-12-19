@@ -123,10 +123,6 @@
 				</div>
 			</div>
     </div>
-		<div>
-
-			<footer class="footer">푸터 띄우기</footer>
-		</div>
 	</div>
 	<div class="main_topBtn"></div>
 </template>

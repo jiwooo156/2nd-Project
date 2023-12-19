@@ -19263,8 +19263,10 @@ var _hoisted_1 = {
   key: 0,
   "class": "footer"
 };
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"footer_team\"><p>Quintrillion</p><span>퀸트릴rㅕㄴ이라 읽고 오조라고합니다:) 이의이승 뚜비두밥 오뚜기밥 냥냥냥 우리 경상도 아이가나다라마바사</span></div><div class=\"fotter_team_mem\"><ul><li><div>김지웅</div><div>#하..<br>#자칭과학왕<br>#영어꼴등</div></li><li><div>정지우</div><div>#햄스터<br>#또먹어?<br>#계속먹어</div></li><li><div>차민지</div><div>#한입충<br>#아안먹을래<br>#히히히</div></li><li><div>최정훈</div><div>#제발<br>#이러시는이유가<br>#있을거아니에요</div></li></ul></div>", 2);
+var _hoisted_4 = [_hoisted_2];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return _ctx.$route.fullPath != '/login' && _ctx.$route.fullPath != '/signin' && _ctx.$route.fullPath != '/authemail' && _ctx.$route.fullPath != '/error' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  return _ctx.$route.fullPath != '/login' && _ctx.$route.fullPath != '/signin' && _ctx.$route.fullPath != '/authemail' && _ctx.$route.fullPath != '/error' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [].concat(_hoisted_4))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -19577,10 +19579,7 @@ var _hoisted_35 = {
   href: "#"
 };
 var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("footer", {
-  "class": "footer"
-}, "푸터 띄우기")], -1 /* HOISTED */);
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "main_topBtn"
 }, null, -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -19609,7 +19608,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     icon: ['fas', 'file-pen']
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("건의"), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("게시판"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_font_awesome_icon, {
     icon: ['fas', 'triangle-exclamation']
-  })])])])])])]), _hoisted_37]), _hoisted_38], 64 /* STABLE_FRAGMENT */);
+  })])])])])])])]), _hoisted_37], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
