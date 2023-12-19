@@ -984,7 +984,7 @@ margin-top:10px;
     margin: 0 auto;
 }
 #region_select_list {
-	width: 15%;
+	width: 20%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
@@ -992,7 +992,7 @@ margin-top:10px;
 	font-weight: 600;
 }
 #region_date {
-	width: 20%;
+	width: 35%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
@@ -1005,7 +1005,7 @@ margin-top:10px;
 	border-radius: 15px;
 	text-align: center;
 	width: 85%;
-	font-size: large;
+	font-size: 1rem;
 }
 .region_form_btn {
 	width: 15%;
@@ -1025,11 +1025,10 @@ margin-top:10px;
 	margin-left: 10px;
 }
 .region_p1 {
-	font-size: small;
+	font-size: 1.5rem;
 }
 .region_p2 {
-	font-size: larger;
-	font-weight: bold;
+	font-size: 2rem;
 }
 .region_container_list {
 	display: grid;
@@ -1044,12 +1043,10 @@ margin-top:10px;
 	width: 100%;
 }
 .region_title {
-	font-size: larger;
-	font-weight: bold;
+	font-size: 1.5rem;
 }
 .region_content {
-	font-size: medium;
-	font-weight: lighter;
+	font-size: 1rem;
 }
 /* 지역 축제 */
 .region_sort {
@@ -1095,8 +1092,25 @@ margin-top:10px;
 	/* display: inline-block; */
 	text-align: center;
 	border-radius: 20px;
-	font-size: large;
+	font-size: 1.5rem;
 }
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* 지역페이지 */
+	.region_container_list {
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	}
+}
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	/* 지역페이지 */
+	.region_container_list {
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
+}
+
+
 
 /* 에러페이지 */
 @font-face {
