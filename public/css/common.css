@@ -20,6 +20,25 @@ input[type=password] {
 }
 
 
+/* ===================================== */
+/* 미디어쿼리 프레임 */
+/* pc */
+@media only screen and (min-width: 1024px) {
+
+}
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+
+}
+/* ===================================== */
+
+
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -753,6 +772,49 @@ input[type=password]::placeholder {
 
 /* auth */
 
+/* pc */
+@media only screen and (min-width: 1024px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 60px auto;
+	}
+	.auth_check_msg {
+		height: 250px;
+	}
+}
+
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	.auth_check{
+		grid-template-columns: 1fr 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 80px auto;
+	}
+	.auth_check_msg {
+		height: 230px;
+	}
+}
+
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	.auth_check{
+		grid-template-columns: 1fr;
+	}
+	.sign_header {
+		margin: 0px auto 50px auto;
+	}
+	.auth_container{
+		display: flex;
+    	flex-direction: column-reverse;
+	}
+	.auth_check_msg {
+		height: 200px;
+	}
+}
+
 .auth_container_input{
     width: 100%;
     padding: 9px;
@@ -785,6 +847,9 @@ input[type=password]::placeholder {
 .auth_input_div label{
     padding: 0px 5px 0px 10px;
 }
+.auth_input_div span{
+	color: rgb(22, 168, 32);
+}
 .auth_frame{
 	margin: 0 auto;
     width: 95%;
@@ -793,7 +858,6 @@ input[type=password]::placeholder {
 
 .auth_check{
 	display: grid;
-	grid-template-columns: 1fr 1fr;
 	grid-gap: 20px;
 }
 .auth_check_left ,.sign_check_right{
@@ -810,13 +874,13 @@ input[type=password]::placeholder {
     border: 1px solid #000;
     overflow: scroll;
     overflow-x: hidden;
-    height: 250px;
 	padding: 10px;
 }
 
 .auth_input_div{
-	display: flex;
+    display: flex;
     justify-content: flex-end;
+    margin-top: 5px;
 }
 
 
@@ -958,9 +1022,9 @@ margin-top:130px;
 }
 #user_del_reason_input{
     margin-top: 15px;
-    margin-left: auto;
+    margin-left: 104px;
     height: 150px;
-    width: 316px;
+    width: 300px;
 }
 .userChk_button_confirm{
 	box-sizing: content-box;
@@ -2231,7 +2295,7 @@ text-align: center;
 }
 .user_pwchange_box{
 	border: none;
-    height: 100px;
+    height: 70px;
     padding: 20px;
     background: #d7d7d7;
     border-radius: 5px;
@@ -2280,7 +2344,7 @@ margin-top:10px;
 #user_del_reason_input{
     margin-top: 15px;
     height: 150px;
-    width: 315px;
+    width: 353px;
 	padding: 20px;
 }
 .userChk_button_confirm{

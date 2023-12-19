@@ -61,6 +61,17 @@ const store = createStore({
 
 	// actions : ajax로 서버에 데이터를 요청할 때나 시간 함수등 비동기 처리는 actions에 정의
 	actions: {
+		// 메인 데이터 불러오기
+		actionGetMainInfo(context) {
+			const url = '/api/main';
+			axios.get(url)
+			.then(res => {
+				context.commit('setMainInfo')
+			})
+			.catch(err => {
+				console.log(err);
+			})
+		},
 		// // 이메일 중복확인
 		// actionEmailChk(context){
 		// 	let email = document.querySelector('#signin_email').value
@@ -125,14 +136,13 @@ const store = createStore({
 				context.commit('setErrMsg','');
 				if(res.data.code === "0"){
 					if(res.data.data.length === 0){
-						context.commit('setNickFlg',1);
-						document.querySelector('#signin_nick').readOnly = true;
-						document.querySelector('#signin_nick').style.backgroundColor = 'rgb(169 183 200)';		
+						context.commit('setNickFlg',1);	
 					}else if(res.data.data.length > 0){
 						console.log("있을때")
 						context.commit('setNickFlg',2);
 					}
 				}else{
+					context.commit('setNickFlg',0);
 					console.log('else')
 				}
 			})
@@ -187,6 +197,8 @@ const store = createStore({
 					}
 				})
 				.catch(err => {
+					// 캣치
+					console.log("캣치")
 					alert(err.response.data.errorMsg);
 				})
 			}else{
@@ -357,39 +369,6 @@ const store = createStore({
 				.catch(err => {
 					alert("비밀번호의 값을 다시한번 확인해주세요");
 				})
-		},
-		// 유저페이지 닉네임변경
-		actionChangeNick(context){
-			if(context.state.nickFlg === 1){
-				let nick = document.querySelector('#user_nick');
-				const URL = '/user/nchk'
-				const HEADER = {
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					}
-				};
-				const formData = new FormData();
-				formData.append('nick', nick.value);
-
-				axios.post(URL,formData,HEADER)
-				.then(res => {
-					if(res.data.code === "0"){	
-						context.commit('setNickModalFlg',false);
-						context.commit('setNickFlg',0)
-						localStorage.setItem('nick', nick.value);
-						context.commit('setNowUser',nick.value)
-						alert('정상처리되었습니다');
-						nick.value = null;
-					}else{
-						alert(res.data.errorMsg)
-					}
-				})
-				.catch(err => {
-					alert(err.response.data.errorMsg)
-				})
-			}else{
-				alert("중복확인을 눌러주세요")
-			}
 		},
 		// 유저 탈퇴
 		actiondeluser(context){

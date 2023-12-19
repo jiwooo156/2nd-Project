@@ -56,16 +56,7 @@
 				<br>
 				<label for="user_del_reason">변경하실 닉네임</label><br>
 					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" v-model="nick">
-					<button class="userChk_button"
-						v-if="$store.state.nickFlg !== 1" 
-						@click="nick_chk"
-					>중복확인</button>
 			</div>
-			<br>		
-			<button class="userChk_button"
-				v-if="$store.state.nickFlg === 1" 
-				@click="del_nick_chk"
-			>다시쓰기</button>		
 			<br><br>		
 			
 			<div class="user_button_box_nick">
@@ -188,6 +179,9 @@ export default {
 		user_pw_chk(){
 			this.pwchkval()
 		},
+		nick(){
+			this.nick_chk()
+		},
 	},
 	created() {
 		this.GetUser()
@@ -204,9 +198,7 @@ export default {
 					if(res.data.code === "0"){
 						if(res.data.data.length === 0){
 							console.log("없을때")
-							this.$store.commit('setNickFlg',1);
-							document.querySelector('#user_nick').readOnly = true;
-							document.querySelector('#user_nick').style.backgroundColor = 'rgb(169 183 200)';		
+							this.$store.commit('setNickFlg',1);	
 						}else if(res.data.data.length > 0){
 							console.log("있을때")
 							this.$store.commit('setNickFlg',2);
@@ -352,12 +344,37 @@ export default {
 			}
 		},
 		usernickchange(){
-			this.$store.dispatch('actionChangeNick');
-		},
-		del_nick_chk(){
-			this.$store.commit('setNickFlg',0);
-			document.querySelector('#user_nick').readOnly = false;
-			document.querySelector('#user_nick').removeAttribute('style')
+			this.nick_chk()
+			if(this.$store.state.nickFlg === 1){
+				let nick = document.querySelector('#user_nick');
+				const URL = '/user/nchk'
+				const HEADER = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				const formData = new FormData();
+				formData.append('nick', nick.value);
+
+				axios.post(URL,formData,HEADER)
+				.then(res => {
+					if(res.data.code === "0"){	
+						this.$store.commit('setNickModalFlg',false);
+						this.$store.commit('setNickFlg',0)
+						localStorage.setItem('nick', nick.value);
+						this.$store.commit('setNowUser',nick.value)
+						alert('정상처리되었습니다');
+						nick.value = null;
+					}else{
+						alert(res.data.errorMsg)
+					}
+				})
+				.catch(err => {
+					alert(err.response.data.errorMsg)
+				})
+			}else{
+				this.nick_chk()
+			}
 		},
 		userout(){
 			this.$store.dispatch('actiondeluser');

@@ -49,15 +49,7 @@
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
 						<div class="sign_relative">
-							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8">
-							<button class="sign_chk_btn pointer"
-								v-if="$store.state.nickFlg !== 1" 
-								@click="nick_chk"
-							>중복확인</button>
-							<button class="sign_chk_btn pointer"
-								v-if="$store.state.nickFlg === 1" 
-								@click="del_nick_chk"
-							>다시쓰기</button>
+							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8" v-model="nick">
 						</div>
 					</div>
 					<div>
@@ -104,6 +96,7 @@ export default {
 			pw: "",
 			pw_chk: "",
 			name: "",
+			nick: "",
 			birthdate: "",
 			phone: "",
 			err_pw1: false,
@@ -146,6 +139,9 @@ export default {
 		},
 		phone(){
 			this.phoneval()
+		},
+		nick(){
+			this.nick_chk()
 		},
 	},
 	created() {
@@ -359,13 +355,8 @@ export default {
 		nick_chk(){
 			this.$store.dispatch('actionNickChk');
 		},
-		del_nick_chk(){
-			this.$store.commit('setNickFlg',0);
-			document.querySelector('#signin_nick').readOnly = false;
-			document.querySelector('#signin_nick').removeAttribute('style')
-		},
 		signin(){
-			if(this.com_pw&&this.com_pw_chk&&this.com_name&&this.com_birthdate&&this.com_phone){
+			if(this.com_pw&&this.com_pw_chk&&this.com_name&&this.com_birthdate&&this.com_phone&&this.$store.state.nickFlg===1){
 				this.$store.dispatch('actionSignIn');
 			}else{
 				if(!this.com_pw){
@@ -397,6 +388,9 @@ export default {
 					this.err_phone2 = true;
 					this.err_phone3 = false;
 					this.com_phone = false;
+				}
+				if(!this.com_nick){
+					this.nick_chk()
 				}
 			}
 		}
