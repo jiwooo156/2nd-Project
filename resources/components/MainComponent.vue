@@ -116,7 +116,7 @@
                     <img :src="info.img1">
                   </div>
                   <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle',]" class="icon_cir_1"/>{{ info.title }}</span>
+                    <span><font-awesome-icon :icon="['fas', 'circle',]" :class="'icon_cir_'+info.id"/> {{ info.title }}</span>
                     <p>{{ info.content }}</p>
                   </div>
                 </a>

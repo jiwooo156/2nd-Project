@@ -599,17 +599,17 @@ input[type=password]::placeholder {
 	direction: none;
 	color: #000;
 } 
-.icon_cir_1 {
+.icon_cir_10 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #34c759;
 }
-.icon_cir_2 {
+.icon_cir_30 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #af52de;
 }
-.icon_cir_3 {
+.icon_cir_50 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #ff9500;
