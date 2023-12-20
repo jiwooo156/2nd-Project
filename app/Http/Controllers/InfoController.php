@@ -52,4 +52,63 @@ class InfoController extends Controller
             'replie' => $replie_result,
         ], 200);
     }
+    // 시군명 조회
+    public function stateget(Request $req) {
+        Log::debug("***** stateget start *****");
+        Log::debug("request ns : ".$req->ns);
+        
+        $state_result = Info::select('states_name')
+                    ->where('ns_flg',$req->ns)
+                    ->groupBy('states_name')
+                    ->orderBy('states_name')
+                    ->get();
+
+        Log::debug("데이터 획득 : ".$state_result);
+
+        
+        Log::debug("***** stateget end *****");
+        return response()->json([
+            'code' => '0',
+            'data' => $state_result,
+            Log::debug($state_result)
+        ], 200);
+    }
+    // 추천축제,관광지 조회
+    public function recommendfestivalget(Request $req) {
+        Log::debug("**** recommendfestivalget start ****");
+        Log::debug("**** recommendtourget start ****");
+
+        $recommend_festival = Info::
+        select('id','title', 'content', 'img1', 'hits')
+        ->where('main_flg','축제')
+        ->orderBy('hits', 'desc')
+        ->limit(4)
+        ->get();
+        $recommend_tour = Info::
+        select('id','title', 'content', 'img1', 'hits')
+        ->where('main_flg','관광')
+        ->orderBy('hits', 'desc')
+        ->limit(4)
+        ->get();
+
+        Log::debug("데이터 획득 : ".$recommend_festival.$recommend_tour);
+
+        Log::debug("**** recommendfestivalget end ****");
+        Log::debug("**** recommendtourget end ****");
+        return response()->json([
+            'code' => '0',
+            'rfestival' => $recommend_festival,
+            'rtour' => $recommend_tour,
+        ],200);
+    }
+    // 지역축제 조회
+    // public function festivalget(Request $req) {
+    //     Log::debug("**** festivalget start ****");
+
+    //     $state_festival = Info::
+    //     select('id','state_name','title','content','start_at','end_at')
+    //     ->where('main_flg','축제')
+    //     ->where('states_name','')
+    //     ->orderBy()
+    // }
 }

@@ -1048,14 +1048,13 @@ margin-top:10px;
 	gap: 50px;
 }
 /* 지역 페이지 슬라이드 */
-.region_slider_container {
-	width: 100%;
-}
-.region_slider{
-	display: flex;
-}
-.region_slide {
-    padding: 10px;
+.carousel__item {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background-color: #FF92B1;
+	text-align: center;
+	line-height: 100px;
 }
 /* 지역 페이지 검색바 */
 .region_search_frame {
@@ -1071,12 +1070,11 @@ margin-top:10px;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }
-#region_date {
+.region_date {
 	width: 35%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	/* font-size: medium; */
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }

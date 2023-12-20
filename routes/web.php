@@ -95,8 +95,13 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
 Route::get('/user', function () {
     return view('welcome');
 });
-Route::get('/region', function () {
-    return view('welcome');
+Route::middleware('myValidation')->prefix('region')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/recommendf', [InfoController::class, 'recommendfestivalget']);
+
+    Route::get('/state/{ns}', [InfoController::class, 'stateget'])->name('state.get');
 });
 Route::get('/error', function () {
     return view('welcome');
