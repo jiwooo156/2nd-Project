@@ -2,8 +2,8 @@
 	<div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
 		<div class="footer_main">
 			<div class="footer_team">
-				<h4>Quintrillion</h4>
-				<span>퀸트릴rㅕㄴ이라 읽고 오조라고합니다:) 이의이승 뚜비두밥 오뚜기밥 냥냥냥 우리 경상도 아이가나다라마바사</span>
+				<h3>경상도의 다양한 모습을 이의이승에서 접해보세요:)</h3>
+				<span>저희는 Quintrillion(퀸트릴rㅕㄴ)이라 쓰고 오조라고 해요. 이의이승을 함께 꾸린 저희를 소개할게요!</span>
 			</div>
 			<div class="footer_team_mem">
 				<ul>
@@ -30,23 +30,26 @@
 				</ul>
 			</div>
 			<div class="footer_con">
-				<h4>Academy Connect</h4>
-				<span><font-awesome-icon :icon="['fas', 'house']" /> 그린컴퓨터아트학원 대구</span>
-				<span><font-awesome-icon :icon="['fas', 'location-dot']" /> 대구광역시 중구 중앙대로 394, 제일빌딩 5F</span>
-				<span><font-awesome-icon :icon="['fas', 'phone']" /> 053.572.1005</span>
-				<span><font-awesome-icon :icon="['fas', 'desktop']" /> 기업요구를 반영항 PHP풀스택(프론트앤드 + 백앤드)개발자양성과정</span>
-			</div>
-			<div class="footer_ref">
-				<div class="footer_ref_left">
-					<h4>Reference Website</h4>
-					<span>참고 웹사이트</span>
+				<div>
+					<h3 class="font_air">아카데미</h3>
 				</div>
-				<!-- a태그해서 페이지 이동하게 하고 크기 조절하고 정렬잘하고 -->
+				<div class="footer_array">
+					<span><font-awesome-icon :icon="['fas', 'house']" /> 그린컴퓨터아트학원 대구</span>
+					<span><font-awesome-icon :icon="['fas', 'location-dot']" /> 대구광역시 중구 중앙대로 394, 제일빌딩 5F</span>
+					<span><font-awesome-icon :icon="['fas', 'phone']" /> 053.572.1005</span>
+					<span><font-awesome-icon :icon="['fas', 'desktop']" /> 기업요구를 반영항 PHP풀스택(프론트앤드 + 백앤드)개발자양성과정</span>
+				</div>
+			</div>
+			<div class="footer_ref font_air">
+				<div class="footer_ref_left">
+					<h3>참고 웹사이트</h3>
+				</div>
 				<div class="footer_ref_right">
+					<!-- a태그해서 페이지 이동하게 하고 크기 조절하고 정렬잘하고 -->
 					<span><img src="/img/footer_img1.png" alt="footer_logo" class="footer_img1"></span>
-					<span><img src="/img/footer_img2.png" alt="footer_logo"></span>
-					<span><img src="/img/footer_img3.png" alt="footer_logo"></span>
-					<span><img src="/img/footer_img4.png" alt="footer_logo"></span>
+					<span><img src="/img/footer_img2.png" alt="footer_logo" class="footer_img2"></span>
+					<span><img src="/img/footer_img3.png" alt="footer_logo" class="footer_img3"></span>
+					<span><img src="/img/footer_img4.png" alt="footer_logo" class="footer_img4"></span>
 				</div>
 			</div>
 		</div>
@@ -56,29 +59,19 @@
 export default {
 	name: 'FooterComponent',
 	props: {
-
 	},
-	
 	components: {
-
 	},
-
 	data() {
 		return {
 			setting: '',
 		}
 	},
-
 	created() {
-
 	},
-
 	mounted() {
-
 	},
-
 	methods: {
-
 	}
 }
 </script>
