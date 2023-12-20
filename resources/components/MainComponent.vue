@@ -4,13 +4,8 @@
 			<div class="main_1">
 				<div class="main_1_box">
           <div class="main_txt">
-            <div class="main_txt_up animate__animated animate__lightSpeedInRight">
-              놀러오세요! 경상도, 좋아요!<br />
-            </div>
-            <div class="main_txt_down">
-              블루베리스무디 맛있어요.<br />이의이승이
-              뭐냐구요?<br />일단, 와보면 알아요!
-            </div>
+            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도, 좋아요!<br></div>
+            <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
 					<div class="main_wea">
@@ -30,10 +25,7 @@
               <div class="main_sub_line"></div>
             </div>
             <div class="main_sub_con">
-              <div class="main_sub_txt">
-                경상도에서 인기있는<br />
-                축제를 만나보세요!
-              </div>
+              <div class="main_sub_txt">경상도에서 인기있는<br>축제를 만나보세요!</div>
             </div>
             <div class="main_shap">크리스마스, 우리 함께 즐겨요🎅</div>
             <!-- 반응형 사라질 때 노란색연필 없애기 -->
@@ -67,29 +59,65 @@
               <div class="main_sub_line"></div>
             </div>
             <div class="main_3_sub_con">
-              <div class="main_3_sub_txt">
-                경상도에서 다양한<br />
-                관광지를 만나보세요!
+              <div class="main_3_sub_txt">경상도에서 다양한<br>관광지를 만나보세요!
               </div>
             </div>
             <div class="main_shap">경상도에 이렇게 갈 곳이 많다구요😎</div>
             <img class="main_3_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
-          <div class="main_box_right">
-            <ul class="main_hot3">
-              <li v-for="info in this.fixedinfoList" :key="info">
-                <a href="#" target="관광">
-                  <div class="main_hot3_img">
-                    <img :src="info.img1">
-                  </div>
-                  <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle',]" :class="'icon_cir_'+info.id"/> {{ info.title }}</span>
-                    <p>{{ info.content }}</p>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+            <div class="main_box_right">
+              <ul class="main_hot3">
+                <li>
+                  <router-link to="/detail?id=10">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_1.png" />
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_1"/> 근대역사문화거리</span>
+                      <p>100여년 전의 역사가 공존하는<br>특별하고 소중한 시간 여행</p>
+                    </div>
+                  </router-link>
+                </li>
+                <li>
+                  <a href="#" target="여행">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_2.png">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_2"/> 댕댕이와 경상도여행</span>
+                      <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" target="야경">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_3.png">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_3"/> 낮 보다 아름다운 밤</span>
+                      <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          <!-- 계행 넣기 전 for문으로 데이터 불러와서 사용 했을 때
+              <div class="main_box_right">
+              <ul class="main_hot3">
+                <li v-for="info in this.fixedinfoList" :key="info">
+                  <a href="#" target="관광">
+                    <div class="main_hot3_img">
+                      <img :src="info.img1">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle',]" :class="'icon_cir_'+info.id"/> {{ info.title }}</span>
+                      <p>{{ info.content }}</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div> -->
 				</div>
 			</div>
       <!-- 4차 때 기능 넣을 거임 -->
@@ -146,7 +174,6 @@ export default {
 			const URL = '/main/info'
 			axios.get(URL)
 			.then(res => {
-        console.log("댄");
 				this.besthitsinfoList = res.data.hits
 				this.fixedinfoList = res.data.fixed
 			})

@@ -2,8 +2,8 @@
 	<div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
 		<div class="footer_main">
 			<div class="footer_team">
-				<h4>Quintrillion</h4>
-				<span>퀸트릴rㅕㄴ이라 읽고 오조라고합니다:) 이의이승 뚜비두밥 오뚜기밥 냥냥냥 우리 경상도 아이가나다라마바사</span>
+				<h5>경상도의 다양한 모습을 이의이승에서 접해보세요:)</h5>
+				<span>저희는 Quintrillion(퀸트릴rㅕㄴ)이라 쓰고 오조라고 해요. 이의이승을 함께 꾸린 저희를 소개할게요!</span>
 			</div>
 			<div class="footer_team_mem">
 				<ul>
