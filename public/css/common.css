@@ -34,6 +34,14 @@ input[type=password] {
     font-style: normal;
 }
 
+.font_air{
+	font-family: 'Cafe24SsurroundAir';
+}
+
+.bold{
+	font-weight: bold;
+}
+
 /* body, html, a, button, table, input, select, textarea {
 	font-family:Cafe24Ssurround;
 } */
@@ -1504,24 +1512,22 @@ margin-top:10px;
 }
 .detail_content{
 	margin-top: 20px;
+    word-break: break-all;
 }
 .detail_img{
-	display: grid;
-	grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+	/* display: grid;
+	grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); */
 }
 .detail_img img{
 	width: 100%;
 }
 .detail_replie_container{
-	padding: 20px;
-	border: 1px solid #000;
+    margin-top: 50px;
 }
 .detail_replie_write_box{
 	padding: 5px 10px;
 }
-.detail_replie_container{
-	padding: 0px;
-}
 .detail_replie_read{
-	padding: 0px;
+	padding: 10px;
+    border-bottom: 1px solid #0000002b;
 }

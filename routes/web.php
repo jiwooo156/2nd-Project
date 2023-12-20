@@ -85,6 +85,8 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
         return view('welcome');
     });
     Route::get('/{id}', [InfoController::class, 'detailget']);
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
+    Route::post('/{id}', [InfoController::class, 'repliewirte']);
 });
 
 
