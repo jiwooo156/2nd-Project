@@ -1,5 +1,5 @@
 <template>
-	<div class="region_container">
+	<div class="region_frame">
 		<div class="region_header_frame">
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="6" :wrapAround="true" :transition="800" :autoplay="2000">
@@ -26,11 +26,10 @@
 					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요">
 					<button type="submit" class="region_form_btn pointer">검색</button>
 				</div>
-			</div>
-		
+			</div>		
 		</div>
-		<div class="region_recommend_festival_frame">
-			<div class="region_comment">
+		<div class="region_container">
+			<div class="region_container_header">
 				<p class="region_p1">이런 축제</p>
 				<p class="region_p2">추천드려요</p>
 			</div>

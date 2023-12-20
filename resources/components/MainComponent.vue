@@ -36,7 +36,7 @@
               <ul v-for="info in this.besthitsinfoList" :key="info" class="main_2_news_l">
                 <ul class="art_plus">
                   <li class="article">{{ info.ns_flg }}</li>
-                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                  <li><routerLink :to="'/detail?id='+info.id" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></routerLink></li>
                 </ul>
                 <ul>
                   <li class="art_tit">{{ info.title }}</li>
