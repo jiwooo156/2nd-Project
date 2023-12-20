@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Info;
 use App\Models\Replie;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class InfoController extends Controller
@@ -33,43 +35,102 @@ class InfoController extends Controller
             'code' => '0',
             'hits' => $hits,
             'fixed' => $fixed,
-            
         ], 200);
     }
+    // 디테일 페이지 정보조회
     public function detailget(Request $req) {
-        Log::debug("함수진입");
-        // 디테일 페이지 게시글정보 조회
+        Log::debug("기본 정보 조회 함수진입");
         $info_result = Info::
         where('id',$req->id)
         ->get();
-        
+
         $replie_count = Replie::
-        where('id',$req->id)
-        ->get();
+        where('b_id', $req->id)
+        ->count();
 
         $replie_result = Replie::
-        select('nick','content','created_at')
+        select('id','nick','replie','created_at')
         ->where('b_id',$req->id)
         ->orderby('created_at','desc')
         ->limit(20)
         ->get();
-        Log::debug($replie_result);
-        return response()->json([
-            'code' => '0',
-            'data' => $info_result,
-            'replie' => $replie_result,
-            'repliecount' => $replie_count,
-        ], 200);
+        Log::debug("전체조회완료");
+        if(count($info_result)===1){
+            Log::debug("이프");
+            return response()->json([
+                'code' => '0',
+                'data' => $info_result,
+                'replie' => $replie_result,
+                'repliecount' => $replie_count,
+            ], 200);
+            Log::debug("전송실패");
+        }else{
+            Log::debug("엘스");
+            return response()->json([
+                'code' => 'E20',
+                'errorMsg' => '게시글 조회에 실패하였습니다',
+            ], 200);
+        }
     }
+    // 댓글작성
     public function repliewirte(Request $req) {
         Log::debug("함수진입");
-        $data = $req->only('nick','content','b_id');
+        $data = $req->only('nick','replie','b_id');
         $result = Replie::create($data);
         Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result,
         ], 200);
+    }
+    // 댓글삭제
+    public function repliedel(Request $req) {
+        Log::debug("댓글삭제 함수진입");
+        try {
+            DB::beginTransaction();
+            $auth = Auth::user();
+            $result = Replie::destroy($req->id);
+            if($result){
+                DB::commit();
+                return response()->json([
+                    'code' => '0'
+                ], 200);
+            }else{
+                return response()->json([
+                    'code' => 'E05',
+                    'errorMsg' => '댓글 삭제중 오류가 발생 했습니다.'
+                ], 400);
+            }
+        } catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E09',
+                'errorMsg' => ['회원탈퇴중 오류가 발생했습니다']
+            ], 400);
+        }
+    }
+    // 댓글 전체조회    
+    public function morereplie(Request $req) {
+        Log::debug("모어리플라이함수");
+        $replie_result = Replie::
+            select('id', 'nick', 'replie', 'created_at')
+            ->where('b_id', $req->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        Log::debug($replie_result);
+        if($replie_result){
+            Log::debug("이프");
+            return response()->json([
+                'code' => '0',
+                'data' => $replie_result,
+            ], 200);
+        }else{
+            Log::debug("엘스");
+            return response()->json([
+                'code' => 'E21',
+                'errorMsg' => '댓글 조회에 실패하였습니다',
+            ], 200);
+        }
     }
 
 }

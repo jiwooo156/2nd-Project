@@ -32,7 +32,9 @@
 						<span v-show="err_name2" class="sign_errmsg">한국어만 사용 가능 합니다</span>
 						<span v-show="err_name3" class="sign_errmsg">이름 형식이 올바르지 않습니다.</span>
 						<span v-show="com_name" class="sign_commsg">사용가능한 이름 입니다.</span>
-						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10">
+						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10"
+							@input="koreaname"
+						>
 					</div>
 					<div>
 						<span>닉네임</span>
@@ -49,7 +51,10 @@
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
 						<div class="sign_relative">
-							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8" v-model="nick">
+							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8"
+								v-model="nick"
+								@input="koreanick"
+							>
 						</div>
 					</div>
 					<div>
@@ -395,7 +400,15 @@ export default {
 					this.nick_chk()
 				}
 			}
-		}
+		},
+		// 닉네임 한글 바로인식
+		koreanick(e) {
+			this.nick = e.target.value
+		},
+		// 이름 한글 바로인식
+		koreaname(e) {
+			this.name = e.target.value
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','')

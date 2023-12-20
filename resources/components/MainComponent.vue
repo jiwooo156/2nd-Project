@@ -155,6 +155,7 @@ export default {
 				alert("데이터 에러 발생")
 			})
 		},
+
   },
   
 }

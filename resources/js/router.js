@@ -98,4 +98,10 @@ const router = createRouter({
 	routes,
 });
 
+router.beforeEach((to, from, next) => {
+	// 모드페이지 라우트시 페이지 제일위로
+	window.scrollTo(0, 0); 
+	next();
+  });
+
 export default router;

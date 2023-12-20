@@ -192,7 +192,10 @@ input[type=password]::placeholder {
   }
 
 .header_icon{
-	display: flex;
+	display: flex;	
+}
+.header_icon div{
+	padding-right: 5px;
 }
 
 
@@ -1402,6 +1405,10 @@ margin-top:10px;
 	.login_container {
 		margin-top: 5px;
 	}
+	/* detail */
+	.detail_replie_change div{
+		padding-left: 5px;
+	}
 }
 
 .auth_container_input{
@@ -1527,7 +1534,72 @@ margin-top:10px;
 .detail_replie_write_box{
 	padding: 5px 10px;
 }
+.detail_replie_relative{
+	position: relative;
+	margin-top: 6px;
+}
+.detail_replie_relative textarea{
+    width: 100%;
+    padding: 10px;
+    font-family: 'Cafe24SsurroundAir';
+    border: 1px solid #6a6a6a;
+    font-size: 1rem;
+    font-weight: bold;
+	resize: none;
+}
+.detail_replie_relative textarea::placeholder{
+	color: #a9a9a9;
+}
+.detail_replie_length{
+	text-align: right;
+    font-size: 0.9rem;
+}
+
+.detail_replie_write_box_btn{
+	position: absolute;
+    font-size: 1.3rem;
+    top: 8px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #D14C6C;
+}
 .detail_replie_read{
 	padding: 10px;
     border-bottom: 1px solid #0000002b;
+}
+.detail_replie_flex{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+}
+.detail_replie_nick{
+    font-size: 1.08rem;
+	position: relative;
+}
+.detail_replie_created_at{
+	font-size: 0.75rem;
+    color: #6a6a6a;
+    line-height: 17px;
+}
+.detail_replie_content{
+    padding-top: 13px;
+    font-size: 1rem;
+}
+.detail_replie_change{
+	display: flex;
+	justify-content: flex-end;
+    padding-top: 5px;
+}
+.detail_replie_change div{
+	font-size: 0.85rem;
+    padding-left: 10px;
+    color: #d14c6c;
+}
+.detail_more_btn{
+	padding-top: 10px;
+}
+.detail_more_btn span{
+	font-size: 1rem;
+
 }
