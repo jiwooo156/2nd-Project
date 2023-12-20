@@ -24,19 +24,19 @@ export default {
         MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
     },
     methods: {
-
         localStoragechk(){
             let boo = localStorage.getItem('nick') ?  true : false;
             if(boo){
                 this.$store.commit('setLocalFlg', boo);
                 this.$store.commit('setNowUser', localStorage.getItem('nick'));
             }
-        }
+        },
     },
     created() {
         this.localStoragechk()
     },
     updated(){
+        console.log('업데이트')
         this.localStoragechk()
     },
     data() {
