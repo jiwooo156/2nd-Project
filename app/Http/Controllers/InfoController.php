@@ -183,13 +183,13 @@ class InfoController extends Controller
         ],200);
     }
     // 지역축제 조회
-    // public function festivalget(Request $req) {
-    //     Log::debug("**** festivalget start ****");
-
-    //     $state_festival = Info::
-    //     select('id','state_name','title','content','start_at','end_at')
-    //     ->where('main_flg','축제')
-    //     ->where('states_name','')
-    //     ->orderBy()
-    // }
+    public function festivalpost(Request $req) {
+        Log::debug("**** festivalget start ****");
+        Log::debug($req);
+        // $state_festival = Info::
+        // select('id','state_name','title','content','start_at','end_at')
+        // ->where('main_flg','축제')
+        // ->where('states_name','')
+        // ->orderBy()
+    }
 }
