@@ -1,4 +1,7 @@
 <template>
+    <div class="spinner-div" v-if="$store.state.loading">
+        <span class="loader"></span>
+    </div>
     <HeaderComponent></HeaderComponent>
     <!-- 메인 영역 -->
     <router-view></router-view>
@@ -34,15 +37,14 @@ export default {
     },
     created() {
         this.localStoragechk()
+        this.$store.commit('setLoading',true)
     },
     updated(){
         console.log('업데이트')
         this.localStoragechk()
     },
-    data() {
-        return {
-
-        }
-    }, 
+    mounted(){
+        this.$store.commit('setLoading',false)
+    },
 }
 </script>

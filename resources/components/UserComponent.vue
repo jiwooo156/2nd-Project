@@ -42,17 +42,20 @@
 				<h3>닉네임 수정</h3>
 			</div>
 			<div class="user_box_nick">
+				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg">2~8글자 사이로 작성해 주세요.</span>
+				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어,숫자,한글만 사용 가능 합니다</span>
+				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg">닉네임 형식이 올바르지 않습니다.</span>
 				<span
-					v-if="$store.state.nickFlg === 1" 
+					v-if="$store.state.nickFlg === 1&&this.com_nick" 
 					class="sign_commsg"
 				>사용 가능한 닉네임 입니다.</span>
 				<span
-					v-if="$store.state.nickFlg === 2" 
+					v-if="$store.state.nickFlg === 2&&this.com_nick" 
 					class="sign_errmsg"
 				>이미 사용중인 닉네임 입니다.</span>
 				<span
 					v-for="item in $store.state.varErr" :key="item"
-					v-if="$store.state.nickFlg === 0" 
+					v-if="this.com_nick"
 					class="sign_errmsg"
 				>{{ item[0] }}</span>
 				<br>
@@ -186,7 +189,7 @@ export default {
 			this.pwchkval()
 		},
 		nick(){
-			this.nick_chk()
+			this.nickval()
 		},
 	},
 	created() {
@@ -331,6 +334,41 @@ export default {
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
 		},
+		nickval(){
+			const VAR = /^.{2,8}$/;
+			const VAR1 = /^[가-힣a-zA-Z0-9]+$/;
+			const VAR2 = /^[가-힣a-zA-Z0-9]{2,8}$/;
+			if(this.nick===""){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR.test(this.nick)){
+				this.err_nick1 = true;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR1.test(this.nick)){
+				this.err_nick1 = false;
+				this.err_nick2 = true;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR2.test(this.nick)||!this.nick){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = true;
+				this.com_nick = false;
+				return
+			}
+			this.err_nick1 = false;
+			this.err_nick2 = false;
+			this.err_nick3 = false;
+			this.com_nick = true;
+			this.nick_chk()
+		},
 		userpwchange(){
 			if(this.user_com_pw&&this.user_com_pw_chk){
 				this.$store.dispatch('actionChangePw');
@@ -365,12 +403,12 @@ export default {
 				axios.post(URL,formData,HEADER)
 				.then(res => {
 					if(res.data.code === "0"){	
+						this.nick = "";
 						this.$store.commit('setNickModalFlg',false);
 						this.$store.commit('setNickFlg',0)
 						localStorage.setItem('nick', nick.value);
 						this.$store.commit('setNowUser',nick.value)
 						alert('정상처리되었습니다');
-						nick.value = null;
 					}else{
 						alert(res.data.errorMsg)
 					}
@@ -379,7 +417,7 @@ export default {
 					alert(err.response.data.errorMsg)
 				})
 			}else{
-				this.nick_chk()
+				this.nickval()
 			}
 		},
 		userout(){

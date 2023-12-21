@@ -33,10 +33,12 @@
 				<p class="region_p2">추천드려요</p>
 			</div>
 			<div class="region_container_list">
-				<div class="region_container_body" v-for="festival in recommendfestival" :key="festival">
-					<img :src="festival.img1" >
-					<div class="region_title">{{  festival.title }}</div>
-					<div class="region_content">{{ festival.content }}</div>
+				<div class="region_container_body pointer" v-for="festival in recommendfestival" :key="festival">
+					<router-link :to='"/detail?id="+festival.id'>
+						<img :src="festival.img1" >
+						<div class="region_title">{{  festival.title }}</div>
+						<div class="region_content">{{ festival.content }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
