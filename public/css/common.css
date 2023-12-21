@@ -232,40 +232,33 @@ input[type=password]::placeholder {
 	font-size: 4rem;
   }
   .main_wea {
-	display: flex;
-    height: 100%;
-    width: 100%;
-    margin: 200px 50px;
-    position: fixed;
-    right: 0;
-    z-index: 10;
-    flex-direction: column;
-    align-items: flex-end;
-	text-align: center;
-	font-size: 1.5rem;
+	display: block;
+	height: 160px;
+	width: 160px;
+	margin: 200px 50px;
+	position: fixed;
+	right: 0;
+	z-index: 10;
   }
   .main_wea_up {
-	display: flex;
-    height: 50px;
-    width: 160px;
-    border-radius: 20px 20px 0px 0px;
-    height: 36px;
-    padding: 0 11px;
-    margin: 0 0 1px;
-    background-color: rgba(209, 77, 108, 0.2);
-    color: rgb(209, 77, 108);
-    justify-content: center;
-    align-items: center;
-  }
-  .main_wea_down {
-	display: flex;
-	justify-content: center;
-    align-items: center;
-	height: 80px;  
+	height: 40px;  
 	width: 160px; 
-	border-radius: 0px 0px 20px 20px;
+	text-align: center;
 	background-color: rgba(209, 77, 108, 0.2);
 	color: rgb(209, 77, 108);
+	border-radius: 20px 20px 0px 0px;
+	font-size: 2rem;
+	padding: 0 11px;
+	margin: 0 0 1px;
+  }
+  .main_wea_down {
+	height: 80px;  
+	width: 160px; 
+	text-align: center;
+	background-color: rgba(209, 77, 108, 0.2);
+	color: rgb(209, 77, 108);
+	border-radius: 0px 0px 20px 20px;
+	font-size: 2rem;
   }
   .animate__animated.animate__lightSpeedInRight {
 	--animate-duration: 1.3s;
@@ -523,10 +516,11 @@ input[type=password]::placeholder {
   }
   /* 푸터 */
   .footer {
-	background-color: #D14C6C;
+	background-color: #fff;
 	width:100%;
 	font-size: 1.2rem;
   }
+
   .footer_main {
 	display: flex;
     flex-direction: column;
@@ -547,6 +541,7 @@ input[type=password]::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
 	font-size: 0.8rem;
+	padding-bottom: 0.8rem;
   }
 .footer_box {
 	width : 200px;
@@ -563,10 +558,13 @@ input[type=password]::placeholder {
 	font-size: 0.8rem;
 }
 .footer_team_mem ul {
-	display: flex;
-	gap: 1.1rem;
-	justify-content: center;
-	margin: 1rem auto;
+    display: flex;
+    gap: 1.1rem;
+    justify-content: center;
+    margin: 0.5rem auto;
+	padding: 1.5rem 0;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
 }
 .footer_box_1 {
 	background-color: #C1CBED;
@@ -596,19 +594,24 @@ input[type=password]::placeholder {
 .footer_con {
     display: flex;
     gap: 0.2rem;
-    width: 35rem;
+    width: 40rem;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 .footer_con h3 {
-	justify-content: center;
-	padding-bottom: 0.3rem;
-	font-size: 1.1rem;
+	padding-bottom: 0.1rem;
+	font-size: 1.15rem;
+	text-align: center;
+	padding-top: 0.8rem;
 }
 .footer_array {
 	display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+.footer_array div {
+	margin: 0 0.2rem;
 }
 .footer_con span {
 	font-family: 'Cafe24SsurroundAir';

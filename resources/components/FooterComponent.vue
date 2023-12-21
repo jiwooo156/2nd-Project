@@ -31,13 +31,13 @@
 			</div>
 			<div class="footer_con">
 				<div>
-					<h3 class="font_air">아카데미</h3>
+					<h3 class="footer_con_tit font_air">아카데미 정보</h3>
 				</div>
 				<div class="footer_array">
-					<span><font-awesome-icon :icon="['fas', 'house']" /> 그린컴퓨터아트학원 대구</span>
-					<span><font-awesome-icon :icon="['fas', 'location-dot']" /> 대구광역시 중구 중앙대로 394, 제일빌딩 5F</span>
-					<span><font-awesome-icon :icon="['fas', 'phone']" /> 053.572.1005</span>
-					<span><font-awesome-icon :icon="['fas', 'desktop']" /> 기업요구를 반영항 PHP풀스택(프론트앤드 + 백앤드)개발자양성과정</span>
+					<span><div><font-awesome-icon :icon="['fas', 'house']" /></div>그린컴퓨터아트학원 대구</span>
+					<span><div><font-awesome-icon :icon="['fas', 'location-dot']" /></div>대구광역시 중구 중앙대로 394, 제일빌딩 5F</span>
+					<span><div><font-awesome-icon :icon="['fas', 'phone']" /></div>053.572.1005</span>
+					<span><div><font-awesome-icon :icon="['fas', 'desktop']" /></div>기업요구를 반영항 PHP풀스택(프론트앤드 + 백앤드) 개발자 양성 과정</span>
 				</div>
 			</div>
 			<div class="footer_ref font_air">

@@ -39,7 +39,6 @@
           </div>
           <div class="main_box_right">
             <div class="main_2_news">
-              <!-- <ul v-for="info in this.besthitsinfoList" :key="info" class="main_2_news_l"> -->
               <ul v-for="info in this.besthitsinfoList" :key="info" class="main_2_news_l">
                 <ul class="art_plus">
                   <li class="article">{{ info.ns_flg }}</li>
