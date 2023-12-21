@@ -8,10 +8,7 @@
             <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
-          <!-- cityNamd = cityNameBox 클래스명 -->
 					<div class="main_wea">
-					<!-- <div v-for="(temp, index) in arrayTemps" :key="index" class="main_wea"> -->
-            <!-- <div class="main_wea_up">{{ cityName }}</div> -->
             <div class="main_wea_up">도시명</div>
 						<div class="main_wea_down">
               <div class="mian_wea_icon">아이콘</div>
@@ -163,58 +160,49 @@
 </template>
 
 <script>
-import axios from "axios";
-import dayjs from "dayjs";
-import "dayjs/locale/ko";
-dayjs.locale("ko"); // global로 한국어 locale 사용
-
 export default {
   name: 'MainComponent',
   data() {
     return {
       besthitsinfoList: [],
       fixedinfoList: [],
-
-      // // 현재 시간을 나타내기 위한 Dayjs 플러그인 사용
-      // currentTime: dayjs().format("MM월 DD일 ddd요일"),
-      // // 현재 시간에 따른 현재 온도 데이터
-      // currentTemp: "",
-      // // 현재 날씨 데이터를 받아주는 데이터 할당
-      // temps: [],
-      // icons: [],
-      // cityName: "",
+      // statesName: [],
     };
   },
   created() {
+    // 메인에 나타날 데이터
     this.getMain()
-    // https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-    const API_KEY = "aadf3587b9e4465f5ee83fdee6ce5df5";
-    let initialLat = 36.5683;
-    let initialLon = 126.9778;
-
-    // get() 메서드를 통해서 우리가 필요로하는 API데이터를 호출
-    axios
-      .get(`https://api.openweathermap.org/data/3.0/onecall?lat=${initialLat}&lon=${initialLon}&exclude=current&appid=${API_KEY}&units=metric`)
-      .then(response => {
-        console.log(response);
-        // let initialCityName = response.data.timezone;
-        // let initialCurrentWeatherData = response.data.current;
-
-        // this.cityName = initialCityName.split("/")[1]; // ['asia', 'seoul']
-        // this.currentTemp = initialCurrentWeatherData.temp; // 현재 시간에 따른 현재 온도
-
-        // // 시간대별 날시 데이터를 제어
-        // // this.arrayTemps = response.data.hourly;
-        // // 우리는 24시간 이내의 데이터만 활용할 것이기 때문에 for문 활용
-        // for(let i =0; i < 24; i++) {
-        //   this.arrayTemps[i] = response.data.hourly[i];
-        // }
-      })
-      .catch(error => {
-      console.log(first);
-      })
+    // this.getWeather()
   },
   methods: {
+    getWeather() {
+        if (this.cityRanLoop) {
+            clearInterval(this.cityRanLoop);
+        }
+        let cities = ['대구', '서울', '부산','광주','대전'];
+        let i = 0; // 도시 인덱스를 유지할 변수 추가
+        const cityRan = () => {
+            let city = cities[i]
+            i = i+1;
+            if(i === cities.length){
+                i = 0;
+            }
+            console.log(city);
+            fetch('https://goweather.herokuapp.com/weather/' + city)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.temperature);
+                console.log(data.description);
+            })
+            .catch((error) => {
+                console.log('에러에러');
+            });
+        };
+        // 최초 한 번 호출
+        cityRan();
+        // 5초마다 반복 실행
+        this.cityRanLoop = setInterval(cityRan, 10000);
+    },
     // 메인에 나타날 데이터 불러오기
     getMain(){
 			const URL = '/main/info'
@@ -222,6 +210,7 @@ export default {
 			.then(res => {
 				this.besthitsinfoList = res.data.hits
 				this.fixedinfoList = res.data.fixed
+				// this.statesName = res.data.states
 			})
 			.catch(err => {
         console.log("캐치");

@@ -8,6 +8,7 @@ use App\Models\Replie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Http;
 
 class InfoController extends Controller
 {
@@ -21,8 +22,8 @@ class InfoController extends Controller
     public function getMainInfo() {
         Log::debug("함수진입");
         // 모든 게시글을 조회
-        $hits = Info::
-        orderby('hits','desc')
+        $hits = Info::where('main_flg', '=', '축제')
+        ->orderby('hits','desc')
         ->limit(4)
         ->get();
         Log::debug("게시글 조회수 4개 조회값 = ".$hits);
@@ -31,10 +32,18 @@ class InfoController extends Controller
             ->orWhere('id', 50)
             ->get();  
         Log::debug("게시글 조회 결과: " . $fixed);
+        // 날씨 불러오기 위해서 DB에서 가져왔지만 미사용으로 인한 주석
+        // $states = Info::select('states_name')
+        // ->where('states_name', '<>', '거창군')
+        // ->where('states_name', '<>', '산청군')
+        // ->where('states_name', '<>', '함양군')
+        // ->groupBy('states_name')
+        // ->get();
         return response()->json([
             'code' => '0',
             'hits' => $hits,
             'fixed' => $fixed,
+            // 'states' => $states,
         ], 200);
     }
     // 디테일 페이지 정보조회
