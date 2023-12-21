@@ -67,11 +67,11 @@
 			</div>
 			<br><br>		
 			
-			<div class="user_button_box_nick">
-				<button class="userChk_button_confirm"
+			<div class="user_button_box_nick font_air bold">
+				<button class="userChk_button_confirm font_air bold"
 					@click="usernickchange"
 				>변경</button>
-				<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
+				<button class="userChk_button font_air bold" @click="ctlNickModal(false)">취소</button>
 			</div>
 		</div>	
 	</div>
@@ -79,10 +79,10 @@
 <div class="user_black-bg" 
 	v-if="$store.state.openDelModal"
 	>
-	<div class="user_white-bg">
-		<div class="user_withdraw">
+	<div class="user_white-bg font_air bold">
+		<div class="user_withdraw font_air bold">
 			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning"/>
-		<h3 class="user_h3_userout">회원 탈퇴</h3>
+		<h3 class="user_h3_userout font_air bold">회원 탈퇴</h3>
 			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
 				<label for="user_del_reason">탈퇴사유 : </label>
@@ -101,10 +101,10 @@
 				>
 			<br>
 			<div class="user_button_box_userout">
-				<button class="userChk_button_negative"
+				<button class="userChk_button_negative font_air bold"
 					@click="userout"
 				>탈퇴</button>
-				<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
+				<button class="userChk_button font_air bold" @click="ctlDelModal(false)">취소</button>
 		</div>
 		</div>
 	</div>
@@ -114,7 +114,7 @@
 	<br>
 	<div class="user_subcontainer">
 		<div class="user_box_top_red_center">
-			<h2 class="user_h2">회원 정보</h2>
+			<h2 class="user_h2 font_air bold">회원 정보</h2>
 		</div>
 		<div class="user_vacant_box"></div>
 	</div>
@@ -126,26 +126,26 @@
 		<table class="user_table">
 			<tbody>
 				<tr>
-					<td class="user_rowname">회원번호</td>
+					<td class="user_rowname font_air bold">회원번호</td>
 					<td class="user_rowcontent">{{ $store.state.userInfo.id }}</td>
 				</tr>
 				
 				<tr>					
-					<td class="user_rowname">이메일</td>
-					<td class="user_rowcontent">{{ $store.state.userInfo.email }}</td>					
+					<td class="user_rowname font_air bold">이메일</td>
+					<td class="user_rowcontent font_air bold">{{ $store.state.userInfo.email }}</td>					
 				</tr>
 				<tr>
-					<td class="user_rowname">비밀번호</td>
-					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
+					<td class="user_rowname font_air bold">비밀번호</td>
+					<td class="user_rowcontent font_air bold">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
 				</tr>
 				<tr>
-					<td class="user_rowname">닉네임</td>
-					<td class="user_rowcontent"
+					<td class="user_rowname font_air bold">닉네임</td>
+					<td class="user_rowcontent font_air bold"
 					>{{ $store.state.NowUser }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
 				</tr>
 				<tr>
-					<td class="user_rowname">탈퇴신청</td>
-					<td class="user_rowcontent"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
+					<td class="user_rowname font_air bold">탈퇴신청</td>
+					<td class="user_rowcontent font_air bold"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
 				</tr>	
 			</tbody>
 		</table>

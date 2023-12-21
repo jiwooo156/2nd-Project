@@ -899,10 +899,10 @@ input[type=password]::placeholder {
 
 
 /* 유저페이지 */
-.user_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
+.user_container {
+    width: 95%;
+    max-width: 550px;
+    margin: 50px auto;
 }
 /* 페이지 최상단 "회원정보" */
 .user_h1{
@@ -922,6 +922,7 @@ text-align: center;
 .user_h2{
 	margin-top:10px;
 }
+
 .user_box_top_red_center{
 	width: 50%;
     height: 50px;
@@ -929,14 +930,14 @@ text-align: center;
     border: 1px solid #B7B7B7;
     border-top: 4px solid red;
     border-bottom: none;
-    margin-top: 113px;
+	margin-top: 60px;
     border-radius: 5px 5px 0 0;
 }
 .user_vacant_box{
 	width:90%;
 	height:50px;
 	border-bottom: 1px solid #B7B7B7;
-	margin-top: 113px;	
+	margin-top: 60px;
 }
 /* 회원정보 설정 */
 .user_userInfo_text3{
@@ -1093,10 +1094,10 @@ margin-top:10px;
 }
 /* 유저확인 */
 .userChk_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
-	text-align: center;
+    width: 95%;
+    max-width: 550px;
+    margin: 40px auto;
+    text-align: center;
 }
 .userChk_button{
 	box-sizing: content-box;
@@ -1112,9 +1113,32 @@ margin-top:10px;
 }
 #userchk_pw{
 	border-radius: 5px;
+	padding: 5px;
+}
+#userchk_pw::placeholder{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	font-size: 0.85rem;
+	line-height: 0.85rem ;
 }
 #userchk_pw::placeholder{
 	text-align: center;
+}
+.userchk_box_top_red_center{
+	width: 50%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #B7B7B7;
+    border-top: 4px solid red;
+    border-bottom: none;
+	margin-top: 113px;
+    border-radius: 5px 5px 0 0;
+}
+.userchk_vacant_box{
+	width:90%;
+	height:50px;
+	border-bottom: 1px solid #B7B7B7;
+	margin-top: 113px;
 }
 
 /* 지역 페이지 */
