@@ -103,9 +103,14 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
+    // 시군명 받아오는 url
+    Route::get('/state', [InfoController::class, 'stateget'])->name('state.get');
+    // 추천축제,관광지 받아오는 url
     Route::get('/recommendf', [InfoController::class, 'recommendfestivalget']);
-
-    Route::get('/state/{ns}', [InfoController::class, 'stateget'])->name('state.get');
+    // 지역축제,관광지 받아오는 url
+    Route::get('/festivalget/{states_name}',[InfoController::class, 'festivalget']);
+    // 더보기 받아오는 url
+    Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
 });
 Route::get('/error', function () {
     return view('welcome');

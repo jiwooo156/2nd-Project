@@ -3,8 +3,13 @@
 		<div class="region_header_frame">
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="6" :wrapAround="true" :transition="800" :autoplay="2000">
-					<Slide v-for="state in states" :key="state">
-						<router-link to="main" class="carousel__item">{{ state.states_name }}</router-link>
+					<Slide v-for="state in states1" :key="state" v-if="$store.state.nsFlg==='1'"
+					>
+						<div @click="getRegionfestival(state.states_name)" class="carousel__item pointer">{{ state.states_name }}</div>
+					</Slide>
+					<Slide v-for="state in states2" :key="state" v-if="$store.state.nsFlg==='2'"
+					>
+						<div @click="getRegionfestival(state.states_name)" class="carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
 					<template #addons>
 						<Pagination />
@@ -15,13 +20,15 @@
 				<div>
 					<select id="region_select_list">
 						<option>지역</option>
-						<option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+						<option v-for="state in states1" :key="state" :value="state" v-if="$store.state.nsFlg==='1'">{{ state.states_name }}</option>
+						<option v-for="state in states2" :key="state" :value="state" v-if="$store.state.nsFlg==='2'">{{ state.states_name }}</option>
 					</select>
 					<input type="date" class="region_date" ref="currentdate" v-model="currentDates">
 					-
 					<input type="date" class="region_date" ref="currentdate" v-model="currentDates">
 				</div>
 				<div>
+
 					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요">
 					<button type="submit" class="region_form_btn pointer">검색</button>
 				</div>
@@ -33,10 +40,12 @@
 				<p class="region_p2">추천드려요</p>
 			</div>
 			<div class="region_container_list">
-				<div class="region_container_body" v-for="festival in recommendfestival" :key="festival">
-					<img :src="festival.img1" >
-					<div class="region_title">{{  festival.title }}</div>
-					<div class="region_content">{{ festival.content }}</div>
+				<div class="region_container_body pointer" v-for="festival in recommendfestival" :key="festival">
+					<router-link :to='"/detail?id="+festival.id'>
+						<img :src="festival.img1" >
+						<div class="region_title">{{ festival.title }}</div>
+						<div class="region_content">{{ festival.content }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -47,9 +56,11 @@
 			</div>
 			<div class="region_container_list">
 				<div class="region_container_body" v-for="tour in recommendtour" :key="tour">
-					<img :src="tour.img1">
-					<div class="region_title">{{ tour.title }}</div>
-					<div class="region_content">{{ tour.content }}</div>
+					<router-link :to='"/detail?id="+tour.id'>
+						<img :src="tour.img1">
+						<div class="region_title">{{ tour.title }}</div>
+						<div class="region_content">{{ tour.content }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -63,30 +74,12 @@
 				<p class="region_p4">{해당지역}의 축제를 여기에서 확인 해 보세요!</p>
 			</div>
 			<div class="region_container_list">
-				<div class="region_container_body">
-					<img src="/img/item_3.jpg">
+				<div class="region_container_body" v-for="rfestival in regionfestival" :key="rfestival">
+					<img :src="rfestival.img1">
 					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
-					<div class="region_title">지역축제제목</div>
-					<div class="region_content">지역축제기간</div>
+					<div class="region_title">{{ rfestival.title }}</div>
+					<div class="region_content">{{ rfestival.content }}</div>
 				</div>
-				<!-- <div class="region_container_body">
-					<img src="/img/item_3.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역축제제목</div>
-					<div class="region_content">지역축제기간</div>
-				</div>
-				<div class="region_container_body">
-					<img src="/img/item_3.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역축제제목</div>
-					<div class="region_content">지역축제기간</div>
-				</div>
-				<div class="region_container_body">
-					<img src="/img/item_3.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역축제제목</div>
-					<div class="region_content">지역축제기간</div>
-				</div> -->
 			</div>
 		</div>
 		<div class="region_container">
@@ -94,38 +87,21 @@
 				<p class="region_p4">{해당지역}의 관광지를 여기에서 확인 해 보세요!</p>
 			</div>
 			<div class="region_container_list">
-				<div class="region_container_body">
-					<img src="/img/item_4.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역관광지제목</div>
-					<div class="region_content">지역관광지위치</div>
-				</div>
-				<div class="region_container_body">
-					<img src="/img/item_4.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역관광지제목</div>
-					<div class="region_content">지역관광지위치</div>
-				</div>
-				<div class="region_container_body">
-					<img src="/img/item_4.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div>
-					<div class="region_title">지역관광지제목</div>
-					<div class="region_content">지역관광지위치</div>
-				</div>
-				<div class="region_container_body">
-					<img src="/img/item_4.jpg">
-					<div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']"/></div>
-					<div class="region_title">지역관광지제목</div>
-					<div class="region_content">지역관광지위치</div>
+				<div class="region_container_body" v-for="rtour in regiontour" :key="rtour">
+					<img :src="rtour.img1">
+					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
+					<div class="region_title">{{ rtour.title }}</div>
+					<div class="region_content">{{ rtour.content }}</div>
 				</div>
 			</div>
 		</div>
 		<div class="region_more_btn">
-			<button class="pointer">더보기</button>
+			<button class="pointer" @click="getMoreFestival()">더보기</button>
 		</div>
 	</div>
 </template>
 <script>
+import axios from 'axios'
 import { defineComponent } from 'vue'
 import { Carousel, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
@@ -135,12 +111,18 @@ export default {
 	data() {
 		return {
 			setting: '',
-			// items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10', 'Item 11', 'Item 12', 'Item 13', 'Item 14', 'Item 15', 'Item 16'],
 			cities: ['경주시', '포항시', '영천시'],
 			currentDates: this.getTodayFormatted(),
-			states: [],
+			states1: [],
+			states2: [],
 			recommendfestival: [],
 			recommendtour: [],
+			regionfestival: [],
+			morefestival: [],
+			regiontour: [],
+			moretour: [],
+			offset: 4, 
+			nowstate: "", 
 		}
 	},
 	components: {
@@ -149,15 +131,19 @@ export default {
 		Pagination,
   	},
 	created() {
+		if(new URLSearchParams(window.location.search).get('ns')==="경상남도"){
+			this.$store.commit('setNsFlg','1')
+		}else if(new URLSearchParams(window.location.search).get('ns')==="경상북도"){
+			this.$store.commit('setNsFlg','2')
+		}
 		this.getState(),
 		this.getRecommendFestival(),
-		this.getRecommendTour()
-	},
-	updated() {
-		this.getState()
+		console.log('create');
 	},
 	mounted() {
 		this.$refs.currentdate.value = new Date().toISOString().slice(0, 8);
+	},
+	updated() {
 	},
 	methods: {
 		getTodayFormatted() {
@@ -169,15 +155,13 @@ export default {
 		},
 		// 시군명 가져오기
 		getState(){
-			// 현재url가져오기
-            let params = new URLSearchParams(window.location.search);
-            let ns = params.get('ns');
 			// 해당url의 데이터 가져오기
-			const URL = '/region/state/'+ns
+			const URL = '/region/state/'
 			axios.get(URL)
 			.then(res => {
         		console.log("댄");
-				this.states =res.data.data;
+				this.states1 = res.data.data1;
+				this.states2 = res.data.data2;
 				console.log(res.data.data);
 				console.log(this.states);
 			})
@@ -186,32 +170,57 @@ export default {
 				alert("데이터 에러 발생")
 			})
 		},
-		// 추천축제 가져오기
+		// 추천축제관광지 가져오기
 		getRecommendFestival() {
-			// 현재url 가져오기
 			const URL = '/region/recommendf'
 			axios.get(URL)
 			.then(res => {
-				console.log("댄");
+				console.log("추천축제 댄");
 				this.recommendfestival = res.data.rfestival;
-				console.log(res.data.rfestival);
+				this.recommendtour = res.data.rtour;
 				console.log(this.recommendfestival);
+				console.log(this.recommendtour);
 			})
 			.catch(err => {
 				console.log("캐치");
 				alert("데이터 에러 발생")
 			})
 		},
-		// 추천관광지 가져오기
-		getRecommendTour() {
-			// 현재url 가져오기
-			const URL = '/region/recommendf'
+	
+		// 지역축제관광지 가져오기
+		getRegionfestival(state) {
+			const URL = '/region/festivalget/'+state
 			axios.get(URL)
 			.then(res => {
-				console.log("댄");
-				this.recommendtour = res.data.rtour;
-				console.log(res.data.rfestival);
-				console.log(this.recommendtour);
+				this.nowstate = state;
+				console.log("지역축제 댄");
+				this.regionfestival = res.data.sfestival;
+				this.regiontour = res.data.stour;
+				console.log(this.regionfestival);
+				console.log(this.regiontour);
+			})
+			.catch(err => {
+				console.log("캐치");
+				alert("데이터 에러 발생")
+			})
+		},
+		// 더보기 지역축제,관광지 가져오기
+		getMoreFestival() {
+			console.log(this.nowstate)
+			const URL = '/region/morefestivalget?states_name='+this.nowstate+'&offset='+this.offset
+			console.log("현재주소"+this.nowstate);
+			console.log("오프셋"+this.offset);
+			axios.get(URL)
+			.then(res => {
+				// 중복된 속성을 허용하고 그대로 합침
+				
+				console.log("원래잇던애");
+				console.log(this.regiontour);
+				this.regionfestival = [ ...this.regionfestival, ...res.data.mfestival ];
+				this.regiontour = [ ...this.regiontour, ...res.data.mtour ];
+				console.log("추가한후");
+				console.log(this.regiontour);
+				this.offset = this.offset + 4;
 			})
 			.catch(err => {
 				console.log("캐치");
