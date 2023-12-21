@@ -84,9 +84,11 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/{id}', [InfoController::class, 'detailget']);
+    Route::get('/info/{id}', [InfoController::class, 'detailget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
+    Route::get('/more/{id}', [InfoController::class, 'morereplie']);
     Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });
 
 
@@ -97,8 +99,13 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
 Route::get('/user', function () {
     return view('welcome');
 });
-Route::get('/region', function () {
-    return view('welcome');
+Route::middleware('myValidation')->prefix('region')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/recommendf', [InfoController::class, 'recommendfestivalget']);
+
+    Route::get('/state/{ns}', [InfoController::class, 'stateget'])->name('state.get');
 });
 Route::get('/error', function () {
     return view('welcome');

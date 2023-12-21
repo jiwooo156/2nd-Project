@@ -57,7 +57,10 @@
 				>{{ item[0] }}</span>
 				<br>
 				<label for="user_del_reason">변경하실 닉네임</label><br>
-					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" v-model="nick">
+					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" 
+						v-model="nick"
+						@input="koreanick"
+					>
 			</div>
 			<br><br>		
 			
@@ -381,6 +384,10 @@ export default {
 		},
 		userout(){
 			this.$store.dispatch('actiondeluser');
+		},
+		// 닉네임 한글 바로인식
+		koreanick(e) {
+			this.nick = e.target.value
 		},
 	},
 	beforeRouteLeave(to, from, next) {
