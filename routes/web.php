@@ -79,7 +79,6 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
     Route::get('/info', [InfoController::class, 'getMainInfo']);
 });
 
-
 Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');

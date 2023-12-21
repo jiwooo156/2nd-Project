@@ -2,27 +2,27 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<div class="detail_type font_air bold">
-					{{this.detaildata.ns_flg}} {{this.detaildata.states_flg}} {{this.detaildata.main_flg}}
+				<div class="detail_type font_air bold center">
+					{{this.detaildata.ns_flg}} {{this.detaildata.states_name}} {{this.detaildata.main_flg}}
 				</div>
 				<div class="detail_header font_air bold">
-					<div class="detail_title font_air bold">
+					<div class="detail_title  center">
 						{{this.detaildata.title}}
-					</div>
-					<div class="font_air bold">
-						조회수 : {{this.detaildata.hits}}
 					</div>
 				</div>
 			</div>
 			<div>
-				<div class="font_air bold">
+				<div class="font_air bold center detail_place">
 					장소 : {{this.detaildata.place}}
 				</div>
 				<div 
 					v-if="this.detaildata.main_flg==='축제'"
-					class="font_air bold"
+					class="font_air bold center detail_tofrom"
 					>
-					축제기간 {{this.detaildata.start_at}} ~ {{this.detaildata.end_at}}
+					축제기간 : {{this.detaildata.start_at}} ~ {{this.detaildata.end_at}}
+				</div>
+				<div class="font_air bold detail_hits">
+					조회수 : {{this.detaildata.hits}}
 				</div>
 			</div>
 			<div class="detail_body">

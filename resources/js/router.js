@@ -100,6 +100,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 	// 모드페이지 라우트시 페이지 제일위로
+	store.state.beforeUrl = window.location.pathname + window.location.search;
 	window.scrollTo(0, 0); 
 	next();
   });

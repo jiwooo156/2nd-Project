@@ -47,5 +47,9 @@ export default {
 			this.$store.dispatch('actionLogin');
 		}
 	},
+	beforeRouteLeave(to, from, next) {
+		this.$store.state.beforeUrl = "";
+		next();
+	},
 }
 </script>

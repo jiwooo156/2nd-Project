@@ -20,6 +20,9 @@ const store = createStore({
 			openPwModal: false,
 			openNickModal: false,
 			openDelModal: false,
+			NowUser: "",
+			beforeUrl: "",
+			loading: false,
 			nsFlg: "",
 		}
 	},
@@ -53,6 +56,13 @@ const store = createStore({
 		setDelModalFlg(state, boo){
 			state.openDelModal=boo;
 		},
+		setBeforeUrl(state, str){
+			state.beforeUrl=str;
+		},
+		setLoading(state, boo){
+			state.loading=boo;
+		},
+		
 		setNsFlg(state, str){
 			state.nsFlg=str;
 		},
@@ -230,7 +240,11 @@ const store = createStore({
 						localStorage.setItem('nick', res.data.data.nick);
 						context.commit('setLocalFlg', true);
 						context.commit('setNowUser', localStorage.getItem('nick'));
-						router.push('/main')
+						if(!(context.state.beforeUrl === "/login"||context.state.beforeUrl=== "signin"||context.state.beforeUrl=== "authemail")){
+							router.push(context.state.beforeUrl)
+						}else{
+							router.push('/main')
+						}
 					}else{
 						console.log('else');
 						alert(err.response.data.errorMsg);
