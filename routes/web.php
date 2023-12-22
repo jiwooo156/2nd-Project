@@ -85,7 +85,7 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     });
     Route::get('/info/{id}', [InfoController::class, 'detailget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
-    Route::get('/more/{id}', [InfoController::class, 'morereplie']);
+    Route::get('/more', [InfoController::class, 'morereplie']);
     Route::post('/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });

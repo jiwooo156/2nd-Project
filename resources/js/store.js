@@ -276,7 +276,6 @@ const store = createStore({
 				// formData.append('nick',context.state.NowUser);
 				// 1211 최정훈 수정 get형식이 옳은방식이라 수정
 				const URL = '/logout'
-
 				axios.get(URL)
 				.then(res => {
 					if(res.data.code === "0"){	
@@ -290,7 +289,7 @@ const store = createStore({
 					}
 				})
 				.catch(err => {
-					alert("로그아웃중 오류가 발생했습니다."+err.response.data.errorMsg)
+					alert(err.response.data.errorMsg)
 				})
 		},
 		// 유저정보페이지 비밀번호 체크
