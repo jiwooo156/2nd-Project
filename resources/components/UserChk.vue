@@ -35,7 +35,7 @@ export default {
 
 	methods: {
 		chk_pw(){	
-			this.$store.dispatch('actionUserChk');_chk
+			this.$store.dispatch('actionUserChk');
 		}
 	}
 }
