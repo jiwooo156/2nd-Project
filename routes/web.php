@@ -98,6 +98,9 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
 Route::get('/user', function () {
     return view('welcome');
 });
+
+
+// 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/', function () {
         return view('welcome');
@@ -113,11 +116,9 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     // 검색조건 보내는 url
     // Route::post('/',[InfoController::class, '']);
     // 검색결과 받아오는 url
-    Route::get('/searchfestivalget/{states_name}/{start_at}/{end_at}/{searchkeyword}',[InfoController::class, 'searchkeyword']);
+    Route::get('/searchkeyword',[InfoController::class, 'searchkeyword']);
 });
-Route::get('/error', function () {
-    return view('welcome');
-});
+
 
 
 

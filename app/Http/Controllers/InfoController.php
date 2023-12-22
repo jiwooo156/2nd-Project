@@ -291,9 +291,9 @@ class InfoController extends Controller
         $search_result = Info::
             select('id','states_name','title','img1','content','start_at','end_at','hits')
             ->where('states_name',$req->searchstate)
-            ->where('start_at',$req->startdate)
-            ->where('end_at',$req->enddate)
-            ->where('title','like',$req->searchkeyword)
+            ->where('start_at','<=',$req->enddate)
+            ->where('title','like','%'.$req->searchkeyword.'%')
+            ->orwhere('end_at','>=',$req->startdate)
             ->limit(4)
             ->get();
         Log::debug("***** search end *******");

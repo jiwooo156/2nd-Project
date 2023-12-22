@@ -43,7 +43,7 @@
 					<router-link :to='"/detail?id="+festival.id'>
 						<img :src="festival.img1" >
 						<div class="region_title">{{ festival.title }}</div>
-						<div class="region_content">{{ festival.content }}</div>
+						<div class="region_content">기간 : {{ festival.start_at }} ~ {{ festival.end_at }}</div>
 					</router-link>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 					<img :src="rfestival.img1">
 					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 					<div class="region_title">{{ rfestival.title }}</div>
-					<div class="region_content">{{ rfestival.content }}</div>
+					<div class="region_content">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
 				</div>
 			</div>
 		</div>
@@ -136,7 +136,7 @@ export default {
 			nowstate: "", 
 			regionname: "",
 			regionnameflg: false,
-			searchstate: "",
+			searchstate: "지역",
 			startdate: "2023-12-01",
 			enddate: "2023-12-31",
 			searchkeyword: "",
@@ -243,12 +243,12 @@ export default {
 			console.log(this.enddate);
 			console.log(this.searchkeyword);
 			console.log(this.searchstate);
-			const URL = '/region/searchfestivalget?states_name='+this.searchstate+'$start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
+			const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
 			axios.get(URL)
 			.then(res => {
 				console.log("검색결과 댄");
-				console.log(this.searchfestival);
-				console.log(this.searchtour);
+				this.searchresults = res.data.searchresult;
+				console.log(this.searchresults);
 			})
 			.catch(err => {
 				console.log("캐치");
