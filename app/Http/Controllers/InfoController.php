@@ -48,15 +48,38 @@ class InfoController extends Controller
     }
     // 디테일 페이지 정보조회
     public function detailget(Request $req) {
-        Log::debug("기본 정보 조회 함수진입");
+        // 조회수 1증가()
+            Log::debug("함수진입");
+            try {
+                if(!($req->cookie('hits'.$req->id))){      
+                    Log::debug("진입");
+                    DB::beginTransaction();
+                    $result = Info::
+                    where('id',$req->id)
+                    ->first();
+                    Log::debug("조회");
+                    Log::debug($result);
+                    Log::debug($result->hits);
+                    $result->hits++;
+                    Log::debug($result->hits);
+                    $result->save();
+                    DB::commit();    
+                }
+                Log::debug("커밋완료");
+            } catch(Exception $e){
+                DB::rollback();
+            }
+        // 게시글정보
         $info_result = Info::
         where('id',$req->id)
         ->get();
 
+        // 댓글갯수
         $replie_count = Replie::
         where('b_id', $req->id)
         ->count();
 
+        // 댓글정보
         $replie_result = Replie::
         select('id','nick','replie','created_at')
         ->where('b_id',$req->id)
@@ -71,7 +94,7 @@ class InfoController extends Controller
                 'data' => $info_result,
                 'replie' => $replie_result,
                 'repliecount' => $replie_count,
-            ], 200);
+            ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 5);
             Log::debug("전송실패");
         }else{
             Log::debug("엘스");

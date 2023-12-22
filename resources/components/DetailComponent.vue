@@ -270,7 +270,6 @@ export default {
 			})
 			
 		},
-
 	},
 	beforeRouteLeave(to, from, next) {
 		this.detaildata =null,
