@@ -244,11 +244,29 @@ class InfoController extends Controller
             ->get();
         Log::debug("**** morefestivalget end ****");
         Log::debug($more_festival);
-        Log::debug( $more_tour);
+        Log::debug($more_tour);
         return response()->json([
             'code' => '0',
             'mfestival' => $more_festival,
             'mtour' => $more_tour,
+        ],200);
+    }
+    // 검색결과 조회
+    public function searchkeyword(Request $req) {
+        Log::debug("****** search start ******");
+        $search_result = Info::
+            select('id','states_name','title','img1','content','start_at','end_at','hits')
+            ->where('states_name',$req->searchstate)
+            ->where('start_at',$req->startdate)
+            ->where('end_at',$req->enddate)
+            ->where('title','like',$req->searchkeyword)
+            ->limit(4)
+            ->get();
+        Log::debug("***** search end *******");
+        Log::debug($search_result);
+        return response()->json([
+            'code' => '0',
+            'searchresult' => $search_result,
         ],200);
     }
 }
