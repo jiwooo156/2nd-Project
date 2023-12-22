@@ -40,6 +40,7 @@ class MyValidation
             ,'title'
             ,'content'
             ,'img'
+            ,'replie'
         ];
         // 유효성 체크 리스트
         $arrBaseValidation = [
@@ -60,6 +61,7 @@ class MyValidation
             ,'nick' => 'required|regex:/^[a-zA-Z가-힣0-9]{2,8}$/u'
             ,'title' => 'required|max:100|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'content' => 'required|max:1000|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
+            ,'replie' => 'required|max:200|not_regex:/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/u'
             ,'img' => 'required|image|mimes:jpeg,png,jpg,gif'
         ];
 

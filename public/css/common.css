@@ -6,6 +6,41 @@
 	text-decoration: none; 
 	font-family:Cafe24Ssurround;
 }
+.spinner-div{
+	width: 100%;
+    height: 100vh;
+    background-color: #00000040;
+	position: absolute;
+}
+.loader {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	display: block;
+	margin:25% auto;
+	position: relative;
+	color: #FFF;
+	box-sizing: border-box;
+	animation: animloader 2s linear infinite;
+  }
+  
+  @keyframes animloader {
+	0% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+	25% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 2px;
+	}
+	50% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 2px,  -38px 0 0 -2px;
+	}
+	75% {
+	  box-shadow: 14px 0 0 2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+	100% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+  }	
 textarea{
 	resize: none
 }
@@ -20,90 +55,6 @@ input[type=password] {
     font-family: initial;
 }
 
-/* ===================================== */
-/* 미디어쿼리 프레임 */
-/* pc */
-@media only screen and (min-width: 1024px) {
-	/* 지역페이지 */
-	.region_slider{
-	
-	}
-	.region_slide {
-	
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	}
-}
-
-/* 태블릿 */
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-	/* 지역페이지 */
-	.region_slider{
-
-	}
-	.region_slide {
-
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-}
-
-/* 모바일 */
-@media only screen and (max-width: 767px) {
-	/* 지역페이지 */
-	.region_slider{
-	
-	}
-	.region_slide {
-	
-	}
-	.region_recommend_festival {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_recommend_tour {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_festival_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-	.region_tour_container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	}
-}
-/* ===================================== */
-
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -116,6 +67,14 @@ input[type=password] {
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24SsurroundAir.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+}
+
+.font_air{
+	font-family: 'Cafe24SsurroundAir';
+}
+
+.bold{
+	font-weight: bold;
 }
 
 /* body, html, a, button, table, input, select, textarea {
@@ -165,7 +124,8 @@ input[type=password]::placeholder {
 	width: 9rem;
 	align-items: center;
 	background: url("/img/logo.png") center center no-repeat;
-	background-size:contain;font-size: 0;
+	background-size:contain;
+	font-size: 0;
 	margin-left: 1.5rem;
   }
   .logo a{
@@ -267,7 +227,10 @@ input[type=password]::placeholder {
   }
 
 .header_icon{
-	display: flex;
+	display: flex;	
+}
+.header_icon div{
+	padding-right: 5px;
 }
 
 
@@ -316,23 +279,24 @@ input[type=password]::placeholder {
 	z-index: 10;
   }
   .main_wea_up {
-	height: 50px;  
+	height: 40px;  
 	width: 160px; 
 	text-align: center;
-	background-color: rgba(92, 98, 102, 0.6);
+	background-color: rgba(209, 77, 108, 0.2);
+	color: rgb(209, 77, 108);
 	border-radius: 20px 20px 0px 0px;
-	font-size: 24px;
-	height: 36px;
+	font-size: 2rem;
 	padding: 0 11px;
 	margin: 0 0 1px;
   }
   .main_wea_down {
-	height: 100px;  
+	height: 80px;  
 	width: 160px; 
 	text-align: center;
-	background-color: rgba(92, 98, 102, 0.6);
+	background-color: rgba(209, 77, 108, 0.2);
+	color: rgb(209, 77, 108);
 	border-radius: 0px 0px 20px 20px;
-	font-size: 24px;
+	font-size: 2rem;
   }
   .animate__animated.animate__lightSpeedInRight {
 	--animate-duration: 1.3s;
@@ -483,6 +447,9 @@ input[type=password]::placeholder {
 .main_hot3_txt {
 	font-size: 1.7rem;
 }
+.main_hot3_txt p {
+	width: 268px;
+}
 /* .main_hot3_top {
 	width: 100%;
 } */
@@ -517,17 +484,17 @@ input[type=password]::placeholder {
 	direction: none;
 	color: #000;
 } 
-.icon_cir_10 {
+.icon_cir_1 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #34c759;
 }
-.icon_cir_30 {
+.icon_cir_2 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #af52de;
 }
-.icon_cir_50 {
+.icon_cir_3 {
 	margin-right: 0.5rem;
 	font-size: 1.4rem;
 	color: #ff9500;
@@ -587,33 +554,150 @@ input[type=password]::placeholder {
   }
   /* 푸터 */
   .footer {
-	background-color: #af52de;
+	background-color: #fff;
 	width:100%;
-	font-size: 1rem;
+	font-size: 1.2rem;
   }
-  .footer_team p {
+
+  .footer_main {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer_team {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer_team h3 {
 	font-family: 'Cafe24SsurroundAir';
-	font-weight: bold;
+	font-weight: bolder;
+	font-size: 1.15rem;
+	padding: 2rem 0 0.3rem 0;
   }
   .footer_team span {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
 	font-size: 0.8rem;
+	padding-bottom: 0.8rem;
   }
 .footer_box {
-	width : 100px;
-	height: 100px;
-	background-color: #f5d682;
-	border: 1px solid red;
-	display: block;
+	width : 200px;
+	height: 70px;
+	display: flex;
+	border-radius: 0.3rem;
+	justify-content: space-evenly;
+    align-items: center;
 }
-  
+
+.footer_box div {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+}
+.footer_team_mem ul {
+    display: flex;
+    gap: 1.1rem;
+    justify-content: center;
+    margin: 0.5rem auto;
+	padding: 1.5rem 0;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+.footer_box_1 {
+	background-color: #C1CBED;
+	border: 0.1rem solid #3977BC;
+	color: #345D8C;
+}
+.footer_box_2 {
+	background-color: #CFE8DA;
+	border: 0.1rem solid #39B075;
+	color: #2B7550;
+}
+.footer_box_3 {
+	background-color: #FAECC3;
+	border: 0.1rem solid #F4C334;
+	color: #755D18;
+}
+.footer_box_4 {
+	background-color: #FFB4B4;
+	border: 0.1rem solid #ED5555;
+	color: #973131;
+}
+.footer_box span {
+	/* font-family: 'Cafe24SsurroundAir';
+	font-weight: bold; */
+	font-size: 1.65rem;
+}
+.footer_con {
+    display: flex;
+    gap: 0.2rem;
+    width: 40rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.footer_con h3 {
+	padding-bottom: 0.1rem;
+	font-size: 1.15rem;
+	text-align: center;
+	padding-top: 0.8rem;
+}
+.footer_array {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.footer_array div {
+	margin: 0 0.2rem;
+}
+.footer_con span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: center;
+  }
+.footer_img1 {
+	width: 8rem;
+	height: 3rem;
+}
+.footer_img2 {
+	width: 6rem;
+	height: 3rem;
+}
+.footer_img3 {
+	width: 3rem;
+	height: 3rem;
+}
+.footer_img4 {
+	width: 6rem;
+	height: 3rem;
+}
+.footer_ref {
+	display: flex;
+}
+.footer_ref h3 {
+	margin-top: 1rem;
+	font-size: 1.15rem;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+}
+.footer_ref span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bolder;
+	font-size: 0.8rem;
+}
   /* 버튼 */
   /* .main_topBtn {
   
   } */
 
 /* 로그인페이지 */
+.login_logo{
+	width: 260px;
+}
+
 .login_font{
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
@@ -621,24 +705,11 @@ input[type=password]::placeholder {
 
 .login_bg{
     width: 100vw;
-    position: relative;
-    z-index: 1;
     padding: 130px 0px;
     min-height: 100vh;
+	background-color: #f8f8f8;
 }
-.login_bg::after {
-	width: 100vw;
-	height: 100vh;
-	content: "";
-	background: url("/img/login_bg.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: -1;
-	opacity: 0.6;
-}
+
 
 .login_frame{
     margin: 0 auto;
@@ -648,7 +719,7 @@ input[type=password]::placeholder {
 
 .login_header{
 	font-size: 2.3rem;
-    margin: 0px auto 80px auto;
+    margin: 20px auto 60px auto;
     font-weight: 900;
 }
 .login_header_a{
@@ -656,9 +727,10 @@ input[type=password]::placeholder {
 }
 
 .login_container{
-	border: 1px solid #E4E4E4;
-    padding: 40px;
-	background-color: white;
+	padding: 40px;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 60px;
 }
 
 .login_box{
@@ -688,6 +760,7 @@ input[type=password]::placeholder {
 	padding: 10px;
 	margin-top: 15px;
 	font-weight: 900;
+	font-size: 1rem;
 }
 
 .login_and{
@@ -726,13 +799,21 @@ input[type=password]::placeholder {
 }
 
 .login_sign{
-	text-align: left;
-    padding-top: 14px;
+    text-align: right;
+    padding-top: 16px;
+}
+
+.login_sign span{
+    font-family: 'Cafe24SsurroundAir';
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #000000d4;
+    padding-right: 12px;
 }
 
 .login_sign a{
-	font-size: 0.8rem;
-	color: #000;
+	font-size: 0.9rem;
+    color: #D14C6C;
 }
 
 /* signin */
@@ -763,10 +844,24 @@ input[type=password]::placeholder {
     padding: 9px;
 	outline: none;
 	border: none;
+	margin-bottom: 10px;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+	font-size: 1rem;
 }
 
 .sign_container input::placeholder{
 	color: #B7B7B7;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+}
+
+.sign_container span{
+    font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
+	font-size: 0.9rem;
+	margin-bottom: 4px;
+	display: inline-block;
 }
 
 .sign_email_input{
@@ -774,18 +869,6 @@ input[type=password]::placeholder {
     color: #7a7a7a;
 }
 
-.sign_relative{
-	position: relative;
-}
-.sign_chk_btn{
-	position: absolute;
-    top: 3.4px;
-    right: 3px;
-    border: none;
-    background-color: #d9d9d9;
-    padding: 7px;
-    font-size: 11px;
-}
 
 .sign_footer_box{
 	display: flex;
@@ -795,11 +878,12 @@ input[type=password]::placeholder {
 
 .sign_footer_btn{
 	border: none;
+    border-radius: 50px;
     padding: 8px;
     width: 35%;
-    background-color: #DEDEDE;
-    font-size: 1.5rem;
-    color: #000;
+    background-color: #d14c6c;
+    font-size: 1.4rem;
+    color: #fff;
 }
 
 .sign_errmsg{
@@ -815,10 +899,10 @@ input[type=password]::placeholder {
 
 
 /* 유저페이지 */
-.user_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
+.user_container {
+    width: 95%;
+    max-width: 550px;
+    margin: 50px auto;
 }
 /* 페이지 최상단 "회원정보" */
 .user_h1{
@@ -838,6 +922,7 @@ text-align: center;
 .user_h2{
 	margin-top:10px;
 }
+
 .user_box_top_red_center{
 	width: 50%;
     height: 50px;
@@ -845,14 +930,14 @@ text-align: center;
     border: 1px solid #B7B7B7;
     border-top: 4px solid red;
     border-bottom: none;
-    margin-top: 113px;
+	margin-top: 60px;
     border-radius: 5px 5px 0 0;
 }
 .user_vacant_box{
 	width:90%;
 	height:50px;
 	border-bottom: 1px solid #B7B7B7;
-	margin-top: 113px;	
+	margin-top: 60px;
 }
 /* 회원정보 설정 */
 .user_userInfo_text3{
@@ -1009,10 +1094,10 @@ margin-top:10px;
 }
 /* 유저확인 */
 .userChk_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
-	text-align: center;
+    width: 95%;
+    max-width: 550px;
+    margin: 40px auto;
+    text-align: center;
 }
 .userChk_button{
 	box-sizing: content-box;
@@ -1028,9 +1113,32 @@ margin-top:10px;
 }
 #userchk_pw{
 	border-radius: 5px;
+	padding: 5px;
+}
+#userchk_pw::placeholder{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	font-size: 0.85rem;
+	line-height: 0.85rem ;
 }
 #userchk_pw::placeholder{
 	text-align: center;
+}
+.userchk_box_top_red_center{
+	width: 50%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #B7B7B7;
+    border-top: 4px solid red;
+    border-bottom: none;
+	margin-top: 113px;
+    border-radius: 5px 5px 0 0;
+}
+.userchk_vacant_box{
+	width:90%;
+	height:50px;
+	border-bottom: 1px solid #B7B7B7;
+	margin-top: 113px;
 }
 
 /* 지역 페이지 */
@@ -1042,66 +1150,52 @@ margin-top:10px;
 	flex-direction: column;
 	gap: 50px;
 }
-
 /* 지역 페이지 헤더 */
 .region_header_frame {
 	margin-top: 150px;
 	width: 95%;
-	/* background-color: aquamarine; */
 	display: flex;
 	max-width: 1000px;
 	flex-direction: column;
 	gap: 50px;
 }
 /* 지역 페이지 슬라이드 */
-.region_slider_container {
-	width: 100%;
+.carousel__item {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background-color: #FF92B1;
+	text-align: center;
+	line-height: 100px;
 }
-.region_slider{
-	display: flex;
-}
-.region_slide {
-    padding: 10px;
-}
-.region_heart {
-	width: 20px;
-	height: 20px;
-	float: left;
-}
-/* .region_slider_right {
-	width: 20px;
-	height: 20px;
-	float: right;
-} */
 /* 지역 페이지 검색바 */
 .region_search_frame {
-    display: flex;
-    justify-content: center;
     line-height: 50px;
-    flex-direction: column;
     max-width: 600px;
     margin: 0 auto;
 }
 #region_select_list {
-	width: 150px;
+	width: 20%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: large;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
-#region_date {
-	width: 150px;
+.region_date {
+	width: 35%;
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
-	font-size: large;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: 600;
 }
 .region_search_text {
 	height: 30px;
 	border-radius: 15px;
 	text-align: center;
 	width: 85%;
-	font-size: large;
+	font-size: 1rem;
 }
 .region_form_btn {
 	width: 15%;
@@ -1112,116 +1206,101 @@ margin-top:10px;
 }
 
 /* 추천 축제 */
-.region_recommend_festival_frame {
+.region_container {
 	/* background-color: beige; */
-	width: 100%;
-	/* gap: 20px; */
+	width: 90%;
+	margin: 0 auto 10vh auto;
 }
-.region_comment {
+.region_container_header {
 	margin-left: 10px;
 }
 .region_p1 {
-	font-size: small;
+	font-size: 1.5rem;
 }
 .region_p2 {
-	font-size: larger;
-	font-weight: bold;
+	font-size: 2rem;
 }
-.region_recommend_festival {
+.region_container_list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	grid-gap: 10px;
 }
-.region_recom_festiv {
+.region_container_body {
 	text-align: center;
+	margin: 0 auto;
 }
-.region_recom_festiv img {
-	width: 90%;
-}
-
-/* 추천 관광지 */
-.region_recommend_tour_frame {
-	/* background-color: beige; */
+.region_container_body img {
 	width: 100%;
 }
-.region_recommend_tour {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+.region_title {
+	font-size: 1.5rem;
 }
-.region_recom_tour {
-	text-align: center;
+.region_content {
+	font-size: 1rem;
 }
-.region_recom_tour img {
-	width: 90%;
-}
-
 /* 지역 축제 */
-.region_total_festival_frame {
-	/* background-color: #D2D2FF; */
-	width: 100%;
-}
-.region_total_festival_msg {
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-}
 .region_sort {
-	margin-left: 45vw;
+	text-align: right;
+    width: 90%;
 }
 .region_sort button {
 	all: unset;
 }
 .region_sort1 {
 	display: inline-block;
+	padding-right: 10px;
 }
-.region_sort1 {
+.region_sort2 {
 	display: inline-block;
 }
-/* .region_sort_line {
-	display: inline-block;
-	border-left : thin solid #000;
-	height : 20px;
-} */
-.region_festival_container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.region_festival {
-	text-align: center;
-}
-.region_festival img {
-	width: 90%;
+.region_heart {
+	font-size: 24px;
+	color: #34c759;
+	border: none;
+	background: none;
+	float: right;
 }
 /* 지역 관광지 */
-.region_total_tour_frame {
-	/* background-color: #D2D2FF; */
-	width: 100%;
-}
-.region_total_tour_msg {
+.region_container_header2 {
 	font-size: 20px;
 	font-weight: bold;
 	text-align: center;
+} 
+.region_p4 {
+	margin-bottom: 2%;
 }
-.region_tour_container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.region_tour {
+.region_more_btn {
 	text-align: center;
-}
-.region_tour img {
-	width: 90%;
+	margin-bottom: 2%;
 }
 .region_more_btn button {
 	background-color: #D14C6C;
 	border: none;
 	color: white;
 	padding: 10px 50px;
-	margin: 20px 0;
-	display: inline-block;
+	/* margin: 20px 0; */
+	/* display: inline-block; */
 	text-align: center;
 	border-radius: 20px;
-	font-size: large;
+	font-size: 1.5rem;
 }
+/* 지역 미디어쿼리 */
+/* 태블릿 */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* 지역페이지 */
+	.region_container_list {
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	}
+}
+/* 모바일 */
+@media only screen and (max-width: 767px) {
+	/* 지역페이지 */
+	.region_container_list {
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	}
+}
+
+
 
 /* 에러페이지 */
 @font-face {
@@ -1372,11 +1451,12 @@ margin-top:10px;
 /* auth */
 /* pc */
 @media only screen and (min-width: 1024px) {
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 60px auto;
+		margin: 90px auto 50px auto;
 	}
 	.auth_check_msg {
 		height: 250px;
@@ -1385,11 +1465,12 @@ margin-top:10px;
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 80px auto;
+		margin: 80px auto 50px auto;
 	}
 	.auth_check_msg {
 		height: 230px;
@@ -1398,11 +1479,16 @@ margin-top:10px;
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* 로딩 */
+	.loader {
+		margin:90% auto 0px auto;
+	}
+	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 50px auto;
+	    margin: 0px auto;
 	}
 	.auth_container{
 		display: flex;
@@ -1411,13 +1497,38 @@ margin-top:10px;
 	.auth_check_msg {
 		height: 200px;
 	}
+	.auth_success_bottom {
+		margin-top: 70px;
+	}
+	.auth_success_div div {
+		margin-top: 5%;
+	}
+
+	/* 로그인 */
+	.login_header {
+		margin: 15px auto 30px auto;
+	}
+	.login_container {
+		margin-top: 5px;
+	}
+	/* detail */
+	.detail_replie_change div{
+		padding-left: 5px;
+	}
+}
+
+.auth_consent p,.auth_consent li{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
 }
 
 .auth_container_input{
+	margin-top: 5px;
     width: 100%;
     padding: 9px;
-	outline: none;
-	border: none;
+    outline: none;
+    border: none;
+    border-radius: 15px;
 }
 
 .auth_success_div{
@@ -1427,11 +1538,37 @@ margin-top:10px;
 }
 .auth_success_div div{
 	font-size: 1.5rem;
+    margin-bottom: 5px;
 }
-.auth_button{
-	padding: 1px;
+.auth_success_bottom{
+	display: flex;
+	flex-direction: column	;
+	margin-top: 10px;
 }
-
+.auth_success_bottom span{
+	font-size: 0.9rem;
+}
+.auth_relative{
+	position: relative;
+}
+.auth_relative span{
+	font-size: 0.85rem;
+    padding-left: 9px;
+}
+.auth_absolute{
+	position: absolute;
+	top: 5px;
+	right: 0;
+}
+.auth_chk_btn{
+	border: none;
+    font-size: 0.9rem;
+    padding: 8.5px;
+    background-color: #D14C6C;
+    color: #Fff;
+    border-radius: 15px;
+    margin-left: 10px;
+}
 .auth_all_agree{
 	margin-top: 5px;
 }
@@ -1483,4 +1620,129 @@ margin-top:10px;
 
 .auth_errmsg{
 	color: red;
+    padding-left: 9px;
+    font-size: 0.85rem;
+}
+
+
+/* detail */
+.detail_frame{
+	margin: 100px auto;
+    width: 95%;
+    max-width: 1000px;
+}
+.detail_container{
+	padding: 0px;
+}
+.detail_header{
+    padding: 10px;
+    font-size: 2.3rem;
+    background: #d14c6c1f;
+}
+.detail_header_flex{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 0.9rem;
+}
+.detail_type{
+	font-size: 1.5rem;
+}
+
+.detail_tofrom{
+    padding: 0.5rem 0rem;
+}
+.detail_body{
+	padding: 20px;
+    /* border: 1px solid; */
+    border-top: 1px solid #7b7b7b;
+    border-bottom: 1px solid #7b7b7b;;
+}
+.detail_content{
+	margin-top: 20px;
+    word-break: break-all;
+}
+.detail_hits{
+	text-align: right;
+	padding-bottom: 0.5rem;
+	font-size: 0.85rem;
+}
+.detail_img img{
+	width: 100%;
+
+}
+.detail_replie_container{
+    margin-top: 50px;
+}
+.detail_replie_write_box{
+	padding: 5px 10px;
+}
+.detail_replie_relative{
+	position: relative;
+	margin-top: 6px;
+}
+.detail_replie_relative textarea{
+    width: 100%;
+    padding: 10px;
+    font-family: 'Cafe24SsurroundAir';
+    border: 1px solid #6a6a6a;
+    font-size: 1rem;
+    font-weight: bold;
+	resize: none;
+}
+.detail_replie_relative textarea::placeholder{
+	color: #a9a9a9;
+}
+.detail_replie_length{
+	text-align: right;
+    font-size: 0.9rem;
+}
+
+.detail_replie_write_box_btn{
+	position: absolute;
+    font-size: 1.3rem;
+    top: 8px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #D14C6C;
+}
+.detail_replie_read{
+	padding: 10px;
+    border-bottom: 1px solid #0000002b;
+}
+.detail_replie_flex{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+}
+.detail_replie_nick{
+    font-size: 1.08rem;
+	position: relative;
+}
+.detail_replie_created_at{
+	font-size: 0.75rem;
+    color: #6a6a6a;
+    line-height: 17px;
+}
+.detail_replie_content{
+    padding-top: 13px;
+    font-size: 1rem;
+}
+.detail_replie_change{
+	display: flex;
+	justify-content: flex-end;
+    padding-top: 5px;
+}
+.detail_replie_change div{
+	font-size: 0.85rem;
+    padding-left: 10px;
+    color: #d14c6c;
+}
+.detail_more_btn{
+	padding-top: 10px;
+}
+.detail_more_btn span{
+	font-size: 1rem;
+
 }

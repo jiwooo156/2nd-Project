@@ -4,18 +4,16 @@
 			<div class="main_1">
 				<div class="main_1_box">
           <div class="main_txt">
-            <div class="main_txt_up animate__animated animate__lightSpeedInRight">
-              놀러오세요! 경상도, 좋아요!<br />
-            </div>
-            <div class="main_txt_down">
-              블루베리스무디 맛있어요.<br />이의이승이
-              뭐냐구요?<br />일단, 와보면 알아요!
-            </div>
+            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도, 좋아요!<br></div>
+            <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
 					<div class="main_wea">
-						<div class="main_wea_up">날씨 위</div>
-						<div class="main_wea_down">날씨 아래</div>
+            <div class="main_wea_up">도시명</div>
+						<div class="main_wea_down">
+              <div class="mian_wea_icon">아이콘</div>
+              <div class="mian_wea_degree">온도</div>
+            </div>
 					</div>
 				</div>
 			</div>
@@ -30,10 +28,7 @@
               <div class="main_sub_line"></div>
             </div>
             <div class="main_sub_con">
-              <div class="main_sub_txt">
-                경상도에서 인기있는<br />
-                축제를 만나보세요!
-              </div>
+              <div class="main_sub_txt">경상도에서 인기있는<br>축제를 만나보세요!</div>
             </div>
             <div class="main_shap">크리스마스, 우리 함께 즐겨요🎅</div>
             <!-- 반응형 사라질 때 노란색연필 없애기 -->
@@ -44,7 +39,7 @@
               <ul v-for="info in this.besthitsinfoList" :key="info" class="main_2_news_l">
                 <ul class="art_plus">
                   <li class="article">{{ info.ns_flg }}</li>
-                  <li><a href="#" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></a></li>
+                  <li><routerLink :to="'/detail?id='+info.id" class="plus_icon"><font-awesome-icon :icon="['fas', 'plus']" /></routerLink></li>
                 </ul>
                 <ul>
                   <li class="art_tit">{{ info.title }}</li>
@@ -67,32 +62,69 @@
               <div class="main_sub_line"></div>
             </div>
             <div class="main_3_sub_con">
-              <div class="main_3_sub_txt">
-                경상도에서 다양한<br />
-                관광지를 만나보세요!
+              <div class="main_3_sub_txt">경상도에서 다양한<br>관광지를 만나보세요!
               </div>
             </div>
             <div class="main_shap">경상도에 이렇게 갈 곳이 많다구요😎</div>
             <img class="main_3_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
-          <div class="main_box_right">
-            <ul class="main_hot3">
-              <li v-for="info in this.fixedinfoList" :key="info">
-                <a href="#" target="관광">
-                  <div class="main_hot3_img">
-                    <img :src="info.img1">
-                  </div>
-                  <div class="main_hot3_txt">
-                    <span><font-awesome-icon :icon="['fas', 'circle',]" :class="'icon_cir_'+info.id"/> {{ info.title }}</span>
-                    <p>{{ info.content }}</p>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+            <div class="main_box_right">
+              <ul class="main_hot3">
+                <li>
+                  <router-link to="/detail?id=10">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_1.png" />
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_1"/> 근대역사문화거리</span>
+                      <p>100여년 전의 역사가 공존하는<br>특별하고 소중한 시간 여행</p>
+                    </div>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/detail?id=30">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_2.png">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_2"/> 댕댕이와 경상도여행</span>
+                      <p>전용시설에서 반려동물과<br>사계절 뛰어놀 수 있는 특별한 곳</p>
+                    </div>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/detail?id=50">
+                    <div class="main_hot3_img">
+                      <img src="/img/topic_3.png">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle']" class="icon_cir_3"/> 낮 보다 아름다운 밤</span>
+                      <p>다양한 야간관광 특화도시!<br>경상도의 아름다운 야경</p>
+                    </div>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          <!-- 계행 넣기 전 for문으로 데이터 불러와서 사용 했을 때
+              <div class="main_box_right">
+              <ul class="main_hot3">
+                <li v-for="info in this.fixedinfoList" :key="info">
+                  <a href="#" target="관광">
+                    <div class="main_hot3_img">
+                      <img :src="info.img1">
+                    </div>
+                    <div class="main_hot3_txt">
+                      <span><font-awesome-icon :icon="['fas', 'circle',]" :class="'icon_cir_'+info.id"/> {{ info.title }}</span>
+                      <p>{{ info.content }}</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div> -->
 				</div>
 			</div>
-			<div class="main_4">
+      <!-- 4차 때 기능 넣을 거임 -->
+			<!-- <div class="main_4">
         <div class="main_4_box">
           <div class="main_box_left"
               data-aos="fade-down"
@@ -121,7 +153,7 @@
             </div>
           </div>
 				</div>
-			</div>
+			</div> -->
     </div>
 	</div>
 	<div class="main_topBtn"></div>
@@ -134,29 +166,66 @@ export default {
     return {
       besthitsinfoList: [],
       fixedinfoList: [],
+      // statesName: [],
+      cities: [],
+      icon: [],
     };
   },
   created() {
+    // 메인에 나타날 데이터
     this.getMain()
+    // this.getWeather()
   },
-  methods: {
+  methods: {    
     // 메인에 나타날 데이터 불러오기
     getMain(){
 			const URL = '/main/info'
 			axios.get(URL)
 			.then(res => {
-        console.log("댄");
 				this.besthitsinfoList = res.data.hits
 				this.fixedinfoList = res.data.fixed
+				// this.statesName = res.data.states
 			})
 			.catch(err => {
         console.log("캐치");
 				alert("데이터 에러 발생")
 			})
 		},
+    getWeather() {
+        // 초기화
+        if (this.cityRanLoop) {
+            clearInterval(this.cityRanLoop);
+        }
+        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];
+        let i = 0; // 도시 인덱스를 유지할 변수 추가
+        const cityRan = () => {
+            let city = cities[i]
+            i = i + 1;
+            if(i === cities.length){
+                i = 0;
+            }
+            console.log(city);
+            fetch('https://goweather.herokuapp.com/weather/' + city)
+            .then((response) => response.json())
+            .then((data) => {
+              document.querySelector('.main_wea_up').innerHTML = city;
+              document.querySelector('.mian_wea_degree').innerHTML = data['temperature'],
+              document.querySelector('.mian_wea_icon').innerHTML = data['description']
+                // console.log(data.temperature);
+                // console.log(data.description);
+            })
+            .catch((error) => {
+                console.log('에러에러');
+            });
+        };
+        // 최초 한 번 호출
+        cityRan();
+        // 10초마다 반복 실행
+        this.cityRanLoop = setInterval(cityRan, 10000);
+    },
   },
-  
-}
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

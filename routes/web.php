@@ -79,6 +79,17 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
     Route::get('/info', [InfoController::class, 'getMainInfo']);
 });
 
+Route::middleware('myValidation')->prefix('detail')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/info/{id}', [InfoController::class, 'detailget']);
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
+    Route::get('/more/{id}', [InfoController::class, 'morereplie']);
+    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
+});
+
 
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
@@ -87,8 +98,18 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
 Route::get('/user', function () {
     return view('welcome');
 });
-Route::get('/region', function () {
-    return view('welcome');
+Route::middleware('myValidation')->prefix('region')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    // 시군명 받아오는 url
+    Route::get('/state', [InfoController::class, 'stateget'])->name('state.get');
+    // 추천축제,관광지 받아오는 url
+    Route::get('/recommendf', [InfoController::class, 'recommendfestivalget']);
+    // 지역축제,관광지 받아오는 url
+    Route::get('/festivalget/{states_name}',[InfoController::class, 'festivalget']);
+    // 더보기 받아오는 url
+    Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
 });
 Route::get('/error', function () {
     return view('welcome');

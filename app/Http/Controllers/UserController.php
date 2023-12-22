@@ -31,6 +31,7 @@ class UserController extends Controller
 
     //     }
     // }
+    // 이메일중복확인기능 통합
 
     // 닉네임중복확인
     public function nickchk(Request $req)
@@ -447,6 +448,7 @@ class UserController extends Controller
         $req->cookie('auth_id');
         Log::debug($req->cookie('auth_id'));
         $result = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
+
         if(count($result)>0){
             return response()->json([
                 'code' => '0'

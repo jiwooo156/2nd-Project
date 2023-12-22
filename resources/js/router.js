@@ -6,6 +6,7 @@ import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
+import DetailComponent from '../components/DetailComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
 import store from './store.js'
@@ -26,6 +27,10 @@ const routes = [
 	{
 		path: "/region",
 		component : RegionComponent
+	},
+	{
+		path: "/detail",
+		component : DetailComponent
 	},
 	{
 		path: "/login",
@@ -92,5 +97,12 @@ const router = createRouter({
 	history: createWebHistory(),
 	routes,
 });
+
+router.beforeEach((to, from, next) => {
+	// 모드페이지 라우트시 페이지 제일위로
+	store.state.beforeUrl = window.location.pathname + window.location.search;
+	window.scrollTo(0, 0); 
+	next();
+  });
 
 export default router;

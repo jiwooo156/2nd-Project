@@ -2,7 +2,7 @@
 	<div class="sign_bg">
 		<div class="sign_frame">
 			<div  class="sign_header center" >
-				<router-link :to="'/main'" class="sign_header_a  pointer">이의이승</router-link>
+				<router-link :to="'/main'" class="sign_header_a  pointer"><img src="/img/logo.png" alt="" class="login_logo"></router-link>
 			</div>
 			<div>
 				<div class="sign_container">
@@ -32,24 +32,33 @@
 						<span v-show="err_name2" class="sign_errmsg">한국어만 사용 가능 합니다</span>
 						<span v-show="err_name3" class="sign_errmsg">이름 형식이 올바르지 않습니다.</span>
 						<span v-show="com_name" class="sign_commsg">사용가능한 이름 입니다.</span>
-						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10">
+						<input type="text" placeholder="한글 2~10" v-model="name" id="signin_name" autocomplete='off' minlength="2" maxlength="10"
+							@input="koreaname"
+						>
 					</div>
 					<div>
 						<span>닉네임</span>
+						<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg">2~8글자 사이로 작성해 주세요.</span>
+						<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어,숫자,한글만 사용 가능 합니다</span>
+						<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg">닉네임 형식이 올바르지 않습니다.</span>
 						<span
-							v-if="$store.state.nickFlg === 1" 
+							v-if="$store.state.nickFlg === 1&&this.com_nick" 
 							class="sign_commsg"
 						>사용 가능한 닉네임 입니다.</span>
 						<span
-							v-if="$store.state.nickFlg === 2" 
+							v-if="$store.state.nickFlg === 2&&this.com_nick" 
 							class="sign_errmsg"
 						>이미 사용중인 닉네임 입니다.</span>
 						<span
 							v-for="item in $store.state.varErr" :key="item"
+							v-if="this.com_nick"
 							class="sign_errmsg"
 						>{{ item[0] }}</span>
 						<div class="sign_relative">
-							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8" v-model="nick">
+							<input type="text" placeholder="한글,영어,숫자 2~8" id="signin_nick"  autocomplete='off' minlength="2" maxlength="8"
+								v-model="nick"
+								@input="koreanick"
+							>
 						</div>
 					</div>
 					<div>
@@ -87,6 +96,8 @@
 	</div>
 </template>
 <script>
+import VueCookies from "vue-cookies";    
+
 export default {
 	name: 'SigninComponent',
 
@@ -111,6 +122,10 @@ export default {
 			err_name2: false,
 			err_name3: false,
 			com_name: false,
+			err_nick1: false,
+			err_nick2: false,
+			err_nick3: false,
+			com_nick: false,
 			err_birthdate1: false,
 			err_birthdate2: false,
 			err_birthdate3: false,
@@ -134,14 +149,14 @@ export default {
 		name(){
 			this.nameval()
 		},
+		nick(){
+			this.nickval()
+		},
 		birthdate(){
 			this.birthdateval()
 		},
 		phone(){
 			this.phoneval()
-		},
-		nick(){
-			this.nick_chk()
 		},
 	},
 	created() {
@@ -352,8 +367,40 @@ export default {
 			this.err_phone3 = false;
 			this.com_phone = true;
 		},
-		nick_chk(){
-			this.$store.dispatch('actionNickChk');
+		nickval(){
+			const VAR = /^.{2,8}$/;
+			const VAR1 = /^[가-힣a-zA-Z0-9]+$/;
+			const VAR2 = /^[가-힣a-zA-Z0-9]{2,8}$/;
+			if(this.nick===""){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR.test(this.nick)){
+				this.err_nick1 = true;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR1.test(this.nick)){
+				this.err_nick1 = false;
+				this.err_nick2 = true;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR2.test(this.nick)||!this.nick){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = true;
+				this.com_nick = false;
+				return
+			}
+			this.err_nick1 = false;
+			this.err_nick2 = false;
+			this.err_nick3 = false;
+			this.com_nick = true;
+			this.nick_chk()
 		},
 		signin(){
 			if(this.com_pw&&this.com_pw_chk&&this.com_name&&this.com_birthdate&&this.com_phone&&this.$store.state.nickFlg===1){
@@ -393,11 +440,24 @@ export default {
 					this.nick_chk()
 				}
 			}
+		},
+		// 닉네임 한글 바로인식
+		koreanick(e) {
+			this.nick = e.target.value
+			console.log(this.nick)
+		},
+		// 이름 한글 바로인식
+		koreaname(e) {
+			this.name = e.target.value
+		},
+		nick_chk(){
+			this.$store.dispatch('actionNickChk');
 		}
 	},
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','')
 		this.$store.commit('setNickFlg',0)
+		VueCookies.remove('auth_id');
 		next();
 	},
 }
