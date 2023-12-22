@@ -124,6 +124,7 @@ export default {
 			b_id: "",
 			repliecount: "",
 			new_replie: "",
+			replie_offset: 20,
 			moreflg: false,
 		}
 	},
@@ -153,9 +154,8 @@ export default {
 					this.repliedata = res.data.replie
 					this.repliecount = res.data.repliecount
 					console.log(this.repliedata);
-				}else{
-					console.log("엘스");
-					// this.$router.push('/error');
+				}else if(res.data.code==="E99"){
+					this.$router.push('/error');
 				}
 			})
 			.catch(err => {
@@ -248,18 +248,20 @@ export default {
 			}
 			
 		},
-		// 댓글전체 불러오기
+		// 댓글추가 불러오기
 		morereplie(){		
 			console.log('댓글전체불러오기')	
-			const URL = '/detail/more/'+this.b_id;
+			console.log('b_id'+this.b_id)	
+			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
-					console.log("댄")
-					this.moreflg = true;
-					this.repliedata = res.data.data;
-					console.log(res.data.data)
-					console.log(this.repliedata)
+					this.repliedata = [ ...this.repliedata, ...res.data.data ];
+					this.replie_offset = this.replie_offset+20;
+					console.log(res.data.data.length)
+					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
+						this.moreflg = true;
+					}
 					console.log("완료")
 				}else{
 					console.log("엘스")
@@ -272,10 +274,6 @@ export default {
 		},
 	},
 	beforeRouteLeave(to, from, next) {
-		this.detaildata =null,
-		this.repliedata =null,
-		this.replie =null,
-		this.moreflg = false,
 		next();
 	},
 

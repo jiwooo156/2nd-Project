@@ -173,6 +173,10 @@ export default {
 			user_com_pw_chk: false,
 			delreason: '' ,
 			delinput: false,
+			err_nick1: false,
+			err_nick2: false,
+			err_nick3: false,
+			com_nick: false,
 		}
 	},
 	watch: {
@@ -198,28 +202,28 @@ export default {
 	methods: {
 		// 닉네임체크
 		nick_chk(){
-				const URL = '/signin/nick?nick='+this.nick
-				axios.get(URL)
-				.then(res => {
-					console.log("댄")
-					this.$store.commit('setErrMsg','');
-					console.log(res.data.errorMsg)
-					if(res.data.code === "0"){
-						if(res.data.data.length === 0){
-							console.log("없을때")
-							this.$store.commit('setNickFlg',1);	
-						}else if(res.data.data.length > 0){
-							console.log("있을때")
-							this.$store.commit('setNickFlg',2);
-						}
-					}else{
-						alert("닉네임체크에 실패하였습니다")
+			const URL = '/signin/nick?nick='+this.nick
+			axios.get(URL)
+			.then(res => {
+				console.log("댄")
+				this.$store.commit('setErrMsg','');
+				console.log(res.data.errorMsg)
+				if(res.data.code === "0"){
+					if(res.data.data.length === 0){
+						console.log("없을때")
+						this.$store.commit('setNickFlg',1);	
+					}else if(res.data.data.length > 0){
+						console.log("있을때")
+						this.$store.commit('setNickFlg',2);
 					}
-				})
-				.catch(err => {
-					this.$store.commit('setNickFlg',0);
-					this.$store.commit('setErrMsg',err.response.data.errorMsg);
-				})
+				}else{
+					alert("닉네임체크에 실패하였습니다")
+				}
+			})
+			.catch(err => {
+				this.$store.commit('setNickFlg',0);
+				this.$store.commit('setErrMsg',err.response.data.errorMsg);
+			})
 		},
 		// 유저정보불러오기
 		GetUser(){
@@ -233,14 +237,23 @@ export default {
 			})
 		},
 		// 비밀번호변경
-		ctlPasswordModal(flg){
+		ctlPasswordModal(flg){	
+			if(flg === false){
+				this.user_pw_chk= "";
+				this.user_pw= "";
+			}
 			this.$store.commit('setPasswordModalFlg',flg);
 		},
 		ctlNickModal(flg){
+			if(flg === false){
+				this.nick= "";
+			}
+		
 			this.$store.commit('setNickModalFlg',flg);
 		},
 		ctlDelModal(flg){
 			this.$store.commit('setDelModalFlg',flg);
+			
 		},
 		pw(){
 			this.pwval()
@@ -409,6 +422,8 @@ export default {
 						localStorage.setItem('nick', nick.value);
 						this.$store.commit('setNowUser',nick.value)
 						alert('정상처리되었습니다');
+					}else if(res.data.code === "0"){
+						alert(res.data.errorMsg)
 					}else{
 						alert(res.data.errorMsg)
 					}

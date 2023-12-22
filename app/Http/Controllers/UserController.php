@@ -35,7 +35,8 @@ class UserController extends Controller
 
     // 닉네임중복확인
     public function nickchk(Request $req)
-    {
+    {   
+        // 유저정보 조회
         $result = User::select('nick')->where('nick',$req->nick)->get();
         if($result){
             return response()->json([
@@ -48,52 +49,56 @@ class UserController extends Controller
     // 회원가입
     public function store(Request $req)
     {
-        Log::debug("함수진입");
-        $result = User::where('email',$req->email)->orwhere('nick',$req->nick)->first();
-        // 악성 유저 대응용
-        $req->cookie('auth_id');
-        $result1 = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
-        Log::debug("result1 = ".$result1);
-        if($result){
-            if($req->email===$result->email){
-                Log::debug("이미사용중이메일 = ");
+        // 리퀘스트 정보로 유저테이블 정보 조회
+        $req_result = User::where('email',$req->email)->orwhere('nick',$req->nick)->first();
+        // 쿠키를 이용해 인증테이블의 이메일 조회
+        $auth_result = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
+        // 유저테이블 리턴결과 있을때
+        if($req_result){
+            // 리퀘스트 이메일 값이 이미 유저테이블에 있을때
+            if($req->email===$req_result->email){
                 return response()->json([
                     'code' => 'E05',
                     'errorMsg' => '이미사용 중인 이메일 입니다.'
                 ], 400);
-            }else if($req->nick===$result->nick){
-                Log::debug("이미사용중닉 = ");
+            // 리퀘스트 닉네임 값이 이미 유저테이블에 있을대
+            }else if($req->nick===$req_result->nick){
                 return response()->json([
                     'code' => 'E05',
                     'errorMsg' => '이미 사용중인 닉네임 입니다.'
                 ], 400);
+            }else{
+                return response()->json([
+                    'code' => 'E99',
+                    'errorMsg' => '회원가입 시도중 오류가 발생했습니다.'
+                ], 400);
             }
         }else{
-            Log::debug("정상처리 1단계");
-            if($req->email===$result1[0]->email){
-                Log::debug("리퀘스트랑 리져트안에 이메일 같은지");
+            // 리퀘스트온 값과 인증테이블의 이메일 값이 같을때
+            if($req->email===$auth_result[0]->email){
+                // 데이터중 필요한거만 선택
                 $data = $req->only('email','name','password','birthdate','phone','gender','nick');
+                // 암호화처리
                 $data['password'] = Hash::make($data['password']);
+                // 처리결과를 인서트
                 $result = User::create($data);
                 if($result){
-                    Log::debug("같으면서 정상일때");
                     $response = response()->json([
                         'code' => '0'
                         ,'data' => $result
                     ], 200);
                     return $response->cookie('auth_id', null, -1);
                 }else{
-                    Log::debug("같은대 비정상처리");
                     return response()->json([
                         'code' => 'E05',
                         'errorMsg' => '회원가입에 실패했습니다.'
                     ], 400);
                 }
+            // 리퀘스트온 값과 인증테이블의 이메일 값이 다를때(인증받은 이메일이아닐때)
             }else{
-                Log::debug("다를때");
                 return response()->json([
-                    'code' => 'E05',
-                    'errorMsg' => '오류발생.'
+                    'code' => 'E99',
+                    'errorMsg' => '인증 받으신 이메일이 아닙니다.'
                 ], 400);
             }
         }
@@ -102,27 +107,37 @@ class UserController extends Controller
     // 로그인
     public function login(Request $req)
     {
+        // 리퀘스트 정보로 유저테이블 정보 조회
         $result = User::where('email',$req->email)->first();
+        // 조회된 값이 없을때
         if(!$result){
             $errorMsg = ['존재하지않는 이메일 입니다.'];
             return response()->json([
                 'code' => 'E06'
                 ,'errorMsg' => $errorMsg
             ], 400);
-        }else if(!(Hash::check($req->password, $result->password))){
-            $errorMsg = ['비밀번호를 확인해주세요'];
-            return response()->json([
-                'code' => 'E06'
-                ,'errorMsg' => $errorMsg
-            ], 400);
-        }
-        if($result){
+        // 값이 조회됬을때
+        }else if($result){
+            if(!(Hash::check($req->password, $result->password))){
+                $errorMsg = ['비밀번호를 확인해주세요'];
+                return response()->json([
+                    'code' => 'E06'
+                    ,'errorMsg' => $errorMsg
+                ], 400);
+            }
             Auth::login($result);
             Auth::user();
             return response()->json([
                 'code' => '0',
                 'data' => $result
             ], 200);
+        // 그외 에러일시
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '로그인 시도중 오류가 발생했습니다.'
+            ], 400);
+        }
             // $token = Str::random(100);
             // $result1 = 
             //     DB::table('users')
@@ -142,140 +157,182 @@ class UserController extends Controller
             // return $response->cookie('access_token', $token, 1440)
             // ->cookie('nick', $result->nick, 1440, null, null, false, false);
             // 1211 최정훈 수정 쿠키사용x
-        }
     }
     // 로그아웃
     public function logout(Request $req){
+        Log::debug("로그아웃진입");
+        // Auth클레스에 정보삭제 ->세션에서 파기
         $result = Auth::logout();
-        Log::debug($result);
+        // 정상처리 됬을때
         return response()->json([
-            'code' => '0',
-            'data' => $result
+            'code' => '0'
         ], 200);
     }
     // 유저비밀번호 확인
     public function userchk(Request $req){
+        // 세션에 유저정보 조회
         $auth = Auth::user();
+        // 세션에 유저정보중 email 토대로 유저 테이블 조회
         $result = User::where('email',$auth->email)->first();
+        // 리퀘스트 온 패스워드 값이 유저 테이블의 패스워드 값과 일치하지 않을 시
         if(!(Hash::check($req->password, $result->password))){
-            Log::debug("비밀번호 미일치");
             $errorMsg = ["비밀번호가 일치하지 않습니다"];
             return response()->json([
                 'code' => 'E07',
                 'errorMsg' => $errorMsg
             ], 400);
-        }
-        if($result){
-            Log::debug("비밀번호 일치");
+        // 리퀘스트 온 패스워드 값이 유저 테이블의 패스워드 값과 일치할떄
+        }else if((Hash::check($req->password, $result->password))){
             return response()->json([
                 'code' => '0',
                 'data' => $result
             ], 200);
+        // 그외 사항시
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '비밀번호 인증 시도중 에러발생.'
+            ], 400);
         }
     }
     // 유저정보조회
     public function userinfo(Request $req){
+        // 세션에 유저정보 조회
         $auth = Auth::user();
+        // 세션에 유저정보중 email 토대로 유저 테이블에 아이디 이메일 닉네임 조회
         $result = User::select('id','email','nick')->where('email',$auth->email)->first();
-        Log::debug($result);
-        return response()->json([
-            'code' => '0',
-            'data' => $result
-        ], 200);
+        // 조회된 유저정보 있을시
+        if($result){
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        // 그 외 오류일시
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '비밀번호 인증 시도중 에러발생.'
+            ], 400);
+        }
     }
     // 비밀번호 변경
     public function changepw(Request $req){
         try {
+            // 트랜잭션시작
             DB::beginTransaction();
+            // 세션에 유저정보 조회
             $auth = Auth::user();
-            Log::debug($req->password);
+            // 리퀘스트 온 비밀번호 값 hash처리
             $newpw = Hash::make($req->password);
-            Log::debug($newpw);
+            // 세션에 유저정보중 email 토대로 유저 테이블에 조회
             $result = User::where('email',$auth->email)->first();
+            // 조회된 값중 비밀번호 hash처리 한 비밀번호로 변경
             $result->password = $newpw;
+            // 변경한 값 저장
             $result->save();
+            // 저장
             DB::commit();
             return response()->json([
                 'code' => '0',
                 'data' => $result
             ], 200);
         } catch(Exception $e){
+            // 롤백
             DB::rollback();
             return response()->json([
-                'code' => 'E08',
-                'errorMsg' => ["비밀번호 변경에 실패했습니다"]
+                'code' => 'E99',
+                'errorMsg' => '비밀번호 인증 시도중 에러발생.'
             ], 400);
         }
     }
     // 닉네임변경
     public function changenick(Request $req){
+        // 리퀘스트 정보로 유저테이블 정보 조회
         $result = User::where('nick',$req->nick)->first();
-        // 악성 유저 대응용
-        Log::debug($result);
-        if($result){
-            if($req->nick===$result->nick){
-                return response()->json([
-                    'code' => 'E05',
-                    'errorMsg' => '중복된 닉네임 입니다.'
-                ], 400);
-            }else{
-                return response()->json([
-                    'code' => 'E05',
-                    'errorMsg' => '오류발생.'
-                ], 400);
-            }
-        }else{
-            try {
-                DB::beginTransaction();
-                $auth = Auth::user();
-                $result = User::where('email',$auth->email)->first();
-                $result->nick = $req->nick;
-                $result->save();
-                DB::commit();
-                return response()->json([
-                    'code' => '0',
-                    'data' => $result
-                ], 200);
-            } catch(Exception $e){
-                DB::rollback();
-                return response()->json([
-                    'code' => 'E09',
-                    'errorMsg' => ["닉네임 변경에 실패했습니다"]
-                ], 400);
-            }
+        // // 악성 유저 대응용
+        // if($result){
+        //     if($req->nick===$result->nick){
+        //         return response()->json([
+        //             'code' => 'E05',
+        //             'errorMsg' => '중복된 닉네임 입니다.'
+        //         ], 400);
+        //     }else{
+        //         return response()->json([
+        //             'code' => 'E05',
+        //             'errorMsg' => '오류발생.'
+        //         ], 400);
+        //     }
+        // }else{
+        // 1222 수정 최정훈 실시간 닉네임 확인이라 이상한값 전송 불가
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 세션에 유저정보 조회
+            $auth = Auth::user();
+            // 세션에 유저정보중 email 토대로 유저 테이블에 조회
+            $result = User::where('email',$auth->email)->first();
+            // 리퀘스트 온 닉네임값으로 변경
+            $result->nick = $req->nick;
+            // 변경한 값 저장
+            $result->save();
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result
+            ], 200);
+        } catch(Exception $e){
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '닉네임 변경에 실패하였습니다.'
+            ], 400);
         }
     }
     // 회원탈퇴
     public function deluser(Request $req){
         try {
+            // 트랜잭션시작
             DB::beginTransaction();
+            // 세션에 유저정보 조회
             $auth = Auth::user();
+            // 세션에 유저정보중 email 토대로 유저 테이블에 조회
             $result = User::where('email',$auth->email)->first();
+            // 유저정보 삭제(소프트딜리트)
             User::destroy($result->id);
+            // data[]에 유저아이디 저장
             $data['u_id'] = $result->id;
-            Log::debug($result->id);
+            // data[]에 유저삭제플레그 저장 저장
             $data['del_flg'] = $req->del_flg;
-            Log::debug($req->del_flg);
+            
+            // 리퀘스트 온 삭제플레그가 0일시
             if($req->del_flg==="0"){
+                // data[]에 리퀘스트 온 삭제 메세지 저장
                 $data['del_self_msg'] = $req->del_msg;
             }
+            // 삭제사유테이블에 data정보 인서트
             $result1 = Del_Reason::create($data);
+            // 저장
             DB::commit();
+            // 삭제사유 저장결과 및 유저삭제 정상처리 시
             if($result1&&$result){
                 return response()->json([
                     'code' => '0'
                 ], 200);
+            // 비정상처리
             }else{
                 return response()->json([
-                    'code' => 'E05',
-                    'errorMsg' => ['회원탈퇴중 오류가 발생했습니다']
+                    'code' => 'E99',
+                    'errorMsg' => '회원탈퇴중 오류가 발생했습니다'
                 ], 400);
             }
+        // 처리오류시
         } catch(Exception $e){
+            // 롤백
             DB::rollback();
             return response()->json([
-                'code' => 'E09',
-                'errorMsg' => ['회원탈퇴중 오류가 발생했습니다']
+                'code' => 'E99',
+                'errorMsg' => '회원탈퇴중 오류가 발생했습니다'
             ], 400);
         }
     }
@@ -371,22 +428,28 @@ class UserController extends Controller
 
     // 이메일 인증후 전송
     public function sendemailauth(Request $req){
+        // 리퀘스트온 이메일로 유저테이블 값 조회
         $check_user = User::select('email')->where('email',$req->email)->get();
         // 첫번쨰 통과 조건(유저테이블에 해당이메일이 없을때)
         if(count($check_user)===0){
             // 랜덤한 값 생성
             $uuid = Str::uuid();
+            // $db_data[] 에 리퀘스트온 이메일값 저장
             $db_data['email'] = $req->email;
+            // $db_data[] 에 생성한 토큰 저장
             $db_data['auth_token'] = $uuid;
+            // 리퀘스트온 이메일값과 같으면서 인증발송시간이 10분이내인 인증테이블 정보 조회
             $mail_cnt = Authenticate::
                 where('email',$req->email)
                 ->where('auth_start','>',date("Y-m-d H:i:s", strtotime("-10 minutes")))
                 ->get();
-            // 두번째(유저테이블에 10분이내에 인증메일을 3회이상 보냈을때)
+            // 두번째(유저테이블에 10분이내에 인증메일을 3회이하일때)
             if(count($mail_cnt)<3){
+                // 인증 테이블에 $db_data[]값 인서트 
                 Authenticate::create($db_data);
-                Log::debug("3개이하일때");
+                // $db_data[] 에 url값 저장
                 $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+                // 메일발송 보내기
                 Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
                     $message->to($req->email)->subject('이의이승페이지 이메일인증');
                     $message->from('dldmldltmd@gmail.com');
@@ -394,11 +457,16 @@ class UserController extends Controller
                 return response()->json([
                     'code' => '0'
                 ], 200);
-            }else{
-                Log::debug("3개이상");
+            // 유저테이블에 10분이내에 인증메일을 3회이하일때
+            }else if(count($mail_cnt)>=3){
                 return response()->json([
                     'code' => 'E13',
                     'errorMsg' => '10분이내 최대 3번 이메일 인증이 가능합니다. 잠시 후 다시 시도해 주세요'
+                ], 200);
+            }else{
+                return response()->json([
+                    'code' => 'E99',
+                    'errorMsg' => '이메일 인증중 오류가 발생했습니다'
                 ], 200);
             }
         }else if(count($check_user)>0){
@@ -406,37 +474,47 @@ class UserController extends Controller
                 'code' => 'E05',
                 'errorMsg' => ['errorMsg'=>['이미 사용중인 이메일 입니다']]
             ], 400);
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '이메일 중복확인 중 오류가 발생했습니다'
+            ], 200);
         }
     }
     // 이메일인증 url클릭시
     public function tokenchk(Request $req){
-        Log::debug("진입");
+        // 리퀘스트온 토큰값과일치하고 인증가능 시간이 남았을때 인증테이블 데이터 조회
         $email_get_result = Authenticate::where('auth_token', $req->auth_token)
                 ->where('auth_end', '>', now())
                 ->first();
-        // 1차 오류잡기(url에 토큰으로 조회)
+        // 조회 된 값이 없을시
         if(!($email_get_result)){
             $err = "인증이 만료되었거나 잘못된 URL입니다."."\n"."기존페이지로 돌아가 인증을 다시 받아주세요";      
             return $err;
         }
+        // 위 결과값에 이메일로 조회하며 pk내림차순으로 첫번째값을 인증테이블에서 조회(가장최신값)
         $result = Authenticate::where('email',$email_get_result->email)
                 ->orderBy('id', 'desc')
                 ->first();
-        // 1차 오류잡기
+        // 가장최신 토큰과 유저가 보낸 토큰이 일치할시
         if($result->auth_token===$req->auth_token){
             try {
+                // 트랜잭션시작
                 DB::beginTransaction();
-                Log::debug("트랜잭션시작");
+                // 인증플레그 1로 변경
                 $result->auth_flg = "1";
+                // 저장
                 $result->save();
                 DB::commit();    
-                Log::debug("커밋완료");
+                // 리다이렉트 처리 후 쿠키생성
                 return redirect('/signin')->cookie('auth_id', $result->id, 720, null, null, false, false);
+            // 실패시
             } catch(Exception $e){
                 DB::rollback();
                 $err = "인증에 실패하였습니다."."\n"."기존페이지로 돌아가 다시 인증을 받아주세요";      
                 return $err;
             }
+        // 일치하지않거나 시간이 지나거나 잘못된처리일시
         }else{
             $err = "인증이 만료된 URL입니다."."\n"."기존페이지로 돌아가 다시 인증을 받아주세요";      
             return $err;
@@ -445,51 +523,58 @@ class UserController extends Controller
     // 이메일가져오기
     public function emailload(Request $req)
     {
-        $req->cookie('auth_id');
-        Log::debug($req->cookie('auth_id'));
+        // 쿠키에 담긴 유저아이디 로 이메일조회
         $result = Authenticate::select('email')->where('id',$req->cookie('auth_id'))->get();
 
-        if(count($result)>0){
+        // 값이 있을시
+        if(count($result)===1){
             return response()->json([
                 'code' => '0'
                 ,'data' => $result[0]
             ], 200);
+        // 값이 없을시
         }else{
             return response()->json([
-                'code' => 'E15'
-                ,'errorMsg' => '오류가 발생했습니다. 다시한번 확인해주세요'
+                'code' => 'E99',
+                'errorMsg' => '이메일을 가져오던 중 오류가 발생했습니다'
             ], 200);
         }
     }
     // 인증시간연장
     public function addtime(Request $req)
-    {
+    {   
+        // 리퀘스트온 이메일 값으로 아이디 역순 조회
         $result = Authenticate::
             where('email', $req->email)
             ->orderBy('id', 'desc')
             ->first();
+        // 조회된 값이있을시
         if($result){
             try {
+                // 트랜 잭션 시작
                 DB::beginTransaction();
+                // 인증만료시간 5분뒤로변경
                 $result->auth_end = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+                // 저장
                 $result->save();
-                Log::debug($result);
-                Log::debug($result->auth_end);
                 DB::commit();
                 return response()->json([
                     'code' => '0'
                 ], 200); 
+            // 실패시
             } catch(Exception $e){
+                // 롤백
                 DB::rollback();
                 return response()->json([
-                    'code' => 'E09',
+                    'code' => 'E99',
                     'errorMsg' => '시간연장중 오류가 발생했습니다'
                 ], 400);
             }
+        // 조회된값이 없을시
         }else{
             return response()->json([
-                'code' => 'E09',
-                'errorMsg' => '문제발생'
+                'code' => 'E99',
+                'errorMsg' => '시간연장을 위해 조회중 오류가 발생했습니다'
             ], 400);
         }
     }

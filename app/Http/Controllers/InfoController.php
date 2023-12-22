@@ -48,118 +48,129 @@ class InfoController extends Controller
     }
     // 디테일 페이지 정보조회
     public function detailget(Request $req) {
-        // 조회수 1증가()
-            Log::debug("함수진입");
-            try {
-                if(!($req->cookie('hits'.$req->id))){      
-                    Log::debug("진입");
-                    DB::beginTransaction();
-                    $result = Info::
-                    where('id',$req->id)
-                    ->first();
-                    Log::debug("조회");
-                    Log::debug($result);
-                    Log::debug($result->hits);
-                    $result->hits++;
-                    Log::debug($result->hits);
-                    $result->save();
-                    DB::commit();    
-                }
-                Log::debug("커밋완료");
-            } catch(Exception $e){
-                DB::rollback();
-            }
-        // 게시글정보
+        // 리퀘스트온 아이디값으로 인포테이블 조회
         $info_result = Info::
         where('id',$req->id)
         ->get();
-
-        // 댓글갯수
-        $replie_count = Replie::
-        where('b_id', $req->id)
-        ->count();
-
-        // 댓글정보
-        $replie_result = Replie::
-        select('id','nick','replie','created_at')
-        ->where('b_id',$req->id)
-        ->orderby('created_at','desc')
-        ->limit(20)
-        ->get();
-        Log::debug("전체조회완료");
-        if(count($info_result)===1){
-            Log::debug("이프");
+        // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
+        if(!($req->cookie('hits'.$req->id)&&count($info_result))===1){    
+            // 조회수 1증가  
+            try { 
+                // 트랜잭션 시작
+                DB::beginTransaction();
+                // 조회된 값의 조회수 1증가
+                $result[0]->hits++;
+                // 저장
+                $result[0]->save();
+                DB::commit();    
+            // 실패시
+            } catch(Exception $e){
+                DB::rollback();
+            }
+        // 쿠키값이있고 조회된값이 1개일때
+        }else if(count($info_result)===1){            
+            // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
+            $replie_count = Replie::
+            where('b_id', $req->id)
+            ->count();
+            // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
+            $replie_result = Replie::
+            select('id','nick','replie','created_at')
+            ->where('b_id',$req->id)
+            ->orderby('created_at','desc')
+            ->limit(20)
+            ->get(); 
             return response()->json([
                 'code' => '0',
                 'data' => $info_result,
                 'replie' => $replie_result,
                 'repliecount' => $replie_count,
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 5);
-            Log::debug("전송실패");
+        // 조회된값이 없거나 실패일시
         }else{
-            Log::debug("엘스");
             return response()->json([
-                'code' => 'E20',
+                'code' => 'E99',
                 'errorMsg' => '게시글 조회에 실패하였습니다',
             ], 200);
         }
     }
     // 댓글작성
     public function repliewirte(Request $req) {
-        Log::debug("함수진입");
+        // 리퀘스트온 값중 닉네임 댓글 보드아이디 data에 저장
         $data = $req->only('nick','replie','b_id');
-        $result = Replie::create($data);
-        Log::debug($result);
-        return response()->json([
-            'code' => '0',
-            'data' => $result,
-        ], 200);
+        try { 
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // data정보를 댓글테이블에 인서트
+            $result = Replie::create($data);
+            // 저장
+            DB::commit();    
+            return response()->json([
+                'code' => '0',
+                'data' => $result,
+            ], 200);
+        // 실패시
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '댓글작성 중 오류가 발생했습니다',
+            ], 200);
+        }  
+        // 정상처리시
     }
     // 댓글삭제
     public function repliedel(Request $req) {
-        Log::debug("댓글삭제 함수진입");
         try {
-            DB::beginTransaction();
+            // 세션에 저장되 유저정보 조회
             $auth = Auth::user();
-            $result = Replie::destroy($req->id);
+            // 세션에 유저정보 닉네임과 일치하고 리퀘스트 온 아이디값으로 유저테이블에 조회
+            $result = Replie::
+                where('id',$req->id)
+                ->where('nick',$auth->nick)->first();
+            // 조회결과 있을시
             if($result){
+                // 트랜잭션시작
+                DB::beginTransaction();
+                // 리퀘스트온 아이디값인 데이터 삭제(소프트딜리트처리)
+                $result = Replie::destroy($req->id);
+                // 저장
                 DB::commit();
                 return response()->json([
                     'code' => '0'
                 ], 200);
-            }else{
-                return response()->json([
-                    'code' => 'E05',
-                    'errorMsg' => '댓글 삭제중 오류가 발생 했습니다.'
-                ], 400);
             }
         } catch(Exception $e){
+            // 롤백
             DB::rollback();
             return response()->json([
-                'code' => 'E09',
-                'errorMsg' => ['회원탈퇴중 오류가 발생했습니다']
+                'code' => 'E99',
+                'errorMsg' => '댓글삭제 중 오류가 발생했습니다'
             ], 400);
         }
     }
-    // 댓글 전체조회    
+    // 댓글 추가조회    
     public function morereplie(Request $req) {
-        Log::debug("모어리플라이함수");
+        // 리퀘스트온 값을토대로 20개의 데이터 조회
         $replie_result = Replie::
             select('id', 'nick', 'replie', 'created_at')
-            ->where('b_id', $req->id)
+            ->where('b_id', $req->b_id)
             ->orderBy('created_at', 'desc')
+            ->limit(20)
+            ->offset($req->offset)
             ->get();
-        Log::debug($replie_result);
+        // 조회결과 있을시
         if($replie_result){
-            Log::debug("이프");
             return response()->json([
                 'code' => '0',
                 'data' => $replie_result,
             ], 200);
+        // 조회결과 없거나 실패일시
         }else{
             Log::debug("엘스");
             return response()->json([
-                'code' => 'E21',
+                'code' => 'E99',
                 'errorMsg' => '댓글 조회에 실패하였습니다',
             ], 200);
         }

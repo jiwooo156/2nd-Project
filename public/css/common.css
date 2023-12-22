@@ -1317,7 +1317,7 @@ margin-top:10px;
     	margin-bottom: 2rem;
 	}
 	.error_txtmsg{
-		margin-top: 200px;
+	    margin-top: 190px;
 	}
 	.error_btn{
 		font-size: 40px;
@@ -1338,8 +1338,9 @@ margin-top:10px;
 		width: 50%;
 	}
 	.error_content{
-	    font-size: 1.5rem;
-    	line-height: 1.8rem;
+		font-size: 1.5rem;
+		line-height: 1.8rem;
+		padding-bottom: 1rem;
 	}
 }
 
@@ -1372,8 +1373,9 @@ margin-top:10px;
 		width: 65%;
 	}
 	.error_content{
-	    font-size: 1.5rem;
-    	line-height: 1.8rem;
+		font-size: 1.5rem;
+		line-height: 1.8rem;
+		padding-bottom: 1rem;
 	}
 }
 
@@ -1405,7 +1407,7 @@ margin-top:10px;
 		margin: 20px;
 	}
 	.error_content{
-		padding: 20px;
+		padding-top: 20px;
 		font-size: 1.5rem;
 	}
 }
@@ -1433,7 +1435,7 @@ margin-top:10px;
 .error_btn{
 	background-color: #d14c6c;
     color: #fff;
-    padding: 6px 50px;
+    padding: 8px 50px 5px 50px;
     border-radius: 50px;
 }
 .error_container{
