@@ -9,10 +9,10 @@
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
 					<div class="main_wea">
-            <div class="main_wea_up">도시명</div>
+            <div class="main_wea_up"></div>
 						<div class="main_wea_down">
-              <div class="mian_wea_icon">아이콘</div>
-              <div class="mian_wea_degree">온도</div>
+              <div class="main_wea_icon">{{ this.description }}</div>
+              <div class="main_wea_degree"></div>
             </div>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 				</div>
 			</div>
       <!-- 4차 때 기능 넣을 거임 -->
-			<!-- <div class="main_4">
+			<div class="main_4">
         <div class="main_4_box">
           <div class="main_box_left"
               data-aos="fade-down"
@@ -153,7 +153,7 @@
             </div>
           </div>
 				</div>
-			</div> -->
+			</div>
     </div>
 	</div>
 	<div class="main_topBtn"></div>
@@ -168,35 +168,35 @@ export default {
       fixedinfoList: [],
       // statesName: [],
       cities: [],
-      icon: [],
+      description: '',
     };
   },
   created() {
-    // 메인에 나타날 데이터
-    this.getMain()
-    // this.getWeather()
+    // 화면에 나타날 데이터
+    this.getMain();
+    // this.getWeather();
   },
   methods: {    
-    // 메인에 나타날 데이터 불러오기
+    // 화면에 나타날 데이터 불러오기
     getMain(){
-			const URL = '/main/info'
-			axios.get(URL)
-			.then(res => {
-				this.besthitsinfoList = res.data.hits
-				this.fixedinfoList = res.data.fixed
-				// this.statesName = res.data.states
-			})
-			.catch(err => {
+      const URL = '/main/info'
+      axios.get(URL)
+      .then(res => {
+        this.besthitsinfoList = res.data.hits
+        this.fixedinfoList = res.data.fixe
+      })
+      .catch(err => {
         console.log("캐치");
-				alert("데이터 에러 발생")
-			})
-		},
+        alert("데이터 에러 발생")
+      })
+    },
     getWeather() {
         // 초기화
         if (this.cityRanLoop) {
             clearInterval(this.cityRanLoop);
         }
-        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];
+        // let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];
+        let cities = ['뉴욕', '도쿄', '런던', '베이징'];        
         let i = 0; // 도시 인덱스를 유지할 변수 추가
         const cityRan = () => {
             let city = cities[i]
@@ -208,20 +208,31 @@ export default {
             fetch('https://goweather.herokuapp.com/weather/' + city)
             .then((response) => response.json())
             .then((data) => {
+              console.log('test');
+              this.description = '';
+              if(data.description === 'Sunny') {
+                this.description = '☀';
+              } else if (data.description === 'Clear') {
+                this.description = '🌤';
+              } else if (data.description === 'Partly cloudy') {
+                this.description = '☁'; 
+              } else if (data.description === 'Patchy rain possible' || data.description === 'rain' || data.description === 'Light drizzle') {
+                this.description = '🌧'; 
+              } 
               document.querySelector('.main_wea_up').innerHTML = city;
-              document.querySelector('.mian_wea_degree').innerHTML = data['temperature'],
-              document.querySelector('.mian_wea_icon').innerHTML = data['description']
-                // console.log(data.temperature);
-                // console.log(data.description);
+              // document.querySelector('.main_wea_icon').innerHTML = data['description'],
+              document.querySelector('.main_wea_degree').innerHTML = data['temperature']
+              console.log(data.description);
+              // console.log(data.temperature);
             })
             .catch((error) => {
-                console.log('에러에러');
+              console.log('에러에러');
             });
         };
         // 최초 한 번 호출
         cityRan();
         // 10초마다 반복 실행
-        this.cityRanLoop = setInterval(cityRan, 10000);
+        this.cityRanLoop = setInterval(cityRan, 5000);
     },
   },
 };

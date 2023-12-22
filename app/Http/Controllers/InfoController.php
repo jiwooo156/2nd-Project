@@ -85,7 +85,7 @@ class InfoController extends Controller
                 'data' => $info_result,
                 'replie' => $replie_result,
                 'repliecount' => $replie_count,
-            ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 5);
+            ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
             return response()->json([
