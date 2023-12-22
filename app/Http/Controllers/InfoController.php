@@ -169,21 +169,27 @@ class InfoController extends Controller
     public function stateget(Request $req) {
         Log::debug("***** stateget start *****");
         Log::debug("request ns : ".$req->ns);
-        
-        $state_result = Info::select('states_name')
-                    ->where('ns_flg',$req->ns)
+        // 시군명 + 경상북도남도 받아옴
+        $state_result1 = Info::select('states_name')
+                    ->where('ns_flg','경상남도')
+                    ->groupBy('states_name')
+                    ->orderBy('states_name')
+                    ->get();
+        $state_result2 = Info::select('states_name')
+                    ->where('ns_flg','경상북도')
                     ->groupBy('states_name')
                     ->orderBy('states_name')
                     ->get();
 
-        Log::debug("데이터 획득 : ".$state_result);
+        // Log::debug("데이터 획득 : ".$state_result);
 
         
         Log::debug("***** stateget end *****");
         return response()->json([
             'code' => '0',
-            'data' => $state_result,
-            Log::debug($state_result)
+            'data1' => $state_result1,
+            'data2' => $state_result2,
+            // Log::debug($state_result)
         ], 200);
     }
     // 추천축제,관광지 조회
@@ -192,17 +198,17 @@ class InfoController extends Controller
         Log::debug("**** recommendtourget start ****");
 
         $recommend_festival = Info::
-        select('id','title', 'content', 'img1', 'hits')
-        ->where('main_flg','축제')
-        ->orderBy('hits', 'desc')
-        ->limit(4)
-        ->get();
+            select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits')
+            ->where('main_flg','축제')
+            ->orderBy('hits', 'desc')
+            ->limit(4)
+            ->get();
         $recommend_tour = Info::
-        select('id','title', 'content', 'img1', 'hits')
-        ->where('main_flg','관광')
-        ->orderBy('hits', 'desc')
-        ->limit(4)
-        ->get();
+            select('id','title', 'content', 'img1', 'hits')
+            ->where('main_flg','관광')
+            ->orderBy('hits', 'desc')
+            ->limit(4)
+            ->get();
 
         Log::debug("데이터 획득 : ".$recommend_festival.$recommend_tour);
 
@@ -214,14 +220,58 @@ class InfoController extends Controller
             'rtour' => $recommend_tour,
         ],200);
     }
-    // 지역축제 조회
-    public function festivalpost(Request $req) {
+    // 지역축제,관광지 조회 (유저가 선택 한 지역의)
+    public function festivalget(Request $req) {
         Log::debug("**** festivalget start ****");
-        Log::debug($req);
-        // $state_festival = Info::
-        // select('id','state_name','title','content','start_at','end_at')
-        // ->where('main_flg','축제')
-        // ->where('states_name','')
-        // ->orderBy()
+        Log::debug("request states_name : ".$req->states_name);
+        $state_festival = Info::
+            select('id','states_name','img1','title','content','start_at','end_at','hits')
+            ->where('main_flg','축제')
+            ->where('states_name',$req->states_name)
+            ->orderBy('start_at','desc')
+            ->limit(4)
+            ->get();
+        $state_tour = Info::
+            select('id','states_name','img1','title','content','hits')
+            ->where('main_flg','관광')
+            ->where('states_name',$req->states_name)
+            ->orderBy('start_at','desc')
+            ->limit(4)
+            ->get();
+        Log::debug("**** festivalget end ****");
+        return response()->json([
+            'code' => '0',
+            'sfestival' => $state_festival,
+            'stour' => $state_tour,
+        ],200);
+    }
+    // 더보기 조회 (지역축제,관광지)
+    public function morefestivalget(Request $req) {
+        Log::debug("**** morefestivalget start ****");
+        Log::debug("request states_name : ".$req->states_name);
+        $more_festival = Info::
+            select('id','states_name','img1','title','content','start_at','end_at','hits')
+            ->where('main_flg','축제')
+            ->where('states_name',$req->states_name)
+            ->orderBy('start_at','desc')
+            ->limit(4)
+            ->offset($req->offset)
+            ->get();
+        $more_tour = Info::
+            select('id','states_name','img1','title','content','start_at','end_at','hits')
+            ->where('main_flg','관광')
+            ->where('states_name',$req->states_name)
+            ->orderBy('start_at','desc')
+            ->limit(4)
+            ->offset($req->offset)
+            ->get();
+        Log::debug("**** morefestivalget end ****");
+        Log::debug($more_festival);
+        Log::debug( $more_tour);
+        return response()->json([
+            'code' => '0',
+            'mfestival' => $more_festival,
+            'mtour' => $more_tour,
+        ],200);
     }
 }
