@@ -6,6 +6,41 @@
 	text-decoration: none; 
 	font-family:Cafe24Ssurround;
 }
+.spinner-div{
+	width: 100%;
+    height: 100vh;
+    background-color: #00000040;
+	position: absolute;
+}
+.loader {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	display: block;
+	margin:25% auto;
+	position: relative;
+	color: #FFF;
+	box-sizing: border-box;
+	animation: animloader 2s linear infinite;
+  }
+  
+  @keyframes animloader {
+	0% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+	25% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 2px;
+	}
+	50% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 -2px,  -14px 0 0 2px,  -38px 0 0 -2px;
+	}
+	75% {
+	  box-shadow: 14px 0 0 2px,  38px 0 0 -2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+	100% {
+	  box-shadow: 14px 0 0 -2px,  38px 0 0 2px,  -14px 0 0 -2px,  -38px 0 0 -2px;
+	}
+  }	
 textarea{
 	resize: none
 }
@@ -660,7 +695,7 @@ input[type=password]::placeholder {
 
 /* 로그인페이지 */
 .login_logo{
-	width: 55%;
+	width: 260px;
 }
 
 .login_font{
@@ -835,7 +870,6 @@ input[type=password]::placeholder {
 }
 
 
-
 .sign_footer_box{
 	display: flex;
 	justify-content: space-between;
@@ -865,10 +899,10 @@ input[type=password]::placeholder {
 
 
 /* 유저페이지 */
-.user_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
+.user_container {
+    width: 95%;
+    max-width: 550px;
+    margin: 50px auto;
 }
 /* 페이지 최상단 "회원정보" */
 .user_h1{
@@ -888,6 +922,7 @@ text-align: center;
 .user_h2{
 	margin-top:10px;
 }
+
 .user_box_top_red_center{
 	width: 50%;
     height: 50px;
@@ -895,14 +930,14 @@ text-align: center;
     border: 1px solid #B7B7B7;
     border-top: 4px solid red;
     border-bottom: none;
-    margin-top: 113px;
+	margin-top: 60px;
     border-radius: 5px 5px 0 0;
 }
 .user_vacant_box{
 	width:90%;
 	height:50px;
 	border-bottom: 1px solid #B7B7B7;
-	margin-top: 113px;	
+	margin-top: 60px;
 }
 /* 회원정보 설정 */
 .user_userInfo_text3{
@@ -1059,10 +1094,10 @@ margin-top:10px;
 }
 /* 유저확인 */
 .userChk_container{
-	width:95%;
-	max-width: 550px;
-	margin: 0 auto;	
-	text-align: center;
+    width: 95%;
+    max-width: 550px;
+    margin: 40px auto;
+    text-align: center;
 }
 .userChk_button{
 	box-sizing: content-box;
@@ -1078,9 +1113,32 @@ margin-top:10px;
 }
 #userchk_pw{
 	border-radius: 5px;
+	padding: 5px;
+}
+#userchk_pw::placeholder{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	font-size: 0.85rem;
+	line-height: 0.85rem ;
 }
 #userchk_pw::placeholder{
 	text-align: center;
+}
+.userchk_box_top_red_center{
+	width: 50%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #B7B7B7;
+    border-top: 4px solid red;
+    border-bottom: none;
+	margin-top: 113px;
+    border-radius: 5px 5px 0 0;
+}
+.userchk_vacant_box{
+	width:90%;
+	height:50px;
+	border-bottom: 1px solid #B7B7B7;
+	margin-top: 113px;
 }
 
 /* 지역 페이지 */
@@ -1398,7 +1456,7 @@ margin-top:10px;
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 20px auto 50px auto
+		margin: 90px auto 50px auto;
 	}
 	.auth_check_msg {
 		height: 250px;
@@ -1412,7 +1470,7 @@ margin-top:10px;
 		grid-template-columns: 1fr 1fr;
 	}
 	.sign_header {
-		margin: 20px auto 50px auto
+		margin: 80px auto 50px auto;
 	}
 	.auth_check_msg {
 		height: 230px;
@@ -1421,12 +1479,16 @@ margin-top:10px;
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* 로딩 */
+	.loader {
+		margin:90% auto 0px auto;
+	}
 	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr;
 	}
 	.sign_header {
-		margin: 0px auto 50px auto;
+	    margin: 0px auto;
 	}
 	.auth_container{
 		display: flex;
@@ -1435,11 +1497,14 @@ margin-top:10px;
 	.auth_check_msg {
 		height: 200px;
 	}
+	.auth_success_bottom {
+		margin-top: 70px;
+	}
+	.auth_success_div div {
+		margin-top: 5%;
+	}
 
 	/* 로그인 */
-	.login_logo{
-		width: 65%;
-	}
 	.login_header {
 		margin: 15px auto 30px auto;
 	}
@@ -1452,11 +1517,18 @@ margin-top:10px;
 	}
 }
 
+.auth_consent p,.auth_consent li{
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+
 .auth_container_input{
+	margin-top: 5px;
     width: 100%;
     padding: 9px;
-	outline: none;
-	border: none;
+    outline: none;
+    border: none;
+    border-radius: 15px;
 }
 
 .auth_success_div{
@@ -1466,11 +1538,37 @@ margin-top:10px;
 }
 .auth_success_div div{
 	font-size: 1.5rem;
+    margin-bottom: 5px;
 }
-.auth_button{
-	padding: 1px;
+.auth_success_bottom{
+	display: flex;
+	flex-direction: column	;
+	margin-top: 10px;
 }
-
+.auth_success_bottom span{
+	font-size: 0.9rem;
+}
+.auth_relative{
+	position: relative;
+}
+.auth_relative span{
+	font-size: 0.85rem;
+    padding-left: 9px;
+}
+.auth_absolute{
+	position: absolute;
+	top: 5px;
+	right: 0;
+}
+.auth_chk_btn{
+	border: none;
+    font-size: 0.9rem;
+    padding: 8.5px;
+    background-color: #D14C6C;
+    color: #Fff;
+    border-radius: 15px;
+    margin-left: 10px;
+}
 .auth_all_agree{
 	margin-top: 5px;
 }
@@ -1522,6 +1620,8 @@ margin-top:10px;
 
 .auth_errmsg{
 	color: red;
+    padding-left: 9px;
+    font-size: 0.85rem;
 }
 
 
@@ -1529,45 +1629,47 @@ margin-top:10px;
 .detail_frame{
 	margin: 100px auto;
     width: 95%;
-    max-width: 1200px;
+    max-width: 1000px;
 }
 .detail_container{
 	padding: 0px;
 }
 .detail_header{
-    display: flex;
-    justify-content: space-between;
     padding: 10px;
-    background: beige;
+    font-size: 2.3rem;
+    background: #d14c6c1f;
 }
 .detail_header_flex{
-	display: flex;
+    display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 0.9rem;
 }
 .detail_type{
-    padding: 10px;
+	font-size: 1.5rem;
 }
-.detail_title{
-	padding: 0px;
-}
-.detail_write_time{
-	padding: 0px;
+
+.detail_tofrom{
+    padding: 0.5rem 0rem;
 }
 .detail_body{
 	padding: 20px;
-    border: 1px solid;
+    /* border: 1px solid; */
+    border-top: 1px solid #7b7b7b;
+    border-bottom: 1px solid #7b7b7b;;
 }
 .detail_content{
 	margin-top: 20px;
     word-break: break-all;
 }
-.detail_img{
-	/* display: grid;
-	grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); */
+.detail_hits{
+	text-align: right;
+	padding-bottom: 0.5rem;
+	font-size: 0.85rem;
 }
 .detail_img img{
 	width: 100%;
+
 }
 .detail_replie_container{
     margin-top: 50px;

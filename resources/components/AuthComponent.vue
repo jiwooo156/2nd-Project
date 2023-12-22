@@ -2,47 +2,49 @@
 <div class="sign_bg">
 		<div class="auth_frame">
 			<div  class="sign_header center" >
-				<router-link :to="'/main'" class="sign_header_a  pointer">이의이승</router-link>
+				<router-link :to="'/main'" class="sign_header_a  pointer"><img src="/img/logo.png" alt="" class="login_logo"></router-link>
 			</div>
 			<div>
 				<div class="auth_container" v-if="!(this.auth_flg)&&!(this.repeat_flg)">
+					<div>
+					</div>
 					<div class="auth_check">
 						<div class="auth_check_left">
 							<div class="auth_check_msg">
-								<SecConsent></SecConsent>
+								<SecConsent class="auth_consent"></SecConsent>
 							</div>
 							<div class="auth_input_div">
 								<input type="checkbox" id="sign_check_input_left" class="pointer" v-model="input_left">
-								<label for="sign_check_input_left" class="pointer">개인정보수집동의<span>(필수)</span></label>
+								<label for="sign_check_input_left" class="pointer font_air bold">개인정보수집동의<span class="font_air bold">(필수)</span></label>
 							</div>
 						</div>
 						<div class="auth_check_right">
 							<div class="auth_check_msg">
-								<ConsentComponent></ConsentComponent>
+								<ConsentComponent class="auth_consent"></ConsentComponent>
 							</div>
 							<div class="auth_input_div">
 								<input type="checkbox" id="auth_check_input_right" class="pointer" v-model="input_right">
-								<label for="auth_check_input_right" class="pointer">유저약관<span>(필수)</span></label>
+								<label for="auth_check_input_right" class="pointer font_air bold">유저약관<span class="font_air bold">(필수)</span></label>
 							</div>
 						</div>
 					</div>
 					<div class="sign_all_agree">
 						<div class="auth_input_div">
 							<input type="checkbox" id="auth_check_input_all" class="pointer" v-model="input_all">
-							<label for="auth_check_input_all" class="pointer">전체동의</label>
+							<label for="auth_check_input_all" class="pointer font_air bold">전체동의</label>
 						</div>
 						<br>
 					</div>
 					<div class="auth_relative" v-if="input_all">
-						<span>E-mail 인증하기</span>
+						<span class="font_air bold">E-mail 인증하기</span>
 						<div
 							v-if="!(this.email_flg)"
 							v-for="item in errorMsg" :key="item"
-							class="auth_errmsg"
+							class="auth_errmsg font_air bold"
 						>{{ item[0] }}</div>
-						<div class="sign_relative">
-						<input type="text" placeholder="사용하실 이메일을 입력해주세요" autocomplete='off' v-model="auth_email" id="auth_email" class="auth_container_input">
-						<button class="sign_chk_btn pointer"
+						<div class="auth_relative">
+						<input type="text" placeholder="사용하실 이메일을 입력해주세요" autocomplete='off' v-model="auth_email" id="auth_email" class="auth_container_input font_air bold">
+						<button class="auth_absolute auth_chk_btn pointer font_air bold"
 							@click="email_auth"
 						>인증하기</button>
 						</div>
@@ -51,34 +53,31 @@
 				</div>
 			</div>
 			<div
-				class="auth_success_div center"
+				class="auth_success_div center font_air bold"
 			>
 				<div
 					v-if="email_flg&&auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					class="sign_commsg"
-				> {{ auth_email }} 로</div>
+					class="sign_commsg font_air bold"
+				> {{ auth_email }} 로<br>
+				이메일이 전송되었습니다.</div>
 				<div
 					v-if="email_flg&&auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					class="sign_commsg"
-				>이메일이 전송되었습니다.</div>
-				<div
-					v-if="email_flg&&auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					class="sign_commsg"
+					class="sign_commsg font_air bold"
 				>5분 이내로 이메일의 링크를 클릭하여 회원가입을 이어가 주세요.</div>
 				<div
 					v-if="repeat_flg"
-					class="sign_errmsg"
+					class="sign_errmsg font_air bold"
 				>10분이내 최대 3번 이메일 인증이 가능합니다. 잠시 후 다시 시도해 주세요</div>
 				<button
-					class="pointer auth_button"
+					class="pointer auth_chk_btn font_air bold"
 					v-if="repeat_flg"
-				><router-link to="/main">나가기</router-link></button>	
+				><router-link to="/main" class="font_air bold">나가기</router-link></button>	
 				<div
 					v-if="timeout_flg"
-					class="auth_errmsg"
+					class="auth_errmsg font_air bold"
 				>인증시간이 만료되었습니다.</div>
 				<div
-					class="auth_errmsg"
+					class="auth_errmsg font_air bold"
 					v-if="!(email_flg)"
 				>{{this.auth_err}}</div>
 				<!-- <button 
@@ -87,21 +86,28 @@
 					@click="email_re_auth"
 				>다시보내기</button> -->
 				<!-- 다시보내기 통합 -->
-				<span
-					v-if="this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-				>
-					남은시간 : {{this.timer}}
-				<button
-					class="pointer auth_button"
-					v-if="this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					@click="reset_auth_time"
-				>시간연장</button>
-				<button
-					class="pointer auth_button"
-					v-if="(this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg))||timeout_flg"
-					@click="email_auth"
-				>다시보내기</button>
-				</span>
+				<div class="auth_success_bottom">
+					<div>
+						<span
+							v-if="this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg)"
+							class="font_air bold"
+						>
+							남은시간 : {{this.timer}}
+						</span>
+					</div>
+					<div>
+						<button
+							class="pointer auth_chk_btn font_air bold "
+							v-if="this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg)"
+							@click="reset_auth_time"
+						>시간연장</button>
+						<button
+							class="pointer auth_chk_btn font_air bold"
+							v-if="(this.email_flg&&this.auth_flg&&!(timeout_flg)&&!(repeat_flg))||timeout_flg"
+							@click="email_auth"
+						>다시보내기</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -150,18 +156,20 @@ export default {
 			this.inputRight();
 		}
 	},
-	
 	created() {
-
+		this.$store.commit('setLoading',true)
+		console.log('크리에이티드')
 	},
 
 	mounted() {
-
+		this.$store.commit('setLoading',false)
+		console.log('마운티드')
 	},
 
 	methods: {
 		// 이메일인증보내기
 		email_auth(){
+			this.$store.commit('setLoading',true)
 			const URL = '/authemail'
 			const HEADER = {
 				headers: {
@@ -173,28 +181,33 @@ export default {
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){	
-					console.log("성공")
 					this.email_flg = true
 					this.auth_flg = true;
+					this.timeout_flg = false;
 					console.log(this.email_flg = true)
-					this.timer1();
-					console.log("타이머실행")
+					this.timer1();			
+					this.$store.commit('setLoading',false)
 				}else if(res.data.code === "E12"){
 					console.log("엘스")
 					this.errorMsg = []
 					this.auth_err = res.data.errorMsg;
+					this.timeout_flg = false;
 					this.re_auth_email = true;
+					this.$store.commit('setLoading',false)
 				}else if(res.data.code === "E13"){
 					console.log("엘스")
 					this.auth_err = ""
+					this.timeout_flg = false;
 					this.errorMsg = []
 					this.repeat_flg = true
+					this.$store.commit('setLoading',false)
 				}
 			})
 			.catch(err => {
 				console.log("캐치")
 				this.auth_err="";
 				this.errorMsg=err.response.data.errorMsg
+				this.$store.commit('setLoading',false)
 			})
 		},
 		// // 이메일 다시보내기
@@ -232,6 +245,7 @@ export default {
 		// },
 		// 시간연장
 		reset_auth_time(){
+			this.$store.commit('setLoading',true)
 			const URL = '/authemail/time'
 			const HEADER = {
 				headers: {
@@ -244,13 +258,16 @@ export default {
 			.then(res => {
 				if(res.data.code === "0"){	
 					this.timer1();
+					this.$store.commit('setLoading',false)
 				}else{
 					console.log(res.data)
 					console.log("엘스")
+					this.$store.commit('setLoading',false)
 				}
 			})
 			.catch(err => {
 				console.log("실패")
+				this.$store.commit('setLoading',false)
 			})
 		},
 		// // 이메일중복확인
@@ -321,8 +338,6 @@ export default {
 			clearInterval(this.timerId);
 		},
 		inputLeft(){
-			console.log("함수실행 래프트")
-			console.log("함수실행 래프트"+this.input_left)
 		if(this.input_right&&this.input_left){
 				this.input_all = true
 			}else if(!(this.input_left)){
@@ -330,8 +345,6 @@ export default {
 			}
 		},
 		inputRight(){
-			console.log("함수실행 라이트")
-			console.log("함수실행 라이트"+this.input_right)
 			if(this.input_right&&this.input_left){
 				this.input_all = true
 			}else if(!(this.input_right)){
@@ -341,8 +354,6 @@ export default {
 			}
 		},
 		inputAll(){
-			console.log("함수실행 올")
-			console.log("함수실행 올"+this.input_all)
 			if(this.input_all){
 				this.input_right = true
 				this.input_left = true

@@ -42,17 +42,20 @@
 				<h3>닉네임 수정</h3>
 			</div>
 			<div class="user_box_nick">
+				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg">2~8글자 사이로 작성해 주세요.</span>
+				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어,숫자,한글만 사용 가능 합니다</span>
+				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg">닉네임 형식이 올바르지 않습니다.</span>
 				<span
-					v-if="$store.state.nickFlg === 1" 
+					v-if="$store.state.nickFlg === 1&&this.com_nick" 
 					class="sign_commsg"
 				>사용 가능한 닉네임 입니다.</span>
 				<span
-					v-if="$store.state.nickFlg === 2" 
+					v-if="$store.state.nickFlg === 2&&this.com_nick" 
 					class="sign_errmsg"
 				>이미 사용중인 닉네임 입니다.</span>
 				<span
 					v-for="item in $store.state.varErr" :key="item"
-					v-if="$store.state.nickFlg === 0" 
+					v-if="this.com_nick"
 					class="sign_errmsg"
 				>{{ item[0] }}</span>
 				<br>
@@ -64,11 +67,11 @@
 			</div>
 			<br><br>		
 			
-			<div class="user_button_box_nick">
-				<button class="userChk_button_confirm"
+			<div class="user_button_box_nick font_air bold">
+				<button class="userChk_button_confirm font_air bold"
 					@click="usernickchange"
 				>변경</button>
-				<button class="userChk_button" @click="ctlNickModal(false)">취소</button>
+				<button class="userChk_button font_air bold" @click="ctlNickModal(false)">취소</button>
 			</div>
 		</div>	
 	</div>
@@ -76,10 +79,10 @@
 <div class="user_black-bg" 
 	v-if="$store.state.openDelModal"
 	>
-	<div class="user_white-bg">
-		<div class="user_withdraw">
+	<div class="user_white-bg font_air bold">
+		<div class="user_withdraw font_air bold">
 			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning"/>
-		<h3 class="user_h3_userout">회원 탈퇴</h3>
+		<h3 class="user_h3_userout font_air bold">회원 탈퇴</h3>
 			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
 				<label for="user_del_reason">탈퇴사유 : </label>
@@ -98,10 +101,10 @@
 				>
 			<br>
 			<div class="user_button_box_userout">
-				<button class="userChk_button_negative"
+				<button class="userChk_button_negative font_air bold"
 					@click="userout"
 				>탈퇴</button>
-				<button class="userChk_button" @click="ctlDelModal(false)">취소</button>
+				<button class="userChk_button font_air bold" @click="ctlDelModal(false)">취소</button>
 		</div>
 		</div>
 	</div>
@@ -111,7 +114,7 @@
 	<br>
 	<div class="user_subcontainer">
 		<div class="user_box_top_red_center">
-			<h2 class="user_h2">회원 정보</h2>
+			<h2 class="user_h2 font_air bold">회원 정보</h2>
 		</div>
 		<div class="user_vacant_box"></div>
 	</div>
@@ -123,26 +126,26 @@
 		<table class="user_table">
 			<tbody>
 				<tr>
-					<td class="user_rowname">회원번호</td>
+					<td class="user_rowname font_air bold">회원번호</td>
 					<td class="user_rowcontent">{{ $store.state.userInfo.id }}</td>
 				</tr>
 				
 				<tr>					
-					<td class="user_rowname">이메일</td>
-					<td class="user_rowcontent">{{ $store.state.userInfo.email }}</td>					
+					<td class="user_rowname font_air bold">이메일</td>
+					<td class="user_rowcontent font_air bold">{{ $store.state.userInfo.email }}</td>					
 				</tr>
 				<tr>
-					<td class="user_rowname">비밀번호</td>
-					<td class="user_rowcontent">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
+					<td class="user_rowname font_air bold">비밀번호</td>
+					<td class="user_rowcontent font_air bold">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
 				</tr>
 				<tr>
-					<td class="user_rowname">닉네임</td>
-					<td class="user_rowcontent"
+					<td class="user_rowname font_air bold">닉네임</td>
+					<td class="user_rowcontent font_air bold"
 					>{{ $store.state.NowUser }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
 				</tr>
 				<tr>
-					<td class="user_rowname">탈퇴신청</td>
-					<td class="user_rowcontent"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
+					<td class="user_rowname font_air bold">탈퇴신청</td>
+					<td class="user_rowcontent font_air bold"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
 				</tr>	
 			</tbody>
 		</table>
@@ -186,7 +189,7 @@ export default {
 			this.pwchkval()
 		},
 		nick(){
-			this.nick_chk()
+			this.nickval()
 		},
 	},
 	created() {
@@ -331,6 +334,41 @@ export default {
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
 		},
+		nickval(){
+			const VAR = /^.{2,8}$/;
+			const VAR1 = /^[가-힣a-zA-Z0-9]+$/;
+			const VAR2 = /^[가-힣a-zA-Z0-9]{2,8}$/;
+			if(this.nick===""){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR.test(this.nick)){
+				this.err_nick1 = true;
+				this.err_nick2 = false;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR1.test(this.nick)){
+				this.err_nick1 = false;
+				this.err_nick2 = true;
+				this.err_nick3 = false;
+				this.com_nick = false;
+				return
+			}else if(!VAR2.test(this.nick)||!this.nick){
+				this.err_nick1 = false;
+				this.err_nick2 = false;
+				this.err_nick3 = true;
+				this.com_nick = false;
+				return
+			}
+			this.err_nick1 = false;
+			this.err_nick2 = false;
+			this.err_nick3 = false;
+			this.com_nick = true;
+			this.nick_chk()
+		},
 		userpwchange(){
 			if(this.user_com_pw&&this.user_com_pw_chk){
 				this.$store.dispatch('actionChangePw');
@@ -365,12 +403,12 @@ export default {
 				axios.post(URL,formData,HEADER)
 				.then(res => {
 					if(res.data.code === "0"){	
+						this.nick = "";
 						this.$store.commit('setNickModalFlg',false);
 						this.$store.commit('setNickFlg',0)
 						localStorage.setItem('nick', nick.value);
 						this.$store.commit('setNowUser',nick.value)
 						alert('정상처리되었습니다');
-						nick.value = null;
 					}else{
 						alert(res.data.errorMsg)
 					}
@@ -379,7 +417,7 @@ export default {
 					alert(err.response.data.errorMsg)
 				})
 			}else{
-				this.nick_chk()
+				this.nickval()
 			}
 		},
 		userout(){
