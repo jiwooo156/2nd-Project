@@ -110,6 +110,10 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/festivalget/{states_name}',[InfoController::class, 'festivalget']);
     // 더보기 받아오는 url
     Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
+    // 검색조건 보내는 url
+    // Route::post('/',[InfoController::class, '']);
+    // 검색결과 받아오는 url
+    Route::get('/searchfestivalget/{states_name}/{start_at}/{end_at}/{searchkeyword}',[InfoController::class, 'searchkeyword']);
 });
 Route::get('/error', function () {
     return view('welcome');
