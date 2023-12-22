@@ -167,6 +167,8 @@ export default {
       besthitsinfoList: [],
       fixedinfoList: [],
       // statesName: [],
+      cities: [],
+      icon: [],
     };
   },
   created() {
@@ -174,35 +176,7 @@ export default {
     this.getMain()
     // this.getWeather()
   },
-  methods: {
-    getWeather() {
-        if (this.cityRanLoop) {
-            clearInterval(this.cityRanLoop);
-        }
-        let cities = ['대구', '서울', '부산','광주','대전'];
-        let i = 0; // 도시 인덱스를 유지할 변수 추가
-        const cityRan = () => {
-            let city = cities[i]
-            i = i+1;
-            if(i === cities.length){
-                i = 0;
-            }
-            console.log(city);
-            fetch('https://goweather.herokuapp.com/weather/' + city)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.temperature);
-                console.log(data.description);
-            })
-            .catch((error) => {
-                console.log('에러에러');
-            });
-        };
-        // 최초 한 번 호출
-        cityRan();
-        // 5초마다 반복 실행
-        this.cityRanLoop = setInterval(cityRan, 10000);
-    },
+  methods: {    
     // 메인에 나타날 데이터 불러오기
     getMain(){
 			const URL = '/main/info'
@@ -217,7 +191,38 @@ export default {
 				alert("데이터 에러 발생")
 			})
 		},
-
+    getWeather() {
+        // 초기화
+        if (this.cityRanLoop) {
+            clearInterval(this.cityRanLoop);
+        }
+        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];
+        let i = 0; // 도시 인덱스를 유지할 변수 추가
+        const cityRan = () => {
+            let city = cities[i]
+            i = i + 1;
+            if(i === cities.length){
+                i = 0;
+            }
+            console.log(city);
+            fetch('https://goweather.herokuapp.com/weather/' + city)
+            .then((response) => response.json())
+            .then((data) => {
+              document.querySelector('.main_wea_up').innerHTML = city;
+              document.querySelector('.mian_wea_degree').innerHTML = data['temperature'],
+              document.querySelector('.mian_wea_icon').innerHTML = data['description']
+                // console.log(data.temperature);
+                // console.log(data.description);
+            })
+            .catch((error) => {
+                console.log('에러에러');
+            });
+        };
+        // 최초 한 번 호출
+        cityRan();
+        // 10초마다 반복 실행
+        this.cityRanLoop = setInterval(cityRan, 10000);
+    },
   },
 };
 </script>
