@@ -23,10 +23,11 @@
 							<a href="#" target="_self">경상도오</a>
 							<ul class="depth1">
 								<li>
-									<router-link to="/region?ns=경상남도" @click="$store.commit('setNsFlg','1')">경상남도구</router-link>
+									<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
+									<a href="/region?ns=경상남도">경상남도구</a>
 								</li>
 								<li>
-									<router-link to="/region?ns=경상북도" @click="$store.commit('setNsFlg','2')">경상북돈디</router-link>
+									<a href="/region?ns=경상북도">경상북돈디</a>
 								</li>
 							</ul>
 						</li>

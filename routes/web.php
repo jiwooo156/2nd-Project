@@ -105,17 +105,17 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    // 시군명 받아오는 url
+    // 시군명 받아오는 url api
     Route::get('/state', [InfoController::class, 'stateget'])->name('state.get');
-    // 추천축제,관광지 받아오는 url
+    // 추천축제,관광지 받아오는 url api
     Route::get('/recommendf', [InfoController::class, 'recommendfestivalget']);
-    // 지역축제,관광지 받아오는 url
+    // 지역축제,관광지 받아오는 url api
     Route::get('/festivalget/{states_name}',[InfoController::class, 'festivalget']);
-    // 더보기 받아오는 url
+    // 더보기 받아오는 url api
     Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
-    // 검색조건 보내는 url
+    // 검색조건 보내는 url api
     // Route::post('/',[InfoController::class, '']);
-    // 검색결과 받아오는 url
+    // 검색결과 받아오는 url api
     Route::get('/searchkeyword',[InfoController::class, 'searchkeyword']);
 });
 

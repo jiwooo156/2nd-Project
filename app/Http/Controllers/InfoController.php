@@ -180,28 +180,34 @@ class InfoController extends Controller
     public function stateget(Request $req) {
         Log::debug("***** stateget start *****");
         Log::debug("request ns : ".$req->ns);
+
+        // response data 초기화 (정상 처리 아닐시, 에러로 세팅)
+        $responseData = [
+            'code' => 'E11'
+            ,'errorMsg' => 'Parameter Error'
+            ,'data' => null
+        ];
+        $httpCode = 400;
+
         // 시군명 + 경상북도남도 받아옴
-        $state_result1 = Info::select('states_name')
-                    ->where('ns_flg','경상남도')
-                    ->groupBy('states_name')
-                    ->orderBy('states_name')
-                    ->get();
-        $state_result2 = Info::select('states_name')
-                    ->where('ns_flg','경상북도')
-                    ->groupBy('states_name')
-                    ->orderBy('states_name')
-                    ->get();
-
-        // Log::debug("데이터 획득 : ".$state_result);
-
-        
+        if($req->ns === '경상남도'||$req->ns === '경상북도') {
+            // 경상남도/북도 선택 했을경우에만 데이터 받아오게함.
+            // 그래서 선택안하고 url에 직접 입력하면 if에서 걸러지고, 에러페이지 뜨게함.
+            $responseData['data'] = 
+                Info::select('states_name')
+                ->where('ns_flg',$req->ns)
+                ->groupBy('states_name')
+                ->orderBy('states_name')
+                ->get();
+            $responseData['code'] = '0';
+            $responseData['errorMsg'] = '';
+            // 정상처리시 http status code 200번으로 세팅
+            $httpCode = 200;
+        }
+        Log::debug("responseData : ", $responseData);
         Log::debug("***** stateget end *****");
-        return response()->json([
-            'code' => '0',
-            'data1' => $state_result1,
-            'data2' => $state_result2,
-            // Log::debug($state_result)
-        ], 200);
+
+        return response()->json($responseData, $httpCode);
     }
     // 추천축제,관광지 조회
     public function recommendfestivalget(Request $req) {

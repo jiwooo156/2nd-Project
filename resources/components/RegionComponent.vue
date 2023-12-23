@@ -3,12 +3,7 @@
 		<div class="region_header_frame">
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="6" :wrapAround="true" :transition="800" :autoplay="2000">
-					<Slide v-for="state in states1" :key="state" v-if="$store.state.nsFlg==='1'"
-					>
-						<div @click="getRegionfestival(state.states_name)" class="carousel__item pointer">{{ state.states_name }}</div>
-					</Slide>
-					<Slide v-for="state in states2" :key="state" v-if="$store.state.nsFlg==='2'"
-					>
+					<Slide v-for="state in states" :key="state">
 						<div @click="getRegionfestival(state.states_name)" class="carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
 					<template #addons>
@@ -20,8 +15,7 @@
 				<div>
 					<select id="region_select_list" v-model="searchstate">
 						<option>지역</option>
-						<option v-for="state in states1" :key="state" :value="state" v-if="$store.state.nsFlg==='1'">{{ state.states_name }}</option>
-						<option v-for="state in states2" :key="state" :value="state" v-if="$store.state.nsFlg==='2'">{{ state.states_name }}</option>
+						<option v-for="state in states" :key="state" :value="state">{{ state.states_name }}</option>
 					</select>
 						<input type="date" class="region_date" v-model="startdate">
 						-
@@ -124,8 +118,7 @@ export default {
 		return {
 			setting: '',
 			cities: ['경주시', '포항시', '영천시'],
-			states1: [],
-			states2: [],
+			states: [],
 			recommendfestival: [],
 			recommendtour: [],
 			regionfestival: [],
@@ -149,35 +142,41 @@ export default {
 		Pagination,
   	},
 	created() {
-		if(new URLSearchParams(window.location.search).get('ns')==="경상남도"){
-			this.$store.commit('setNsFlg','1')
-		}else if(new URLSearchParams(window.location.search).get('ns')==="경상북도"){
-			this.$store.commit('setNsFlg','2')
+		// url의 파라미터를 가져옴
+		const objUrlParam = new URLSearchParams(window.location.search);
+
+		// 파라미터의 ns를 확인해서 store의 NsFlg셋팅
+		// url의 파라미터 중 ns를 세팅함
+		if(objUrlParam.get('ns')==="경상남도"){
+			this.$store.commit('setNsFlg','1');
+		}else if(objUrlParam.get('ns')==="경상북도"){
+			this.$store.commit('setNsFlg','2');
 		}
-		this.getState(),
-		this.getRecommendFestival(),
+		this.getState( objUrlParam.get('ns') );
+		this.getRecommendFestival();
 		console.log('create');
-	},
-	mounted() {
-	},
-	updated() {
 	},
 	methods: {
 		// 시군명 가져오기
-		getState(){
+		getState(ns){
 			// 해당url의 데이터 가져오기
-			const URL = '/region/state/'
+			const URL = '/region/state?ns='+ ns;
+			// 헤더에서 클릭시 url 설정됨(ns에 남도/북도 설정됨)
+
 			axios.get(URL)
+			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			.then(res => {
-        		console.log("댄");
-				this.states1 = res.data.data1;
-				this.states2 = res.data.data2;
-				console.log(res.data.data);
-				console.log(this.states);
+				console.log("getState");
+				console.log(res.data);
+
+				if(res.data.code === '0') {
+					this.states = res.data.data;
+				} else {
+					this.$router.push('/error');
+				}
 			})
 			.catch(err => {
-        		console.log("캐치");
-				alert("데이터 에러 발생")
+        		this.$router.push('/error');
 			})
 		},
 		// 추천축제관광지 가져오기
