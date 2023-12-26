@@ -69,10 +69,12 @@
 			</div>
 			<div class="region_container_list">
 				<div class="region_container_body" v-for="rfestival in regionfestival" :key="rfestival">
-					<img :src="rfestival.img1">
-					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
-					<div class="region_title">{{ rfestival.title }}</div>
-					<div class="region_content">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+					<router-link :to='"/detail?id="+rfestival.id'>
+						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
+						<img :src="rfestival.img1">
+						<div class="region_title">{{ rfestival.title }}</div>
+						<div class="region_content">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -83,10 +85,12 @@
 			</div>
 			<div class="region_container_list" >
 				<div class="region_container_body" v-for="rtour in regiontour" :key="rtour">
-					<img :src="rtour.img1">
-					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
-					<div class="region_title">{{ rtour.title }}</div>
-					<div class="region_content">{{ rtour.content }}</div>
+					<router-link :to='"/detail?id="+rtour.id'>
+						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
+						<img :src="rtour.img1">
+						<div class="region_title">{{ rtour.title }}</div>
+						<div class="region_content">{{ rtour.content }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
@@ -100,10 +104,12 @@
 			</div>
 			<div class="region_container_list">
 				<div class="region_container_body" v-for="searchfestival in searchresults" :key="searchfestival">
-					<img :src="searchfestival.img1">
-					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
-					<div class="region_title">{{ searchfestival.title }}</div>
-					<div class="region_content">{{ searchfestival.content }}</div>
+					<router-link :to='"/detail?id="+searchfestival.id'>
+						<img :src="searchfestival.img1">
+						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
+						<div class="region_title">{{ searchfestival.title }}</div>
+						<div class="region_content">{{ searchfestival.content }}</div>
+					</router-link>
 				</div>
 			</div>
 		</div>
