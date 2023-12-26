@@ -126,7 +126,6 @@ export default {
 	data() {
 		return {
 			setting: '',
-			cities: ['경주시', '포항시', '영천시'],
 			states: [],
 			recommendfestival: [],
 			recommendtour: [],

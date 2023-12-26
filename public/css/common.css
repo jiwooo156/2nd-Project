@@ -1169,6 +1169,10 @@ margin-top:10px;
 	align-items: center;
 	flex-direction: column;
 	gap: 50px;
+
+	margin: 100px auto;
+    width: 95%;
+    max-width: 1000px;
 }
 /* 지역 페이지 헤더 */
 .region_header_frame {
@@ -1226,6 +1230,7 @@ margin-top:10px;
 }
 
 /* 추천 축제 */
+/* 공통부분시작 */
 .region_container {
 	/* background-color: beige; */
 	width: 90%;
@@ -1242,7 +1247,7 @@ margin-top:10px;
 }
 .region_container_list {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	/* grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); */
 	grid-gap: 10px;
 }
 .region_container_body {
@@ -1280,6 +1285,7 @@ margin-top:10px;
 	background: none;
 	float: right;
 }
+/* 공통부분끝 */
 /* 지역 관광지 */
 .region_container_header2 {
 	font-size: 20px;
@@ -1305,6 +1311,21 @@ margin-top:10px;
 	font-size: 1.5rem;
 }
 /* 지역 미디어쿼리 */
+/* pc */
+@media only screen and (min-width: 1024px) {
+	.region_container_list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		grid-gap: 10px;
+		
+		/* grid-template-columns: repeat(4, 400px);
+		height: 300px; */
+	}
+	/* .region_container_body img {
+		min-width: 400px;
+		height: 300px;
+	} */
+}
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
 	/* 지역페이지 */

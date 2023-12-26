@@ -218,13 +218,13 @@ class InfoController extends Controller
             select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits')
             ->where('main_flg','축제')
             ->orderBy('hits', 'desc')
-            ->limit(4)
+            ->limit(3)
             ->get();
         $recommend_tour = Info::
             select('id','title', 'content', 'img1', 'hits')
             ->where('main_flg','관광')
             ->orderBy('hits', 'desc')
-            ->limit(4)
+            ->limit(3)
             ->get();
 
         Log::debug("데이터 획득 : ".$recommend_festival.$recommend_tour);
