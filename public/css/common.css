@@ -1264,6 +1264,12 @@ margin-top:10px;
 .region_content {
 	font-size: 1rem;
 }
+/* content영역에 글 너무 길어지면 요약. 일단 추천관광지에만 줬음 */
+.summary {
+	overflow-y: hidden;
+	white-space: nowrap;
+	height: 50px;
+}
 /* 지역 축제 */
 .region_sort {
 	text-align: right;
@@ -1294,6 +1300,7 @@ margin-top:10px;
 	text-align: center;
 } 
 .region_p4 {
+	font-size: 2.5rem;
 	margin-bottom: 2%;
 }
 .region_more_btn {
