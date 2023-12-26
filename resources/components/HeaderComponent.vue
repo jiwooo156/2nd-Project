@@ -32,13 +32,19 @@
 							</ul>
 						</li>
 						<li>
-							<a href="#" target="_self">배고프당</a>
+							<a href="#" target="_self">커뮤니티</a>
 							<ul class="depth1">
 								<li>
-									<a href="#" target="_self" onclick="">마아라탕</a>
+									<a href="#" target="_self" onclick="">자유게시판</a>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">먹구시펑</a>
+									<a href="#" target="_self" onclick="">정보게시판</a>
+								</li>
+								<li>
+									<a href="#" target="_self" onclick="">질문게시판</a>
+								</li>
+								<li>
+									<a href="#" target="_self" onclick="">건의게시판</a>
 								</li>
 							</ul>
 						</li>

@@ -195,8 +195,7 @@ export default {
         if (this.cityRanLoop) {
             clearInterval(this.cityRanLoop);
         }
-        // let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];
-        let cities = ['뉴욕', '도쿄', '런던', '베이징'];        
+        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
         let i = 0; // 도시 인덱스를 유지할 변수 추가
         const cityRan = () => {
             let city = cities[i]
