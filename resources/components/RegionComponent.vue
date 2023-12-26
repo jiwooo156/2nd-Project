@@ -15,7 +15,7 @@
 				<div>
 					<select id="region_select_list" v-model="searchstate">
 						<option>지역</option>
-						<option v-for="state in states" :key="state" :value="state">{{ state.states_name }}</option>
+						<option v-for="state in states" :key="state">{{ state.states_name }}</option>
 					</select>
 						<input type="date" class="region_date" v-model="startdate">
 						-
@@ -27,7 +27,7 @@
 				</div>
 			</div>		
 		</div>
-		<div class="region_container" v-if="!regionnameflg">
+		<div class="region_container" v-if="!regionnameflg&&!(searchflg)">
 			<div class="region_container_header">
 				<p class="region_p1">이런 축제</p>
 				<p class="region_p2">추천드려요</p>
@@ -42,7 +42,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="region_container" v-if="!regionnameflg">
+		<div class="region_container" v-if="!regionnameflg&&!(searchflg)">
 			<div class="region_container_header">
 				<p class="region_p1">이런 관광지</p>
 				<p class="region_p2">추천드려요</p>
@@ -57,14 +57,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="region_sort">
-			<button class="region_sort1 pointer">인기순</button>
+		<!-- <div class="region_sort">
+			<button class="region_sort1 pointer">인기순</button> -->
 			<!-- <div class="region_sort_line"></div> -->
-			<button class="region_sort2 pointer">최신순</button>
-		</div>
-		<div class="region_container">
+			<!-- <button class="region_sort2 pointer">최신순</button>
+		</div> -->
+		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
 			<div class="region_container_header2">
-				<p class="region_p4" v-if="regionnameflg">{{ this.regionname }}의 축제를 여기에서 확인 해 보세요!</p>
+				<p class="region_p4">{{ this.nowstate }}의 축제를 여기에서 확인 해 보세요!</p>
+				<p v-if="this.regionfestival.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 			</div>
 			<div class="region_container_list">
 				<div class="region_container_body" v-for="rfestival in regionfestival" :key="rfestival">
@@ -75,11 +76,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="region_container">
+		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
 			<div class="region_container_header2">
-				<p class="region_p4" v-if="regionnameflg">{{ this.regionname }}의 관광지를 여기에서 확인 해 보세요!</p>
+				<p class="region_p4">{{ this.nowstate }}의 관광지를 여기에서 확인 해 보세요!</p>
+				<p v-if="this.regiontour.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 			</div>
-			<div class="region_container_list">
+			<div class="region_container_list" >
 				<div class="region_container_body" v-for="rtour in regiontour" :key="rtour">
 					<img :src="rtour.img1">
 					<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
@@ -89,11 +91,12 @@
 			</div>
 		</div>
 		<div class="region_more_btn">
-			<button class="pointer" v-if="regionnameflg" @click="getMoreFestival()">더보기</button>
+			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)" @click="getMoreFestival()">더보기</button>
 		</div>
-		<div class="region_container">
+		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
 			<div class="region_container_header2">
-				<p class="region_p4">검색 결과 입니다.</p>
+				<p v-if="this.searchresults.length > 0" class="region_p4">검색 결과 입니다.</p>
+				<p v-if="this.searchresults.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 			</div>
 			<div class="region_container_list">
 				<div class="region_container_body" v-for="searchfestival in searchresults" :key="searchfestival">
@@ -129,9 +132,13 @@ export default {
 			nowstate: "", 
 			regionname: "",
 			regionnameflg: false,
+			searchflg: false,
+			moreflg: false,
 			searchstate: "지역",
-			startdate: "2023-12-01",
-			enddate: "2023-12-31",
+			// startdate: "2023-12-01",
+			// enddate: "2023-12-31",
+			startdate: "",
+			enddate: "",
 			searchkeyword: "",
 			searchresults: [],
 		}
@@ -167,7 +174,7 @@ export default {
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			.then(res => {
 				console.log("getState");
-				console.log(res.data);
+				console.log("레스데이터"+res.data);
 
 				if(res.data.code === '0') {
 					this.states = res.data.data;
@@ -200,13 +207,19 @@ export default {
 			const URL = '/region/festivalget/'+state
 			axios.get(URL)
 			.then(res => {
-				this.nowstate = state;
+				this.offset = 4;
+				this.moreflg=false;
 				console.log("지역축제 댄");
+				console.log("현재지역 댄");
+				this.nowstate = state;
+				console.log(this.nowstate);
+				console.log("축제정보");
 				this.regionfestival = res.data.sfestival;
-				this.regiontour = res.data.stour;
-				this.regionname = res.data.sfestival[0].states_name;
 				console.log(this.regionfestival);
+				console.log("타워 값넣기");
+				this.regiontour = res.data.stour;
 				console.log(this.regiontour);
+				this.searchflg = false;
 				this.regionnameflg = true;
 			})
 			.catch(err => {
@@ -222,9 +235,15 @@ export default {
 			console.log("오프셋"+this.offset);
 			axios.get(URL)
 			.then(res => {
+				if(res.data.mfestival.length === 0&&res.data.mtour.length === 0){
+					alert("조회된 게시물이 없습니다")
+					this.moreflg=true
+				}
+				console.log(res.data.mfestival);
 				// 중복된 속성을 허용하고 그대로 합침				
+				console.log("페스티발"+res.data.mfestival);
+				console.log("관광"+res.data.mtour);
 				console.log("원래잇던애");
-				console.log(this.regiontour);
 				this.regionfestival = [ ...this.regionfestival, ...res.data.mfestival ];
 				this.regiontour = [ ...this.regiontour, ...res.data.mtour ];
 				console.log("추가한후");
@@ -238,16 +257,19 @@ export default {
 		},
 		// 검색 결과 가져오기
 		searchFestival() {
-			console.log(this.startdate);
-			console.log(this.enddate);
-			console.log(this.searchkeyword);
+			if(this.searchstate === "지역"){
+				this.searchstate = "";
+			}
 			console.log(this.searchstate);
 			const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
 			axios.get(URL)
 			.then(res => {
+				this.moreflg=false
 				console.log("검색결과 댄");
 				this.searchresults = res.data.searchresult;
 				console.log(this.searchresults);
+				this.regionnameflg = false;
+				this.searchflg = true;
 			})
 			.catch(err => {
 				console.log("캐치");
