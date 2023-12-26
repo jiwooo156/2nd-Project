@@ -4,32 +4,36 @@
 	v-if="$store.state.openPwModal"
 >
 	<div class="user_white-bg">
+		<h3 class="font_air bold center user_pwchange_box_header">비밀번호 수정</h3>
 		<div class="user_pwchange_box">
-			<p>비밀번호는 <span class="user_pwchange_guide">영어,숫자,특수문자(!?~@#)최소1개포함 8~20</span>으로 등록하셔야 합니다.</p>
+			<p class="font_air bold">비밀번호는 <span class="user_pwchange_guide font_air bold">영어,숫자,특수문자(!?~@#)최소1개포함 8~20</span>으로 등록하셔야 합니다.</p>
 		</div>			
 		<div class="user_box_password">
-			<h3>비밀번호 수정</h3>
 			<br>
-			<label for="user_del_reason">변경하실 비밀번호 : </label>
-			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20"><br>
-			<span v-show="user_err_pw1" class="sign_errmsg">8~20글자 사이로 작성해 주세요.</span>
-			<span v-show="user_err_pw2" class="sign_errmsg">영어를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw3" class="sign_errmsg">숫자를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw4" class="sign_errmsg">특수문자(?~!@#)를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw5" class="sign_errmsg">비밀번호 형식이 올바르지 않습니다.</span>
-			<span v-show="user_com_pw" class="sign_commsg">사용가능한 비밀번호 입니다.</span>		
+			<div>
+				<label for="user_del_reason" class=" font_air bold">변경하실 비밀번호</label>
+			</div>
+			<span v-show="user_err_pw1" class="sign_errmsg font_air bold">8~20글자 사이로 작성해 주세요.</span>
+			<span v-show="user_err_pw2" class="sign_errmsg font_air bold">영어를 1글자 이상 작성해 주세요.</span>
+			<span v-show="user_err_pw3" class="sign_errmsg font_air bold">숫자를 1글자 이상 작성해 주세요.</span>
+			<span v-show="user_err_pw4" class="sign_errmsg font_air bold">특수문자(?~!@#)를 1글자 이상 작성해 주세요.</span>
+			<span v-show="user_err_pw5" class="sign_errmsg font_air bold">비밀번호 형식이 올바르지 않습니다.</span>
+			<span v-show="user_com_pw" class="sign_commsg font_air bold">사용가능한 비밀번호 입니다.</span>		
+			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20" class="font_air bold user_pwchange_input"><br>
 			<br>	
-			<label for="user_del_reason">비밀번호 확인 : </label>
-			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20"><br>
-			<span v-show="user_err_pw_chk" class="sign_errmsg">비밀번호와 일치하지 않습니다.</span>
-			<span v-show="user_com_pw_chk" class="sign_commsg">비밀번호와 일치합니다.</span>
+			<div>
+				<label for="user_del_reason" class="font_air bold">비밀번호 확인 : </label>
+			</div>
+			<span v-show="user_err_pw_chk" class="sign_errmsg font_air bold">비밀번호와 일치하지 않습니다.</span>
+			<span v-show="user_com_pw_chk" class="sign_commsg font_air bold">비밀번호와 일치합니다.</span>
+			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20" class="font_air bold font_air bold user_pwchange_input"><br>
 		</div>
 			<br><br>			
 			<div class="user_button_box_password">
-				<button class="userChk_button_confirm"
+				<button class="userChk_button_confirm font_air bold"
 					@click="userpwchange"
 				>변경</button>
-				<button class="userChk_button" @click="ctlPasswordModal(false)">취소</button>		
+				<button class="userChk_button font_air bold" @click="ctlPasswordModal(false)">취소</button>		
 			</div>
 	</div>	
 </div>
@@ -39,28 +43,29 @@
 	<div class="user_white-bg">		
 		<div class="user_nickChange_box">
 			<div class="user_h3_nick">
-				<h3>닉네임 수정</h3>
+				<h3 class="font_air bold">닉네임 수정</h3>
 			</div>
 			<div class="user_box_nick">
-				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg">2~8글자 사이로 작성해 주세요.</span>
-				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어,숫자,한글만 사용 가능 합니다</span>
-				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg">닉네임 형식이 올바르지 않습니다.</span>
+				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
+				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">영어,숫자,한글만 사용 가능 합니다</span>
+				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
 				<span
 					v-if="$store.state.nickFlg === 1&&this.com_nick" 
-					class="sign_commsg"
+					class="sign_commsg font_air bold"
 				>사용 가능한 닉네임 입니다.</span>
 				<span
 					v-if="$store.state.nickFlg === 2&&this.com_nick" 
-					class="sign_errmsg"
+					class="sign_errmsg font_air bold"
 				>이미 사용중인 닉네임 입니다.</span>
 				<span
 					v-for="item in $store.state.varErr" :key="item"
 					v-if="this.com_nick"
-					class="sign_errmsg"
+					class="sign_errmsg font_air bold"
 				>{{ item[0] }}</span>
 				<br>
-				<label for="user_del_reason">변경하실 닉네임</label><br>
-					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8" 
+				<label for="user_del_reason font_air bold">변경하실 닉네임</label><br>
+					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8"
+						class="font_air bold" 
 						v-model="nick"
 						@input="koreanick"
 					>
@@ -81,16 +86,16 @@
 	>
 	<div class="user_white-bg font_air bold">
 		<div class="user_withdraw font_air bold">
-			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning"/>
+			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning font_air bold"/>
 		<h3 class="user_h3_userout font_air bold">회원 탈퇴</h3>
-			<span class="user_warningText">탈퇴하시면 복구 안됩니다</span>
+			<span class="user_warningText font_air bold">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
-				<label for="user_del_reason">탈퇴사유 : </label>
-				<select name="reason" id="user_del_reason" v-model="delreason">
-					<option>서비스 불만족</option>
-					<option>원하는 정보가 없음</option>
-					<option>불건전한 내용</option>
-					<option>기타</option>
+				<label for="user_del_reason" class="font_air bold">탈퇴사유 : </label>
+				<select name="reason" id="user_del_reason" v-model="delreason" class="font_air bold">
+					<option class="font_air bold">서비스 불만족</option>
+					<option class="font_air bold">원하는 정보가 없음</option>
+					<option class="font_air bold">불건전한 내용</option>
+					<option class="font_air bold">기타</option>
 				</select>
 				<br>
 				<input type="text"
@@ -98,6 +103,7 @@
 					v-if="delinput"
 					placeholder="직접입력 50자 내외"
 					maxlength="50"
+					class="font_air bold"
 				>
 			<br>
 			<div class="user_button_box_userout">
@@ -121,7 +127,7 @@
 	<br>
 	<div class="user_infocontainer">
 		<div class="user_userInfo_text3">
-			<h3>회원정보 설정</h3>
+			<h3 class=" font_air bold">회원정보 설정</h3>
 		</div>
 		<table class="user_table">
 			<tbody>
@@ -136,16 +142,16 @@
 				</tr>
 				<tr>
 					<td class="user_rowname font_air bold">비밀번호</td>
-					<td class="user_rowcontent font_air bold">*********<button type="submit" class="user_button" @click="ctlPasswordModal(true)">변경</button></td>
+					<td class="user_rowcontent font_air bold">*********<button type="submit" class="user_button font_air bold" @click="ctlPasswordModal(true)">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname font_air bold">닉네임</td>
 					<td class="user_rowcontent font_air bold"
-					>{{ $store.state.NowUser }}<button type="submit" class="user_button"  @click="ctlNickModal(true)">변경</button></td>
+					>{{ $store.state.NowUser }}<button type="submit" class="user_button font_air bold"  @click="ctlNickModal(true)">변경</button></td>
 				</tr>
 				<tr>
 					<td class="user_rowname font_air bold">탈퇴신청</td>
-					<td class="user_rowcontent font_air bold"><button type="submit" class="user_button_exit"  @click="ctlDelModal(true)">탈퇴</button></td>
+					<td class="user_rowcontent font_air bold"><button type="submit" class="user_button_exit font_air bold"  @click="ctlDelModal(true)">탈퇴</button></td>
 				</tr>	
 			</tbody>
 		</table>

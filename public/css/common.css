@@ -907,7 +907,7 @@ input[type=password]::placeholder {
 }
 
 .sign_errmsg{
-	color: red;
+	color: #ea1d1d;
 	padding-left: 20px;
 }
 .sign_commsg{
@@ -948,7 +948,7 @@ text-align: center;
     height: 50px;
     text-align: center;
     border: 1px solid #B7B7B7;
-    border-top: 4px solid red;
+    border-top: 4px solid #ea1d1d;
     border-bottom: none;
 	margin-top: 60px;
     border-radius: 5px 5px 0 0;
@@ -1004,7 +1004,7 @@ text-align: center;
 }
 /* 모달 */
 .user_warning{
-	color:red;
+	color:#ea1d1d;
 	font-size:60px;
 }
 .user_black-bg{
@@ -1017,20 +1017,28 @@ text-align: center;
     margin-top: 81px;
 }
 .user_white-bg{
-    box-sizing: border-box;
-	margin: 0 auto;
+	box-sizing: border-box;
+    margin: 170px auto 0px auto;
     width: 95%;
     background-color: white;
     border-radius: 8px;
     padding: 20px;
-	height: 585px;
+    max-width: 700px;
 }
 .user_pwchange_box{
-	border: none;
-    height: 70px;
+    border: none;
+    width: 95%;
     padding: 20px;
-    background: #d7d7d7;
+    background: #fff7f7;
     border-radius: 5px;
+    max-width: 750px;
+    margin: 20px auto 0px auto;
+}
+.user_pwchange_box_header{
+	font-size: 1.5rem;
+}
+.user_pwchange_input{
+	width: 100%;
 }
 .user_nickChange_box{
 	border: none;
@@ -1043,14 +1051,14 @@ text-align: center;
 	margin-top:10px;
 }
 .user_withdraw{
-	background-color: #b7b7b7;
-	border-radius: 5px;
+	/* color: #ea1d1d; */
 }
 .user_pwchange_guide{
-	color: red;
+	color: #ea1d1d;
 }
 .user_box_password{
-	margin-top: 35px;
+    margin-top: 10px;
+    text-align: left;
 }
 .user_button_box_password{
 margin-top:10px;
@@ -1061,13 +1069,7 @@ margin-top:10px;
 .user_button_box_userout{
 	margin-top:20px;
 }
-#user_pw{
-	margin-left:20px;
-}
-#user_pw_chk{
-	margin-left:52px;
-	margin-top: 30px;
-}
+
 #user_nick{
 	margin-left:20px;
 }
@@ -1092,7 +1094,6 @@ margin-top:10px;
 	margin:5px;
 	margin-right:40px;
 	text-decoration: none;
-	color: blue;
 }
 .userChk_button_negative{
 	box-sizing: content-box;
@@ -1104,13 +1105,13 @@ margin-top:10px;
 	cursor: pointer;
 	margin:5px;
 	text-decoration: none;
-	color: red;
+	color: #ea1d1d;
 }
 #user_del_reason_input::placeholder{
 	text-align: center;
 }
 .user_warningText{
-	color:red;
+	color:#ea1d1d;
 }
 /* 유저확인 */
 .userChk_container{
@@ -1149,7 +1150,7 @@ margin-top:10px;
     height: 50px;
     text-align: center;
     border: 1px solid #B7B7B7;
-    border-top: 4px solid red;
+    border-top: 4px solid #ea1d1d;
     border-bottom: none;
 	margin-top: 113px;
     border-radius: 5px 5px 0 0;
@@ -1641,7 +1642,7 @@ margin-top:10px;
 }
 
 .auth_errmsg{
-	color: red;
+	color: #ea1d1d;
     padding-left: 9px;
     font-size: 0.85rem;
 }
