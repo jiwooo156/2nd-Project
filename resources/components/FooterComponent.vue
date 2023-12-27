@@ -58,20 +58,10 @@
 <script>
 export default {
 	name: 'FooterComponent',
-	props: {
-	},
-	components: {
-	},
 	data() {
 		return {
 			setting: '',
 		}
 	},
-	created() {
-	},
-	mounted() {
-	},
-	methods: {
-	}
 }
 </script>

@@ -6,7 +6,7 @@
     <!-- 메인 영역 -->
     <router-view></router-view>
     <!-- 푸터 영역 -->
-    <FooterComponent></FooterComponent>
+    <!-- <FooterComponent></FooterComponent> -->
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
@@ -36,15 +36,15 @@ export default {
         },
     },
     created() {
-        this.localStoragechk()
-        this.$store.commit('setLoading',true)
+        this.localStoragechk();
+        this.$store.commit('setLoading',true);
     },
     updated(){
-        console.log('업데이트')
-        this.localStoragechk()
+        console.log('업데이트');
+        this.localStoragechk();
     },
     mounted(){
-        this.$store.commit('setLoading',false)
+        this.$store.commit('setLoading',false);
     },
 }
 </script>
