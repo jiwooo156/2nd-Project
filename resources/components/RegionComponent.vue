@@ -183,8 +183,6 @@ export default {
 			item: 7, // 초기값 설정
 			moreflg: false,
 			searchstate: "지역",
-			// startdate: "2023-12-01",
-			// enddate: "2023-12-31",
 			startdate: "",
 			enddate: "",
 			searchkeyword: "",
@@ -213,8 +211,8 @@ export default {
 			this.$store.commit('setNsFlg','2');
 		}
 		this.getState( objUrlParam.get('ns') );
-		this.getRecommendFestival();
-		console.log('create');
+		this.getRecommendFestival(objUrlParam.get('ns'));
+		// console.log('create');
 	},
 	mounted() {
 		// 오늘날짜
@@ -237,8 +235,8 @@ export default {
 			axios.get(URL)
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			.then(res => {
-				console.log("getState");
-				console.log("레스데이터"+res.data);
+				// console.log("getState");
+				// console.log("레스데이터"+res.data);
 
 				if(res.data.code === '0') {
 					this.states = res.data.data;
@@ -251,8 +249,8 @@ export default {
 			})
 		},
 		// 추천축제관광지 가져오기
-		getRecommendFestival() {
-			const URL = '/region/recommendf'
+		getRecommendFestival(ns) {
+			const URL = '/region/recommendf?ns='+ ns;
 			axios.get(URL)
 			.then(res => {
 				console.log("추천축제 댄");
@@ -262,61 +260,63 @@ export default {
 				console.log(this.recommendtour);
 			})
 			.catch(err => {
-				console.log("캐치");
-				alert("데이터 에러 발생")
+				// console.log("캐치");
+				alert("데이터 에러 발생");
 			})
 		},	
 		// 지역축제관광지 가져오기
 		getRegionfestival(state) {
-			const URL = '/region/festivalget/'+state
+			const URL = '/region/festivalget/'+state;
 			axios.get(URL)
 			.then(res => {
 				this.offset = 4;
 				this.moreflg=false;
-				console.log("지역축제 댄");
-				console.log("현재지역 댄");
+				// console.log("지역축제 댄");
+				// console.log("현재지역 댄");
 				this.nowstate = state;
-				console.log(this.nowstate);
-				console.log("축제정보");
+				// console.log(this.nowstate);
+				// console.log("축제정보");
 				this.regionfestival = res.data.sfestival;
-				console.log(this.regionfestival);
-				console.log("타워 값넣기");
+				// console.log(this.regionfestival);
+				// console.log("타워 값넣기");
 				this.regiontour = res.data.stour;
-				console.log(this.regiontour);
+				// console.log(this.regiontour);
 				this.searchflg = false;
 				this.regionnameflg = true;
 			})
 			.catch(err => {
-				console.log("캐치");
-				alert("데이터 에러 발생")
+				// console.log("캐치");
+				alert("데이터 에러 발생");
 			})
 		},
 		// 더보기 지역축제,관광지 가져오기
 		getMoreFestival() {
-			console.log(this.nowstate)
-			const URL = '/region/morefestivalget?states_name='+this.nowstate+'&offset='+this.offset
-			console.log("현재주소"+this.nowstate);
-			console.log("오프셋"+this.offset);
+			// console.log(this.nowstate)
+			const URL = '/region/morefestivalget?states_name='+this.nowstate+'&offset='+this.offset;
+			// console.log("현재주소"+this.nowstate);
+			// console.log("오프셋"+this.offset);
 			axios.get(URL)
 			.then(res => {
 				if(res.data.mfestival.length === 0&&res.data.mtour.length === 0){
 					alert("조회된 게시물이 없습니다")
-					this.moreflg=true
+					// moreflg가 false일때 더보기버튼 활성화
+					this.moreflg=true;
 				}
-				console.log(res.data.mfestival);
+				// console.log(res.data.mfestival);
+
 				// 중복된 속성을 허용하고 그대로 합침				
-				console.log("페스티발"+res.data.mfestival);
-				console.log("관광"+res.data.mtour);
-				console.log("원래잇던애");
+				// console.log("페스티발"+res.data.mfestival);
+				// console.log("관광"+res.data.mtour);
+				// console.log("원래잇던애");
 				this.regionfestival = [ ...this.regionfestival, ...res.data.mfestival ];
 				this.regiontour = [ ...this.regiontour, ...res.data.mtour ];
-				console.log("추가한후");
-				console.log(this.regiontour);
+				// console.log("추가한후");
+				// console.log(this.regiontour);
 				this.offset = this.offset + 4;
 			})
 			.catch(err => {
-				console.log("캐치");
-				alert("데이터 에러 발생")
+				// console.log("캐치");
+				alert("데이터 에러 발생");
 			})
 		},
 		// 검색 결과 가져오기
