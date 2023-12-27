@@ -11,21 +11,21 @@
 		<div class="user_box_password">
 			<br>
 			<div>
-				<label for="user_del_reason" class=" font_air bold">변경하실 비밀번호</label>
+				<label for="user_del_reason" class=" font_air bold">비밀번호</label>
+				<span v-show="user_err_pw1" class="user_errmsg font_air bold">8~20글자 사이로 작성해 주세요.</span>
+				<span v-show="user_err_pw2" class="user_errmsg font_air bold">영어를 1글자 이상 작성해 주세요.</span>
+				<span v-show="user_err_pw3" class="user_errmsg font_air bold">숫자를 1글자 이상 작성해 주세요.</span>
+				<span v-show="user_err_pw4" class="user_errmsg font_air bold">특수문자(?~!@#)를 사용해 주세요.</span>
+				<span v-show="user_err_pw5" class="user_errmsg font_air bold">비밀번호 형식이 올바르지 않습니다.</span>
+				<span v-show="user_com_pw" class="user_commsg font_air bold">사용가능한 비밀번호 입니다.</span>		
 			</div>
-			<span v-show="user_err_pw1" class="sign_errmsg font_air bold">8~20글자 사이로 작성해 주세요.</span>
-			<span v-show="user_err_pw2" class="sign_errmsg font_air bold">영어를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw3" class="sign_errmsg font_air bold">숫자를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw4" class="sign_errmsg font_air bold">특수문자(?~!@#)를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw5" class="sign_errmsg font_air bold">비밀번호 형식이 올바르지 않습니다.</span>
-			<span v-show="user_com_pw" class="sign_commsg font_air bold">사용가능한 비밀번호 입니다.</span>		
 			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20" class="font_air bold user_pwchange_input"><br>
 			<br>	
 			<div>
-				<label for="user_del_reason" class="font_air bold">비밀번호 확인 : </label>
+				<label for="user_del_reason" class="font_air bold">비밀번호 확인</label>		
+				<span v-show="user_err_pw_chk" class="user_errmsg font_air bold">비밀번호와 일치하지 않습니다.</span>
+				<span v-show="user_com_pw_chk" class="user_commsg font_air bold">비밀번호와 일치합니다.</span>
 			</div>
-			<span v-show="user_err_pw_chk" class="sign_errmsg font_air bold">비밀번호와 일치하지 않습니다.</span>
-			<span v-show="user_com_pw_chk" class="sign_commsg font_air bold">비밀번호와 일치합니다.</span>
 			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20" class="font_air bold font_air bold user_pwchange_input"><br>
 		</div>
 			<br><br>			
@@ -45,30 +45,35 @@
 			<div class="user_h3_nick">
 				<h3 class="font_air bold">닉네임 수정</h3>
 			</div>
+			<div class="user_pwchange_box">
+				<p class="font_air bold">닉네임은 <span class="user_pwchange_guide font_air bold">영어,숫자,한글로 이루어진 2~8</span>으로 등록하셔야 합니다.</p>
+			</div>			
 			<div class="user_box_nick">
-				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
-				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">영어,숫자,한글만 사용 가능 합니다</span>
-				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
-				<span
-					v-if="$store.state.nickFlg === 1&&this.com_nick" 
-					class="sign_commsg font_air bold"
-				>사용 가능한 닉네임 입니다.</span>
-				<span
-					v-if="$store.state.nickFlg === 2&&this.com_nick" 
-					class="sign_errmsg font_air bold"
-				>이미 사용중인 닉네임 입니다.</span>
-				<span
-					v-for="item in $store.state.varErr" :key="item"
-					v-if="this.com_nick"
-					class="sign_errmsg font_air bold"
-				>{{ item[0] }}</span>
 				<br>
-				<label for="user_del_reason font_air bold">변경하실 닉네임</label><br>
-					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8"
-						class="font_air bold" 
-						v-model="nick"
-						@input="koreanick"
-					>
+				<div>
+					<label for="user_del_reason" class=" font_air bold">변경하실 닉네임</label>
+					<span v-show="err_nick1" v-if="!(this.com_nick)" class="user_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
+					<span v-show="err_nick2" v-if="!(this.com_nick)" class="user_errmsg font_air bold">영어,숫자,한글만 사용 가능 합니다</span>
+					<span v-show="err_nick3" v-if="!(this.com_nick)" class="user_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
+					<span
+						v-if="$store.state.nickFlg === 1&&this.com_nick" 
+						class="user_commsg font_air bold"
+					>사용 가능한 닉네임 입니다.</span>
+					<span
+						v-if="$store.state.nickFlg === 2&&this.com_nick" 
+						class="user_errmsg font_air bold"
+					>이미 사용중인 닉네임 입니다.</span>
+					<span
+						v-for="item in $store.state.varErr" :key="item"
+						v-if="this.com_nick"
+						class="user_errmsg font_air bold"
+					>{{ item[0] }}</span>
+				</div>
+				<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8"
+					class="font_air bold" 
+					v-model="nick"
+					@input="koreanick"
+				>
 			</div>
 			<br><br>		
 			
@@ -87,7 +92,7 @@
 	<div class="user_white-bg font_air bold">
 		<div class="user_withdraw font_air bold">
 			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning font_air bold"/>
-		<h3 class="user_h3_userout font_air bold">회원 탈퇴</h3>
+		<h3 class="user_h3_userout font_air bold">니 내 없어도 개안캤나?</h3>
 			<span class="user_warningText font_air bold">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
 				<label for="user_del_reason" class="font_air bold">탈퇴사유 : </label>

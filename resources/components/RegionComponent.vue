@@ -2,12 +2,13 @@
 	<div class="region_frame">
 		<div class="region_header_frame">
 			<div class="region_slider_container">
-				<Carousel :itemsToShow="6" :wrapAround="true" :transition="800" :autoplay="2000">
+				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="4000" :mouseDrag="true" >
 					<Slide v-for="state in states" :key="state">
-						<div @click="getRegionfestival(state.states_name)" class="carousel__item pointer">{{ state.states_name }}</div>
+						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
 					<template #addons>
-						<Pagination />
+						<navigation />
+      					<pagination />
 					</template>
 				</Carousel>
 			</div>
@@ -63,27 +64,29 @@
 			<!-- <button class="region_sort2 pointer">최신순</button>
 		</div> -->
 		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
-			<div class="region_container_header2">
+			<div class="region_container_header">
 				<p class="region_p4">{{ this.nowstate }}의 축제를 여기에서 확인 해 보세요!</p>
-				<p v-if="this.regionfestival.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 			</div>
 			<div class="region_container_list">
+				<p v-if="this.regionfestival.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 				<div class="region_container_body" v-for="rfestival in regionfestival" :key="rfestival">
 					<router-link :to='"/detail?id="+rfestival.id'>
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 						<img :src="rfestival.img1">
-						<div class="region_title">{{ rfestival.title }}</div>
-						<div class="region_content">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+						<div>
+							<div class="region_title">{{ rfestival.title }}</div>
+							<div class="region_content">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+						</div>
 					</router-link>
 				</div>
 			</div>
 		</div>
 		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
-			<div class="region_container_header2">
+			<div class="region_container_header">
 				<p class="region_p4">{{ this.nowstate }}의 관광지를 여기에서 확인 해 보세요!</p>
-				<p v-if="this.regiontour.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 			</div>
 			<div class="region_container_list" >
+				<p v-if="this.regiontour.length === 0" class="region_p4">검색된 결과물이 없습니다.</p>
 				<div class="region_container_body" v-for="rtour in regiontour" :key="rtour">
 					<router-link :to='"/detail?id="+rtour.id'>
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
@@ -118,8 +121,8 @@
 <script>
 import axios from 'axios'
 import { defineComponent } from 'vue'
-import { Carousel, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 export default {
 	name: 'RegionComponent',
@@ -138,6 +141,7 @@ export default {
 			regionname: "",
 			regionnameflg: false,
 			searchflg: false,
+			item: 7, // 초기값 설정
 			moreflg: false,
 			searchstate: "지역",
 			// startdate: "2023-12-01",
@@ -152,6 +156,7 @@ export default {
 		Carousel,
 		Slide,
 		Pagination,
+		Navigation,
   	},
 	created() {
 		// url의 파라미터를 가져옴
@@ -167,6 +172,15 @@ export default {
 		this.getState( objUrlParam.get('ns') );
 		this.getRecommendFestival();
 		console.log('create');
+	},
+	mounted() {
+		// 화면 크기에 따라 itemsToShow를 동적으로 업데이트
+		this.updateItem();
+		window.addEventListener("resize", this.updateItem);
+	},
+	beforeDestroy() {
+		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
+		window.removeEventListener("resize", this.updateItem);
 	},
 	methods: {
 		// 시군명 가져오기
@@ -280,6 +294,20 @@ export default {
 				console.log("캐치");
 				alert("데이터 에러 발생")
 			})
+		},
+		updateItem() {
+			// 화면 크기에 따라 itemsToShow를 조절
+			if (window.innerWidth <= 607) {
+				this.item = 3;
+			} else if (window.innerWidth <= 747) {
+				this.item = 4;
+			} else if (window.innerWidth <= 904) {
+				this.item = 5;
+			} else if (window.innerWidth <= 1024) {
+				this.item = 6;
+			} else{
+				this.item = 7;
+			}
 		},
 	}
 }
