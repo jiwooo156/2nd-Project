@@ -72,11 +72,14 @@
 				>
 				<div class="detail_replie_flex">
 					<div class="font_air bold detail_replie_nick">
-					{{ data.nick }}
-				</div>
-				<div class="font_air bold detail_replie_created_at">
-					{{ converttime(data.created_at) }}
-				</div>
+						{{ data.nick }}
+						<span class="font_air bold">
+							({{ masking(data.email) }})
+						</span>
+					</div>
+					<div class="font_air bold detail_replie_created_at">
+						{{ converttime(data.created_at) }}
+					</div>
 				</div>
 				<div class="font_air bold detail_replie_content">
 					{{ data.replie }}
@@ -149,17 +152,16 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){
-					console.log("진입");
-					this.detaildata = res.data.data[0]
-					this.repliedata = res.data.replie
-					this.repliecount = res.data.repliecount
-					console.log(this.repliedata);
+					this.detaildata = res.data.data[0];
+					this.repliedata = res.data.replie;
+					this.repliecount = res.data.repliecount;
+					
 				}else if(res.data.code==="E99"){
-					this.$router.push('/error');
+					alert(res.data.errmsg);
 				}
 			})
 			.catch(err => {
-				console.log("캐치");
+				alert('에러가 발생했습니다');
 			})
 		},
 		// 댓글작성
@@ -172,11 +174,9 @@ export default {
 			axios.post(URL,formData)
 			.then(res =>{
 				if(res.data.code==="0"){
-					console.log("댄입장")
-					console.log(res.data.data)
-					this.replie = "",
-					this.repliecount++,
-					this.repliedata.unshift(res.data.data)
+					this.replie = "";
+					this.repliecount++;
+					this.repliedata.unshift(res.data.data);
 				}
 			})
 			.catch(err =>{
@@ -205,11 +205,11 @@ export default {
 		},
 		// 몇글자 적은지 확인
 		replieLength() {
-			this.replie_length = this.replie.length
+			this.replie_length = this.replie.length;
 		},
 		// 한글 바로입력
 		changeKeyword(e) {
-			this.replie = e.target.value
+			this.replie = e.target.value;
 		},
 		// 로그인확인
 		checklocal() {
@@ -233,45 +233,57 @@ export default {
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){
-						console.log(id);
-						document.querySelector('#detail_replie'+id).remove()
+						document.querySelector('#detail_replie'+id).remove();
 						this.repliecount--;
 					}else{
-						console.log(error)
+						
 					}
 				})
 				.catch(err =>{
 					// this.$router.push('/error');
 			})
 			} else {
-				return
+				return;
 			}
 			
 		},
 		// 댓글추가 불러오기
-		morereplie(){		
-			console.log('댓글전체불러오기')	
-			console.log('b_id'+this.b_id)	
+		morereplie(){
 			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
 					this.repliedata = [ ...this.repliedata, ...res.data.data ];
 					this.replie_offset = this.replie_offset+20;
-					console.log(res.data.data.length)
+					
 					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
 						this.moreflg = true;
 					}
-					console.log("완료")
+					
 				}else{
-					console.log("엘스")
+					
 				}
 			})
 				.catch(err =>{
-					console.log("캐치")
+					
 			})
 			
 		},
+		// 이메일 마스킹
+		masking(str) {
+			const checkNull = (s) => {
+				return typeof s === 'undefined' || s === null || s === '';
+			};
+			let originStr = str;
+			let emailStr = originStr.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+			let strLength;
+			if (checkNull(originStr) || checkNull(emailStr)) {
+				return originStr;
+			} else {
+				strLength = emailStr.toString().split('@')[0].length - 5;
+				return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
+			}
+		},	
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

@@ -12,21 +12,21 @@
 		<div class="user_box_password">
 			<br>
 			<div>
-				<label for="user_del_reason" class=" font_air bold">변경하실 비밀번호</label>
+				<label for="user_del_reason" class=" font_air bold">비밀번호</label>
+				<span v-show="user_err_pw1" class="user_errmsg font_air bold">8~20글자 사이로 작성해 주세요.</span>
+				<span v-show="user_err_pw2" class="user_errmsg font_air bold">영어를 1글자 이상 작성해 주세요.</span>
+				<span v-show="user_err_pw3" class="user_errmsg font_air bold">숫자를 1글자 이상 작성해 주세요.</span>
+				<span v-show="user_err_pw4" class="user_errmsg font_air bold">특수문자(?~!@#)를 사용해 주세요.</span>
+				<span v-show="user_err_pw5" class="user_errmsg font_air bold">비밀번호 형식이 올바르지 않습니다.</span>
+				<span v-show="user_com_pw" class="user_commsg font_air bold">사용가능한 비밀번호 입니다.</span>		
 			</div>
-			<span v-show="user_err_pw1" class="sign_errmsg font_air bold">8~20글자 사이로 작성해 주세요.</span>
-			<span v-show="user_err_pw2" class="sign_errmsg font_air bold">영어를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw3" class="sign_errmsg font_air bold">숫자를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw4" class="sign_errmsg font_air bold">특수문자(?~!@#)를 1글자 이상 작성해 주세요.</span>
-			<span v-show="user_err_pw5" class="sign_errmsg font_air bold">비밀번호 형식이 올바르지 않습니다.</span>
-			<span v-show="user_com_pw" class="sign_commsg font_air bold">사용가능한 비밀번호 입니다.</span>		
 			<input type="password" placeholder="영어,숫자,특수문자(!?~@#)최소1개포함 8~20"  v-model="user_pw" id="user_pw" autocomplete='off' minlength="8" maxlength="20" class="font_air bold user_pwchange_input"><br>
 			<br>	
 			<div>
-				<label for="user_del_reason" class="font_air bold">비밀번호 확인 : </label>
+				<label for="user_del_reason" class="font_air bold">비밀번호 확인</label>		
+				<span v-show="user_err_pw_chk" class="user_errmsg font_air bold">비밀번호와 일치하지 않습니다.</span>
+				<span v-show="user_com_pw_chk" class="user_commsg font_air bold">비밀번호와 일치합니다.</span>
 			</div>
-			<span v-show="user_err_pw_chk" class="sign_errmsg font_air bold">비밀번호와 일치하지 않습니다.</span>
-			<span v-show="user_com_pw_chk" class="sign_commsg font_air bold">비밀번호와 일치합니다.</span>
 			<input type="password" placeholder="비밀번호와 동일" v-model="user_pw_chk" id="user_pw_chk" autocomplete='off' minlength="8" maxlength="20" class="font_air bold font_air bold user_pwchange_input"><br>
 		</div>
 			<br><br>			
@@ -46,30 +46,35 @@
 			<div class="user_h3_nick">
 				<h3 class="font_air bold">닉네임 수정</h3>
 			</div>
+			<div class="user_pwchange_box">
+				<p class="font_air bold">닉네임은 <span class="user_pwchange_guide font_air bold">영어,숫자,한글로 이루어진 2~8</span>으로 등록하셔야 합니다.</p>
+			</div>			
 			<div class="user_box_nick">
-				<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
-				<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">영어,숫자,한글만 사용 가능 합니다</span>
-				<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
-				<span
-					v-if="$store.state.nickFlg === 1&&this.com_nick" 
-					class="sign_commsg font_air bold"
-				>사용 가능한 닉네임 입니다.</span>
-				<span
-					v-if="$store.state.nickFlg === 2&&this.com_nick" 
-					class="sign_errmsg font_air bold"
-				>이미 사용중인 닉네임 입니다.</span>
-				<span
-					v-for="item in $store.state.varErr" :key="item"
-					v-if="this.com_nick"
-					class="sign_errmsg font_air bold"
-				>{{ item[0] }}</span>
 				<br>
-				<label for="user_del_reason font_air bold">변경하실 닉네임</label><br>
-					<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8"
-						class="font_air bold" 
-						v-model="nick"
-						@input="koreanick"
-					>
+				<div>
+					<label for="user_del_reason" class=" font_air bold">변경하실 닉네임</label>
+					<span v-show="err_nick1" v-if="!(this.com_nick)" class="user_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
+					<span v-show="err_nick2" v-if="!(this.com_nick)" class="user_errmsg font_air bold">영어,숫자,한글만 사용 가능 합니다</span>
+					<span v-show="err_nick3" v-if="!(this.com_nick)" class="user_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
+					<span
+						v-if="$store.state.nickFlg === 1&&this.com_nick" 
+						class="user_commsg font_air bold"
+					>사용 가능한 닉네임 입니다.</span>
+					<span
+						v-if="$store.state.nickFlg === 2&&this.com_nick" 
+						class="user_errmsg font_air bold"
+					>이미 사용중인 닉네임 입니다.</span>
+					<span
+						v-for="item in $store.state.varErr" :key="item"
+						v-if="this.com_nick"
+						class="user_errmsg font_air bold"
+					>{{ item[0] }}</span>
+				</div>
+				<input type="text" id="user_nick" placeholder="한글,영어,숫자 2~8"
+					class="font_air bold" 
+					v-model="nick"
+					@input="koreanick"
+				>
 			</div>
 			<br><br>		
 			
@@ -88,7 +93,7 @@
 	<div class="user_white-bg font_air bold">
 		<div class="user_withdraw font_air bold">
 			<font-awesome-icon :icon="['fas', 'triangle-exclamation']" class="user_warning font_air bold"/>
-		<h3 class="user_h3_userout font_air bold">회원 탈퇴</h3>
+		<h3 class="user_h3_userout font_air bold">니 내 없어도 개안캤나?</h3>
 			<span class="user_warningText font_air bold">탈퇴하시면 복구 안됩니다</span>
 				<br><br>
 				<label for="user_del_reason" class="font_air bold">탈퇴사유 : </label>
@@ -188,7 +193,7 @@ export default {
 	},
 	watch: {
 		delreason(){
-			this.del_val()
+			this.del_val();
 		},
 		user_pw(){
 			this.pwval();
@@ -197,34 +202,34 @@ export default {
 			}
 		},
 		user_pw_chk(){
-			this.pwchkval()
+			this.pwchkval();
 		},
 		nick(){
-			this.nickval()
+			this.nickval();
 		},
 	},
 	created() {
-		this.GetUser()
+		this.GetUser();
 	},
 	methods: {
 		// 닉네임체크
 		nick_chk(){
-			const URL = '/signin/nick?nick='+this.nick
+			const URL = '/signin/nick?nick='+this.nick;
 			axios.get(URL)
 			.then(res => {
-				console.log("댄")
+				console.log("댄");
 				this.$store.commit('setErrMsg','');
-				console.log(res.data.errorMsg)
+				console.log(res.data.errorMsg);
 				if(res.data.code === "0"){
 					if(res.data.data.length === 0){
-						console.log("없을때")
+						console.log("없을때");
 						this.$store.commit('setNickFlg',1);	
 					}else if(res.data.data.length > 0){
-						console.log("있을때")
+						console.log("있을때");
 						this.$store.commit('setNickFlg',2);
 					}
 				}else{
-					alert("닉네임체크에 실패하였습니다")
+					alert("닉네임체크에 실패하였습니다");
 				}
 			})
 			.catch(err => {
@@ -234,13 +239,13 @@ export default {
 		},
 		// 유저정보불러오기
 		GetUser(){
-			const URL = '/userinfo'
+			const URL = '/userinfo';
 			axios.get(URL)
 			.then(res => {
 				this.$store.commit('setUserInfo',res.data.data);
 			})
 			.catch(err => {
-				alert("유저정보를 불러오는대 실패했습니다. \n다시시도해주세요")
+				alert("유저정보를 불러오는대 실패했습니다. \n다시시도해주세요");
 			})
 		},
 		// 비밀번호변경
@@ -263,28 +268,28 @@ export default {
 			
 		},
 		pw(){
-			this.pwval()
+			this.pwval();
 		},
 		pw_chk(){
-			this.pwchkval()
+			this.pwchkval();
 		},
 		del_val(){
-			let reason = document.querySelector('#user_del_reason')
-			console.log(reason.value)
-			console.log("정상")
-			console.log(this.delinput)
+			let reason = document.querySelector('#user_del_reason');
+			console.log(reason.value);
+			console.log("정상");
+			console.log(this.delinput);
 			if(reason.value === "기타"){
-				this.delinput = true
+				this.delinput = true;
 			}else{
-				this.delinput = false
+				this.delinput = false;
 			}
 		},
 		pwval(){
-			const VAR1 = /[a-zA-Z]/
-			const VAR2 = /\d+/
+			const VAR1 = /[a-zA-Z]/;
+			const VAR2 = /\d+/;
 			const VAR3 = /[?~!@#]+/;
 			const VAR4 = /^.{8,20}$/;
-			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/
+			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/;
 			if(this.user_pw===""){
 				this.user_err_pw1 = false;
 				this.user_err_pw2 = false;
@@ -345,11 +350,11 @@ export default {
 			if(this.user_pw_chk===""){
 				this.user_err_pw_chk = false;
 				this.user_com_pw_chk = false;
-				return
+				return;
 			}else if(this.user_pw_chk !== this.user_pw||!this.user_pw_chk){
 				this.user_err_pw_chk = true;
 				this.user_com_pw_chk = false;
-				return
+				return;
 			}
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
@@ -363,31 +368,31 @@ export default {
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR.test(this.nick)){
 				this.err_nick1 = true;
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR1.test(this.nick)){
 				this.err_nick1 = false;
 				this.err_nick2 = true;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR2.test(this.nick)||!this.nick){
 				this.err_nick1 = false;
 				this.err_nick2 = false;
 				this.err_nick3 = true;
 				this.com_nick = false;
-				return
+				return;
 			}
 			this.err_nick1 = false;
 			this.err_nick2 = false;
 			this.err_nick3 = false;
 			this.com_nick = true;
-			this.nick_chk()
+			this.nick_chk();
 		},
 		userpwchange(){
 			if(this.user_com_pw&&this.user_com_pw_chk){
@@ -408,10 +413,10 @@ export default {
 			}
 		},
 		usernickchange(){
-			this.nick_chk()
+			this.nick_chk();
 			if(this.$store.state.nickFlg === 1){
 				let nick = document.querySelector('#user_nick');
-				const URL = '/user/nchk'
+				const URL = '/user/nchk';
 				const HEADER = {
 					headers: {
 						'Content-Type': 'multipart/form-data',
@@ -425,21 +430,21 @@ export default {
 					if(res.data.code === "0"){	
 						this.nick = "";
 						this.$store.commit('setNickModalFlg',false);
-						this.$store.commit('setNickFlg',0)
+						this.$store.commit('setNickFlg',0);
 						localStorage.setItem('nick', nick.value);
-						this.$store.commit('setNowUser',nick.value)
+						this.$store.commit('setNowUser',nick.value);
 						alert('정상처리되었습니다');
 					}else if(res.data.code === "0"){
-						alert(res.data.errorMsg)
+						alert(res.data.errorMsg);
 					}else{
-						alert(res.data.errorMsg)
+						alert(res.data.errorMsg);
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg)
+					alert(err.response.data.errorMsg);
 				})
 			}else{
-				this.nickval()
+				this.nickval();
 			}
 		},
 		userout(){
@@ -447,15 +452,15 @@ export default {
 		},
 		// 닉네임 한글 바로인식
 		koreanick(e) {
-			this.nick = e.target.value
+			this.nick = e.target.value;
 		},
 	},
 	beforeRouteLeave(to, from, next) {
-		this.$store.commit('setPasswordModalFlg',false)
-		this.$store.commit('setNickModalFlg',false)
-		this.$store.commit('setDelModalFlg',false)
-		this.$store.commit('setUserFlg',false)
-		this.$store.commit('setNickFlg',0)
+		this.$store.commit('setPasswordModalFlg',false);
+		this.$store.commit('setNickModalFlg',false);
+		this.$store.commit('setDelModalFlg',false);
+		this.$store.commit('setUserFlg',false);
+		this.$store.commit('setNickFlg',0);
 		next();
 	},
 }

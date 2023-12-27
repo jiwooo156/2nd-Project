@@ -113,8 +113,6 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/festivalget/{states_name}',[InfoController::class, 'festivalget']);
     // 더보기 받아오는 url api
     Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
-    // 검색조건 보내는 url api
-    // Route::post('/',[InfoController::class, '']);
     // 검색결과 받아오는 url api
     Route::get('/searchkeyword',[InfoController::class, 'searchkeyword']);
 });

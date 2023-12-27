@@ -23,19 +23,5 @@
 <script>
 export default {
 	name: 'ErrorComponent',
-	watch: {	
-	},
-	data() {
-		return {
-			
-		}
-	},
-
-	created() {
-
-	},
-	methods: {
-
-	}
 }
 </script>

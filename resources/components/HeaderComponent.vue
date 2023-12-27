@@ -3,7 +3,7 @@
     <!-- <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
 		<header class="header">
 			<div class="header_left">
-				<router-link to="/main" class="logo" >안냥</router-link>
+				<router-link to="/main" class="logo">안냥</router-link>
 			</div>
 			<div class="header_mid">
 				<nav class="lnb">
@@ -178,7 +178,6 @@
 <script>
 export default {
 	name: 'HeaderComponent',
-
 	methods: {
         logout(){
             this.$store.dispatch('actionLogout');

@@ -53,38 +53,41 @@ class InfoController extends Controller
         where('id',$req->id)
         ->get();
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
-        if(!($req->cookie('hits'.$req->id)&&count($info_result))===1){    
+        if(!($req->cookie('hits'.$req->id))&&count($info_result)===1){    
             // 조회수 1증가  
             try { 
                 // 트랜잭션 시작
                 DB::beginTransaction();
                 // 조회된 값의 조회수 1증가
-                $result[0]->hits++;
+                $info_result[0]->hits++;
                 // 저장
-                $result[0]->save();
+                $info_result[0]->save();
                 DB::commit();    
             // 실패시
             } catch(Exception $e){
                 DB::rollback();
             }
         // 쿠키값이있고 조회된값이 1개일때
-        }else if(count($info_result)===1){            
+        }
+        if(count($info_result)===1){            
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
             $replie_count = Replie::
             where('b_id', $req->id)
             ->count();
             // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
             $replie_result = Replie::
-            select('id','nick','replie','created_at')
-            ->where('b_id',$req->id)
-            ->orderby('created_at','desc')
+            select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at', 'users.email')
+            ->join('users', 'replies.u_id', '=', 'users.id')
+            ->where('replies.b_id', $req->id)
+            ->orderBy('replies.created_at', 'desc')
             ->limit(20)
-            ->get(); 
+            ->get();
+            Log::debug( $replie_result);
             return response()->json([
                 'code' => '0',
                 'data' => $info_result,
                 'replie' => $replie_result,
-                'repliecount' => $replie_count,
+                'repliecount' =>  $replie_count,
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
@@ -96,8 +99,10 @@ class InfoController extends Controller
     }
     // 댓글작성
     public function repliewirte(Request $req) {
-        // 리퀘스트온 값중 닉네임 댓글 보드아이디 data에 저장
-        $data = $req->only('nick','replie','b_id');
+        // 리퀘스트온 값중 댓글 보드아이디 data에 저장
+        $data = $req->only('replie','b_id');
+        // u_id라는 키값에 세션에 저장된 pk값 저장
+        $data["u_id"] = Auth::user()->id;
         try { 
             // 트랜잭션 시작
             DB::beginTransaction();
@@ -105,6 +110,9 @@ class InfoController extends Controller
             $result = Replie::create($data);
             // 저장
             DB::commit();    
+            // $result 안에 이메일과 닉네임 추가
+            $result->email = Auth::user()->email;
+            $result->nick = Auth::user()->nick;
             return response()->json([
                 'code' => '0',
                 'data' => $result,
@@ -128,7 +136,7 @@ class InfoController extends Controller
             // 세션에 유저정보 닉네임과 일치하고 리퀘스트 온 아이디값으로 유저테이블에 조회
             $result = Replie::
                 where('id',$req->id)
-                ->where('nick',$auth->nick)->first();
+                ->where('email',$auth->email)->first();
             // 조회결과 있을시
             if($result){
                 // 트랜잭션시작
