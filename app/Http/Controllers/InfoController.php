@@ -223,14 +223,16 @@ class InfoController extends Controller
         Log::debug("**** recommendtourget start ****");
 
         $recommend_festival = Info::
-            select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits')
+            select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits', 'ns_flg')
             ->where('main_flg','축제')
+            ->where('ns_flg',$req->ns)
             ->orderBy('hits', 'desc')
             ->limit(3)
             ->get();
         $recommend_tour = Info::
-            select('id','title', 'content', 'img1', 'hits')
+            select('id','title', 'content', 'img1', 'hits', 'ns_flg')
             ->where('main_flg','관광')
+            ->where('ns_flg',$req->ns)
             ->orderBy('hits', 'desc')
             ->limit(3)
             ->get();
@@ -260,7 +262,7 @@ class InfoController extends Controller
             select('id','states_name','img1','title','content','hits')
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
-            ->orderBy('start_at','desc')
+            ->orderBy('id','desc')
             ->limit(4)
             ->get();
         Log::debug("**** festivalget end ****");
@@ -309,21 +311,39 @@ class InfoController extends Controller
         Log::debug("시작일자=".$req->start_at);
         Log::debug("종료일자=".$req->end_at);
         Log::debug("검색단어=".$req->searchkeyword);
-        $search_result = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
-        ->when($req->states_name !== null, fn ($query) => $query->where('states_name', $req->states_name))
-        ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('start_at', '<=', $req->start_at)->where('end_at', '>=', $req->start_at))
-        ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->end_at))
-        ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
-        ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
-        ->orderBy('start_at', 'desc')
-        ->limit(4)
-        ->get();
+        $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            // ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('start_at', '<=', $req->start_at)->where('end_at', '>=', $req->start_at))
+            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
+            // ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->end_at))
+            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('main_flg','축제')
+            ->orderBy('start_at', 'desc')
+            ->limit(4)
+            ->get();
+        if($req->searchkeyword !== null||$req->states_name !== "지역"){
+            $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('main_flg','관광')
+            ->orderBy('start_at', 'desc')
+            ->limit(4)
+            ->get();
+            return response()->json([
+                'code' => '0',
+                'festival' => $festival,
+                'tour' => $tour,
+            ],200);
+        }
+
         Log::debug(\DB::getQueryLog());
         Log::debug("***** search end *******");
-        Log::debug($search_result);
         return response()->json([
             'code' => '0',
-            'searchresult' => $search_result,
+            'festival' => $festival,
+            'tour' => "",
         ],200);
     }
 }

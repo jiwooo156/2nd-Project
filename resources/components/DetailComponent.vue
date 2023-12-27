@@ -271,17 +271,25 @@ export default {
 		},
 		// 이메일 마스킹
 		masking(str) {
-			const checkNull = (s) => {
-				return typeof s === 'undefined' || s === null || s === '';
+			// 전달받은 값이 문제가있는지 확인하는 함수
+			const testText = (text) => {
+				return typeof text === 'undefined' || text === null || text === '';
 			};
-			let originStr = str;
-			let emailStr = originStr.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+			// 전달받은 값 변수에 저장
+			let teststr = str;
+			// 전달받은값 이메일 형식인지 확인
+			let result = teststr.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+			// 공변수 셋팅
 			let strLength;
-			if (checkNull(originStr) || checkNull(emailStr)) {
-				return originStr;
+			// 전달받은 값이 문제가 있었거나 정규식 한 값이 잘못됬을경우 
+			if (testText(teststr) || testText(result)) {
+				// 기존값 리턴
+				return teststr;
 			} else {
-				strLength = emailStr.toString().split('@')[0].length - 5;
-				return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
+				// 전달받은값의 @전의길이 - 5한 값
+				strLength = result.toString().split('@')[0].length - 5;
+				// 전달받은 값의 @앞 부분내용중 @ 앞에 있는 부분의 4글자 만큼 *로 변경
+				return teststr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
 			}
 		},	
 	},
