@@ -6,7 +6,7 @@
     <!-- 메인 영역 -->
     <router-view></router-view>
     <!-- 푸터 영역 -->
-    <FooterComponent></FooterComponent>
+    <!-- <FooterComponent></FooterComponent> -->
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
