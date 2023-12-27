@@ -9,7 +9,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <link rel="stylesheet" href="/css/common.css">
-    <title>이에이승</title>
+    <title>이의이승</title>
 </head>
 <body>
     <div id="app">
