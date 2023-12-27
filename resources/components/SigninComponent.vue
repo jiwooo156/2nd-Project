@@ -144,40 +144,40 @@ export default {
 			}
 		},
 		pw_chk(){
-			this.pwchkval()
+			this.pwchkval();
 		},
 		name(){
-			this.nameval()
+			this.nameval();
 		},
 		nick(){
-			this.nickval()
+			this.nickval();
 		},
 		birthdate(){
-			this.birthdateval()
+			this.birthdateval();
 		},
 		phone(){
-			this.phoneval()
+			this.phoneval();
 		},
 	},
 	created() {
 		this.email= "";
 		this.$store.commit('setErrMsg',[]);
 		this.$store.commit('setNickFlg',0);	
-		this.emailGet()
+		this.emailGet();
 	},
 
 	methods: {
 		// 이메일정보 가져오기
 		emailGet(){
-		const URL = '/signin/start'
+		const URL = '/signin/start';
 		axios.get(URL)
 		.then(res => {
 			this.$store.commit('setErrMsg','');
 			if(res.data.code === "0"){
-				console.log('정상')
-				this.email = res.data.data.email
+				console.log('정상');
+				this.email = res.data.data.email;
 			}else{
-				console.log('else')
+				console.log('else');
 			}
 		})
 		.catch(err => {
@@ -185,11 +185,11 @@ export default {
 		})
 		},
 		pwval(){
-			const VAR1 = /[a-zA-Z]/
-			const VAR2 = /\d+/
+			const VAR1 = /[a-zA-Z]/;
+			const VAR2 = /\d+/;
 			const VAR3 = /[?~!@#]+/;
 			const VAR4 = /^.{8,20}$/;
-			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/
+			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/;
 			if(this.pw===""){
 				this.err_pw1 = false;
 				this.err_pw2 = false;
@@ -250,43 +250,43 @@ export default {
 			if(this.pw_chk===""){
 				this.err_pw_chk = false;
 				this.com_pw_chk = false;
-				return
+				return;
 			}else if(this.pw_chk !== this.pw||!this.pw_chk){
 				this.err_pw_chk = true;
 				this.com_pw_chk = false;
-				return
+				return;
 			}
 			this.err_pw_chk = false;
 			this.com_pw_chk = true;
 		},
 		nameval(){
 			const VAR = /^.{2,10}$/;
-			const VAR1 = /^[가-힣]+$/
+			const VAR1 = /^[가-힣]+$/;
 			const VAR2 = /^[가-힣]{2,10}$/;
 			if(this.name===""){
 				this.err_name1 = false;
 				this.err_name2 = false;
 				this.err_name3 = false;
 				this.com_name = false;
-				return
+				return;
 			}else if(!VAR.test(this.name)){
 				this.err_name1 = true;
 				this.err_name2 = false;
 				this.err_name3 = false;
 				this.com_name = false;
-				return
+				return;
 			}else if(!VAR1.test(this.name)){
 				this.err_name1 = false;
 				this.err_name2 = true;
 				this.err_name3 = false;
 				this.com_name = false;
-				return
+				return;
 			}else if(!VAR2.test(this.name)||!this.name){
 				this.err_name1 = false;
 				this.err_name2 = false;
 				this.err_name3 = true;
 				this.com_name = false;
-				return
+				return;
 			}
 			this.err_name1 = false;
 			this.err_name2 = false;
@@ -300,33 +300,33 @@ export default {
 			const month = (today.getMonth() + 1).toString().padStart(2, '0');
 			const day = today.getDate().toString().padStart(2, '0');
 			const formattedDate = year+month+day;
-			const VAR = /^[^-]+$/
+			const VAR = /^[^-]+$/;
 			const VAR1 = /^.{8}$/;
-			const VAR2 = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/
+			const VAR2 = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
 			if(this.birthdate===""){
 				this.err_birthdate1 = false;
 				this.err_birthdate2 = false;
 				this.err_birthdate3 = false;
 				this.com_birthdate = false;
-				return
+				return;
 			}else if(!VAR.test(this.birthdate)){
 				this.err_birthdate1 = true;
 				this.err_birthdate2 = false;
 				this.err_birthdate3 = false;
 				this.com_birthdate = false;
-				return
+				return;
 			}else if(!VAR1.test(this.birthdate)){
 				this.err_birthdate1 = false;
 				this.err_birthdate2 = true;
 				this.err_birthdate3 = false;
 				this.com_birthdate = false;
-				return
+				return;
 			}else if(!VAR2.test(this.birthdate)||!this.birthdate||this.birthdate>=formattedDate){
 				this.err_birthdate1 = false;
 				this.err_birthdate2 = false;
 				this.err_birthdate3 = true;
 				this.com_birthdate = false;
-				return
+				return;
 			}
 			this.err_birthdate1 = false;
 			this.err_birthdate2 = false;
@@ -334,33 +334,33 @@ export default {
 			this.com_birthdate = true;
 		},
 		phoneval(){
-			const VAR = /^[^-]+$/
+			const VAR = /^[^-]+$/;
 			const VAR1 = /^.{11}$/;
-			const VAR2 = /^010([0-9]{4})([0-9]{4})$/
+			const VAR2 = /^010([0-9]{4})([0-9]{4})$/;
 			if(this.phone===""){
 				this.err_phone1 = false;
 				this.err_phone2 = false;
 				this.err_phone3 = false;
 				this.com_phone = false;
-				return
+				return;
 			}else if(!VAR.test(this.phone)){
 				this.err_phone1 = true;
 				this.err_phone2 = false;
 				this.err_phone3 = false;
 				this.com_phone = false;
-				return
+				return;
 			}else if(!VAR1.test(this.phone)){
 				this.err_phone1 = false;
 				this.err_phone2 = true;
 				this.err_phone3 = false;
 				this.com_phone = false;
-				return
+				return;
 			}else if(!VAR2.test(this.phone)){
 				this.err_phone1 = false;
 				this.err_phone2 = false;
 				this.err_phone3 = true;
 				this.com_phone = false;
-				return
+				return;
 			}
 			this.err_phone1 = false;
 			this.err_phone2 = false;
@@ -376,31 +376,31 @@ export default {
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR.test(this.nick)){
 				this.err_nick1 = true;
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR1.test(this.nick)){
 				this.err_nick1 = false;
 				this.err_nick2 = true;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR2.test(this.nick)||!this.nick){
 				this.err_nick1 = false;
 				this.err_nick2 = false;
 				this.err_nick3 = true;
 				this.com_nick = false;
-				return
+				return;
 			}
 			this.err_nick1 = false;
 			this.err_nick2 = false;
 			this.err_nick3 = false;
 			this.com_nick = true;
-			this.nick_chk()
+			this.nick_chk();
 		},
 		signin(){
 			if(this.com_pw&&this.com_pw_chk&&this.com_name&&this.com_birthdate&&this.com_phone&&this.$store.state.nickFlg===1){
@@ -437,26 +437,26 @@ export default {
 					this.com_phone = false;
 				}
 				if(!this.com_nick){
-					this.nick_chk()
+					this.nick_chk();
 				}
 			}
 		},
 		// 닉네임 한글 바로인식
 		koreanick(e) {
-			this.nick = e.target.value
-			console.log(this.nick)
+			this.nick = e.target.value;
+			console.log(this.nick);
 		},
 		// 이름 한글 바로인식
 		koreaname(e) {
-			this.name = e.target.value
+			this.name = e.target.value;
 		},
 		nick_chk(){
 			this.$store.dispatch('actionNickChk');
 		}
 	},
 	beforeRouteLeave(to, from, next) {
-		this.$store.commit('setErrMsg','')
-		this.$store.commit('setNickFlg',0)
+		this.$store.commit('setErrMsg','');
+		this.$store.commit('setNickFlg',0);
 		VueCookies.remove('auth_id');
 		next();
 	},

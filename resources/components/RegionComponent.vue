@@ -216,7 +216,7 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생")
+				alert("데이터 에러 발생");
 			})
 		},	
 		// 지역축제관광지 가져오기
@@ -241,7 +241,7 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생")
+				alert("데이터 에러 발생");
 			})
 		},
 		// 더보기 지역축제,관광지 가져오기
@@ -271,7 +271,7 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생")
+				alert("데이터 에러 발생");
 			})
 		},
 		// 검색 결과 가져오기

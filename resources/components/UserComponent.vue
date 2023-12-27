@@ -192,7 +192,7 @@ export default {
 	},
 	watch: {
 		delreason(){
-			this.del_val()
+			this.del_val();
 		},
 		user_pw(){
 			this.pwval();
@@ -201,34 +201,34 @@ export default {
 			}
 		},
 		user_pw_chk(){
-			this.pwchkval()
+			this.pwchkval();
 		},
 		nick(){
-			this.nickval()
+			this.nickval();
 		},
 	},
 	created() {
-		this.GetUser()
+		this.GetUser();
 	},
 	methods: {
 		// 닉네임체크
 		nick_chk(){
-			const URL = '/signin/nick?nick='+this.nick
+			const URL = '/signin/nick?nick='+this.nick;
 			axios.get(URL)
 			.then(res => {
-				console.log("댄")
+				console.log("댄");
 				this.$store.commit('setErrMsg','');
-				console.log(res.data.errorMsg)
+				console.log(res.data.errorMsg);
 				if(res.data.code === "0"){
 					if(res.data.data.length === 0){
-						console.log("없을때")
+						console.log("없을때");
 						this.$store.commit('setNickFlg',1);	
 					}else if(res.data.data.length > 0){
-						console.log("있을때")
+						console.log("있을때");
 						this.$store.commit('setNickFlg',2);
 					}
 				}else{
-					alert("닉네임체크에 실패하였습니다")
+					alert("닉네임체크에 실패하였습니다");
 				}
 			})
 			.catch(err => {
@@ -238,13 +238,13 @@ export default {
 		},
 		// 유저정보불러오기
 		GetUser(){
-			const URL = '/userinfo'
+			const URL = '/userinfo';
 			axios.get(URL)
 			.then(res => {
 				this.$store.commit('setUserInfo',res.data.data);
 			})
 			.catch(err => {
-				alert("유저정보를 불러오는대 실패했습니다. \n다시시도해주세요")
+				alert("유저정보를 불러오는대 실패했습니다. \n다시시도해주세요");
 			})
 		},
 		// 비밀번호변경
@@ -267,28 +267,28 @@ export default {
 			
 		},
 		pw(){
-			this.pwval()
+			this.pwval();
 		},
 		pw_chk(){
-			this.pwchkval()
+			this.pwchkval();
 		},
 		del_val(){
-			let reason = document.querySelector('#user_del_reason')
-			console.log(reason.value)
-			console.log("정상")
-			console.log(this.delinput)
+			let reason = document.querySelector('#user_del_reason');
+			console.log(reason.value);
+			console.log("정상");
+			console.log(this.delinput);
 			if(reason.value === "기타"){
-				this.delinput = true
+				this.delinput = true;
 			}else{
-				this.delinput = false
+				this.delinput = false;
 			}
 		},
 		pwval(){
-			const VAR1 = /[a-zA-Z]/
-			const VAR2 = /\d+/
+			const VAR1 = /[a-zA-Z]/;
+			const VAR2 = /\d+/;
 			const VAR3 = /[?~!@#]+/;
 			const VAR4 = /^.{8,20}$/;
-			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/
+			const VAR5 = /^(?=.*[a-zA-Z\d])(?=.*\d)(?=.*[~!@#?])[a-zA-Z\d~!@#?]{8,20}$/;
 			if(this.user_pw===""){
 				this.user_err_pw1 = false;
 				this.user_err_pw2 = false;
@@ -349,11 +349,11 @@ export default {
 			if(this.user_pw_chk===""){
 				this.user_err_pw_chk = false;
 				this.user_com_pw_chk = false;
-				return
+				return;
 			}else if(this.user_pw_chk !== this.user_pw||!this.user_pw_chk){
 				this.user_err_pw_chk = true;
 				this.user_com_pw_chk = false;
-				return
+				return;
 			}
 			this.user_err_pw_chk = false;
 			this.user_com_pw_chk = true;
@@ -367,31 +367,31 @@ export default {
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR.test(this.nick)){
 				this.err_nick1 = true;
 				this.err_nick2 = false;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR1.test(this.nick)){
 				this.err_nick1 = false;
 				this.err_nick2 = true;
 				this.err_nick3 = false;
 				this.com_nick = false;
-				return
+				return;
 			}else if(!VAR2.test(this.nick)||!this.nick){
 				this.err_nick1 = false;
 				this.err_nick2 = false;
 				this.err_nick3 = true;
 				this.com_nick = false;
-				return
+				return;
 			}
 			this.err_nick1 = false;
 			this.err_nick2 = false;
 			this.err_nick3 = false;
 			this.com_nick = true;
-			this.nick_chk()
+			this.nick_chk();
 		},
 		userpwchange(){
 			if(this.user_com_pw&&this.user_com_pw_chk){
@@ -412,10 +412,10 @@ export default {
 			}
 		},
 		usernickchange(){
-			this.nick_chk()
+			this.nick_chk();
 			if(this.$store.state.nickFlg === 1){
 				let nick = document.querySelector('#user_nick');
-				const URL = '/user/nchk'
+				const URL = '/user/nchk';
 				const HEADER = {
 					headers: {
 						'Content-Type': 'multipart/form-data',
@@ -429,21 +429,21 @@ export default {
 					if(res.data.code === "0"){	
 						this.nick = "";
 						this.$store.commit('setNickModalFlg',false);
-						this.$store.commit('setNickFlg',0)
+						this.$store.commit('setNickFlg',0);
 						localStorage.setItem('nick', nick.value);
-						this.$store.commit('setNowUser',nick.value)
+						this.$store.commit('setNowUser',nick.value);
 						alert('정상처리되었습니다');
 					}else if(res.data.code === "0"){
-						alert(res.data.errorMsg)
+						alert(res.data.errorMsg);
 					}else{
-						alert(res.data.errorMsg)
+						alert(res.data.errorMsg);
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg)
+					alert(err.response.data.errorMsg);
 				})
 			}else{
-				this.nickval()
+				this.nickval();
 			}
 		},
 		userout(){
@@ -451,15 +451,15 @@ export default {
 		},
 		// 닉네임 한글 바로인식
 		koreanick(e) {
-			this.nick = e.target.value
+			this.nick = e.target.value;
 		},
 	},
 	beforeRouteLeave(to, from, next) {
-		this.$store.commit('setPasswordModalFlg',false)
-		this.$store.commit('setNickModalFlg',false)
-		this.$store.commit('setDelModalFlg',false)
-		this.$store.commit('setUserFlg',false)
-		this.$store.commit('setNickFlg',0)
+		this.$store.commit('setPasswordModalFlg',false);
+		this.$store.commit('setNickModalFlg',false);
+		this.$store.commit('setDelModalFlg',false);
+		this.$store.commit('setUserFlg',false);
+		this.$store.commit('setNickFlg',0);
 		next();
 	},
 }
