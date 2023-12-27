@@ -136,7 +136,7 @@
             </div>
             <div class="main_sub_con">
               <div class="main_sub_txt">
-                유저들과 다양한<br />
+                유저들과 다양한<br/>
                 재미를 공유해봐요!
               </div>
             </div>
@@ -179,15 +179,15 @@ export default {
   methods: {    
     // 화면에 나타날 데이터 불러오기
     getMain(){
-      const URL = '/main/info'
+      const URL = '/main/info';
       axios.get(URL)
       .then(res => {
-        this.besthitsinfoList = res.data.hits
-        this.fixedinfoList = res.data.fixe
+        this.besthitsinfoList = res.data.hits;
+        this.fixedinfoList = res.data.fixe;
       })
       .catch(err => {
         console.log("캐치");
-        alert("데이터 에러 발생")
+        alert("데이터 에러 발생");
       })
     },
     getWeather() {
@@ -198,7 +198,7 @@ export default {
         let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
         let i = 0; // 도시 인덱스를 유지할 변수 추가
         const cityRan = () => {
-            let city = cities[i]
+            let city = cities[i];
             i = i + 1;
             if(i === cities.length){
                 i = 0;
@@ -220,7 +220,7 @@ export default {
               } 
               document.querySelector('.main_wea_up').innerHTML = city;
               // document.querySelector('.main_wea_icon').innerHTML = data['description'],
-              document.querySelector('.main_wea_degree').innerHTML = data['temperature']
+              document.querySelector('.main_wea_degree').innerHTML = data['temperature'];
               console.log(data.description);
               // console.log(data.temperature);
             })

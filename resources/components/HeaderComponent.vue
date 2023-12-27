@@ -82,42 +82,74 @@
 			<i class="sound_only">메뉴</i>
 		</a>
     </div> -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding:30px 0px;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
-        </li>
+        </li> -->
+		<nav class="lnb">
+			<ul class="nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+          <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            경상도오
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+			
+            <li><a class="dropdown-item" href="/region?ns=경상북도">경상북도</a></li>
+            <li><a class="dropdown-item" href="/region?ns=경상남도">경상남도</a></li>
+		
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+		<li class="nav-item dropdown">
+          <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            커뮤니티
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">자유게시판</a></li>
+            <li><a class="dropdown-item" href="#">정보게시판</a></li>
+            <li><a class="dropdown-item" href="#">질문게시판</a></li>
+            <li><a class="dropdown-item" href="#">건의게시판</a></li>
+          </ul>
         </li>
+		</ul>
+		</nav>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
+	<div class="header_right" v-if="!$store.state.localFlg">
+				<ul class="gnb">
+					<li>
+						<router-link to="/login" style="text-decoration: none;">로그인</router-link>
+					</li>
+					<li>
+						<router-link to="/authemail" style="text-decoration: none;">회원가입</router-link>
+					</li>
+				</ul>
+			</div>
+            <div class="header_right" v-if="$store.state.localFlg">
+				<ul class="gnb">
+                    <li>
+                        <router-link to="/userchk" class="header_icon" style="text-decoration: none;">
+                            <div>
+                                <font-awesome-icon :icon="['fas', 'circle-user']"/>
+                            </div>
+                            {{ $store.state.NowUser }}
+                        </router-link>
+                    </li>
+					<li @click="logout" class="pointer gnb_logout" style="text-decoration: none;">로그아웃</li>
+				</ul>
+			</div>
   </div>
-</nav>	
+</nav>
+</div>
 </template>
 <script>
 
