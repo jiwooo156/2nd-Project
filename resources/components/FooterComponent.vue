@@ -35,8 +35,8 @@
 				</div>
 				<div class="footer_array">
 					<span><div><font-awesome-icon :icon="['fas', 'house']" /></div>그린컴퓨터아트학원 대구</span>
-					<span><div><font-awesome-icon :icon="['fas', 'location-dot']" /></div>대구광역시 중구 중앙대로 394, 제일빌딩 5F</span>
-					<span><div><font-awesome-icon :icon="['fas', 'phone']" /></div>053.572.1005</span>
+					<a href="https://maps.app.goo.gl/num9JqLFP3GA1d849" target="_blank"  class="font_air"><div><font-awesome-icon :icon="['fas', 'location-dot']" /></div>대구광역시 중구 중앙대로 394, 제일빌딩 5F</a>
+					<a href="tel:053-572-1005" class="font_air"><div><font-awesome-icon :icon="['fas', 'phone']" /></div>053.572.1005</a>
 					<span><div><font-awesome-icon :icon="['fas', 'desktop']" /></div>기업요구를 반영항 PHP풀스택(프론트앤드 + 백앤드) 개발자 양성 과정</span>
 				</div>
 			</div>
