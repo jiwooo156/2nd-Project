@@ -54,7 +54,7 @@ textarea{
 input[type=password] {
     font-family: initial;
 }
-
+input:focus {outline: none;}
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -86,7 +86,7 @@ input[type=password] {
 /* body, html, a, button, table, input, select, textarea {
 	font-family:Cafe24Ssurround;
 } */
-input[type=password]::placeholder {
+input::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }
@@ -1224,6 +1224,14 @@ margin-top:10px;
     max-width: 600px;
     margin: 0 auto;
 }
+.region_search_flex{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.region_search_flex div{
+    text-align: right;
+}
 #region_select_list {
 	width: 20%;
 	height: 30px;
@@ -1231,30 +1239,43 @@ margin-top:10px;
 	text-align: center;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
+	border: 1px solid #545454;
 }
 .region_date {
-	width: 35%;
-	height: 30px;
-	border-radius: 15px;
-	text-align: center;
-	font-family: 'Cafe24SsurroundAir';
-	font-weight: 600;
+	width: 43%;
+    height: 30px;
+    border-radius: 15px;
+    border: 1px solid #000;
+    text-align: center;
+}
+.region_date_span {
+	display: inline-block;
+	padding: 0px 5px;
 }
 .region_search_text {
 	height: 30px;
-	border-radius: 15px;
-	text-align: center;
-	width: 85%;
-	font-size: 1rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 100%;
+    font-size: 1rem;
+    border: 1px solid #545454;
+    padding: 0 14% 0 10px;
 }
 .region_form_btn {
-	width: 15%;
-	height: 30px;
-	border-radius: 5px;
-	width: 15%;
-	background-color: aqua;
+    height: 30px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: 13%;
+    background-color: #D14C6C;
+    color: #fff;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 0;
 }
-
+.region_relative{
+	position: relative;
+}
 /* 추천 축제 */
 /* 공통부분시작 */
 .region_container {
@@ -1264,6 +1285,39 @@ margin-top:10px;
     padding-bottom: 20px;
     border-bottom: 1px solid #82828252;
     margin-bottom: 15px;
+	position: relative;
+}
+.region_container_header_img1{
+	position: absolute;
+    width: 100px;
+    height: 33px;
+    top: 14px;
+    left: 17px;
+    z-index: -1;
+}
+.region_container_header_img2{
+	position: absolute;
+    width: 148px;
+    height: 37px;
+    top: 13px;
+    left: 6px;
+    z-index: -1;
+}
+.region_container_header_img3{
+	position: absolute;
+    width: 100px;
+    height: 33px;
+    top: 13px;
+    left: 108px;
+    z-index: -1;
+}
+.region_container_header_img4{
+    position: absolute;
+    width: 148px;
+    height: 37px;
+    top: 13px;
+    left: 97px;
+    z-index: -1;
 }
 .region_p1 {
 	font-size: 1.5rem;
@@ -1281,13 +1335,46 @@ margin-top:10px;
 	width: 100%;
     box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+	position: relative;
+}
+.region_date_msg1{
+	border-radius: 41px;
+    padding: 6px 15px;
+    height: 28px;
+	background: #FF9500;
+    color: white;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+.region_date_msg2{
+    border-radius: 41px;
+    padding: 6px 15px;
+    height: 28px;
+	background: #34C759;
+    color: white;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+.region_date_msg3{
+    border-radius: 41px;
+    padding: 6px 15px;
+    height: 28px;
+    background: #858585;
+    color: white;
+    position: absolute;
+    top: 8px;
+    left: 8px;
 }
 .region_container_body a {
-	width: 100%;
+    height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
     gap: 10px;
-	color: #000;
+    color: #000;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .region_container_body img {
 	border-top-right-radius: 5px;
@@ -1296,14 +1383,14 @@ margin-top:10px;
     border-top-left-radius: 5px;
 }
 .region_title {
-    font-size: 1.5rem;
-    padding: 0px 10px;
+	font-size: 1.3rem;
+    padding: 0px 13px;
 }
 .region_content {
-    padding: 10px;
-	white-space: nowrap;
-	overflow:hidden;
-	text-overflow: ellipsis;
+	padding: 0px 13px 10px 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 /* 지역 축제 */
 .region_sort {
@@ -1336,6 +1423,12 @@ margin-top:10px;
 } 
 .region_p4 {
 	font-size: 2.5rem;
+}
+.region_p5 {
+	font-size: 1rem;
+}
+.region_p6 {
+	font-size: 1.3rem;
 }
 .region_more_btn {
 	text-align: center;
