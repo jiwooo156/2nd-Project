@@ -5,6 +5,7 @@
 >
 	<div class="user_white-bg">
 		<h3 class="font_air bold center user_pwchange_box_header">비밀번호 수정</h3>
+	
 		<div class="user_pwchange_box">
 			<p class="font_air bold">비밀번호는 <span class="user_pwchange_guide font_air bold">영어,숫자,특수문자(!?~@#)최소1개포함 8~20</span>으로 등록하셔야 합니다.</p>
 		</div>			

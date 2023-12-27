@@ -620,8 +620,7 @@ input[type=password]::placeholder {
     gap: 1.1rem;
     justify-content: center;
     margin: 0.5rem auto;
-	padding: 1.5rem 0;
-	border-top: 1px solid #00000025;
+	padding: 0 0 1.5rem 0;
 	border-bottom: 1px solid #00000025;
 }
 .footer_box_1 {
@@ -664,12 +663,33 @@ input[type=password]::placeholder {
 	padding-top: 0.8rem;
 }
 .footer_array {
+	gap: 0.5rem;
 	display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 .footer_array div {
 	margin: 0 0.2rem;
+}
+.footer_array a {
+	margin: 0 0.2rem;
+}
+.footer_array a:link { 
+	color: black; 
+	text-decoration: none;
+	font-family: 'Cafe24SsurroundAir';
+    font-weight: bolder;
+    font-size: 0.8rem;
+}
+.footer_array a:visited { 
+	color: black; 
+	text-decoration: none;
+	font-family: 'Cafe24SsurroundAir';
+    font-weight: bolder;
+    font-size: 0.8rem;
+}
+.footer_array div {
+	display: inline;
 }
 .footer_con span {
 	font-family: 'Cafe24SsurroundAir';
@@ -678,24 +698,34 @@ input[type=password]::placeholder {
 	display: flex;
 	justify-content: center;
   }
+.footer_ref_left h3 {
+	font-size: 1.15rem
+}
+.footer_ref_right {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
 .footer_img1 {
-	width: 8rem;
-	height: 3rem;
+    width: 8.5rem;
+    height: 2.5rem;
 }
 .footer_img2 {
-	width: 6rem;
-	height: 3rem;
+	width: 7rem;
+    height: 2rem;
 }
 .footer_img3 {
-	width: 3rem;
-	height: 3rem;
+	width: 4.5rem;
+    height: 2.2rem;
 }
 .footer_img4 {
-	width: 6rem;
-	height: 3rem;
+	width: 4.5rem;
+    height: 3rem;
 }
 .footer_ref {
 	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .footer_ref h3 {
 	margin-top: 1rem;
@@ -703,11 +733,8 @@ input[type=password]::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
 }
-.footer_ref span {
-	font-family: 'Cafe24SsurroundAir';
-	font-weight: bolder;
-	font-size: 0.8rem;
-}
+
+
   /* 버튼 */
   /* .main_topBtn {
   
