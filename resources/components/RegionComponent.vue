@@ -53,7 +53,7 @@
 					<router-link :to='"/detail?id="+tour.id'>
 						<img :src="tour.img1">
 						<div class="region_title">{{ tour.title }}</div>
-						<div class="region_content summary">{{ tour.content }}</div>
+						<div class="region_content">{{ tour.content }}</div>
 					</router-link>
 				</div>
 			</div>

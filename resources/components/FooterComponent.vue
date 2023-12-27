@@ -46,10 +46,10 @@
 				</div>
 				<div class="footer_ref_right">
 					<!-- a태그해서 페이지 이동하게 하고 크기 조절하고 정렬잘하고 -->
-					<span><img src="/img/footer_img1.png" alt="footer_logo" class="footer_img1"></span>
-					<span><img src="/img/footer_img2.png" alt="footer_logo" class="footer_img2"></span>
-					<span><img src="/img/footer_img3.png" alt="footer_logo" class="footer_img3"></span>
-					<span><img src="/img/footer_img4.png" alt="footer_logo" class="footer_img4"></span>
+					<a href="https://knto.or.kr/index" target="_blank"><img src="/img/footer_img1.png" alt="footer_logo" class="footer_img1"></a>
+					<a href="https://tour.gb.go.kr/" target="_blank"><img src="/img/footer_img2.png" alt="footer_logo" class="footer_img2"></a>
+					<a href="https://tour.gyeongnam.go.kr/index.gyeong" target="_blank"><img src="/img/footer_img3.png" alt="footer_logo" class="footer_img3"></a>
+					<a href="https://www.msit.go.kr/index.do" target="_blank"><img src="/img/footer_img4.png" alt="footer_logo" class="footer_img4"></a>
 				</div>
 			</div>
 		</div>
