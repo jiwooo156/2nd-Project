@@ -3,7 +3,7 @@
 		<div class="login_frame center">
 			<div class="login_container">
 				<div  class="login_header" >
-					<router-link :to="'/main'" class="login_header_a  pointer">
+					<router-link :to="'/main'" class="login_header_a pointer">
 						<img src="/img/logo.png" alt="" class="login_logo">
 					</router-link>
 				</div>

@@ -152,16 +152,16 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){
-					this.detaildata = res.data.data[0]
-					this.repliedata = res.data.replie
-					this.repliecount = res.data.repliecount
+					this.detaildata = res.data.data[0];
+					this.repliedata = res.data.replie;
+					this.repliecount = res.data.repliecount;
 					
 				}else if(res.data.code==="E99"){
-					alert(res.data.errmsg)
+					alert(res.data.errmsg);
 				}
 			})
 			.catch(err => {
-				alert('에러가 발생했습니다')
+				alert('에러가 발생했습니다');
 			})
 		},
 		// 댓글작성
@@ -174,11 +174,9 @@ export default {
 			axios.post(URL,formData)
 			.then(res =>{
 				if(res.data.code==="0"){
-					
-					
-					this.replie = "",
-					this.repliecount++,
-					this.repliedata.unshift(res.data.data)
+					this.replie = "";
+					this.repliecount++;
+					this.repliedata.unshift(res.data.data);
 				}
 			})
 			.catch(err =>{
@@ -207,11 +205,11 @@ export default {
 		},
 		// 몇글자 적은지 확인
 		replieLength() {
-			this.replie_length = this.replie.length
+			this.replie_length = this.replie.length;
 		},
 		// 한글 바로입력
 		changeKeyword(e) {
-			this.replie = e.target.value
+			this.replie = e.target.value;
 		},
 		// 로그인확인
 		checklocal() {
@@ -235,8 +233,7 @@ export default {
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){
-						
-						document.querySelector('#detail_replie'+id).remove()
+						document.querySelector('#detail_replie'+id).remove();
 						this.repliecount--;
 					}else{
 						
@@ -246,14 +243,12 @@ export default {
 					// this.$router.push('/error');
 			})
 			} else {
-				return
+				return;
 			}
 			
 		},
 		// 댓글추가 불러오기
-		morereplie(){		
-			
-			
+		morereplie(){
 			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{

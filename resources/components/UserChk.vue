@@ -29,10 +29,6 @@
 export default {
 	name: 'UserChk',
 
-	created() {
-
-	},
-
 	methods: {
 		chk_pw(){	
 			this.$store.dispatch('actionUserChk');

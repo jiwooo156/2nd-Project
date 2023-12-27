@@ -157,20 +157,20 @@ export default {
 		}
 	},
 	created() {
-		this.$store.commit('setLoading',true)
-		console.log('크리에이티드')
+		this.$store.commit('setLoading',true);
+		console.log('크리에이티드');
 	},
 
 	mounted() {
-		this.$store.commit('setLoading',false)
-		console.log('마운티드')
+		this.$store.commit('setLoading',false);
+		console.log('마운티드');
 	},
 
 	methods: {
 		// 이메일인증보내기
 		email_auth(){
-			this.$store.commit('setLoading',true)
-			const URL = '/authemail'
+			this.$store.commit('setLoading',true);
+			const URL = '/authemail';
 			const HEADER = {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -204,10 +204,10 @@ export default {
 				}
 			})
 			.catch(err => {
-				console.log("캐치")
+				console.log("캐치");
 				this.auth_err="";
-				this.errorMsg=err.response.data.errorMsg
-				this.$store.commit('setLoading',false)
+				this.errorMsg=err.response.data.errorMsg;
+				this.$store.commit('setLoading',false);
 			})
 		},
 		// // 이메일 다시보내기
@@ -245,8 +245,8 @@ export default {
 		// },
 		// 시간연장
 		reset_auth_time(){
-			this.$store.commit('setLoading',true)
-			const URL = '/authemail/time'
+			this.$store.commit('setLoading',true);
+			const URL = '/authemail/time';
 			const HEADER = {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -266,8 +266,8 @@ export default {
 				}
 			})
 			.catch(err => {
-				console.log("실패")
-				this.$store.commit('setLoading',false)
+				console.log("실패");
+				this.$store.commit('setLoading',false);
 			})
 		},
 		// // 이메일중복확인
@@ -339,34 +339,34 @@ export default {
 		},
 		inputLeft(){
 		if(this.input_right&&this.input_left){
-				this.input_all = true
+				this.input_all = true;
 			}else if(!(this.input_left)){
-				this.input_all=false
+				this.input_all=false;
 			}
 		},
 		inputRight(){
 			if(this.input_right&&this.input_left){
-				this.input_all = true
+				this.input_all = true;
 			}else if(!(this.input_right)){
-				this.input_all=false
+				this.input_all=false;
 			}else if(!(this.input_left)){
-				this.input_all=false
+				this.input_all=false;
 			}
 		},
 		inputAll(){
 			if(this.input_all){
-				this.input_right = true
-				this.input_left = true
+				this.input_right = true;
+				this.input_left = true;
 			}else{
 				if(!(this.input_right)){
-					this.input_right = false
+					this.input_right = false;
 				}else if(!(this.input_left)){
-					this.input_left = false
+					this.input_left = false;
 				}else{
-					this.input_left = false
-					this.input_right = false
+					this.input_left = false;
+					this.input_right = false;
 				}
-				this.re_auth_email =false
+				this.re_auth_email =false;
 				this.auth_err = '';
 			}
 		},
@@ -375,10 +375,10 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','');
 		this.timerstop();
-		this.input_all = false
-		this.input_right = false
-		this.input_left = false
-		this.repeat_flg = false
+		this.input_all = false;
+		this.input_right = false;
+		this.input_left = false;
+		this.repeat_flg = false;
 		next();
 	},
 			
