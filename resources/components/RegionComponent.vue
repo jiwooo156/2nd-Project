@@ -168,7 +168,7 @@ export default {
 			this.$store.commit('setNsFlg','2');
 		}
 		this.getState( objUrlParam.get('ns') );
-		this.getRecommendFestival();
+		this.getRecommendFestival(objUrlParam.get('ns'));
 		// console.log('create');
 	},
 	mounted() {
@@ -204,15 +204,15 @@ export default {
 			})
 		},
 		// 추천축제관광지 가져오기
-		getRecommendFestival() {
-			const URL = '/region/recommendf';
+		getRecommendFestival(ns) {
+			const URL = '/region/recommendf?ns='+ ns;
 			axios.get(URL)
 			.then(res => {
-				// console.log("추천축제 댄");
+				console.log("추천축제 댄");
 				this.recommendfestival = res.data.rfestival;
 				this.recommendtour = res.data.rtour;
-				// console.log(this.recommendfestival);
-				// console.log(this.recommendtour);
+				console.log(this.recommendfestival);
+				console.log(this.recommendtour);
 			})
 			.catch(err => {
 				// console.log("캐치");

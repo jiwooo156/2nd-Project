@@ -223,14 +223,16 @@ class InfoController extends Controller
         Log::debug("**** recommendtourget start ****");
 
         $recommend_festival = Info::
-            select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits')
+            select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits', 'ns_flg')
             ->where('main_flg','축제')
+            ->where('ns_flg',$req->ns)
             ->orderBy('hits', 'desc')
             ->limit(3)
             ->get();
         $recommend_tour = Info::
-            select('id','title', 'content', 'img1', 'hits')
+            select('id','title', 'content', 'img1', 'hits', 'ns_flg')
             ->where('main_flg','관광')
+            ->where('ns_flg',$req->ns)
             ->orderBy('hits', 'desc')
             ->limit(3)
             ->get();
@@ -260,7 +262,7 @@ class InfoController extends Controller
             select('id','states_name','img1','title','content','hits')
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
-            ->orderBy('start_at','desc')
+            ->orderBy('id','desc')
             ->limit(4)
             ->get();
         Log::debug("**** festivalget end ****");
