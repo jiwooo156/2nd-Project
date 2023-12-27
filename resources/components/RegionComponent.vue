@@ -14,7 +14,7 @@
 			</div>
 			<div class="region_search_frame">
 				<div class="region_search_flex">
-					<select id="region_select_list" v-model="searchstate">
+					<select class="region_select_list pointer" v-model="searchstate">
 						<option class=" font_air bold">지역</option>
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
@@ -118,12 +118,12 @@
 		</div>
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
 			<div class="region_container_header">
-				<span class="region_p2">{{ this.nowstate }}의 축제는 </span><span class="region_p6 font_air bold">여서 확인해 보이소!</span>
-				<img src="/img/blue.png" class="region_container_header_img3">
+				<span class="region_p2">여 축제 찾았나?</span>
+				<img src="/img/blue.png" class="region_container_header_img1">
 			</div>
 			<div class="region_container_list">
-				<p v-if="this.regionfestival.length === 0" class="region_p5 font_air bold">검색된 결과물이 없습니다.</p>
-				<div class="region_container_body" v-for="rfestival in regionfestival" :key="rfestival">
+				<p v-if="this.searchfestivalresult.length === 0" class="region_p5 font_air bold">검색된 결과물이 없습니다.</p>
+				<div class="region_container_body" v-for="rfestival in searchfestivalresult" :key="rfestival">
 					<router-link :to='"/detail?id="+rfestival.id'>
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 						<img :src="rfestival.img1">
@@ -139,13 +139,15 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
 			<div class="region_container_header">
-				<span class="region_p2">{{ this.nowstate }}의 관광지는 </span><span class="region_p6 font_air bold">여서 확인해 보이소!</span>
-				<img src="/img/blue.png" class="region_container_header_img4">
+				<span class="region_p2">저 관광지 찾았나?</span>
+				<img src="/img/blue.png" class="region_container_header_img2">
 			</div>
 			<div class="region_container_list" >
-				<p v-if="this.regiontour.length === 0" class="region_p5 font_air bold">검색된 결과물이 없습니다.</p>
-				<div class="region_container_body" v-for="rtour in regiontour" :key="rtour">
+				<p v-if="this.searchtourresult.length === 0" class="region_p5 font_air bold">검색된 결과물이 없습니다.</p>
+				<div class="region_container_body" v-for="rtour in searchtourresult" :key="rtour">
 					<router-link :to='"/detail?id="+rtour.id'>
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 						<img :src="rtour.img1">
@@ -340,10 +342,6 @@ export default {
 								// 	this.searchfilter=this.searchfilter+" 검색어 = "+this.searchkeyword
 								// }
 								// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
-				if(this.searchstate === "지역"){
-					this.searchstate = "";
-				}
-				console.log(this.searchfilter);
 				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
 				axios.get(URL)
 				.then(res => {
@@ -351,6 +349,9 @@ export default {
 					console.log("검색결과 댄");
 					this.searchfestivalresult = res.data.festival;
 					this.searchtourresult = res.data.tour;
+					if (this.searchstate === ""&&this.searchkeyword==="") {
+						this.searchtourresult =	[]
+					}
 					this.regionnameflg = false;
 					this.searchflg = true;
 				})

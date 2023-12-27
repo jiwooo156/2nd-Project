@@ -55,6 +55,7 @@ input[type=password] {
     font-family: initial;
 }
 input:focus {outline: none;}
+select:focus {outline: none;}
 /* 폰트 */
 @font-face {
     font-family: 'Cafe24Ssurround';
@@ -1260,7 +1261,7 @@ margin-top:10px;
 .region_search_flex div{
     text-align: right;
 }
-#region_select_list {
+.region_select_list {
 	width: 20%;
 	height: 30px;
 	border-radius: 15px;
@@ -1269,6 +1270,9 @@ margin-top:10px;
 	font-weight: 600;
 	border: 1px solid #545454;
 }
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+	cursor: pointer;
+ }
 .region_date {
 	width: 43%;
     height: 30px;
