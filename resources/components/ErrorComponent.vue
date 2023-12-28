@@ -5,14 +5,14 @@
 			<br>
 			<div class="error_container">
 				<div class="error_header">
-					존재하지않는 주소를 입력하셨거나
+					존재하지 않는 주소를 입력하셨거나
 				</div>
 				<div class="error_header">
-					에러가 발생하였습니다
+					에러가 발생하였습니다.
 				</div>
 				<div class="error_main">
 					<div class="error_title">에러코드 : <span>E404</span></div>
-					<div class="error_content">페이지를 찾을수 없습니다.</div>
+					<div class="error_content">페이지를 찾을 수 없습니다.</div>
 				</div>
 			</div>
 			<br>

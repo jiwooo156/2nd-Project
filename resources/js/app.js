@@ -17,9 +17,6 @@
 		import { library } from '@fortawesome/fontawesome-svg-core';
 		import { fas } from '@fortawesome/free-solid-svg-icons';
 		import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-		// import BootstrapVue3 from 'bootstrap-vue-3';
-		// import 'bootstrap/dist/css/bootstrap.css'
-		// import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 		library.add(fas);
 		const app = createApp({
 			components: {
@@ -32,5 +29,4 @@
 		.use(VueCookies);  //쿠키사용
 		AOS.init();
 		app.config.globalProperties.$cookies.config("1d");   //쿠키사용기간 ("1d") = 하루
-		app.mount('#app')
-		app.use(BootstrapVue3);  //마운트 처리
+		app.mount('#app')  //마운트 처리
