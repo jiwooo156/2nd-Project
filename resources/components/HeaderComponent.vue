@@ -9,15 +9,7 @@
 				<nav class="lnb">
 					<ul class="nav">
 						<li>
-							<a href="#" target="_self">홈이야요</a>
-							<ul class="depth1">
-								<li>
-									<a href="#" target="_self" onclick="">블루베리</a>
-								</li>
-								<li>
-									<a href="#" target="_self" onclick="">스우므디</a>
-								</li>
-							</ul>
+							<router-link to="/main">홈이야요</router-link>
 						</li>
 						<li>
 							<a href="#" target="_self">경상도오</a>

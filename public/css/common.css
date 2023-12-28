@@ -980,7 +980,7 @@ input::placeholder {
 .sign_container span{
     font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
-	font-size: 0.9rem;
+	font-size: 1rem;
 	margin-bottom: 4px;
 	display: inline-block;
 }
@@ -1003,7 +1003,7 @@ input::placeholder {
     padding: 8px;
     width: 35%;
     background-color: #d14c6c;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: #fff;
 }
 
@@ -1015,8 +1015,6 @@ input::placeholder {
 	color: #00a678;
 	padding-left: 20px;
 }
-
-
 
 
 /* 유저페이지 */

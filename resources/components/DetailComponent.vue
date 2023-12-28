@@ -54,7 +54,7 @@
 						v-model="replie"  
 						@click="checklocal"
 						@input="changeKeyword"
-						placeholder="이곳에 댓글을 입력해 주세요"
+						placeholder="이곳에 소중한 댓글을 작성해 주세요."
 					></textarea>
 					<div class="detail_replie_length font_air bold">
 						{{ this.replie_length }}/200
