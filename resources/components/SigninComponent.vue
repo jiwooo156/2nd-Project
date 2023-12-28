@@ -86,7 +86,11 @@
 					</div>
 					<div class="sign_footer_box center">
 						<button class="sign_footer_btn pointer"
+							v-if="nickChkFlg"
 							@click="signin"
+						>회원가입</button>
+						<button class="sign_footer_btn pointer"
+							v-if="!nickChkFlg"
 						>회원가입</button>
 						<router-link :to="'/main'" class="sign_footer_btn pointer">취소</router-link>
 					</div>
@@ -134,6 +138,7 @@ export default {
 			err_phone2: false,
 			err_phone3: false,
 			com_phone: false,
+			nickChkFlg: false,
 		}
 	},
 	watch: {
@@ -150,6 +155,7 @@ export default {
 			this.nameval();
 		},
 		nick(){
+			this.nickChkFlg = false
 			this.nickval();
 		},
 		birthdate(){
@@ -452,9 +458,31 @@ export default {
 		koreaname(e) {
 			this.name = e.target.value;
 		},
-		nick_chk(){
-			this.$store.dispatch('actionNickChk');
-		}
+		nick_chk() {
+			clearTimeout(this.debounceTimeoutId);
+			this.debounceTimeoutId = setTimeout(() => {
+				const URL = '/signin/nick?nick=' + this.nick;
+				axios.get(URL)
+					.then(res => {
+						this.$store.commit('setErrMsg', '');
+						if (res.data.code === "0") {
+							if (res.data.data.length === 0) {
+								this.nickChkFlg = true;
+								this.$store.commit('setNickFlg', 1);
+							} else if (res.data.data.length > 0) {
+								this.$store.commit('setNickFlg', 2);
+							}
+						} else {
+							this.nickChkFlg = false;
+							alert("닉네임체크에 실패하였습니다");
+						}
+					})
+					.catch(err => {
+						this.$store.commit('setNickFlg', 0);
+						this.$store.commit('setErrMsg', err.response.data.errorMsg);
+					});
+			}, 200);
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		this.$store.commit('setErrMsg','');
