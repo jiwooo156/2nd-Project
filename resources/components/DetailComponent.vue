@@ -169,24 +169,29 @@ export default {
 		},
 		// 댓글작성
 		repliewrite(){
-			const URL = '/detail/'+this.b_id;
-			const formData = new FormData();
-			formData.append('replie', this.replie);
-			formData.append('b_id', this.b_id);
-			formData.append('nick', this.$store.state.NowUser);
-			axios.post(URL,formData)
-			.then(res =>{
-				if(res.data.code==="0"){
-					this.replie = "";
-					this.repliecount++;
-					this.repliedata.unshift(res.data.data);
-				}else{
-					alert(res.data.errorMsg);
-				}
-			})
-			.catch(err => {
-				alert(err.response.data.errorMsg);
-			})
+			if(this.replie){
+				const URL = '/detail/'+this.b_id;
+				const formData = new FormData();
+				formData.append('replie', this.replie);
+				formData.append('b_id', this.b_id);
+				formData.append('nick', this.$store.state.NowUser);
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						this.replie = "";
+						this.repliecount++;
+						this.repliedata.unshift(res.data.data);
+					}else{
+						alert(res.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					alert(err.response.data.errorMsg);
+				})
+			}else{
+				alert("댓글을 작성해 주세요.")
+			}
+		
 		},
 		// 시간초기화
 		converttime(date){

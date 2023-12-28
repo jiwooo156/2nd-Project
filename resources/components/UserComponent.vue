@@ -429,18 +429,7 @@ export default {
 			if(this.user_com_pw&&this.user_com_pw_chk){
 				this.$store.dispatch('actionChangePw');
 			}else{
-				if(!(this.user_com_pw)){
-					this.user_err_pw1 = true;
-					this.user_err_pw2 = false;
-					this.user_err_pw3 = false;
-					this.user_err_pw4 = false;
-					this.user_err_pw5 = false;
-					this.user_com_pw = false;
-				}
-				if(!(this.user_com_pw_chk)){
-					this.user_err_pw_chk = true;
-					this.user_com_pw_chk = false;
-				}
+				alert("입력값을 확인해 주세요");
 			}
 		},
 		usernickchange(){

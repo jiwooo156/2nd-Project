@@ -33,7 +33,21 @@ class UserController extends Controller
     // }
     // 이메일중복확인기능 통합
 
-    // 닉네임중복확인
+    // 세션에 유저정보확인
+    public function chkauth(Request $req)
+    {   
+        $result=Auth::check();
+        $sessionExpiration = Auth::guard()->getSession()->get('userId');
+        if($result){
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => '1'
+            ], 200);
+        }
+    }
     public function nickchk(Request $req)
     {   
         // 유저정보 조회
