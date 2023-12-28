@@ -290,7 +290,7 @@ class InfoController extends Controller
             select('id','states_name','img1','title','content','start_at','end_at','hits')
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
-            ->orderBy('start_at','desc')
+            ->orderBy('id','desc')
             ->limit(3)
             ->offset($req->offset)
             ->get();
