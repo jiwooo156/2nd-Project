@@ -115,6 +115,10 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/morefestivalget',[InfoController::class, 'morefestivalget']);
     // 검색결과 받아오는 url api
     Route::get('/searchkeyword',[InfoController::class, 'searchkeyword']);
+    // 검색 축제 더보기
+    Route::get('/moresearchf',[InfoController::class, 'moresearchf']);
+    // 검색 관광 더보기
+    Route::get('/moresearcht',[InfoController::class, 'moresearcht']);
 });
 
 

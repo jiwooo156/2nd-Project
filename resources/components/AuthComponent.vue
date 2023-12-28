@@ -144,26 +144,33 @@ export default {
 		}
 	},
 	watch: {
+		// 전체 동의 클릭시
 		input_all(){
 			this.inputAll();
 			this.inputRight();
 			this.inputLeft();
 		},
+		// 왼쪽 동의 클릭
 		input_left(){
 			this.inputLeft();
 		},
+		// 오른쪽 동의 클릭
 		input_right(){
 			this.inputRight();
 		}
 	},
 	created() {
+		// 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
+		// 로딩기능켜기
 		this.$store.commit('setLoading',true);
-		console.log('크리에이티드');
 	},
 
 	mounted() {
+		// 로딩기능끄기
 		this.$store.commit('setLoading',false);
-		console.log('마운티드');
+
 	},
 
 	methods: {
@@ -184,31 +191,28 @@ export default {
 					this.email_flg = true
 					this.auth_flg = true;
 					this.timeout_flg = false;
-					console.log(this.email_flg = true)
 					this.timer1();			
-					this.$store.commit('setLoading',false)
-				}else if(res.data.code === "E12"){
-					console.log("엘스")
-					this.errorMsg = []
-					this.auth_err = res.data.errorMsg;
-					this.timeout_flg = false;
-					this.re_auth_email = true;
-					this.$store.commit('setLoading',false)
+				// }else if(res.data.code === "E12"){
+				// 	this.errorMsg = []
+				// 	this.auth_err = res.data.errorMsg;
+				// 	this.timeout_flg = false;
+				// 	this.re_auth_email = true;
+				// 1228 수정 최정훈 이미발송되었습니다 상황 삭제
 				}else if(res.data.code === "E13"){
-					console.log("엘스")
 					this.auth_err = ""
 					this.timeout_flg = false;
 					this.errorMsg = []
 					this.repeat_flg = true
-					this.$store.commit('setLoading',false)
 				}
 			})
 			.catch(err => {
-				console.log("캐치");
+
 				this.auth_err="";
 				this.errorMsg=err.response.data.errorMsg;
-				this.$store.commit('setLoading',false);
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// // 이메일 다시보내기
 		// email_re_auth(){
@@ -243,6 +247,8 @@ export default {
 		// 		console.log("이메일 다시보내기 캐치")
 		// 	})
 		// },
+		// 1228 수정 최정훈 이메일 다시보내기는 기존 발송으로 통합 
+
 		// 시간연장
 		reset_auth_time(){
 			this.$store.commit('setLoading',true);
@@ -257,18 +263,18 @@ export default {
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){	
+					// 타이머 함수 호출
 					this.timer1();
-					this.$store.commit('setLoading',false)
 				}else{
-					console.log(res.data)
-					console.log("엘스")
-					this.$store.commit('setLoading',false)
+					alert(res.data.errorMsg);
 				}
 			})
 			.catch(err => {
-				console.log("실패");
-				this.$store.commit('setLoading',false);
+				alert(err.response.data.errorMsg);
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// // 이메일중복확인
 		// emailChk(){
@@ -314,29 +320,44 @@ export default {
 			if (this.timerId) {
 				clearInterval(this.timerId);
 			}
+			// 초기셋팅 분
 			let minutes = 5;
+			// 초기셋팅 초
 			let seconds = 0;
 			const updateTimer = () => {
+				// 출력될 타이머의 모양
 				this.timer = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+				// 시간종료시
 				if (minutes === 0 && seconds === 0) {
-					// this.auth_flg=false;
+					// 재전송플래그
 					this.re_auth_email=true;
+					// 시간종료플래그
 					this.timeout_flg=true;
+					// 타이머 종료
 					clearInterval(this.timerId);
+				// 시간종료 아닐시
 				} else {
+					// 초가 0이되면
 					if (seconds === 0) {
+						// 분-1
 						minutes--;
+						// 초59초 셋팅
 						seconds = 59;
 					} else {
+						// 초 -1
 						seconds--;
 					}
 				}
 			};
+			// 타이머 기능 1초마다 호출하여 출력
 			this.timerId = setInterval(updateTimer, 1000);
 		},
+		// 타이머종료
 		timerstop(){
 			clearInterval(this.timerId);
 		},
+
+		// 왼쪽약관 클릭시
 		inputLeft(){
 		if(this.input_right&&this.input_left){
 				this.input_all = true;
@@ -344,6 +365,8 @@ export default {
 				this.input_all=false;
 			}
 		},
+		
+		// 오른쪽약관 클릭시
 		inputRight(){
 			if(this.input_right&&this.input_left){
 				this.input_all = true;
@@ -353,6 +376,7 @@ export default {
 				this.input_all=false;
 			}
 		},
+		// 전체동의 클릭시
 		inputAll(){
 			if(this.input_all){
 				this.input_right = true;
