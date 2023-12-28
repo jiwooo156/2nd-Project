@@ -158,28 +158,21 @@ class InfoController extends Controller
             ], 400);
         }
     }
-    // 댓글 추가조회    
-    public function morereplie(Request $req) {
-        // 리퀘스트온 값을토대로 20개의 데이터 조회
-        $replie_result = Replie::
-            select('id', 'nick', 'replie', 'created_at')
-            ->where('b_id', $req->b_id)
-            ->orderBy('created_at', 'desc')
-            ->limit(20)
-            ->offset($req->offset)
-            ->get();
-        // 조회결과 있을시
-        if($replie_result){
+    // 댓글 작성자 확인    
+    public function repliechk(Request $req) {
+        // 세션에 로그인된 정보 체크
+        $result=Auth::user();      
+        // 리퀘스트온 이메일과 세션에 이메일 같은지 체크
+        // 같을시
+        if($result->email===$req->email){
             return response()->json([
-                'code' => '0',
-                'data' => $replie_result,
+                'code' => '0'
             ], 200);
-        // 조회결과 없거나 실패일시
+        // 다를시
         }else{
             Log::debug("엘스");
             return response()->json([
-                'code' => 'E99',
-                'errorMsg' => '댓글 조회에 실패하였습니다',
+                'code' => '1',
             ], 200);
         }
     }

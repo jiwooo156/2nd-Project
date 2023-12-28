@@ -25,7 +25,7 @@ const routes = [
 		component : ErrorComponent
 	},
 	{
-		path: "/region",
+		path: '/region',
 		component : RegionComponent
 	},
 	{

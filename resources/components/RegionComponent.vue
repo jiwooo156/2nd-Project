@@ -265,6 +265,9 @@ export default {
 		searchkeyword(){
 			this.changeSearchFlg()
 		},
+		url(){
+			console.log(테스트)
+		}
 	},
 	mounted() {
 		console.log("더보기플래그")
@@ -277,6 +280,20 @@ export default {
 	beforeDestroy() {
 		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
 		window.removeEventListener("resize", this.updateItem);
+	},
+	beforeRouteUpdate(){
+		// url의 파라미터를 가져옴
+		const objUrlParam = new URLSearchParams(window.location.search);
+		this.nowns = objUrlParam.get('ns')==="경상남도"? "경상북도":"경상남도";
+		// 파라미터의 ns를 확인해서 store의 NsFlg셋팅
+		// url의 파라미터 중 ns를 세팅함
+		if(this.nowns==="경상남도"){
+			this.$store.commit('setNsFlg','1');
+		}else if(this.nowns==="경상북도"){
+			this.$store.commit('setNsFlg','2');
+		}
+		this.getState( this.nowns );
+		this.getRecommendFestival(this.nowns);
 	},
 	methods: {
 		// 시군명 가져오기

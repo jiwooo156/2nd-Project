@@ -15,6 +15,7 @@ const store = createStore({
 			varErr: [],
 			localFlg: false,
 			NowUser: "",
+			NowEmail: "",
 			userFlg: false,
 			userInfo: [],
 			openPwModal: false,
@@ -40,6 +41,9 @@ const store = createStore({
 		},
 		setNowUser(state, str){
 			state.NowUser=str;
+		},
+		setNowEmail(state, str){
+			state.NowEmail=str;
 		},
 		setUserFlg(state, boo){
 			state.userFlg=boo;
@@ -240,8 +244,11 @@ const store = createStore({
 						console.log('로그인성공')
 						console.log(res.data.data.nick)
 						localStorage.setItem('nick', res.data.data.nick);
+						localStorage.setItem('email', email);
 						context.commit('setLocalFlg', true);
 						context.commit('setNowUser', localStorage.getItem('nick'));
+						context.commit('setNowEmail', localStorage.getItem('email'));
+						console.log("저장된이메일"+context.state.NowEmail);
 						if(!(context.state.beforeUrl === "/login"||context.state.beforeUrl=== "signin"||context.state.beforeUrl=== "authemail")){
 							router.push(context.state.beforeUrl)
 						}else{
