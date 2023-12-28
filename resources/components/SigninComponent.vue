@@ -160,6 +160,9 @@ export default {
 		},
 	},
 	created() {
+		// 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
 		this.email= "";
 		this.$store.commit('setErrMsg',[]);
 		this.$store.commit('setNickFlg',0);	
@@ -444,7 +447,6 @@ export default {
 		// 닉네임 한글 바로인식
 		koreanick(e) {
 			this.nick = e.target.value;
-			console.log(this.nick);
 		},
 		// 이름 한글 바로인식
 		koreaname(e) {
