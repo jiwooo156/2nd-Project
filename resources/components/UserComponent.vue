@@ -80,7 +80,11 @@
 			
 			<div class="user_button_box_nick font_air bold">
 				<button class="userChk_button_confirm font_air bold"
-					@click="usernickchange"
+				v-if="nickChkFlg"
+				@click="usernickchange"
+				>변경</button>
+				<button class="userChk_button_confirm font_air bold"
+				v-if="!nickChkFlg"
 				>변경</button>
 				<button class="userChk_button font_air bold" @click="ctlNickModal(false)">취소</button>
 			</div>
@@ -189,6 +193,7 @@ export default {
 			err_nick2: false,
 			err_nick3: false,
 			com_nick: false,
+			nickChkFlg: false,
 		}
 	},
 	watch: {
@@ -205,6 +210,7 @@ export default {
 			this.pwchkval();
 		},
 		nick(){
+			this.nickChkFlg = false
 			this.nickval();
 		},
 	},
@@ -213,29 +219,54 @@ export default {
 	},
 	methods: {
 		// 닉네임체크
-		nick_chk(){
-			const URL = '/signin/nick?nick='+this.nick;
-			axios.get(URL)
-			.then(res => {
-				console.log("댄");
-				this.$store.commit('setErrMsg','');
-				console.log(res.data.errorMsg);
-				if(res.data.code === "0"){
-					if(res.data.data.length === 0){
-						console.log("없을때");
-						this.$store.commit('setNickFlg',1);	
-					}else if(res.data.data.length > 0){
-						console.log("있을때");
-						this.$store.commit('setNickFlg',2);
-					}
-				}else{
-					alert("닉네임체크에 실패하였습니다");
-				}
-			})
-			.catch(err => {
-				this.$store.commit('setNickFlg',0);
-				this.$store.commit('setErrMsg',err.response.data.errorMsg);
-			})
+		// nick_chk(){
+		// 	const URL = '/signin/nick?nick='+this.nick;
+		// 	axios.get(URL)
+		// 	.then(res => {
+		// 		console.log("댄");
+		// 		this.$store.commit('setErrMsg','');
+		// 		console.log(res.data.errorMsg);
+		// 		if(res.data.code === "0"){
+		// 			if(res.data.data.length === 0){
+		// 				console.log("없을때");
+		// 				this.$store.commit('setNickFlg',1);	
+		// 			}else if(res.data.data.length > 0){
+		// 				console.log("있을때");
+		// 				this.$store.commit('setNickFlg',2);
+		// 			}
+		// 		}else{
+		// 			alert("닉네임체크에 실패하였습니다");
+		// 		}
+		// 	})
+		// 	.catch(err => {
+		// 		this.$store.commit('setNickFlg',0);
+		// 		this.$store.commit('setErrMsg',err.response.data.errorMsg);
+		// 	})
+		// },
+		nick_chk() {
+			clearTimeout(this.debounceTimeoutId);
+			this.debounceTimeoutId = setTimeout(() => {
+				const URL = '/signin/nick?nick=' + this.nick;
+				axios.get(URL)
+					.then(res => {
+						this.$store.commit('setErrMsg', '');
+						if (res.data.code === "0") {
+							if (res.data.data.length === 0) {
+								this.nickChkFlg = true;
+								this.$store.commit('setNickFlg', 1);
+							} else if (res.data.data.length > 0) {
+								this.$store.commit('setNickFlg', 2);
+							}
+						} else {
+							this.nickChkFlg = false;
+							alert("닉네임체크에 실패하였습니다");
+						}
+					})
+					.catch(err => {
+						this.$store.commit('setNickFlg', 0);
+						this.$store.commit('setErrMsg', err.response.data.errorMsg);
+					});
+			}, 200);
 		},
 		// 유저정보불러오기
 		GetUser(){

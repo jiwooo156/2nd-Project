@@ -136,7 +136,7 @@ class InfoController extends Controller
             // 세션에 유저정보 닉네임과 일치하고 리퀘스트 온 아이디값으로 유저테이블에 조회
             $result = Replie::
                 where('id',$req->id)
-                ->where('email',$auth->email)->first();
+                ->where('u_id',$auth->id)->first();
             // 조회결과 있을시
             if($result){
                 // 트랜잭션시작
