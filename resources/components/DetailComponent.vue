@@ -169,22 +169,29 @@ export default {
 		},
 		// 댓글작성
 		repliewrite(){
-			const URL = '/detail/'+this.b_id;
-			const formData = new FormData();
-			formData.append('replie', this.replie);
-			formData.append('b_id', this.b_id);
-			formData.append('nick', this.$store.state.NowUser);
-			axios.post(URL,formData)
-			.then(res =>{
-				if(res.data.code==="0"){
-					this.replie = "";
-					this.repliecount++;
-					this.repliedata.unshift(res.data.data);
-				}
-			})
-			.catch(err =>{
-				// this.$router.push('/error');
-			})
+			if(this.replie){
+				const URL = '/detail/'+this.b_id;
+				const formData = new FormData();
+				formData.append('replie', this.replie);
+				formData.append('b_id', this.b_id);
+				formData.append('nick', this.$store.state.NowUser);
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						this.replie = "";
+						this.repliecount++;
+						this.repliedata.unshift(res.data.data);
+					}else{
+						alert(res.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					alert(err.response.data.errorMsg);
+				})
+			}else{
+				alert("댓글을 작성해 주세요.")
+			}
+		
 		},
 		// 시간초기화
 		converttime(date){
@@ -239,12 +246,12 @@ export default {
 						document.querySelector('#detail_replie'+id).remove();
 						this.repliecount--;
 					}else{
-						
+						alert(res.data.errorMsg);
 					}
 				})
-				.catch(err =>{
-					// this.$router.push('/error');
-			})
+				.catch(err => {
+					alert(err.response.data.errorMsg);
+				})
 			} else {
 				return;
 			}
@@ -257,20 +264,17 @@ export default {
 			.then(res =>{
 				if(res.data.code==="0"){
 					this.repliedata = [ ...this.repliedata, ...res.data.data ];
-					this.replie_offset = this.replie_offset+20;
-					
+					this.replie_offset = this.replie_offset+20;			
 					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
 						this.moreflg = true;
 					}
-					
 				}else{
-					
+					alert(res.data.errorMsg);
 				}
 			})
-				.catch(err =>{
-					
-			})
-			
+			.catch(err => {
+				alert(err.response.data.errorMsg);
+			})		
 		},
 		// 이메일 마스킹
 		masking(str) {

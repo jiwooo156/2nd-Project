@@ -123,44 +123,46 @@ const store = createStore({
 		// 1214 수정 최정훈
 		// 이메일 인증 과정으로 대체
 
-		// 닉네임 중복확인
-		actionNickChk(context){
-			let nick = document.querySelector('#signin_nick').value
-			// const URL = '/api/signin/nick'
-			// 1211 최정훈 수정 api로 안보내고 web으로 변경
-			// const URL = '/signin/nick'
-			// const HEADER = {
-			// 	headers: {
-			// 		// 'Authorization': 'Bearer team5',
-			// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
-			// 		'Content-Type': 'multipart/form-data',
-			// 	}
-			// };
-			// const formData = new FormData();
-			// formData.append('nick', nick);
-			// 1211 최정훈 수정 get형식이 옳은방식이라 수정
-			const URL = '/signin/nick?nick='+nick
-			axios.get(URL)
-			.then(res => {
-				context.commit('setErrMsg','');
-				if(res.data.code === "0"){
-					if(res.data.data.length === 0){
-						context.commit('setNickFlg',1);	
-					}else if(res.data.data.length > 0){
-						console.log("있을때")
-						context.commit('setNickFlg',2);
-					}
-				}else{
-					context.commit('setNickFlg',0);
-					console.log('else')
-				}
-			})
-			.catch(err => {
-				context.commit('setNickFlg',0);
-				context.commit('setErrMsg',err.response.data.errorMsg);
-			
-			})
-		},	
+		// // 닉네임 중복확인
+		// actionNickChk(context){
+		// 	clearTimeout(this.debounceTimeoutId);
+		// 	this.debounceTimeoutId = setTimeout(() => {
+		// 		let nick = document.querySelector('#signin_nick').value
+		// 		// const URL = '/api/signin/nick'
+		// 		// 1211 최정훈 수정 api로 안보내고 web으로 변경
+		// 		// const URL = '/signin/nick'
+		// 		// const HEADER = {
+		// 		// 	headers: {
+		// 		// 		// 'Authorization': 'Bearer team5',
+		// 		// 		// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+		// 		// 		'Content-Type': 'multipart/form-data',
+		// 		// 	}
+		// 		// };
+		// 		// const formData = new FormData();
+		// 		// formData.append('nick', nick);
+		// 		// 1211 최정훈 수정 get형식이 옳은방식이라 수정
+		// 		const URL = '/signin/nick?nick='+nick
+		// 		axios.get(URL)
+		// 		.then(res => {
+		// 			context.commit('setErrMsg','');
+		// 			if(res.data.code === "0"){
+		// 				if(res.data.data.length === 0){
+		// 					context.commit('setNickFlg',1);	
+		// 				}else if(res.data.data.length > 0){
+		// 					console.log("있을때")
+		// 					context.commit('setNickFlg',2);
+		// 				}
+		// 			}else{
+		// 				context.commit('setNickFlg',0);
+		// 				console.log('else')
+		// 			}
+		// 		})
+		// 		.catch(err => {
+		// 			context.commit('setNickFlg',0);
+		// 			context.commit('setErrMsg',err.response.data.errorMsg);		
+		// 		})
+		// 	}, 200);
+		// },	
 		// 회원가입
 		actionSignIn(context){
 			if(context.state.nickFlg===1){
@@ -294,6 +296,7 @@ const store = createStore({
 		},
 		// 유저정보페이지 비밀번호 체크
 		actionUserChk(context){
+			context.commit('setLoading', true);
 			let pw = document.querySelector('#userchk_pw').value;
 			const URL = '/userchk'
 			const HEADER = {
@@ -311,7 +314,7 @@ const store = createStore({
 					router.push('/user')
 				}else{
 					context.commit('setErrMsg',res.data.errorMsg);
-				}
+				}	
 			})
 			.catch(err => {
 				if(err.response.data.code === "E03"){
@@ -322,6 +325,9 @@ const store = createStore({
 					context.commit('setUserFlg',false);
 				}
 			})
+			.finally(() => {
+				context.commit('setLoading', false);
+			});
 		},
 		// 유저정보페이지 비밀번호 체크
 		actionUserChk(context){

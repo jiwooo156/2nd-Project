@@ -382,6 +382,10 @@ export default {
 				// console.log("추가한후");
 				// console.log(this.regiontour);
 				this.offset = this.offset + 3;
+				// 임시방편으로막음
+				if(res.data.mtour.length<3&&res.data.mfestival.length<3){
+					this.moreflg = true;
+				}
 			})
 			.catch(err => {
 				// console.log("캐치");
@@ -393,8 +397,6 @@ export default {
 		},
 		// 검색 결과 가져오기
 		searchFestival() {
-			// 로딩시작
-			this.$store.commit('setLoading',true);
 			// 조건 1 검색조건 아무것도 없이 클릭시
 			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword==="") {
 				alert("검색조건을 최소 1개이상 입력해 주세요.")
@@ -402,6 +404,8 @@ export default {
 			}else if(this.startdate > this.enddate&&this.startdate!==""&&this.enddate!==""){
 				alert("종료일자를 시작일자 보다 크게 설정해 주세요")
 			}else{
+				// 로딩시작
+				this.$store.commit('setLoading',true);
 				// 더보기를 눌렀을수도 있어서 오프셋 전체 초기화
 				this.searchoffset_f= 6;	
 				this.searchoffset_t= 6;
