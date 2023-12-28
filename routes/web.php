@@ -19,6 +19,9 @@ use App\Http\Controllers\InfoController; //축제 및 관광 인포 컨트롤러
 
 // Route::middleware('apiChkToken')->middleware('myValidation')->prefix('signin')->group(function() {
 // 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+
+Route::get('/loginchk', [UserController::class, 'chkauth']);
+
 Route::middleware('myValidation')->prefix('authemail')->group(function() {
     Route::get('/', function () {
         return view('welcome');
@@ -98,6 +101,7 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
 Route::get('/user', function () {
     return view('welcome');
 });
+
 
 
 // 1213 정지우 지역페이지 라우터 생성
