@@ -54,7 +54,7 @@
 						v-model="replie"  
 						@click="checklocal"
 						@input="changeKeyword"
-						placeholder="이곳에 댓글을 입력해 주세요"
+						placeholder="이곳에 소중한 댓글을 작성해 주세요."
 					></textarea>
 					<div class="detail_replie_length font_air bold">
 						{{ this.replie_length }}/200
@@ -137,6 +137,9 @@ export default {
 		},
 	},
 	created() {
+		// 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
 		this.getinfo();
 	},
 

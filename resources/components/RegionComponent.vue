@@ -1,14 +1,16 @@
 <template>
 	<div class="region_frame">
 		<div class="region_header_frame">
+			<div class="center">
+				<div  class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
+			</div>
 			<div class="region_slider_container">
-				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="4000" :mouseDrag="true" >
+				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" >
 					<Slide v-for="state in states" :key="state">
 						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
 					<template #addons>
 						<navigation />
-      					<pagination />
 					</template>
 				</Carousel>
 			</div>
@@ -25,7 +27,10 @@
 					</div>
 				</div>
 				<div class="region_relative">
-					<input type="text" class="region_search_text  " v-model="searchkeyword" placeholder="키워드로 검색 해 보세요">
+					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요"
+						v-model="searchkeyword"
+						@input="koreachk"
+					>
 					<button @click="searchFestival()" class="region_form_btn pointer font_air bold">검색</button>
 				</div>
 			</div>		
@@ -116,6 +121,7 @@
 		<div class="region_more_btn">
 			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)" @click="getMoreFestival()">더보기</button>
 		</div>
+
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
 			<div class="region_container_header">
 				<span class="region_p2">여 축제 찾았나?</span>
@@ -140,6 +146,9 @@
 				</div>
 			</div>
 		</div>
+		<div class="region_more_btn">
+			<button class="pointer" v-if="!(searchfestivalresult.length=== search_f_cnt)&&searchmoreflg_f"  @click="MoreSearchFestival()">더보기</button>
+		</div>
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
 			<div class="region_container_header">
 				<span class="region_p2">저 관광지 찾았나?</span>
@@ -156,6 +165,9 @@
 					</router-link>
 				</div>
 			</div>
+		</div>
+		<div class="region_more_btn">
+			<button class="pointer" v-if="!(searchtourresult.length === search_t_cnt)&&searchmoreflg_t"  @click="MoreSearchTour()">더보기</button>
 		</div>
 	</div>
 </template>
@@ -177,20 +189,38 @@ export default {
 			morefestival: [],
 			regiontour: [],
 			moretour: [],
-			offset: 4, 
+			offset: 3, 
 			nowstate: "", 
+			// 현재지역
+			nowns: "", 
 			regionname: "",
 			regionnameflg: false,
 			searchflg: false,
-			item: 7, // 초기값 설정
+			// 슬라이드 초기값
+			item: 7,
 			moreflg: false,
 			searchstate: "지역",
 			startdate: "",
 			enddate: "",
 			searchkeyword: "",
+			// 검색한 축제 정보저장
 			searchfestivalresult: [],
+			// 검색한 관광 정보저장
 			searchtourresult: [],
+			// 검색용 축제 더보기 플래그
+			searchmoreflg_f: false,
+			// 검색용 관광 더보기 플래그
+			searchmoreflg_t: false,
+			// 오늘
 			today: new Date(),
+			// 검색용 축제 오프셋
+			searchoffset_f: 6, 
+			// 검색용 관광 오프셋
+			searchoffset_t: 6,
+			// 검색용 축제 총갯수 
+			search_f_cnt: 0, 
+			// 검색용 관광 총갯수 
+			search_t_cnt: 0, 
 			// searchfilter: "",
 			// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
 		}
@@ -204,22 +234,43 @@ export default {
 	created() {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
-
+		this.nowns = objUrlParam.get('ns')
 		// 파라미터의 ns를 확인해서 store의 NsFlg셋팅
 		// url의 파라미터 중 ns를 세팅함
-		if(objUrlParam.get('ns')==="경상남도"){
+		if(this.nowns==="경상남도"){
 			this.$store.commit('setNsFlg','1');
-		}else if(objUrlParam.get('ns')==="경상북도"){
+		}else if(this.nowns==="경상북도"){
 			this.$store.commit('setNsFlg','2');
 		}
 		this.getState( objUrlParam.get('ns') );
 		this.getRecommendFestival(objUrlParam.get('ns'));
 		// console.log('create');
+		// 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
+	},
+	watch: {
+		// 넣은이유 -> 검색하고나서 더보기 클릭할때 v-model로 데이터 바인딩 된 정보를 기준으로 추가 조회하는대
+		// 				만약 데이터바인딩된 값이 바뀌면 다른 조건을 추가조회해서 기존정보와 다른 조건의정보가
+		// 				조회되니 조건 변경시 더보기 버튼이 사라지게 설계
+		searchstate(){
+			this.changeSearchFlg()
+		},
+		startdate(){
+			this.changeSearchFlg()
+		},
+		enddate(){
+			this.changeSearchFlg()
+		},
+		searchkeyword(){
+			this.changeSearchFlg()
+		},
 	},
 	mounted() {
+		console.log("더보기플래그")
 		// 오늘날짜
-    	this.getToday();
-		// 화면 크기에 따라 itemsToShow를 동적으로 업데이트
+		this.getToday();
+		// 화면 크기에 따라 item 업데이트
 		this.updateItem();
 		window.addEventListener("resize", this.updateItem);
 	},
@@ -252,6 +303,8 @@ export default {
 		},
 		// 추천축제관광지 가져오기
 		getRecommendFestival(ns) {
+			// 로딩시작
+			this.$store.commit('setLoading',true);
 			const URL = '/region/recommendf?ns='+ ns;
 			axios.get(URL)
 			.then(res => {
@@ -259,19 +312,25 @@ export default {
 				this.recommendfestival = res.data.rfestival;
 				this.recommendtour = res.data.rtour;
 				console.log(this.recommendfestival);
-				console.log(this.recommendtour);
+				console.log(this.recommendtour)
 			})
 			.catch(err => {
 				// console.log("캐치");
+				// 로딩종료
 				alert("데이터 에러 발생");
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},	
 		// 지역축제관광지 가져오기
 		getRegionfestival(state) {
+			// 로딩시작
+			this.$store.commit('setLoading',true);
 			const URL = '/region/festivalget/'+state;
 			axios.get(URL)
 			.then(res => {
-				this.offset = 4;
+				this.offset = 3;
 				this.moreflg=false;
 				// console.log("지역축제 댄");
 				// console.log("현재지역 댄");
@@ -284,15 +343,23 @@ export default {
 				this.regiontour = res.data.stour;
 				// console.log(this.regiontour);
 				this.searchflg = false;
+				this.searchmoreflg_t = false;
+				this.searchmoreflg_f = false;
 				this.regionnameflg = true;
 			})
 			.catch(err => {
 				// console.log("캐치");
 				alert("데이터 에러 발생");
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// 더보기 지역축제,관광지 가져오기
 		getMoreFestival() {
+			// 로딩시작
+			this.$store.commit('setLoading',true);
+			this.searchflg = false;
 			// console.log(this.nowstate)
 			const URL = '/region/morefestivalget?states_name='+this.nowstate+'&offset='+this.offset;
 			// console.log("현재주소"+this.nowstate);
@@ -314,20 +381,30 @@ export default {
 				this.regiontour = [ ...this.regiontour, ...res.data.mtour ];
 				// console.log("추가한후");
 				// console.log(this.regiontour);
-				this.offset = this.offset + 4;
+				this.offset = this.offset + 3;
 			})
 			.catch(err => {
 				// console.log("캐치");
 				alert("데이터 에러 발생");
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// 검색 결과 가져오기
 		searchFestival() {
+			// 로딩시작
+			this.$store.commit('setLoading',true);
+			// 조건 1 검색조건 아무것도 없이 클릭시
 			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword==="") {
 				alert("검색조건을 최소 1개이상 입력해 주세요.")
+			// 조건 2 시작일자보다 종료일자가 과거일시
 			}else if(this.startdate > this.enddate&&this.startdate!==""&&this.enddate!==""){
 				alert("종료일자를 시작일자 보다 크게 설정해 주세요")
 			}else{
+				// 더보기를 눌렀을수도 있어서 오프셋 전체 초기화
+				this.searchoffset_f= 6;	
+				this.searchoffset_t= 6;
 				// this.searchfilter = "";
 				// if(this.searchstate !== ""){
 					// 	this.searchfilter=this.searchfilter+" 지역 = "+this.searchstate
@@ -345,13 +422,27 @@ export default {
 				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
 				axios.get(URL)
 				.then(res => {
+					// 지역별 더보기버튼 플래그변경
 					this.moreflg=false
-					console.log("검색결과 댄");
+					// 검색된 축제정보 저장
 					this.searchfestivalresult = res.data.festival;
+					// 검색된 관광정보 저장
 					this.searchtourresult = res.data.tour;
-					if (this.searchstate === ""&&this.searchkeyword==="") {
-						this.searchtourresult =	[]
+					// 검색된 축제 갯수 저장
+					this.search_f_cnt = res.data.f_cnt;
+					// 검색된 관광 갯수 저장
+					this.search_t_cnt = res.data.t_cnt;
+					// 검색된 축제정보가 있을때 더보기버튼 활성화
+					if(this.searchfestivalresult.length > 0){
+						this.searchmoreflg_f = true
 					}
+					// 검색된 관광정보가 있을때 더보기버튼 활성화
+					if(this.searchtourresult.length > 0){
+						this.searchmoreflg_t = true
+					}
+					// if (this.searchstate === ""&&this.searchkeyword==="") {
+					// 	this.searchtourresult =	[]
+					// }
 					this.regionnameflg = false;
 					this.searchflg = true;
 				})
@@ -359,7 +450,50 @@ export default {
 					console.log("캐치");
 					alert("데이터 에러 발생")
 				})
+				.finally(() => {
+					this.$store.commit('setLoading', false);
+				});
 			}
+		},
+		// 검색 축제 더보기
+		MoreSearchFestival() {	
+			// 로딩시작
+			this.$store.commit('setLoading',true);		
+			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code==="0"){	
+					this.searchfestivalresult = [ ...this.searchfestivalresult, ...res.data.festival ];
+					this.searchoffset_f = this.searchoffset_f + 6;
+				}
+			})
+			.catch(err => {
+				// console.log("캐치");
+				alert("데이터 에러 발생");
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});	
+		},
+		// 검색 관광 더보기
+		MoreSearchTour() {			
+			// 로딩시작
+			this.$store.commit('setLoading',true);		
+			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code==="0"){	
+					this.searchtourresult = [ ...this.searchtourresult, ...res.data.tour ];
+					this.searchoffset_t = this.searchoffset_t + 6;
+				}
+			})
+			.catch(err => {
+				// console.log("캐치");
+				alert("데이터 에러 발생");
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// 반응형으로 item값 수정
 		updateItem() {
@@ -401,6 +535,13 @@ export default {
 			const month = String(now.getMonth() + 1).padStart(2, '0');
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
+		},
+		changeSearchFlg() {
+			this.searchmoreflg_f = false
+			this.searchmoreflg_t = false
+		},
+		koreachk(e) {
+			this.searchkeyword = e.target.value;
 		},
 	}
 }

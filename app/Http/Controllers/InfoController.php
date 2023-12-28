@@ -256,14 +256,14 @@ class InfoController extends Controller
             ->where('main_flg','축제')
             ->where('states_name',$req->states_name)
             ->orderBy('start_at','desc')
-            ->limit(4)
+            ->limit(3)
             ->get();
         $state_tour = Info::
             select('id','states_name','img1','title','content','hits')
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
             ->orderBy('id','desc')
-            ->limit(4)
+            ->limit(3)
             ->get();
         Log::debug("**** festivalget end ****");
         Log::debug("축제 : ". $state_festival);
@@ -283,7 +283,7 @@ class InfoController extends Controller
             ->where('main_flg','축제')
             ->where('states_name',$req->states_name)
             ->orderBy('start_at','desc')
-            ->limit(4)
+            ->limit(3)
             ->offset($req->offset)
             ->get();
         $more_tour = Info::
@@ -291,7 +291,7 @@ class InfoController extends Controller
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
             ->orderBy('start_at','desc')
-            ->limit(4)
+            ->limit(3)
             ->offset($req->offset)
             ->get();
         Log::debug("**** morefestivalget end ****");
@@ -313,37 +313,80 @@ class InfoController extends Controller
         Log::debug("검색단어=".$req->searchkeyword);
         $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
-            // ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('start_at', '<=', $req->start_at)->where('end_at', '>=', $req->start_at))
-            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
-            // ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->end_at))
-            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
-            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
-            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
             ->where('main_flg','축제')
-            ->orderBy('start_at', 'desc')
-            ->limit(4)
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->limit(6)
             ->get();
+        $festivalcount = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            ->where('main_flg','축제')
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->count();
         if($req->searchkeyword !== null||$req->states_name !== "지역"){
             $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
             ->where('main_flg','관광')
-            ->orderBy('start_at', 'desc')
-            ->limit(4)
+            ->limit(6)
             ->get();
+            $tourcount = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('main_flg','관광')
+            ->count();
             return response()->json([
                 'code' => '0',
                 'festival' => $festival,
+                'f_cnt' => $festivalcount,
                 'tour' => $tour,
+                't_cnt' => $tourcount,
             ],200);
         }
-
         Log::debug(\DB::getQueryLog());
         Log::debug("***** search end *******");
         return response()->json([
             'code' => '0',
             'festival' => $festival,
+            'f_cnt' => $festivalcount,
             'tour' => "",
+            't_cnt' => 0,
+        ],200);
+    }
+    // 검색 축제 더보기
+    public function moresearchf(Request $req) {
+        $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            ->where('main_flg','축제')
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->limit(6)
+            ->offset($req->offset)
+            ->get();
+        return response()->json([
+            'code' => '0',
+            'festival' => $festival,
+        ],200);
+    }
+    // 검색 관광 더보기
+    public function moresearcht(Request $req) {
+        $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
+            ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
+            ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('main_flg','관광')
+            ->limit(6)
+            ->offset($req->offset)
+            ->get();
+        return response()->json([
+            'code' => '0',
+            'tour' => $tour,
         ],200);
     }
 }

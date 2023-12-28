@@ -172,6 +172,9 @@ export default {
     };
   },
   created() {
+    // 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
     // 화면에 나타날 데이터
     this.getMain();
     // this.getWeather();

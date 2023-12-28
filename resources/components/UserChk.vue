@@ -8,7 +8,7 @@
 		<div class="userchk_vacant_box"></div>
 	</div>
 	<br>
-		<h4 class="font_air bold">본인확인을 위해 비밀번호를 입력해주세요</h4>
+		<h4 class="font_air bold">본인확인을 위해 비밀번호를 입력해 주세요.</h4>
 		<br>		
 		<div>
 			<span
