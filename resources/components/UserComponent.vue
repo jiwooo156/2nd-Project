@@ -96,7 +96,7 @@
 		<h3 class="user_h3_userout font_air bold">니 내 없어도 개안캤나?</h3>
 			<span class="user_warningText font_air bold">탈퇴하시면 복구 안됩니다.</span>
 				<br><br>
-				<label for="user_del_reason" class="font_air bold">탈퇴사유 : </label>
+				<label for="user_del_reason" class="font_air bold">탈퇴 사유 : </label>
 				<select name="reason" id="user_del_reason" v-model="delreason" class="font_air bold">
 					<option class="font_air bold">서비스 불만족</option>
 					<option class="font_air bold">원하는 정보가 없음</option>

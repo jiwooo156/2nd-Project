@@ -3,7 +3,7 @@
 	<div class="userChk_container">
 		<div class="user_subcontainer">
 			<div class="userchk_box_top_red_center">
-				<h2 class="user_h2">회원 정보</h2>
+				<h2 class="user_h2">회원정보</h2>
 			</div>
 		<div class="userchk_vacant_box"></div>
 	</div>
