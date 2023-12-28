@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<div class="region_relative">
-					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요"
+					<input type="text" class="region_search_text font_air bold" placeholder="키워드로 검색 해 보세요"
 						v-model="searchkeyword"
 						@input="koreachk"
 					>
