@@ -1336,7 +1336,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	cursor: pointer;
  }
 .region_date {
-	width: 43%;
+	width: 40%;
     height: 30px;
     border-radius: 15px;
     border: 1px solid #000;
