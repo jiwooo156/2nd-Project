@@ -2120,6 +2120,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		width: 6rem;
 		margin-left: 0rem;
 	}
+	/* 지역 */
+	.region_date {
+		width: 35%;
+		height: 30px;
+		border-radius: 15px;
+		border: 1px solid #000;
+		text-align: center;
+	}
 }
 
 .auth_consent p,.auth_consent li{
