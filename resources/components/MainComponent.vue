@@ -31,7 +31,6 @@
               <div class="main_sub_txt">경상도에서 인기있는<br>축제를 만나보세요!</div>
             </div>
             <div class="main_shap">크리스마스, 우리 함께 즐겨요🎅</div>
-            <!-- 반응형 사라질 때 노란색연필 없애기 -->
             <img class="main_sub_y" src="/img/yellow.png" alt="pencil" />
           </div>
           <div class="main_box_right">
@@ -123,6 +122,7 @@
             </div> -->
 				</div>
 			</div>
+
       <!-- 4차 때 기능 넣을 거임 -->
 			<div class="main_4">
         <div class="main_4_box">
@@ -142,8 +142,8 @@
             </div>
             <div class="main_shap">'가가가가?'같은 경상도식 유머가 있어요🤗</div>
             <img class="main_sub_y" src="/img/yellow.png" alt="pencil" />
+            <div class="main_gg"><img src="/img/com.png" alt="gaga"></div>
           </div>
-          <div class="main_gg"><img src="/img/com.png" alt="gaga"></div>
           <div class="main_box_right">
             <div class="main_4_menu">
               <a href="#">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></a>
