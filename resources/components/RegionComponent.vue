@@ -610,4 +610,7 @@ export default {
 	opacity: 1;
 	transform: rotateY(0) scale(1.1);
 }
+.carousel__prev {
+    left: -40px;
+}
 </style>
