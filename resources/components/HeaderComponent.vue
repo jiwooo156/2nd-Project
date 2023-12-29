@@ -48,7 +48,7 @@
 					<li>
 						<router-link to="/login">로그인</router-link>
 					</li>
-					<li>
+					<li class="gnb_li">
 						<router-link to="/authemail">회원가입</router-link>
 					</li>
 				</ul>
@@ -63,7 +63,7 @@
                             {{ $store.state.NowUser }}
                         </router-link>
                     </li>
-					<li @click="logout" class="pointer gnb_logout">로그아웃</li>
+					<li @click="logout" class="pointer gnb_logout gnb_li">로그아웃</li>
 				</ul>
 			</div>
 		</header>

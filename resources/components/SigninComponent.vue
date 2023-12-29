@@ -509,6 +509,7 @@ export default {
 		koreaname(e) {
 			this.name = e.target.value;
 		},
+		// 닉네임 체크
 		nick_chk() {
 			clearTimeout(this.debounceTimeoutId);
 			this.debounceTimeoutId = setTimeout(() => {
