@@ -1828,12 +1828,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.carousel__item {
 		font-size: 0.9rem;
 		color: #D14C6C;
-		width: 70px;
-		height: 70px;
+		width: 90px;
+		height: 90px;
 		border-radius: 50%;
 		background-color: #ffeff3;
 		text-align: center;
-		line-height: 70px;
+		line-height: 90px;
 	}
 	.main_3_sub_y {
 		width: 13rem;
@@ -2034,12 +2034,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.carousel__item {
 		font-size: 0.9rem;
 		color: #D14C6C;
-		width: 70px;
-		height: 70px;
+		width: 90px;
+		height: 90px;
 		border-radius: 50%;
 		background-color: #ffeff3;
 		text-align: center;
-		line-height: 70px;
+		line-height: 90px;
 	}
 	/* .region_container_list {
 		display: grid;
