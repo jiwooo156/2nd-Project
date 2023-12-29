@@ -1854,6 +1854,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(2, 300px);
 		grid-gap: 30px;
 	} */
+	/* 임시 */
+	.header_li_1{
+		display: none;
+	}
+	.header_li_3{
+		display: none;
+	}
+	.logo {
+		width: 8rem;
+		margin-left: 1rem;
+	}
 }
 
 /* 모바일 */
@@ -2096,6 +2107,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(1, 300px);
 		grid-gap: 30px;
 	} */
+	.header_li_1{
+		display: none;
+	}
+	.header_li_3{
+		display: none;
+	}
+	.logo {
+		width: 6rem;
+		margin-left: 0rem;
+	}
 }
 
 .auth_consent p,.auth_consent li{

@@ -8,10 +8,10 @@
 			<div class="header_mid">
 				<nav class="lnb">
 					<ul class="nav">
-						<li>
+						<li class="header_li_1">
 							<router-link to="/main">홈이야요</router-link>
 						</li>
-						<li>
+						<li class="header_li_2">
 							<a href="#" target="_self">경상도오</a>
 							<ul class="depth1">
 								<li> 
@@ -23,7 +23,7 @@
 								</li>
 							</ul>
 						</li>
-						<li>
+						<li class="header_li_3">
 							<a href="#" target="_self">커뮤니티</a>
 							<ul class="depth1">
 								<li>
