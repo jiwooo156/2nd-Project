@@ -177,7 +177,7 @@ export default {
 		this.$store.commit('setLocalFlg', boo);
     // 화면에 나타날 데이터
     this.getMain();
-    // this.getWeather();
+    this.getWeather();
   },
   methods: {    
     // 화면에 나타날 데이터 불러오기
