@@ -79,7 +79,7 @@
 		</div> -->
 		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
 			<div class="region_container_header">
-				<span class="region_p2">{{ this.nowstate }}의 축제는 </span><span class="region_p6 font_air bold">여서 확인해 보이소!</span>
+				<span class="region_p2">{{ this.nowstate }}의 축제는? </span>
 				<img src="/img/blue.png" class="region_container_header_img3">
 			</div>
 			<div class="region_container_list">
@@ -103,7 +103,7 @@
 		</div>
 		<div class="region_container"  v-if="regionnameflg&&!(searchflg)">
 			<div class="region_container_header">
-				<span class="region_p2">{{ this.nowstate }}의 관광지는 </span><span class="region_p6 font_air bold">여서 확인해 보이소!</span>
+				<span class="region_p2">{{ this.nowstate }}의 관광지는? </span>
 				<img src="/img/blue.png" class="region_container_header_img4">
 			</div>
 			<div class="region_container_list" >
