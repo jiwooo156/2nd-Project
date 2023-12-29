@@ -462,7 +462,12 @@ class UserController extends Controller
                 // 인증 테이블에 $db_data[]값 인서트 
                 Authenticate::create($db_data);
                 // $db_data[] 에 url값 저장
-                $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+                
+                // 서버베포전
+                // $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
+                // 서버베포후
+                $data['url'] = 'http://112.222.157.156:6005/signinchk?auth_token='.$uuid;
+                
                 // 메일발송 보내기
                 Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
                     $message->to($req->email)->subject('이의이승페이지 이메일인증');

@@ -294,6 +294,8 @@ export default {
 		}
 		this.getState( this.nowns );
 		this.getRecommendFestival(this.nowns);
+		this.regionnameflg= false;
+		this.searchflg= false;
 	},
 	methods: {
 		// 시군명 가져오기
@@ -440,7 +442,7 @@ export default {
 								// 	this.searchfilter=this.searchfilter+" 검색어 = "+this.searchkeyword
 								// }
 								// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
-				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
+				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&ns='+this.nowns
 				axios.get(URL)
 				.then(res => {
 					// 지역별 더보기버튼 플래그변경
@@ -480,7 +482,7 @@ export default {
 		MoreSearchFestival() {	
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f
+			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f+'&ns='+this.nowns
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
@@ -500,7 +502,7 @@ export default {
 		MoreSearchTour() {			
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t
+			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t+'&ns='+this.nowns
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
