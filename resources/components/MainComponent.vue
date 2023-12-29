@@ -142,8 +142,8 @@
             </div>
             <div class="main_shap">'가가가가?'같은 경상도식 유머가 있어요🤗</div>
             <img class="main_sub_y" src="/img/yellow.png" alt="pencil" />
-            <div class="main_gg"><img src="/img/com.png" alt="gaga"></div>
           </div>
+          <div class="main_gg"><img src="/img/com.png" alt="gaga"></div>
           <div class="main_box_right">
             <div class="main_4_menu">
               <a href="#">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></a>
