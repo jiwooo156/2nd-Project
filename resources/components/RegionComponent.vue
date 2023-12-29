@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<div class="region_relative">
-					<input type="text" class="region_search_text" placeholder="키워드로 검색 해 보세요"
+					<input type="text" class="region_search_text font_air bold" placeholder="키워드로 검색 해 보세요"
 						v-model="searchkeyword"
 						@input="koreachk"
 					>
@@ -265,6 +265,9 @@ export default {
 		searchkeyword(){
 			this.changeSearchFlg()
 		},
+		url(){
+			console.log(테스트)
+		}
 	},
 	mounted() {
 		console.log("더보기플래그")
@@ -277,6 +280,22 @@ export default {
 	beforeDestroy() {
 		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
 		window.removeEventListener("resize", this.updateItem);
+	},
+	beforeRouteUpdate(){
+		// url의 파라미터를 가져옴
+		const objUrlParam = new URLSearchParams(window.location.search);
+		this.nowns = objUrlParam.get('ns')==="경상남도"? "경상북도":"경상남도";
+		// 파라미터의 ns를 확인해서 store의 NsFlg셋팅
+		// url의 파라미터 중 ns를 세팅함
+		if(this.nowns==="경상남도"){
+			this.$store.commit('setNsFlg','1');
+		}else if(this.nowns==="경상북도"){
+			this.$store.commit('setNsFlg','2');
+		}
+		this.getState( this.nowns );
+		this.getRecommendFestival(this.nowns);
+		this.regionnameflg= false;
+		this.searchflg= false;
 	},
 	methods: {
 		// 시군명 가져오기
@@ -382,6 +401,10 @@ export default {
 				// console.log("추가한후");
 				// console.log(this.regiontour);
 				this.offset = this.offset + 3;
+				// 임시방편으로막음
+				if(res.data.mtour.length<3&&res.data.mfestival.length<3){
+					this.moreflg = true;
+				}
 			})
 			.catch(err => {
 				// console.log("캐치");
@@ -393,8 +416,6 @@ export default {
 		},
 		// 검색 결과 가져오기
 		searchFestival() {
-			// 로딩시작
-			this.$store.commit('setLoading',true);
 			// 조건 1 검색조건 아무것도 없이 클릭시
 			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword==="") {
 				alert("검색조건을 최소 1개이상 입력해 주세요.")
@@ -402,6 +423,8 @@ export default {
 			}else if(this.startdate > this.enddate&&this.startdate!==""&&this.enddate!==""){
 				alert("종료일자를 시작일자 보다 크게 설정해 주세요")
 			}else{
+				// 로딩시작
+				this.$store.commit('setLoading',true);
 				// 더보기를 눌렀을수도 있어서 오프셋 전체 초기화
 				this.searchoffset_f= 6;	
 				this.searchoffset_t= 6;
@@ -419,7 +442,7 @@ export default {
 								// 	this.searchfilter=this.searchfilter+" 검색어 = "+this.searchkeyword
 								// }
 								// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
-				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword
+				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&ns='+this.nowns
 				axios.get(URL)
 				.then(res => {
 					// 지역별 더보기버튼 플래그변경
@@ -459,7 +482,7 @@ export default {
 		MoreSearchFestival() {	
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f
+			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f+'&ns='+this.nowns
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
@@ -479,7 +502,7 @@ export default {
 		MoreSearchTour() {			
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t
+			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t+'&ns='+this.nowns
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
@@ -586,5 +609,8 @@ export default {
 .carousel__slide--active {
 	opacity: 1;
 	transform: rotateY(0) scale(1.1);
+}
+.carousel__prev {
+    left: -40px;
 }
 </style>

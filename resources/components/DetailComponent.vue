@@ -85,7 +85,7 @@
 					{{ data.replie }}
 				</div>
 				<div class="detail_replie_change"
-					v-if="checkUser(data.nick)"
+					v-if="checkUser(data.email)"
 				>
 					<div class="font_air bold pointer"
 						@click="del_replie(data.id)"
@@ -232,8 +232,8 @@ export default {
 			}
 		},
 		// 유저 본인인지 확인
-		checkUser(nick) {
-			return nick === this.$store.state.NowUser;
+		checkUser(email) {
+			return email === localStorage.getItem('email');
 		},
 		// 댓글삭제
 		del_replie(id){		

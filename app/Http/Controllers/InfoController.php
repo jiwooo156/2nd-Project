@@ -158,28 +158,21 @@ class InfoController extends Controller
             ], 400);
         }
     }
-    // 댓글 추가조회    
-    public function morereplie(Request $req) {
-        // 리퀘스트온 값을토대로 20개의 데이터 조회
-        $replie_result = Replie::
-            select('id', 'nick', 'replie', 'created_at')
-            ->where('b_id', $req->b_id)
-            ->orderBy('created_at', 'desc')
-            ->limit(20)
-            ->offset($req->offset)
-            ->get();
-        // 조회결과 있을시
-        if($replie_result){
+    // 댓글 작성자 확인    
+    public function repliechk(Request $req) {
+        // 세션에 로그인된 정보 체크
+        $result=Auth::user();      
+        // 리퀘스트온 이메일과 세션에 이메일 같은지 체크
+        // 같을시
+        if($result->email===$req->email){
             return response()->json([
-                'code' => '0',
-                'data' => $replie_result,
+                'code' => '0'
             ], 200);
-        // 조회결과 없거나 실패일시
+        // 다를시
         }else{
             Log::debug("엘스");
             return response()->json([
-                'code' => 'E99',
-                'errorMsg' => '댓글 조회에 실패하였습니다',
+                'code' => '1',
             ], 200);
         }
     }
@@ -290,7 +283,7 @@ class InfoController extends Controller
             select('id','states_name','img1','title','content','start_at','end_at','hits')
             ->where('main_flg','관광')
             ->where('states_name',$req->states_name)
-            ->orderBy('start_at','desc')
+            ->orderBy('id','desc')
             ->limit(3)
             ->offset($req->offset)
             ->get();
@@ -318,6 +311,7 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->where('ns_flg',$req->ns)
             ->limit(6)
             ->get();
         $festivalcount = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
@@ -327,17 +321,20 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->where('ns_flg',$req->ns)
             ->count();
         if($req->searchkeyword !== null||$req->states_name !== "지역"){
             $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('ns_flg',$req->ns)
             ->where('main_flg','관광')
             ->limit(6)
             ->get();
             $tourcount = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->where('ns_flg',$req->ns)
             ->where('main_flg','관광')
             ->count();
             return response()->json([
@@ -367,6 +364,7 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->where('ns_flg',$req->ns)
             ->limit(6)
             ->offset($req->offset)
             ->get();
@@ -381,6 +379,7 @@ class InfoController extends Controller
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
             ->where('main_flg','관광')
+            ->where('ns_flg',$req->ns)
             ->limit(6)
             ->offset($req->offset)
             ->get();
