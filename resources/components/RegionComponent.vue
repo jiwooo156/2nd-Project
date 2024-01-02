@@ -25,12 +25,12 @@
 					<div>
                         <input type="date" class="region_date font_air bold" v-model="startdate"
                             @keyup.enter="searchFestival"
-                            placeholder="시작날짜"
+							data-placeholder="시작일"
                         >
                         <span class="font_air bold region_date_span">~</span>
                         <input type="date" class="region_date font_air bold" v-model="enddate"
                             @keyup.enter="searchFestival"
-                            placeholder="종료날짜"
+							data-placeholder="종료일"
                         >
                     </div>
 				</div>
