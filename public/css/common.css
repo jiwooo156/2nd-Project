@@ -1338,6 +1338,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
  }
 .region_date {
 	width: 40%;
+	min-width: 100px;
     height: 30px;
     border-radius: 15px;
     border: 1px solid #000;
@@ -2124,6 +2125,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	/* 지역 */
 	.region_date {
 		width: 35%;
+		font-size: 0.7rem;
 	}
 }
 
