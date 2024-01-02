@@ -5,6 +5,7 @@
 	box-sizing: border-box;
 	text-decoration: none; 
 	font-family:Cafe24Ssurround;
+	color: #000;
 }
 .spinner-div{
 	width: 100%;
@@ -55,15 +56,6 @@ textarea{
 
 input[type=password] {
     font-family: initial;
-}
-input[type='date']::before {
-	content: attr(data-placeholder);
-	width: 100%;
-	text-align: center;
-}
-input[type='date']:focus::before,
-input[type='date']:valid::before {
-  display: none;
 }
 input:focus {outline: none;}
 select:focus {outline: none;}
@@ -1960,9 +1952,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		width: 80px;
 		font-size: 1.1rem;
 	}
-	.main_wea {
-		display: none;
-	}
+
 	.main_box_left {
 		padding: 70px 20px 0px 42px;
 		display: flex;
@@ -2191,7 +2181,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .auth_container_input{
 	margin-top: 5px;
     width: 100%;
-    padding: 9px;
+    padding: 7.5px 10px;
     outline: none;
     border: none;
     border-radius: 15px;
@@ -2392,6 +2382,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     font-size: 0.9rem;
 }
 .detail_replie_created_at{
+	min-width: 50px;
 	font-size: 0.75rem;
     color: #6a6a6a;
     line-height: 17px;
