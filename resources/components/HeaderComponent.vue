@@ -12,7 +12,7 @@
 							<router-link to="/main">홈이야요</router-link>
 						</li>
 						<li class="header_li_2">
-							<a href="#" target="_self">경상도오</a>
+							<router-link to="/region?ns=경상북도" target="_self">경상도오</router-link>
 							<ul class="depth1">
 								<li>
 									<router-link to="/region?ns=경상북도">경상북도구</router-link>
@@ -86,9 +86,9 @@
 						<router-link to="/main" class="nav-link active font_air bold" aria-current="page">홈이야요</router-link>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<router-link to="/region?ns=경상북도" class="nav-link active font_air bold" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							경상도오
-						</a>
+						</router-link>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<li>
 								<router-link to="/region?ns=경상북도" class="dropdown-item font_air bold">경상북도구</router-link>
