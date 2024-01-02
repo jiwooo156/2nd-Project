@@ -119,6 +119,7 @@
 			<div class="user_button_box_userout">
 				<button class="userChk_button_negative font_air bold"
 					@click="userout"
+					v-if="delreason!==''"
 				>탈퇴</button>
 				<button class="userChk_button font_air bold" @click="ctlDelModal(false)">취소</button>
 		</div>
