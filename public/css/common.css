@@ -1341,7 +1341,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
  }
 .region_date {
 	width: 40%;
-	min-width: 100px;
+	min-width: 110px;
     height: 30px;
     border-radius: 15px;
     border: 1px solid #000;
@@ -2133,6 +2133,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	/* 로그인 */
 	.login_logo {
 		width: 180px;
+    	margin-bottom: 25px;
 	}
 	.login_container{
 		padding: 30px;
@@ -2145,6 +2146,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.login_btn, .login_kakao {
 		padding: 7px;
+	}
+	/* auth */
+	.auth_container_input {
+		padding: 5px 10px;
+	}
+	.auth_chk_btn {
+		font-size: 0.9rem;
+		padding: 6px;
+	}
+	.auth_com_msg_t{
+		margin-top: 25px;
 	}
 }
 
@@ -2183,7 +2195,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	position: relative;
 }
 .auth_relative span{
-	font-size: 0.85rem;
     padding-left: 9px;
 }
 .auth_absolute{
