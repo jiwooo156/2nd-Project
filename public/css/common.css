@@ -93,6 +93,10 @@ input::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }
+/* 숨김 헤더 */
+.hidden-on-mobile {
+	display: none;
+  }
 
 /* 헤더 */
 .skip_nav a {
@@ -1720,6 +1724,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 태블릿 */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
+	/* 헤더 */
+	.hidden-on-mobile {
+		display: block;
+	}
+	.header {
+		display: none;
+	}
 	/* 메인 */
 	.main_1 {
 		height: 70vh;
@@ -1857,13 +1868,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(2, 300px);
 		grid-gap: 30px;
 	} */
-	/* 임시 */
-	.header_li_1{
-		display: none;
-	}
-	.header_li_3{
-		display: none;
-	}
+
 	.logo {
 		width: 8rem;
 		margin-left: 1rem;
@@ -1872,6 +1877,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	
+	/* 헤더 */
+	.hidden-on-mobile {
+		display: block;
+	}
+	.header {
+		display: none;
+	}
 	/* 메인 */
 	.main_1 {
 		height: 70vh;
@@ -2108,12 +2121,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(1, 300px);
 		grid-gap: 30px;
 	} */
-	.header_li_1{
-		display: none;
-	}
-	.header_li_3{
-		display: none;
-	}
 	.logo {
 		width: 6rem;
 		margin-left: 0rem;
