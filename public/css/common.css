@@ -53,7 +53,9 @@ textarea{
 .center{
 	text-align: center;
 }
-
+input{
+	color: #000;
+}
 input[type=password] {
     font-family: initial;
 }
@@ -88,9 +90,20 @@ select:focus {outline: none;}
 /* body, html, a, button, table, input, select, textarea {
 	font-family:Cafe24Ssurround;
 } */
+
 input::placeholder {
+	color: #B7B7B7;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
+}
+input[type='date']::before {
+	content: attr(data-placeholder);
+	width: 100%;
+}
+
+input[type='date']:focus::before,
+input[type='date']:valid::before {
+	display: none;
 }
 /* 맨 위로 */
 .goingTop {
@@ -1229,6 +1242,7 @@ margin-top:10px;
     text-decoration: none;
 }
 #user_del_reason_input::placeholder{
+	color: #B7B7B7;
 	text-align: center;
 }
 .user_warningText{
@@ -1270,12 +1284,14 @@ margin-top:10px;
 	padding: 5px;
 }
 #userchk_pw::placeholder{
+	color: #B7B7B7;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	font-size: 0.85rem;
 	line-height: 0.85rem ;
 }
 #userchk_pw::placeholder{
+	color: #B7B7B7;
 	text-align: center;
 }
 .userchk_box_top_red_center{
@@ -1381,13 +1397,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding: 0px 5px;
 }
 .region_search_text {
-	height: 30px;
-    border-radius: 15px;
+    height: 30px;
+    border-radius: 15px 0px 0px 15px;
     text-align: center;
     width: 100%;
     font-size: 1rem;
     border: 1px solid #545454;
-    padding: 0 14% 0 10px;
+    border-right: none;
 }
 .region_form_btn {
     font-size: 1rem;
