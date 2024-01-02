@@ -95,11 +95,11 @@ input::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }
-input[type='date']::before {
+input[type="date"]::before {
+	color: #B7B7B7;
 	content: attr(data-placeholder);
 	width: 100%;
 }
-
 input[type='date']:focus::before,
 input[type='date']:valid::before {
 	display: none;
@@ -1400,7 +1400,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     height: 30px;
     border-radius: 15px 0px 0px 15px;
     text-align: center;
-    width: 100%;
+	width: 90%;
     font-size: 1rem;
     border: 1px solid #545454;
     border-right: none;

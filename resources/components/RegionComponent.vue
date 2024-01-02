@@ -23,23 +23,15 @@
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
 					<div>
-                        <input type="date" class="region_date font_air bold" v-model="startdate"
-							aria-required="true"
-							value={startDateValue}
-							className={styles.selectDay}
-							onChange={StartDateValueHandler}
-                            @keyup.enter="searchFestival"
+						<input type="date" class="region_date font_air bold" v-model="startdate"
+							@keyup.enter="searchFestival"
 							data-placeholder="시작일"
-                        >
-                        <span class="font_air bold region_date_span">~</span>
-                        <input type="date" class="region_date font_air bold" v-model="enddate"
-							aria-required="true"
-							value={startDateValue}
-							className={styles.selectDay}
-							onChange={StartDateValueHandler}
-                            @keyup.enter="searchFestival"
+						>
+						<span class="font_air bold region_date_span">~</span>
+						<input type="date" class="region_date font_air bold" v-model="enddate"
+							@keyup.enter="searchFestival"
 							data-placeholder="종료일"
-                        >
+						>
                     </div>
 				</div>
 				<div class="region_relative">
