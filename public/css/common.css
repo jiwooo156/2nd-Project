@@ -93,6 +93,10 @@ input::placeholder {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
 }
+/* 숨김 헤더 */
+.hidden-on-mobile {
+	display: none;
+  }
 
 /* 헤더 */
 .skip_nav a {
@@ -965,7 +969,6 @@ input::placeholder {
 .sign_container span{
     font-family: 'Cafe24SsurroundAir';
 	font-weight: 600;
-	font-size: 1rem;
 	margin-bottom: 4px;
 	display: inline-block;
 }
@@ -993,12 +996,14 @@ input::placeholder {
 }
 
 .sign_errmsg{
-	color: #ea1d1d;
-	padding-left: 20px;
+    color: #ea1d1d;
+    padding-left: 10px;
+    font-size: 0.85rem;
 }
 .sign_commsg{
 	color: #00a678;
-	padding-left: 20px;
+	padding-left: 10px;
+    font-size: 0.85rem;
 }
 
 
@@ -1337,6 +1342,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
  }
 .region_date {
 	width: 40%;
+	min-width: 100px;
     height: 30px;
     border-radius: 15px;
     border: 1px solid #000;
@@ -1690,7 +1696,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* auth */
 /* pc */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 991px) {
 	/* auth */
 	.auth_check{
 		grid-template-columns: 1fr 1fr;
@@ -1716,7 +1722,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* 태블릿 */
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	/* 헤더 */
+	.hidden-on-mobile {
+		display: block;
+	}
+	.header {
+		display: none;
+	}
 	/* 메인 */
 	.main_1 {
 		height: 70vh;
@@ -1854,13 +1867,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(2, 300px);
 		grid-gap: 30px;
 	} */
-	/* 임시 */
-	.header_li_1{
-		display: none;
-	}
-	.header_li_3{
-		display: none;
-	}
+
 	.logo {
 		width: 8rem;
 		margin-left: 1rem;
@@ -1869,6 +1876,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	
+	/* 헤더 */
+	.hidden-on-mobile {
+		display: block;
+	}
+	.header {
+		display: none;
+	}
 	/* 메인 */
 	.main_1 {
 		height: 70vh;
@@ -1960,7 +1975,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		display: grid;
 		width: 100%;
 		grid-gap: 20px;
-		grid-template-columns: repeat(1,minmax(300px,1fr));
+		grid-template-columns: repeat(1,minmax(250px,1fr));
 		padding: 2rem 42px 100px 42px;
 	}
 	.main_2_box {
@@ -2040,7 +2055,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		display: grid;
 		width: 100%;
 		grid-gap: 20px;
-		grid-template-columns: repeat(1,minmax(100px,1fr));
+		grid-template-columns: repeat(1,minmax(250px,1fr));
 		padding: 2rem 42px 80px 42px;
 	}
 	.main_4_menu a {
@@ -2110,12 +2125,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		grid-template-columns: repeat(1, 300px);
 		grid-gap: 30px;
 	} */
-	.header_li_1{
-		display: none;
-	}
-	.header_li_3{
-		display: none;
-	}
 	.logo {
 		width: 6rem;
 		margin-left: 0rem;
@@ -2123,6 +2132,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	/* 지역 */
 	.region_date {
 		width: 35%;
+		font-size: 0.7rem;
 	}
 }
 
@@ -2364,7 +2374,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 
 /* 메인페이지박스용 미디어쿼리 */
-@media only screen  and (min-width: 1023px)and (max-width: 1580px) {
+@media only screen  and (min-width: 991px)and (max-width: 1580px) {
 	.main_2_box {
 		flex-direction: column;
 	}

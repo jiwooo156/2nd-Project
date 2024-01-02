@@ -42,7 +42,7 @@
 					<div>
 						<span>닉네임</span>
 						<span v-show="err_nick1" v-if="!(this.com_nick)" class="sign_errmsg">닉네임은 2~8자리로 작성해 주세요.</span>
-						<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어, 숫자, 한글만 사용 가능합니다.</span>
+						<span v-show="err_nick2" v-if="!(this.com_nick)" class="sign_errmsg">영어,숫자,한글(자음+모음)만 사용 가능합니다.</span>
 						<span v-show="err_nick3" v-if="!(this.com_nick)" class="sign_errmsg">닉네임 형식이 올바르지 않습니다.</span>
 						<span v-show="err_nick4" v-if="!(this.com_nick)" class="sign_errmsg">닉네임을 확인해 주세요.</span>
 						<span

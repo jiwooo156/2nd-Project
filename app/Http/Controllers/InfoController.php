@@ -253,6 +253,12 @@ class InfoController extends Controller
             ->orderBy('start_at','desc')
             ->limit(3)
             ->get();
+        $state_festival_cnt = Info::
+            select('id','states_name','img1','title','content','start_at','end_at','hits')
+            ->where('main_flg','축제')
+            ->where('states_name',$req->states_name)
+            ->orderBy('start_at','desc')
+            ->count();
         $state_tour = Info::
             select('id','states_name','img1','title','content','hits')
             ->where('main_flg','관광')
@@ -260,6 +266,12 @@ class InfoController extends Controller
             ->orderBy('id','desc')
             ->limit(3)
             ->get();
+        $state_tour_cnt = Info::
+            select('id','states_name','img1','title','content','hits')
+            ->where('main_flg','관광')
+            ->where('states_name',$req->states_name)
+            ->orderBy('id','desc')
+            ->count();
         Log::debug("**** festivalget end ****");
         Log::debug("축제 : ". $state_festival);
         Log::debug("관광 : ". $state_tour);
@@ -267,6 +279,8 @@ class InfoController extends Controller
             'code' => '0',
             'sfestival' => $state_festival,
             'stour' => $state_tour,
+            'f_cnt' => $state_festival_cnt,
+            't_cnt' => $state_tour_cnt,
         ],200);
     }
     // 더보기 조회 (지역축제,관광지)
@@ -312,7 +326,7 @@ class InfoController extends Controller
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
-            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
             ->where('ns_flg',$req->ns)
             ->orderBy('end_at', 'desc')
             ->limit(6)
@@ -323,7 +337,7 @@ class InfoController extends Controller
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
-            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
             ->where('ns_flg',$req->ns)
             ->orderBy('end_at', 'desc')
             ->count();

@@ -126,7 +126,7 @@
 			</div>
 		</div>
 		<div class="region_more_btn">
-			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)" @click="getMoreFestival()">더보기</button>
+			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)&&!((regionfestival.length === region_f_cnt)||(regiontour.length === region_t_cnt))" @click="getMoreFestival()">더보기</button>
 		</div>
 
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
@@ -192,9 +192,13 @@ export default {
 			states: [],
 			recommendfestival: [],
 			recommendtour: [],
+			// 지역 축제 총갯수 
+			region_f_cnt: 0, 
+			// 지역 관광 총갯수 
+			region_t_cnt: 0, 
 			regionfestival: [],
-			morefestival: [],
 			regiontour: [],
+			morefestival: [],
 			moretour: [],
 			offset: 3, 
 			nowstate: "", 
@@ -373,6 +377,10 @@ export default {
 				this.searchflg = false;
 				this.searchmoreflg_t = false;
 				this.searchmoreflg_f = false;
+				// 지역축제 총 갯수
+				this.region_f_cnt = res.data.f_cnt;
+				// 지역관광 총 갯수
+				this.region_t_cnt = res.data.t_cnt;
 				this.regionnameflg = true;
 			})
 			.catch(err => {
