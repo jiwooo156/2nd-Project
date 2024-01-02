@@ -15,13 +15,15 @@
 				class="sign_errmsg font_air bold"
 				>{{ $store.state.varErr[0] }}</span>
 				<br><br>
-			<input type="password" placeholder="비밀번호" id="userchk_pw">
+			<input type="password" placeholder="비밀번호" id="userchk_pw"
+				@keyup.enter="chk_pw"
+			>
 		</div>
 		<br><br>
-			<button
+		<button
 			@click="chk_pw"
 			class="userChk_button font_air bold"
-			>확인</button>
+		>확인</button>
 		<button class="userChk_button font_air bold"><router-link class="userChk_button font_air bold" to="/main">취소</router-link></button>
 	</div>
 </template>

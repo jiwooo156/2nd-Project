@@ -16,24 +16,31 @@
 			</div>
 			<div class="region_search_frame">
 				<div class="region_search_flex">
-					<select class="region_select_list pointer" v-model="searchstate">
+					<select class="region_select_list pointer" v-model="searchstate"
+						@keyup.enter="searchFestival"
+					>
 						<option class=" font_air bold">지역</option>
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
 					<div>
-						<input type="date" class="region_date font_air bold" v-model="startdate">
+						<input type="date" class="region_date font_air bold" v-model="startdate"
+							@keyup.enter="searchFestival"
+						>
 						<span class="font_air bold region_date_span">~</span>
-						<input type="date" class="region_date font_air bold" v-model="enddate">
+						<input type="date" class="region_date font_air bold" v-model="enddate"
+							@keyup.enter="searchFestival"
+						>
 					</div>
 				</div>
 				<div class="region_relative">
 					<input type="text" class="region_search_text font_air bold" placeholder="키워드로 검색 해 보세요"
-						v-model="searchkeyword"
+						v-model="searchkeyword" 
 						@input="koreachk"
+						@keyup.enter="searchFestival"
 					>
-					<button @click="searchFestival()" class="region_form_btn pointer font_air bold">검색</button>
+					<button @click="searchFestival()" class="region_form_btn pointer font_air bold" >검색</button>
 				</div>
-			</div>		
+			</div>	
 		</div>
 		<div class="region_container" v-if="!regionnameflg&&!(searchflg)">
 			<div class="region_container_header">
@@ -119,7 +126,7 @@
 			</div>
 		</div>
 		<div class="region_more_btn">
-			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)" @click="getMoreFestival()">더보기</button>
+			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)&&!((regionfestival.length === region_f_cnt)||(regiontour.length === region_t_cnt))" @click="getMoreFestival()">더보기</button>
 		</div>
 
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
@@ -185,9 +192,13 @@ export default {
 			states: [],
 			recommendfestival: [],
 			recommendtour: [],
+			// 지역 축제 총갯수 
+			region_f_cnt: 0, 
+			// 지역 관광 총갯수 
+			region_t_cnt: 0, 
 			regionfestival: [],
-			morefestival: [],
 			regiontour: [],
+			morefestival: [],
 			moretour: [],
 			offset: 3, 
 			nowstate: "", 
@@ -212,7 +223,7 @@ export default {
 			// 검색용 관광 더보기 플래그
 			searchmoreflg_t: false,
 			// 오늘
-			today: new Date(),
+			today: "",
 			// 검색용 축제 오프셋
 			searchoffset_f: 6, 
 			// 검색용 관광 오프셋
@@ -232,6 +243,8 @@ export default {
 		Navigation,
   	},
 	created() {
+		// 오늘날짜셋팅
+		this.getToday();
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowns = objUrlParam.get('ns')
@@ -270,7 +283,6 @@ export default {
 		}
 	},
 	mounted() {
-		console.log("더보기플래그")
 		// 오늘날짜
 		this.getToday();
 		// 화면 크기에 따라 item 업데이트
@@ -324,7 +336,8 @@ export default {
 		getRecommendFestival(ns) {
 			// 로딩시작
 			this.$store.commit('setLoading',true);
-			const URL = '/region/recommendf?ns='+ ns;
+			const URL = '/region/recommendf?ns='+ ns+'&today='+this.today;
+			console.log(this.today);
 			axios.get(URL)
 			.then(res => {
 				console.log("추천축제 댄");
@@ -364,6 +377,10 @@ export default {
 				this.searchflg = false;
 				this.searchmoreflg_t = false;
 				this.searchmoreflg_f = false;
+				// 지역축제 총 갯수
+				this.region_f_cnt = res.data.f_cnt;
+				// 지역관광 총 갯수
+				this.region_t_cnt = res.data.t_cnt;
 				this.regionnameflg = true;
 			})
 			.catch(err => {
@@ -558,6 +575,7 @@ export default {
 			const month = String(now.getMonth() + 1).padStart(2, '0');
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
+			console.log(this.today)
 		},
 		changeSearchFlg() {
 			this.searchmoreflg_f = false

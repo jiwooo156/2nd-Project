@@ -52,9 +52,9 @@
 			<div class="user_box_nick">
 				<br>
 				<div>
-					<label for="user_del_reason" class=" font_air bold">변경하실 닉네임</label>
+					<label for="user_del_reason" class="font_air bold">변경하실 닉네임</label>
 					<span v-show="err_nick1" v-if="!(this.com_nick)" class="user_errmsg font_air bold">2~8글자 사이로 작성해 주세요.</span>
-					<span v-show="err_nick2" v-if="!(this.com_nick)" class="user_errmsg font_air bold">영어, 숫자, 한글만 사용 가능합니다.</span>
+					<span v-show="err_nick2" v-if="!(this.com_nick)" class="user_errmsg font_air bold">영어, 숫자, 한글(자음+모음)만 사용 가능합니다.</span>
 					<span v-show="err_nick3" v-if="!(this.com_nick)" class="user_errmsg font_air bold">닉네임 형식이 올바르지 않습니다.</span>
 					<span
 						v-if="$store.state.nickFlg === 1&&this.com_nick" 
@@ -119,6 +119,7 @@
 			<div class="user_button_box_userout">
 				<button class="userChk_button_negative font_air bold"
 					@click="userout"
+					v-if="delreason!==''"
 				>탈퇴</button>
 				<button class="userChk_button font_air bold" @click="ctlDelModal(false)">취소</button>
 		</div>
@@ -143,7 +144,7 @@
 			<tbody>
 				<tr>
 					<td class="user_rowname font_air bold">회원번호</td>
-					<td class="user_rowcontent">{{ $store.state.userInfo.id }}</td>
+					<td class="user_rowcontent font_air bold">{{ $store.state.userInfo.id }}</td>
 				</tr>
 				
 				<tr>					

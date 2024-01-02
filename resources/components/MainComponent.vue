@@ -168,10 +168,13 @@ export default {
       fixedinfoList: [],
       // statesName: [],
       cities: [],
+      // 오늘
+			today: "",
       description: '',
     };
   },
   created() {
+    this.getToday()
     // 로컬스토리지에 저장된 정보있는지 확인
 		let boo = localStorage.getItem('nick') ?  true : false;
 		this.$store.commit('setLocalFlg', boo);
@@ -182,7 +185,7 @@ export default {
   methods: {    
     // 화면에 나타날 데이터 불러오기
     getMain(){
-      const URL = '/main/info';
+      const URL = '/main/info?today='+this.today;
       axios.get(URL)
       .then(res => {
         this.besthitsinfoList = res.data.hits;
@@ -236,6 +239,13 @@ export default {
         // 10초마다 반복 실행
         this.cityRanLoop = setInterval(cityRan, 5000);
     },
+    getToday() {
+			const now = new Date();
+			const year = now.getFullYear();
+			const month = String(now.getMonth() + 1).padStart(2, '0');
+			const day = String(now.getDate()).padStart(2, '0');
+			this.today = `${year}-${month}-${day}`;
+		},
   },
 };
 </script>

@@ -9,8 +9,12 @@
 				</div>
 				<div>
 					<div class="login_box">
-						<input type="email" placeholder="이메일" id="login_email">
-						<input type="password" placeholder="비밀번호" id="login_pw">
+						<input type="email" placeholder="이메일" id="login_email"
+							@keyup.enter="login"
+						>
+						<input type="password" placeholder="비밀번호" id="login_pw"
+							@keyup.enter="login"
+						>
 					</div>
 					<div>
 						<button class="login_btn pointer login_font"
