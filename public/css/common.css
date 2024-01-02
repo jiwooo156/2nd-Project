@@ -1352,18 +1352,22 @@ margin-top:10px;
     text-align: right;
 }
 .region_select_list {
-	width: 20%;
-	height: 30px;
-	border-radius: 15px;
-	text-align: center;
-	font-family: 'Cafe24SsurroundAir';
-	font-weight: 600;
-	border: 1px solid #545454;
+    color: #000;
+    background-color: #fff;
+    width: 20%;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Cafe24SsurroundAir';
+    font-weight: 600;
+    border: 1px solid #545454;
 }
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	cursor: pointer;
  }
 .region_date {
+	color: #000;
+    background-color: #fff;
 	width: 40%;
 	min-width: 110px;
     height: 30px;
