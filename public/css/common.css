@@ -866,7 +866,6 @@ input::placeholder {
 	padding: 10px;
 	margin-top: 15px;
 	font-weight: 900;
-	font-size: 1rem;
 }
 
 .login_and{
@@ -1358,6 +1357,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding: 0 14% 0 10px;
 }
 .region_form_btn {
+    font-size: 1rem;
     height: 30px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -1366,6 +1366,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: #fff;
     border: none;
     position: absolute;
+    line-height: 2.1rem;
     top: 10px;
     right: 0;
 }
@@ -2098,14 +2099,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 	/* 지역페이지 */
 	.carousel__item {
-		font-size: 0.9rem;
-		color: #D14C6C;
-		width: 90px;
-		height: 90px;
-		border-radius: 50%;
-		background-color: #ffeff3;
-		text-align: center;
-		line-height: 90px;
+		width: 80px;
+		height: 80px;
+		line-height: 80px;
 	}
 	/* .region_container_list {
 		display: grid;
@@ -2126,6 +2122,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.region_date {
 		width: 35%;
 		font-size: 0.7rem;
+	}
+	/* 로그인 */
+	.login_logo {
+		width: 180px;
 	}
 }
 
