@@ -5,7 +5,7 @@
 				<div  class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
 			</div>
 			<div class="region_slider_container">
-				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" >
+				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" ref="myCarousel">
 					<Slide v-for="state in states" :key="state">
 						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
@@ -126,7 +126,7 @@
 			</div>
 		</div>
 		<div class="region_more_btn">
-			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!(moreflg)&&!((regionfestival.length === region_f_cnt)||(regiontour.length === region_t_cnt))" @click="getMoreFestival()">더보기</button>
+			<button class="pointer" v-if="regionnameflg&&!(searchflg)&&!((regionfestival.length === region_f_cnt)&&(regiontour.length === region_t_cnt))" @click="getMoreFestival()">더보기</button>
 		</div>
 
 		<div class="region_container" v-if="searchflg&&!(regionnameflg)">
@@ -209,7 +209,6 @@ export default {
 			searchflg: false,
 			// 슬라이드 초기값
 			item: 7,
-			moreflg: false,
 			searchstate: "지역",
 			startdate: "",
 			enddate: "",
@@ -288,6 +287,16 @@ export default {
 		// 화면 크기에 따라 item 업데이트
 		this.updateItem();
 		window.addEventListener("resize", this.updateItem);
+
+		// 이전다음버튼css
+		const myCarousel = this.$refs.myCarousel;
+		const prevButton = myCarousel.$el.querySelector('.carousel__prev');
+		const nextButton = myCarousel.$el.querySelector('.carousel__next');
+
+		if (prevButton && nextButton) {
+			prevButton.style.left = '-25px';
+			nextButton.style.right = '-25px';
+		}
 	},
 	beforeDestroy() {
 		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
@@ -363,7 +372,6 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				this.offset = 3;
-				this.moreflg=false;
 				// console.log("지역축제 댄");
 				// console.log("현재지역 댄");
 				this.nowstate = state;
@@ -379,8 +387,10 @@ export default {
 				this.searchmoreflg_f = false;
 				// 지역축제 총 갯수
 				this.region_f_cnt = res.data.f_cnt;
+				console.log(this.region_f_cnt)
 				// 지역관광 총 갯수
 				this.region_t_cnt = res.data.t_cnt;
+				console.log(this.region_t_cnt)
 				this.regionnameflg = true;
 			})
 			.catch(err => {
@@ -402,11 +412,6 @@ export default {
 			// console.log("오프셋"+this.offset);
 			axios.get(URL)
 			.then(res => {
-				if(res.data.mfestival.length === 0&&res.data.mtour.length === 0){
-					alert("조회된 게시물이 없습니다")
-					// moreflg가 false일때 더보기버튼 활성화
-					this.moreflg=true;
-				}
 				// console.log(res.data.mfestival);
 
 				// 중복된 속성을 허용하고 그대로 합침				
@@ -418,10 +423,6 @@ export default {
 				// console.log("추가한후");
 				// console.log(this.regiontour);
 				this.offset = this.offset + 3;
-				// 임시방편으로막음
-				if(res.data.mtour.length<3&&res.data.mfestival.length<3){
-					this.moreflg = true;
-				}
 			})
 			.catch(err => {
 				// console.log("캐치");
@@ -462,8 +463,6 @@ export default {
 				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&ns='+this.nowns
 				axios.get(URL)
 				.then(res => {
-					// 지역별 더보기버튼 플래그변경
-					this.moreflg=false
 					// 검색된 축제정보 저장
 					this.searchfestivalresult = res.data.festival;
 					// 검색된 관광정보 저장
@@ -627,8 +626,5 @@ export default {
 .carousel__slide--active {
 	opacity: 1;
 	transform: rotateY(0) scale(1.1);
-}
-.carousel__prev {
-    left: -40px;
 }
 </style>

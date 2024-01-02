@@ -57,12 +57,12 @@
 			>
 				<div
 					v-if="email_flg&&auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					class="sign_commsg font_air bold"
+					class="sign_commsg font_air bold auth_com_msg_t"
 				> {{ auth_email }} 로<br>
 				이메일이 전송되었습니다.</div>
 				<div
 					v-if="email_flg&&auth_flg&&!(timeout_flg)&&!(repeat_flg)"
-					class="sign_commsg font_air bold"
+					class="font_air bold"
 				>5분 이내로 이메일의 링크를 클릭하여 회원가입을 이어가 주세요.</div>
 				<div
 					v-if="repeat_flg"
