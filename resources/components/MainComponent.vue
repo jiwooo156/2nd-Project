@@ -213,7 +213,7 @@ export default {
             fetch('https://goweather.herokuapp.com/weather/' + city)
             .then((response) => response.json())
             .then((data) => {
-              console.log('test');
+              // console.log('test');
               this.description = '';
               if(data.description === 'Sunny') {
                 this.description = '☀';
@@ -227,7 +227,7 @@ export default {
               document.querySelector('.main_wea_up').innerHTML = city;
               // document.querySelector('.main_wea_icon').innerHTML = data['description'],
               document.querySelector('.main_wea_degree').innerHTML = data['temperature'];
-              console.log(data.description);
+              // console.log(data.description);
               // console.log(data.temperature);
             })
             .catch((error) => {

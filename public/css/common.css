@@ -293,6 +293,7 @@ input::placeholder {
     z-index: 10;
   }
   .main_wea_up {
+	line-height: 40px;
 	height: 45px;  
 	width: 150px; 
 	background-color: rgba(0, 0, 0, 0.3);
@@ -319,6 +320,7 @@ input::placeholder {
     gap: 0.5rem;
 }
 .main_wea_icon {
+	padding-top: 1rem;
 	font-size: 3.15rem;
 }
 .main_wea_degree {
@@ -378,7 +380,7 @@ input::placeholder {
     width: 11rem;
     height: 11rem;
     position: absolute;
-    top: 192px;
+    top: 238px;
     left: 73px;
     z-index: -1;
   }
@@ -401,6 +403,9 @@ input::placeholder {
     padding: 30px;
     background-color: #f8f8f8;
 }
+.main_2_news_l ul{
+	padding-left: 0;
+}
 .art_plus {
 	display: flex;
 	justify-content: space-between;
@@ -418,11 +423,11 @@ input::placeholder {
 }
 .art_tit {
 	font-size: 1.5rem;
-	margin-top: 1.6rem;
+	margin-top: 1rem;
 }
 .art_con {
     font-size: 1.2rem;
-    margin-top: 1.6rem;
+    margin-top: 1rem;
     font-family: 'Cafe24SsurroundAir';
     font-weight: bolder;
     white-space: nowrap;
@@ -431,7 +436,7 @@ input::placeholder {
 }
 .art_date {
 	font-size: 0.8rem;
-	margin-top: 1.6rem;
+	margin-top: 1rem;
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bolder;
 }
@@ -451,7 +456,7 @@ input::placeholder {
 		width: 16rem;
 		height: 11rem;
 		position: absolute;
-		top: 194px;
+		top: 240px;
 		left: 61px;
 		z-index: -1;
 	}
@@ -535,7 +540,7 @@ input::placeholder {
   .main_gg {
     top: 300px;
     position: absolute;
-    z-index: -1;
+    z-index: -2;
 }
   .main_gg img {
 	width: 100%;
@@ -870,7 +875,6 @@ input::placeholder {
 	padding: 10px;
 	margin-top: 15px;
 	font-weight: 900;
-	font-size: 1rem;
 }
 
 .login_and{
@@ -1342,7 +1346,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
  }
 .region_date {
 	width: 40%;
-	min-width: 100px;
+	min-width: 110px;
     height: 30px;
     border-radius: 15px;
     border: 1px solid #000;
@@ -1362,6 +1366,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding: 0 14% 0 10px;
 }
 .region_form_btn {
+    font-size: 1rem;
     height: 30px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -1370,6 +1375,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: #fff;
     border: none;
     position: absolute;
+    line-height: 2.1rem;
     top: 10px;
     right: 0;
 }
@@ -1762,6 +1768,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.main_wea_up {
 	    height: 30px;
+		line-height: 25px;
     	width: 100px;
 		font-size: 1.5rem;
 	}
@@ -1781,7 +1788,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		font-size: 1.4rem;
 	}
 	.main_wea_icon {
-		font-size: 2.5rem;
+		padding-top: 0.5rem;
+		font-size: 2.2rem;
 	}
 	.main_box_left {
 		padding: 70px 20px 0px 42px;
@@ -1791,7 +1799,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.main_sub_y {
 		width: 8rem;
 		height: 8rem;
-		top: 139px;
+		top: 169px;
 		left: 22px;
 	}
 	.main_2_news {
@@ -1851,7 +1859,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.main_3_sub_y {
 		width: 13rem;
 		height: 8rem;
-		top: 139px;
+		top: 170px;
 		left: 3px;
 	}
 	.main_hot3_txt p {
@@ -1915,28 +1923,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		padding: 0;
 	}
 	.main_wea_up {
+		line-height: 1.3rem;
 		height: 25px;
 		width: 80px;
 		font-size: 1.1rem;
 	}
 	.main_wea {
-		right: 25px;
-		top: 130px;
-		font-size: 1.1rem;
-		font-family: 'Cafe24SsurroundAir';
-		/* font-weight: bolder; */
-	}
-	.main_wea_down {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 45px;
-	width: 80px;
-	font-size: 1.1rem;
-	gap: 0.3rem;
-	}
-	.main_wea_icon {
-		font-size: 2rem;
+		display: none;
 	}
 	.main_box_left {
 		padding: 70px 20px 0px 42px;
@@ -1946,7 +1939,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.main_sub_y {
 		width: 4.5rem;
 		height: 4rem;
-		top: 118px;
+		top: 136px;
 		left: 29px;
 	}
 	.main_3_sub_txt {
@@ -2021,16 +2014,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.art_con {
 		font-size: 1rem;
-		margin-top: 1rem;
+		margin-top: 0.4rem;
 	}
 	.art_date {
 		font-size: 0.7rem;
-		margin-top: 0.9rem;
-
+		margin-top: 0.4rem;
 	}
 	.art_tit {
 		font-size: 1.3rem;
-		margin-top: 0.8rem;
+		margin-top: 0.4rem;
 	}
 	.art_plus {
 		font-size: 0.8rem;
@@ -2048,7 +2040,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.main_3_sub_y {
 		width: 7rem;
 		height: 4.5rem;
-		top: 112px;
+		top: 132px;
 		left: 21px;
 	}
 	.main_4_menu {
@@ -2111,14 +2103,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 	/* 지역페이지 */
 	.carousel__item {
-		font-size: 0.9rem;
-		color: #D14C6C;
-		width: 90px;
-		height: 90px;
-		border-radius: 50%;
-		background-color: #ffeff3;
-		text-align: center;
-		line-height: 90px;
+		width: 80px;
+		height: 80px;
+		line-height: 80px;
 	}
 	/* .region_container_list {
 		display: grid;
@@ -2133,6 +2120,34 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.region_date {
 		width: 35%;
 		font-size: 0.7rem;
+	}
+	/* 로그인 */
+	.login_logo {
+		width: 180px;
+    	margin-bottom: 25px;
+	}
+	.login_container{
+		padding: 30px;
+	}
+	.login_box input {
+		padding: 5px 0px;
+	}
+	.login_and {
+		margin: 5px 0px;
+	}
+	.login_btn, .login_kakao {
+		padding: 7px;
+	}
+	/* auth */
+	.auth_container_input {
+		padding: 5px 10px;
+	}
+	.auth_chk_btn {
+		font-size: 0.9rem;
+		padding: 6px;
+	}
+	.auth_com_msg_t{
+		margin-top: 25px;
 	}
 }
 
@@ -2171,7 +2186,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	position: relative;
 }
 .auth_relative span{
-	font-size: 0.85rem;
     padding-left: 9px;
 }
 .auth_absolute{
