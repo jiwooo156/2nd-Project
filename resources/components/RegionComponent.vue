@@ -24,11 +24,19 @@
 					</select>
 					<div>
                         <input type="date" class="region_date font_air bold" v-model="startdate"
+							aria-required="true"
+							value={startDateValue}
+							className={styles.selectDay}
+							onChange={StartDateValueHandler}
                             @keyup.enter="searchFestival"
 							data-placeholder="시작일"
                         >
                         <span class="font_air bold region_date_span">~</span>
                         <input type="date" class="region_date font_air bold" v-model="enddate"
+							aria-required="true"
+							value={startDateValue}
+							className={styles.selectDay}
+							onChange={StartDateValueHandler}
                             @keyup.enter="searchFestival"
 							data-placeholder="종료일"
                         >
