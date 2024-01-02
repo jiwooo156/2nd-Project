@@ -23,14 +23,16 @@
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
 					<div>
-						<input type="date" class="region_date font_air bold" v-model="startdate"
-							@keyup.enter="searchFestival"
-						>
-						<span class="font_air bold region_date_span">~</span>
-						<input type="date" class="region_date font_air bold" v-model="enddate"
-							@keyup.enter="searchFestival"
-						>
-					</div>
+                        <input type="date" class="region_date font_air bold" v-model="startdate"
+                            @keyup.enter="searchFestival"
+                            placeholder="시작날짜"
+                        >
+                        <span class="font_air bold region_date_span">~</span>
+                        <input type="date" class="region_date font_air bold" v-model="enddate"
+                            @keyup.enter="searchFestival"
+                            placeholder="종료날짜"
+                        >
+                    </div>
 				</div>
 				<div class="region_relative">
 					<input type="text" class="region_search_text font_air bold" placeholder="키워드로 검색 해 보세요"
@@ -278,9 +280,9 @@ export default {
 		searchkeyword(){
 			this.changeSearchFlg()
 		},
-		url(){
-			console.log(테스트)
-		}
+		// url(){
+		// 	console.log(테스트)
+		// }
 	},
 	mounted() {
 		// 오늘날짜
@@ -347,14 +349,14 @@ export default {
 			// 로딩시작
 			this.$store.commit('setLoading',true);
 			const URL = '/region/recommendf?ns='+ ns+'&today='+this.today;
-			console.log(this.today);
+			// console.log(this.today);
 			axios.get(URL)
 			.then(res => {
-				console.log("추천축제 댄");
+				// console.log("추천축제 댄");
 				this.recommendfestival = res.data.rfestival;
 				this.recommendtour = res.data.rtour;
-				console.log(this.recommendfestival);
-				console.log(this.recommendtour)
+				// console.log(this.recommendfestival);
+				// console.log(this.recommendtour);
 			})
 			.catch(err => {
 				// console.log("캐치");
@@ -388,10 +390,10 @@ export default {
 				this.searchmoreflg_f = false;
 				// 지역축제 총 갯수
 				this.region_f_cnt = res.data.f_cnt;
-				console.log(this.region_f_cnt)
+				// console.log(this.region_f_cnt)
 				// 지역관광 총 갯수
 				this.region_t_cnt = res.data.t_cnt;
-				console.log(this.region_t_cnt)
+				// console.log(this.region_t_cnt)
 				this.regionnameflg = true;
 			})
 			.catch(err => {
@@ -487,7 +489,7 @@ export default {
 					this.searchflg = true;
 				})
 				.catch(err => {
-					console.log("캐치");
+					// console.log("캐치");
 					alert("데이터 에러 발생")
 				})
 				.finally(() => {
@@ -575,7 +577,7 @@ export default {
 			const month = String(now.getMonth() + 1).padStart(2, '0');
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
-			console.log(this.today)
+			// console.log(this.today)
 		},
 		changeSearchFlg() {
 			this.searchmoreflg_f = false

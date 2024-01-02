@@ -803,7 +803,7 @@ input::placeholder {
 	.footer_team h3 {
 		font-size: 1rem;
 		width: 350px;
-		padding: 1rem 0 0.5rem 0;
+		padding: 1rem 0 0 0;
 	}
 
 	.footer_team span {

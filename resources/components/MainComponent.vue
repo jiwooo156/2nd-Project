@@ -8,7 +8,7 @@
             <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
-					<div class="main_wea">
+					<div class="main_wea" v-if="!weatherflg">
             <div class="main_wea_up"></div>
 						<div class="main_wea_down">
               <div class="main_wea_icon">{{ this.description }}</div>
@@ -171,6 +171,8 @@ export default {
       // 오늘
 			today: "",
       description: '',
+      weatherflg: false,
+
     };
   },
   created() {
@@ -192,7 +194,7 @@ export default {
         this.fixedinfoList = res.data.fixed;
     })
       .catch(err => {
-        console.log("캐치");
+        // console.log("캐치");
         alert("데이터 에러 발생");
       })
     },
@@ -232,11 +234,13 @@ export default {
             })
             .catch((error) => {
               console.log('에러에러');
+              clearInterval(this.cityRanLoop);
+              this.weatherflg = true
             });
         };
         // 최초 한 번 호출
         cityRan();
-        // 10초마다 반복 실행
+        // 5초마다 반복 실행
         this.cityRanLoop = setInterval(cityRan, 5000);
     },
     getToday() {
