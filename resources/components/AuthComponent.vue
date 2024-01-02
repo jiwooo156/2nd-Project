@@ -199,10 +199,11 @@ export default {
 				// 	this.re_auth_email = true;
 				// 1228 수정 최정훈 이미발송되었습니다 상황 삭제
 				}else if(res.data.code === "E13"){
-					this.auth_err = ""
+					this.auth_err = "";
 					this.timeout_flg = false;
-					this.errorMsg = []
-					this.repeat_flg = true
+					this.errorMsg = [];
+					this.repeat_flg = true;
+					this.timerstop();
 				}
 			})
 			.catch(err => {
