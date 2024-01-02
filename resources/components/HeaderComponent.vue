@@ -72,7 +72,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 			<div class="container-fluid">
 				<router-link to="/main" class="navbar-brand font_air bold">      
-					<img src="/img/logo.png" alt="" width="75" height="35">
+					<img src="/img/logo.png" alt="" width="100" height="35">
 				</router-link>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>

@@ -5,7 +5,7 @@
 				<div  class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
 			</div>
 			<div class="region_slider_container">
-				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" >
+				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" ref="myCarousel">
 					<Slide v-for="state in states" :key="state">
 						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer">{{ state.states_name }}</div>
 					</Slide>
@@ -288,6 +288,16 @@ export default {
 		// 화면 크기에 따라 item 업데이트
 		this.updateItem();
 		window.addEventListener("resize", this.updateItem);
+
+		// 이전다음버튼css
+		const myCarousel = this.$refs.myCarousel;
+		const prevButton = myCarousel.$el.querySelector('.carousel__prev');
+		const nextButton = myCarousel.$el.querySelector('.carousel__next');
+
+		if (prevButton && nextButton) {
+			prevButton.style.left = '-25px';
+			nextButton.style.right = '-25px';
+		}
 	},
 	beforeDestroy() {
 		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
@@ -627,8 +637,5 @@ export default {
 .carousel__slide--active {
 	opacity: 1;
 	transform: rotateY(0) scale(1.1);
-}
-.carousel__prev {
-    left: -40px;
 }
 </style>

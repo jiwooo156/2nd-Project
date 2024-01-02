@@ -2134,6 +2134,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.login_logo {
 		width: 180px;
 	}
+	.login_container{
+		padding: 30px;
+	}
+	.login_box input {
+		padding: 5px 0px;
+	}
+	.login_and {
+		margin: 5px 0px;
+	}
+	.login_btn, .login_kakao {
+		padding: 7px;
+	}
 }
 
 .auth_consent p,.auth_consent li{
