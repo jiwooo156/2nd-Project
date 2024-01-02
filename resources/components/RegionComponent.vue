@@ -176,6 +176,7 @@
 		<div class="region_more_btn">
 			<button class="pointer" v-if="!(searchtourresult.length === search_t_cnt)&&searchmoreflg_t"  @click="MoreSearchTour()">더보기</button>
 		</div>
+		<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 	</div>
 </template>
 <script>

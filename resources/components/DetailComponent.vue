@@ -114,7 +114,7 @@
 				<font-awesome-icon :icon="['fass', 'caret-down']" />
 			</span>
 		</div>
-	
+		<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 	</div>
 </template>
 <script>

@@ -63,13 +63,16 @@
                             {{ $store.state.NowUser }}
                         </router-link>
                     </li>
-					<li @click="logout" class="pointer gnb_logout gnb_li">로그아웃</li>
+					<li @click="logout" class="pointer gnb_logout gnb_li">	
+						<font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+						로그아웃
+					</li>
 				</ul>
 			</div>
 		</header>
 		<div class="hidden-on-mobile">
 			<!-- 여기에 모바일 화면에서만 보이게 하고 싶은 컨텐츠를 넣으세요 -->
-			<nav class="navbar navbar-expand-lg  bg-light fixed-top p-3">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 			<div class="container-fluid">
 				<router-link to="/main" class="navbar-brand font_air bold">      
 					<img src="/img/logo.png" alt="" width="100" height="35">
@@ -133,7 +136,10 @@
 									{{ $store.state.NowUser }}
 								</router-link>
 							</li>
-							<li @click="logout" class="nav-link active font_air bold">로그아웃</li>
+							<li @click="logout" class="nav-link active font_air bold">
+								<font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+								로그아웃
+							</li>
 						</ul>	
 				</ul>
 				</div>

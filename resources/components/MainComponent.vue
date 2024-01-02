@@ -4,7 +4,7 @@
 			<div class="main_1">
 				<div class="main_1_box">
           <div class="main_txt">
-            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도, 좋아요!<br></div>
+            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도!<br></div>
             <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
@@ -156,7 +156,7 @@
 			</div>
     </div>
 	</div>
-	<div class="main_topBtn"></div>
+  <div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 </template>
 
 <script>
