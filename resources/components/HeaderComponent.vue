@@ -69,7 +69,7 @@
 		</header>
 		<div class="hidden-on-mobile">
 			<!-- 여기에 모바일 화면에서만 보이게 하고 싶은 컨텐츠를 넣으세요 -->
-			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
+			<nav class="navbar navbar-expand-lg  bg-light fixed-top p-3">
 			<div class="container-fluid">
 				<router-link to="/main" class="navbar-brand font_air bold">      
 					<img src="/img/logo.png" alt="" width="100" height="35">

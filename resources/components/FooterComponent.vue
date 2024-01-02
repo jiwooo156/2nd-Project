@@ -31,7 +31,7 @@
 			</div>
 			<div class="footer_con">
 				<div>
-					<h3 class="footer_con_tit font_air">아카데미 정보</h3>
+					<h3 class="footer_con_tit font_air bold">아카데미 정보</h3>
 				</div>
 				<div class="footer_array">
 					<span><div><font-awesome-icon :icon="['fas', 'house']" /></div>그린컴퓨터아트학원 대구</span>
