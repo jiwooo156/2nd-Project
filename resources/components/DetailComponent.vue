@@ -32,9 +32,11 @@
 					<img :src="this.detaildata.img1"
 						v-if="this.detaildata.img1"
 					>
+					<br>
 					<img :src="this.detaildata.img2"
 						v-if="this.detaildata.img2"
 					>
+					<br>
 					<img :src="this.detaildata.img3"
 						v-if="this.detaildata.img3"
 					>
@@ -54,6 +56,7 @@
 						v-model="replie"  
 						@click="checklocal"
 						@input="changeKeyword"
+						@keyup.enter="repliewrite"
 						placeholder="이곳에 소중한 댓글을 작성해 주세요."
 					></textarea>
 					<div class="detail_replie_length font_air bold">
