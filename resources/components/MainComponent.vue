@@ -177,7 +177,7 @@ export default {
 		this.$store.commit('setLocalFlg', boo);
     // 화면에 나타날 데이터
     this.getMain();
-    this.getWeather();
+    // this.getWeather();
   },
   methods: {    
     // 화면에 나타날 데이터 불러오기
@@ -186,8 +186,8 @@ export default {
       axios.get(URL)
       .then(res => {
         this.besthitsinfoList = res.data.hits;
-        this.fixedinfoList = res.data.fixe;
-      })
+        this.fixedinfoList = res.data.fixed;
+    })
       .catch(err => {
         console.log("캐치");
         alert("데이터 에러 발생");
@@ -206,7 +206,7 @@ export default {
             if(i === cities.length){
                 i = 0;
             }
-            console.log(city);
+            // console.log(city);
             fetch('https://goweather.herokuapp.com/weather/' + city)
             .then((response) => response.json())
             .then((data) => {

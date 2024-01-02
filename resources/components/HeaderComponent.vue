@@ -14,12 +14,12 @@
 						<li class="header_li_2">
 							<a href="#" target="_self">경상도오</a>
 							<ul class="depth1">
+								<li>
+									<router-link to="/region?ns=경상북도">경상북도구</router-link>
+								</li>
 								<li> 
 									<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
-									<router-link to="/region?ns=경상남도">경상남도구</router-link>
-								</li>
-								<li>
-									<router-link to="/region?ns=경상북도">경상북돈디</router-link>
+									<router-link to="/region?ns=경상남도">경상남돈디</router-link>
 								</li>
 							</ul>
 						</li>
@@ -67,12 +67,79 @@
 				</ul>
 			</div>
 		</header>
-		<a href="javascript:void(0);" class="menu_btn">
-			<span></span>
-			<span></span>
-			<span></span>
-			<i class="sound_only">메뉴</i>
-		</a>
+		<div class="hidden-on-mobile">
+			<!-- 여기에 모바일 화면에서만 보이게 하고 싶은 컨텐츠를 넣으세요 -->
+			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
+			<div class="container-fluid">
+				<router-link to="/main" class="navbar-brand font_air bold">      
+					<img src="/img/logo.png" alt="" width="75" height="35">
+				</router-link>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<router-link to="/main" class="nav-link active font_air bold" aria-current="page">홈이야요</router-link>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							경상도오
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<li>
+								<router-link to="/region?ns=경상북도" class="dropdown-item font_air bold">경상북도구</router-link>
+							</li>
+							<li> 
+								<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
+								<router-link to="/region?ns=경상남도" class="dropdown-item font_air bold">경상남돈디</router-link>
+							</li>
+						</ul>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							커뮤니티
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<li>
+								<a href="#" class="dropdown-item font_air bold">자유게시판</a>
+							</li>
+							<li> 
+								<a href="#" class="dropdown-item font_air bold">정보게시판</a>
+							</li>
+							<!-- <li><hr class="dropdown-divider"></li> -->
+							<li> 
+								<a href="#" class="dropdown-item font_air bold">질문게시판</a>
+							</li>
+							<li> 
+								<a href="#" class="dropdown-item font_air bold">건의게시판</a>
+							</li>
+						</ul>
+					</li>
+						<ul v-if="!$store.state.localFlg">
+							<li>
+								<router-link to="/login" class="nav-link active font_air bold">로그인</router-link>
+							</li>
+							<li>
+								<router-link to="/authemail" class="nav-link active font_air bold">회원가입</router-link>
+							</li>
+						</ul>
+						<ul v-if="$store.state.localFlg">
+							<li>
+								<router-link to="/userchk" class="header_icon nav-link active font_air bold">
+									<div>
+										<font-awesome-icon :icon="['fas', 'circle-user']"/>
+									</div>
+									{{ $store.state.NowUser }}
+								</router-link>
+							</li>
+							<li @click="logout" class="nav-link active font_air bold">로그아웃</li>
+						</ul>	
+				</ul>
+				</div>
+			</div>
+			</nav>
+		</div>
     </div>
 </template>
 <script>
