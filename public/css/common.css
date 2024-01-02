@@ -5,7 +5,6 @@
 	box-sizing: border-box;
 	text-decoration: none; 
 	font-family:Cafe24Ssurround;
-	color: #000;
 }
 .spinner-div{
 	width: 100%;
@@ -303,7 +302,8 @@ input::placeholder {
 	font-size: 4.2rem;
   }
   .main_txt_down {
-	font-size: 3.9rem;
+    font-size: 3.9rem;
+    color: #fff;
   }
   .main_wea {
     display: block;
