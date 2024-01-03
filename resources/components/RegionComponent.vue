@@ -23,14 +23,18 @@
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
 					<div>
-						<input type="date" class="region_date font_air bold" v-model="startdate"
+						<input type="text" class="region_date font_air bold" v-model="startdate"
 							@keyup.enter="searchFestival"
-							data-placeholder="시작일"
+							placeholder="시작일"
+							onblur="(this.type='text')"
+							onfocus="(this.type='date')"
 						>
 						<span class="font_air bold region_date_span">~</span>
-						<input type="date" class="region_date font_air bold" v-model="enddate"
+						<input type="text" class="region_date font_air bold" v-model="enddate"
 							@keyup.enter="searchFestival"
-							data-placeholder="종료일"
+							placeholder="종료일"
+							onblur="(this.type='text')"
+							onfocus="(this.type='date')"
 						>
                     </div>
 				</div>
