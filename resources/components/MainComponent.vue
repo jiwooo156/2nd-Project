@@ -203,7 +203,7 @@ export default {
         if (this.cityRanLoop) {
             clearInterval(this.cityRanLoop);
         }
-        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
+        let cities = ['대구', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
         let i = 0; // 도시 인덱스를 유지할 변수 추가
         const cityRan = () => {
             let city = cities[i];
@@ -241,7 +241,7 @@ export default {
         // 최초 한 번 호출
         cityRan();
         // 5초마다 반복 실행
-        this.cityRanLoop = setInterval(cityRan, 5000);
+        this.cityRanLoop = setInterval(cityRan, 8000);
     },
     getToday() {
 			const now = new Date();
