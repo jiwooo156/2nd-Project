@@ -10,6 +10,9 @@ import AdminComponent from '../components/AdminComponent.vue';
 import DetailComponent from '../components/DetailComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
+import BoardComponent from '../components/BoardComponent.vue';
+import QnaComponent from '../components/QnaComponent.vue';
+import PostComponent from '../components/PostComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -32,6 +35,18 @@ const routes = [
 	{
 		path: "/detail",
 		component : DetailComponent
+	},
+	{
+		path: "/board",
+		component : BoardComponent
+	},
+	{
+		path: "/qna",
+		component : QnaComponent
+	},
+	{
+		path: "/post",
+		component : PostComponent
 	},
 	{
 		path: "/login",

@@ -2,7 +2,7 @@
 	<div class="region_frame">
 		<div class="region_header_frame">
 			<div class="center">
-				<div  class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
+				<div class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
 			</div>
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" ref="myCarousel">
@@ -23,11 +23,11 @@
 						<option v-for="state in states" :key="state" class=" font_air bold">{{ state.states_name }}</option>
 					</select>
 					<div>
-						<input type="text" class="region_date font_air bold" v-model="startdate"
+						<input type="date" class="region_date font_air bold" v-model="startdate"
 							@keyup.enter="searchFestival"
 						>
 						<span class="font_air bold region_date_span">~</span>
-						<input type="text" class="region_date font_air bold" v-model="enddate"
+						<input type="date" class="region_date font_air bold" v-model="enddate"
 							@keyup.enter="searchFestival"
 						>
                     </div>
