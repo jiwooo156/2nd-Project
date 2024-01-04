@@ -10,6 +10,7 @@
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
+import AdminComponent from './AdminComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
@@ -24,7 +25,7 @@ export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,AdminComponent
     },
     methods: {
         localStoragechk(){

@@ -102,7 +102,15 @@ Route::get('/user', function () {
     return view('welcome');
 });
 
-
+// 어드민 페이지
+Route::middleware('myValidation')->prefix('admin')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/user', [UserController::class, 'adminchk']);
+    Route::get('/data/{id}', [UserController::class, 'dataget']);
+    Route::get('/report', [UserController::class, 'reportget']);
+});
 
 // 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {

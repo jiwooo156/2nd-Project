@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Del_Reason;
 use App\Models\Authenticate;
+use App\Models\Admin;
+use App\Models\Community;
+use App\Models\Replie;
+use App\Models\Report;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +17,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-
 
 
 class UserController extends Controller
@@ -123,6 +126,7 @@ class UserController extends Controller
     {
         // 리퀘스트 정보로 유저테이블 정보 조회
         $result = User::where('email',$req->email)->first();
+    
         // 조회된 값이 없을때
         if(!$result){
             $errorMsg = ['존재하지않는 이메일 입니다.'];
@@ -130,8 +134,20 @@ class UserController extends Controller
                 'code' => 'E06'
                 ,'errorMsg' => $errorMsg
             ], 400);
+        }
+        $admin_flg = Admin::where('u_id',$result->id)->first();
+        // 관리자일떄만
+        if($result&&$admin_flg){
+            Log::debug("함수진입");
+            Auth::login($result);
+            Auth::user();
+            return response()->json([
+                'code' => '1'
+                ,'data' => $result
+            ], 200);
         // 값이 조회됬을때
         }else if($result){
+            Log::debug("회원들오는곳");
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
                 return response()->json([
@@ -174,7 +190,6 @@ class UserController extends Controller
     }
     // 로그아웃
     public function logout(Request $req){
-        Log::debug("로그아웃진입");
         // Auth클레스에 정보삭제 ->세션에서 파기
         $result = Auth::logout();
         // 정상처리 됬을때
@@ -215,6 +230,7 @@ class UserController extends Controller
         $auth = Auth::user();
         // 세션에 유저정보중 email 토대로 유저 테이블에 아이디 이메일 닉네임 조회
         $result = User::select('id','email','nick')->where('email',$auth->email)->first();
+        $admin = User::where('email',$auth->email)->first();
         // 조회된 유저정보 있을시
         if($result){
             return response()->json([
@@ -597,7 +613,7 @@ class UserController extends Controller
             ], 400);
         }
     }
-    // // 인증메일 재발송
+        // 인증메일 재발송
     // public function resendemailauth(Request $req)
     // {
     //     $uuid = Str::uuid();
@@ -626,4 +642,73 @@ class UserController extends Controller
     //         ], 200);
     //     }
     // }
+
+    // 어드민페이지 시작
+    public function adminchk(Request $req)
+    {
+        Auth::user();
+        $chk = Admin::where('u_id',Auth::user()->id)->get();
+        if($req->id==Auth::user()->id && $req->nick === Auth::user()->nick && $req->email === Auth::user()->email && count($chk)>0){
+            // 오늘 탈퇴자수
+            // withTrashed = 소프트딜리트 된 애도 포함
+            $out = User::withTrashed()
+            ->where('deleted_at', '>=', $req->today)
+            ->count();
+            // 오늘 가입자수
+            $in = User::
+            where('created_at','>=', $req->today)
+            ->count();
+            // 신규질문
+            $data = Community::
+            where('flg', "3")
+            ->where('admin_flg', 0)
+            ->orderby('created_at','asc')
+            ->get();
+            // 신고목록
+            $report = Report::
+            where('admin_flg', 0)
+            ->orderby('report_at','asc')
+            ->get();
+            return response()->json([
+                'code' => '0',
+                'sign_cnt' => $in,
+                'drop_cnt' => $out,
+                'data' => $data,
+                'r_data' => $report
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '인증과정중 문제가 발생했습니다. 다시 한번 로그인후 이용해 주세요'
+            ], 400);
+        }
+    }
+    // modal용 data획득
+    public function dataget(Request $req){
+        $data = Community::
+            where('id',$req->id)
+            ->first();
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ], 200);
+    }
+    // modal용 report data획득
+    public function reportget(Request $req){
+        if($req->flg==="커뮤"){
+            Log::debug("보드일때");
+            $data = Community::withTrashed()
+            ->where('id',$req->b_id)
+            ->first();
+        }else{
+            Log::debug("댓글일떄");
+            $data = Replie::withTrashed()
+            ->where('id',$req->b_id)
+            ->first();
+        }
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ], 200);
+    }
 }
