@@ -82,6 +82,7 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
     Route::get('/info', [InfoController::class, 'getMainInfo']);
 });
 
+// 디테일 라우터
 Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');
@@ -93,6 +94,17 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });
 
+// 자유게시판 라우터
+Route::middleware('myValidation')->prefix('Free')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/info/{id}', [InfoController::class, 'freeget']);
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
+    Route::get('/more', [InfoController::class, 'morereplie']);
+    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
+});
 
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
