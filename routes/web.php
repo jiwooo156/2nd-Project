@@ -94,16 +94,25 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });
 
-// 자유게시판 라우터
-Route::middleware('myValidation')->prefix('Free')->group(function() {
+// 자유&정보 게시판 라우터 생성
+Route::middleware('myValidation')->prefix('board')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/info/{id}', [InfoController::class, 'freeget']);
-    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
-    Route::get('/more', [InfoController::class, 'morereplie']);
-    Route::post('/{id}', [InfoController::class, 'repliewirte']);
-    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
+});
+
+// 질문&건의 게시판 라우터 생성
+Route::middleware('myValidation')->prefix('qna')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
+
+// 게시글 작성 라우터 생성
+Route::middleware('myValidation')->prefix('post')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
 });
 
 // 라우터 확인용 test

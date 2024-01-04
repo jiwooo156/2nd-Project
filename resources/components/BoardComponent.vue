@@ -1,11 +1,11 @@
 <template lang="">
-	<div class="qna">
-		질문컴포넌트/건의컴포넌트
+	<div class="board" >
+		<p>자유정보게시판</p>
 	</div>
 </template>
 <script>
 export default {
-	name: "QnaComponent",
+	name: "BoardComponent",
 }
 </script>
 <style lang="">

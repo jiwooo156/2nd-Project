@@ -105,17 +105,16 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<li>
-								<a href="#" class="dropdown-item font_air bold">자유게시판</a>
+								<a href="#" target="_self" onclick="">자유게시판</a>
 							</li>
-							<li> 
-								<a href="#" class="dropdown-item font_air bold">정보게시판</a>
+							<li>
+								<a href="#" target="_self" onclick="">정보게시판</a>
 							</li>
-							<!-- <li><hr class="dropdown-divider"></li> -->
-							<li> 
-								<a href="#" class="dropdown-item font_air bold">질문게시판</a>
+							<li>
+								<a href="#" target="_self" onclick="">질문게시판</a>
 							</li>
-							<li> 
-								<a href="#" class="dropdown-item font_air bold">건의게시판</a>
+							<li>
+								<a href="#" target="_self" onclick="">건의게시판</a>
 							</li>
 						</ul>
 					</li>

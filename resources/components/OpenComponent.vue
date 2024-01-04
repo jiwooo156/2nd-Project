@@ -20,11 +20,28 @@ import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
 import FooterComponent from './FooterComponent.vue'
 import DetailComponent from './DetailComponent.vue'
+import BoardComponent from './BoardComponent.vue'
+import QnaComponent from './QnaComponent.vue'
+import PostComponent from './PostComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
+        MainComponent,
+        LoginComponent,
+        SigninComponent,
+        UserComponent,
+        UserChk,
+        RegionComponent,
+        HeaderComponent,
+        RegionComponent,
+        AuthComponent,
+        ErrorComponent,
+        FooterComponent,
+        DetailComponent,
+        BoardComponent,
+        QnaComponent,
+        PostComponent,
     },
     methods: {
         localStoragechk(){

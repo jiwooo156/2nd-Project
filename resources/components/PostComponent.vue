@@ -1,11 +1,11 @@
 <template lang="">
-	<div>
-		자유컴포넌트
+	<div class="post">
+		포스트
 	</div>
 </template>
 <script>
 export default {
-	name: "FreeComponent",
+	name: "PostComponent",
 }
 </script>
 <style lang="">
