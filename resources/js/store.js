@@ -25,6 +25,7 @@ const store = createStore({
 			beforeUrl: "",
 			loading: false,
 			nsFlg: "",
+			setQtFlg: "",
 		}
 	},
 
@@ -66,9 +67,11 @@ const store = createStore({
 		setLoading(state, boo){
 			state.loading=boo;
 		},
-		
 		setNsFlg(state, str){
 			state.nsFlg=str;
+		},
+		setQtFlg(state, str){
+			state.qtFlg=str;
 		},
 	},
 

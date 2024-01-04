@@ -2,7 +2,7 @@
 	<div class="region_frame">
 		<div class="region_header_frame">
 			<div class="center">
-				<div  class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
+				<div class="region_ns">{{ this.nowns }}</div><span class="region_ns_span font_air bold">골라보이소🤗</span>
 			</div>
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" ref="myCarousel">
