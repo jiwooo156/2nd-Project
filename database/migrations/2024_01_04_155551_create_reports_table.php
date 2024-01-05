@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('b_id');
             $table->char('flg', 1);
             $table->char('admin_flg', 1);
-            $table->timestamp('report_at')->default(DB::raw('now()'));
+            $table->timestamps();
             $table->softDeletes();  
         });
     }
