@@ -24,7 +24,6 @@ import DetailComponent from './DetailComponent.vue'
 import BoardComponent from './BoardComponent.vue'
 import QnaComponent from './QnaComponent.vue'
 import PostComponent from './PostComponent.vue'
-import CommunityComponent from './CommunityComponent.vue'
 export default {
 
     name: 'OpenComponent',
@@ -36,7 +35,6 @@ export default {
         UserChk,
         RegionComponent,
         HeaderComponent,
-        RegionComponent,
         AuthComponent,
         ErrorComponent,
         FooterComponent,
@@ -45,7 +43,6 @@ export default {
         QnaComponent,
         PostComponent,
         AdminComponent,
-        CommunityComponent,
     },
     methods: {
         localStoragechk(){

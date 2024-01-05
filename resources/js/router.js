@@ -8,7 +8,6 @@ import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
 import AdminComponent from '../components/AdminComponent.vue';
 import DetailComponent from '../components/DetailComponent.vue';
-import CommunityComponent from '../components/CommunityComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
 import BoardComponent from '../components/BoardComponent.vue';
@@ -48,10 +47,6 @@ const routes = [
 	{
 		path: "/post",
 		component : PostComponent
-	},
-	{
-		path: "/community",
-		component : CommunityComponent
 	},
 	{
 		path: "/login",
