@@ -73,8 +73,8 @@
 					<div>미 답변 질문</div>
 				<div>자세히보기</div>
 				</div>
-				<div class="admin_content pointer">
-					<div class="admin_box"
+				<div class="admin_content">
+					<div class="admin_box pointer"
 						:id='"admin_data"+data.id'
 						v-for="data in data" :key="data"
 						@click="dataget(data)"
@@ -85,6 +85,12 @@
 						<div>내용 : {{ data.content }}</div>
 						<div>질문시간 : {{ data.created_at }}</div>
 					</div>
+					<div 
+						v-if="data.length === 0"
+						class="admin_nolist"
+					>
+						리스트가 없습니다.
+					</div>
 				</div>
 			</div>
 			<div>
@@ -92,8 +98,8 @@
 					<div>신고목록</div>
 				<div>자세히보기</div>
 				</div>
-				<div class="admin_content pointer">
-					<div class="admin_box"
+				<div class="admin_content">
+					<div class="admin_box pointer"
 						:id='"admin_report"+data.id'
 					v-for="data in r_data" :key="data"
 						@click="reportget(data)"
@@ -103,7 +109,13 @@
 						<div>Email : {{ data.email }}</div>
 						<div>신고당한id : {{ data.b_id }}</div>
 						<div>신고사유 : {{ data.content }}</div>
-						<div>신고시간 : {{ data.report_at }}</div>
+						<div>신고시간 : {{ data.created_at }}</div>
+					</div>
+					<div 
+						v-if="r_data.length === 0"
+						class="admin_nolist"
+					>
+						리스트가 없습니다.
 					</div>
 				</div>
 			</div>
@@ -118,8 +130,9 @@
 			>
 				<div class="admin_modal_title">질문정보</div>
 				<div class="admin_modal_container">
-					<div>제목 : {{ now_data.title }}</div>
+					<div>유저번호 : {{ now_data.u_id }}</div>
 					<div>이메일 : {{ now_data.email }}</div>
+					<div>제목 : {{ now_data.title }}</div>
 					<div>질문내용 : {{ now_data.content }}</div>
 					<div>질문일자 : {{ now_data.created_at }}</div>
 				</div>
@@ -142,23 +155,32 @@
 			>
 				<div class="admin_modal_title">신고된댓글</div>
 				<div class="admin_modal_container">
-					<div>작성유저번호 : {{ modalReport_r.u_id }}</div>
-					<div>작성유저Email : {{ modalReport_r.email }}</div>
+					<div><span class="pointer">작성유저번호 : {{ modalReport_r.u_id }}</span></div>
+					<div><span class="pointer">작성유저Email : {{ modalReport_r.email }}</span></div>
 					<div>댓글내용 : {{ modalReport_r.replie }}</div>
 					<div>작성시간 : {{ modalReport_r.created_at }}</div>
+					<div>삭제일자 : {{ modalReport_r.deleted_at }}</div>
 				</div>
 				<hr>
 				<div>
-					<div>신고유저번호 : {{ this.now_report.u_id }}</div>
-					<div>신고유저Email : {{ this.now_report.email }}</div>
+					<div><span class="pointer">신고유저번호 : {{ this.now_report.u_id }}</span></div>
+					<div><span class="pointer">신고유저Email : {{ this.now_report.email }}</span></div>
 					<div>신고사유 : {{ this.now_report.content }}</div>
-					<div>신고시간 : {{ this.now_report.report_at }}</div>
+					<div>신고시간 : {{ this.now_report.created_at }}</div>
 				</div>
 				<div class="admin_modal_btn_box">
 					<div class="admin_modal_btn pointer"
-						@click="delreplie"
+						@click="delreplie(modalReport_r.id,now_report.flg)"
+						v-if="modalReport_r.deleted_at==='X'"
 					>댓글 삭제</div>
-					<div class="admin_modal_btn pointer">신고자 삭제</div>
+					<div class="admin_modal_btn pointer"
+						@click="keepdata(this.now_report.id)"
+						v-if="modalReport_r.deleted_at==='X'"
+					>댓글 유지</div>
+					<div class="admin_modal_btn pointer"
+						@click="keepdata(this.now_report.id)"
+						v-if="modalReport_r.deleted_at!=='X'"
+					>확인</div>
 					<div class="admin_modal_btn pointer"
 						@click="closeModal"
 					>취소</div>
@@ -169,23 +191,34 @@
 			>
 				<div class="admin_modal_title">신고된커뮤</div>
 				<div class="admin_modal_container">
-					<div>작성유저번호 : {{ modalReport_b.u_id }}</div>
-					<div>작성유저Email : {{ modalReport_b.email }}</div>
+					<div class="pointer">작성유저번호 : {{ modalReport_b.u_id }}</div>
+					<div class="pointer">작성유저Email : {{ modalReport_b.email }}</div>
 					<div>작성위치 : {{ modalReport_b.flg }}</div>
 					<div>제목 : {{ modalReport_b.title }}</div>
 					<div>내용 : {{ modalReport_b.content }}</div>
 					<div>작성시간 : {{ modalReport_b.created_at }}</div>
+					<div>삭제일자 : {{ modalReport_b.deleted_at }}</div>
 				</div>
 				<hr>
 				<div>
-					<div>신고유저번호 : {{ this.now_report.u_id }}</div>
-					<div>신고유저Email : {{ this.now_report.email }}</div>
+					<div class="pointer">신고유저번호 : {{ this.now_report.u_id }}</div>
+					<div class="pointer">신고유저Email : {{ this.now_report.email }}</div>
 					<div>신고사유 : {{ this.now_report.content }}</div>
-					<div>신고시간 : {{ this.now_report.report_at }}</div>
+					<div>신고시간 : {{ this.now_report.created_at }}</div>
 				</div>
 				<div class="admin_modal_btn_box">
-					<div class="admin_modal_btn pointer">게시글 삭제</div>
-					<div class="admin_modal_btn pointer">신고자 삭제</div>
+					<div class="admin_modal_btn pointer"
+						@click="delreplie(modalReport_b.id,now_report.flg)"
+						v-if="modalReport_b.deleted_at==='X'"
+					>게시글 삭제</div>
+					<div class="admin_modal_btn pointer"
+						@click="keepdata(this.now_report.id)"
+						v-if="modalReport_b.deleted_at==='X'"
+					>게시글 유지</div>
+					<div class="admin_modal_btn pointer"
+						@click="keepdata(this.now_report.id)"
+						v-if="modalReport_b.deleted_at!=='X'"
+					>확인</div>
 					<div class="admin_modal_btn pointer"
 						@click="closeModal(this.now_report.id)"
 					>취소</div>
@@ -283,6 +316,7 @@ export default {
 				console.log("댄진입")
 				if(data.flg === "댓글"){
 					this.modalReport_b = {};
+					res.data.data.deleted_at = res.data.data.deleted_at === null ? "X":res.data.data.deleted_at;
 					this.modalReport_r = res.data.data;
 				}else{
 					this.modalReport_r = {};
@@ -294,6 +328,7 @@ export default {
 					}else{
 						res.data.data.flg ="질문게시판"
 					}
+					res.data.data.deleted_at = res.data.data.deleted_at === null ? "X":res.data.data.deleted_at;
 					this.modalReport_b = res.data.data;
 				}
 				this.modalflg = true;
@@ -322,13 +357,12 @@ export default {
 				this.$store.commit('setLoading',true);
 				const URL = '/admin/data'
 				const formData = new FormData();
-					formData.append('id', id);
-					formData.append('replie', this.answer);
-					axios.post(URL,formData)
+				formData.append('id', id);
+				formData.append('replie', this.answer);
+				axios.post(URL,formData)
 				.then(res => {
 					if(res.data.code === "0"){
 						alert('정상처리되었습니다');
-						// document.querySelector('#admin_data'+id).remove();
 						this.closeModal();
 						this.amswer="";
 						this.adminchk();
@@ -349,28 +383,19 @@ export default {
 				});
 			}
 		},
-		// 댓글삭제
-		delreplie(id){
-			const URL = '/admin/report?b_id='+data.b_id+'&flg='+data.flg
-			axios.get(URL)
+		// 게시물 삭제
+		delreplie(id,flg){
+			this.$store.commit('setLoading', true);
+			const URL = '/admin/report?id='+id+'&flg='+flg
+			axios.delete(URL)
 			.then(res => {
-				console.log("댄진입")
-				if(data.flg === "댓글"){
-					this.modalReport_b = {};
-					this.modalReport_r = res.data.data;
-				}else{
-					this.modalReport_r = {};
-					console.log("플래그"+res.data.data.flg);
-					if(res.data.data.flg ==="0"){
-						res.data.data.flg = "자유게시판"
-					}else if(res.data.data.flg ==="1"){
-						res.data.data.flg ="정보게시판"
+				if(res.data.code === "0"){
+						alert('정상처리되었습니다');
+						this.closeModal();
+						this.adminchk();
 					}else{
-						res.data.data.flg ="질문게시판"
+						alert(res.data.errorMsg);
 					}
-					this.modalReport_b = res.data.data;
-				}
-				this.modalflg = true;
 			})
 			.catch(err => {
 				alert("데이터 에러 발생");
@@ -391,6 +416,27 @@ export default {
 			this.now_data = data;
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
+		},
+		// 답변질문 클릭
+		keepdata(id){
+			this.$store.commit('setLoading',true);
+			const URL = '/admin/report?id='+id
+			axios.post(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+						alert('정상처리되었습니다');
+						this.closeModal();
+						this.adminchk();
+					}else{
+						alert(res.data.errorMsg);
+					}
+			})
+			.catch(err => {
+				alert("데이터 에러 발생");
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 	}
 }

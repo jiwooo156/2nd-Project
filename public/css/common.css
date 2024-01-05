@@ -1815,6 +1815,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #00a678;
 	padding: 1em;
 }
+.admin_nolist{
+    padding: 1em 0px 0em 1em;
+    font-size: 1.3em;
+    color: #a5a5a5;
+}
 /* pc */
 @media only screen and (min-width: 991px) {
 	/* 에러 */

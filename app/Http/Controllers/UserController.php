@@ -672,7 +672,7 @@ class UserController extends Controller
             select('users.email','reports.*')
             ->where('reports.admin_flg', 0)
             ->join('users', 'reports.u_id', '=', 'users.id')
-            ->orderby('reports.report_at','asc')
+            ->orderby('reports.created_at','asc')
             ->get();
             return response()->json([
                 'code' => '0',
@@ -751,6 +751,78 @@ class UserController extends Controller
             return response()->json([
                 'code' => 'E99',
                 'errorMsg' => '댓글 달기 실패.'
+            ], 400);
+        }
+    }
+    // 게시글 삭제
+    public function reportdel(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 삭제처리
+            Log::debug($req->flg);
+            if($req->flg==="댓글"){
+                Log::debug("댓글");
+                $data = Report::
+                    where('b_id',$req->id)
+                    ->where('flg',1)
+                    ->first();
+                Log::debug( $data);
+                $result = Replie::destroy($req->id);
+            }else{
+                Log::debug("커뮤");
+                $data = Report::
+                    where('b_id',$req->id)
+                    ->where('flg',0)
+                    ->first();
+                Log::debug( $data);
+                $result = Community::destroy($req->id);
+            }
+            // 삭제 정상시
+            if($result){
+                // 조회된 값의 어드민플레그 1로 변경
+                $data->admin_flg = "1";
+            }
+            // 변경한 값 저장
+            $data->save();
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제 실패.'
+            ], 400);
+        }
+    }
+    // 게시글유지 플레그만 변경
+    public function reportpost(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 리퀘스트값으로 조회
+            $data = Report::
+                where('id',$req->id)
+                ->first();
+            // 삭제 정상시
+            $data->admin_flg = "1";
+            // 변경한 값 저장
+            $data->save();
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '변경실패 실패.'
             ], 400);
         }
     }
