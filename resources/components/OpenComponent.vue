@@ -29,7 +29,23 @@ export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
+        MainComponent,
+        LoginComponent,
+        SigninComponent,
+        UserComponent,
+        UserChk,
+        RegionComponent,
+        HeaderComponent,
+        RegionComponent,
+        AuthComponent,
+        ErrorComponent,
+        FooterComponent,
+        DetailComponent,
+        BoardComponent,
+        QnaComponent,
+        PostComponent,
+        AdminComponent,
+        CommunityComponent,
     },
     methods: {
         localStoragechk(){
