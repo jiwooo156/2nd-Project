@@ -123,7 +123,18 @@ Route::get('/user', function () {
     return view('welcome');
 });
 
-
+// 어드민 페이지
+Route::middleware('myValidation')->prefix('admin')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/user', [UserController::class, 'adminchk']);
+    Route::get('/data/{id}', [UserController::class, 'dataget']);
+    Route::post('/data', [UserController::class, 'answerdata']);
+    Route::get('/report', [UserController::class, 'reportget']);
+    Route::delete('/report', [UserController::class, 'reportdel']);
+    Route::post('/report', [UserController::class, 'reportpost']);
+});
 
 // 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {
@@ -146,7 +157,12 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/moresearcht',[InfoController::class, 'moresearcht']);
 });
 
-
+// 0105 정지우 정보게시판 라우터 생성
+Route::middleware('myValidation')->prefix('community')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
 
 
 // 잘못된 URL입력시
