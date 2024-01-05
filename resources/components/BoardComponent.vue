@@ -47,7 +47,9 @@
 						<tr class="info_notice pointer">
 							<td>23</td>
 							<td>공지사항</td>
-							<td class="info_title">정보게시판 글 작성시 양식을 지켜주세요!</td>
+							<router-link to="/community">
+								<td class="info_title">정보게시판 글 작성시 양식을 지켜주세요!</td>
+							</router-link>
 							<td>운영자</td>
 							<td>23-12-25</td>
 							<td class="col_hidden">401</td>

@@ -2504,9 +2504,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		font-size: 1.5rem;
 	}
 	/* 정보 */
-	/* .info_list table {
-		font-size: 0.7rem;
-	} */
 	.info_id {
 		width: 5%;
 	}

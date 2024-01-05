@@ -108,6 +108,13 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     });
 });
 
+// 커뮤니티 디테일 라우터 생성
+Route::middleware('myValidation')->prefix('community')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
+
 // 게시글 작성 라우터 생성
 Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::get('/', function () {

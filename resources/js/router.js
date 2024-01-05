@@ -13,6 +13,7 @@ import ErrorComponent from '../components/ErrorComponent.vue';
 import BoardComponent from '../components/BoardComponent.vue';
 import QnaComponent from '../components/QnaComponent.vue';
 import PostComponent from '../components/PostComponent.vue';
+import CommunityComponent from '../components/CommunityComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -46,6 +47,10 @@ const routes = [
 	},
 	{
 		path: "/post",
+		component : PostComponent
+	},
+	{
+		path: "/community",
 		component : PostComponent
 	},
 	{
