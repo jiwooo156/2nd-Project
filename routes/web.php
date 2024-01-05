@@ -157,7 +157,12 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/moresearcht',[InfoController::class, 'moresearcht']);
 });
 
-
+// 0105 정지우 정보게시판 라우터 생성
+Route::middleware('myValidation')->prefix('community')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
 
 
 // 잘못된 URL입력시

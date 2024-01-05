@@ -30,7 +30,7 @@
 									<a href="#" target="_self" onclick="">자유게시판</a>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">정보게시판</a>
+									<router-link to="/community">정보게시판</router-link>
 								</li>
 								<li>
 									<a href="#" target="_self" onclick="">질문게시판</a>
@@ -108,7 +108,7 @@
 								<a href="#" class="dropdown-item header_ns font_air bold">자유게시판</a>
 							</li>
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">정보게시판</a>
+								<router-link to="/community" class="dropdown-item font_air bold">정보게시판</router-link>
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 
