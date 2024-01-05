@@ -130,6 +130,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     });
     Route::get('/user', [UserController::class, 'adminchk']);
     Route::get('/data/{id}', [UserController::class, 'dataget']);
+    Route::post('/data', [UserController::class, 'answerdata']);
     Route::get('/report', [UserController::class, 'reportget']);
 });
 

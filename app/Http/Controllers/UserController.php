@@ -660,14 +660,19 @@ class UserController extends Controller
             ->count();
             // 신규질문
             $data = Community::
-            where('flg', "3")
-            ->where('admin_flg', 0)
-            ->orderby('created_at','asc')
+            select('users.email','community.*')
+            ->where('community.flg', "3")
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->where('community.admin_flg', 0)
+            ->orderby('community.created_at','asc')
             ->get();
+            Log::debug($data);
             // 신고목록
             $report = Report::
-            where('admin_flg', 0)
-            ->orderby('report_at','asc')
+            select('users.email','reports.*')
+            ->where('reports.admin_flg', 0)
+            ->join('users', 'reports.u_id', '=', 'users.id')
+            ->orderby('reports.report_at','asc')
             ->get();
             return response()->json([
                 'code' => '0',
@@ -683,32 +688,70 @@ class UserController extends Controller
             ], 400);
         }
     }
-    // modal용 data획득
-    public function dataget(Request $req){
-        $data = Community::
-            where('id',$req->id)
-            ->first();
-        return response()->json([
-            'code' => '0',
-            'data' => $data,
-        ], 200);
-    }
     // modal용 report data획득
     public function reportget(Request $req){
         if($req->flg==="커뮤"){
             Log::debug("보드일때");
             $data = Community::withTrashed()
-            ->where('id',$req->b_id)
+            ->select('users.email','community.*')
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->where('community.id',$req->b_id)
             ->first();
         }else{
             Log::debug("댓글일떄");
             $data = Replie::withTrashed()
-            ->where('id',$req->b_id)
+            ->select('users.email','replies.*')
+            ->where('replies.id',$req->b_id)
+            ->join('users', 'replies.u_id', '=', 'users.id')
             ->first();
         }
         return response()->json([
             'code' => '0',
             'data' => $data,
         ], 200);
+    }
+    // 답변달기
+    public function answerdata(Request $req){
+        try {
+            // 리퀘스트온 아이디 값으로 커뮤니티 테이블 조회
+            $data = Community::withTrashed()
+            ->where('id',$req->id)
+            ->first();
+            if($data->deleted_at !== null){
+                return response()->json([
+                    'code' => '1',
+                    'errorMsg' => '유저가 삭제한 게시글입니다.'
+                ], 400);
+            }
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 리퀘스트온 replie추가
+            $replie = $req->only('replie');
+            // 인서트할 데이터 추가
+            $replie['b_id'] = $req->id;
+            $replie['u_id'] = Auth::user()->id;
+            $replie['flg'] = '1';
+            // 처리결과를 인서트
+            $result = Replie::create($replie);
+            // 인서트 정상시
+            if($result){
+                // 조회된 값의 어드민플레그 1로 변경
+                $data->admin_flg = "1";
+            }
+            // 변경한 값 저장
+            $data->save();
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '댓글 달기 실패.'
+            ], 400);
+        }
     }
 }
