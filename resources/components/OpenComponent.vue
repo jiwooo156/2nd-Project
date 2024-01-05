@@ -20,11 +20,12 @@ import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
 import FooterComponent from './FooterComponent.vue'
 import DetailComponent from './DetailComponent.vue'
+import CommunityComponent from './CommunityComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,CommunityComponent
     },
     methods: {
         localStoragechk(){
