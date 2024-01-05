@@ -826,4 +826,27 @@ class UserController extends Controller
             ], 400);
         }
     }
+    // 게시글유지 플레그만 변경
+    public function userget(Request $req){
+        $case = ['id','email'];
+        $data = User::
+            where($case[$req->flg],$req->val)
+            ->first();
+        if(empty($data)){
+            return response()->json([
+                'code' => '1',
+                'errorMsg' => '조회된 회원이 없습니다'
+            ], 400);
+        }else if(!empty($data)){
+            return response()->json([
+                'code' => '0',
+                'data' =>  $data
+            ], 200);
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '회원조회에 실패했습니다'
+            ], 400);
+        }
+    }
 }

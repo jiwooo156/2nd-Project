@@ -34,7 +34,7 @@
 					운영시간 : {{this.detaildata.time}}
 				</div>
 				<div class="font_air bold center detail_place">
-					휴일 : {{this.detaildata.holyday}}
+					휴일 : {{this.detaildata.holiday}}
 				</div>
 				<div class="font_air bold center detail_place">
 					전화번호 : {{this.detaildata.tel}}

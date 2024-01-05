@@ -134,6 +134,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/report', [UserController::class, 'reportget']);
     Route::delete('/report', [UserController::class, 'reportdel']);
     Route::post('/report', [UserController::class, 'reportpost']);
+    Route::get('/userinfo', [UserController::class, 'userget']);
 });
 
 // 1213 정지우 지역페이지 라우터 생성

@@ -2,7 +2,7 @@
 	<!-- 헤더 -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 		<div class="container-fluid">
-			<router-link to="/admin">이의이승관리자</router-link>
+			<router-link to="/admin" @click="flgchg(0,0)">이의이승관리자</router-link>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -13,9 +13,9 @@
 							등록
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">축제 등록</a></li>
-							<li><a class="dropdown-item" href="#">관광 등록</a></li>
-							<li><a class="dropdown-item" href="#">공지 등록</a></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">축제 등록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,1)">관광 등록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,2)">공지 등록</div></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
@@ -23,9 +23,9 @@
 							통계
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">가입&탈퇴</a></li>
-							<li><a class="dropdown-item" href="#">조회수</a></li>
-							<li><a class="dropdown-item" href="#">좋아요</a></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">가입&탈퇴</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(2,1)">조회수</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(2,2)">좋아요</div></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
@@ -33,9 +33,9 @@
 							유저관리
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">건의답변</a></li>
-							<li><a class="dropdown-item" href="#">신고목록</a></li>
-							<li><a class="dropdown-item" href="#">유저관리</a></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(3,0)">건의답변</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(3,1)">신고목록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(3,2)">유저관리</div></li>
 						</ul>
 					</li>
 				</ul>
@@ -48,12 +48,12 @@
 		</div>
 	</nav>
 	<!-- 메인 -->
-	<div class="admin_frame">
+	<div class="admin_frame" v-if="mainflg===0">
 		<div class="admin_container">
 			<div>
 				<div class="admin_header">
 					<div>오늘 가입 탈퇴</div>
-					<div>자세히보기</div>
+					<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">			
 					<div class="admin_box">
@@ -71,7 +71,7 @@
 			<div>
 				<div class="admin_header">
 					<div>미 답변 질문</div>
-				<div>자세히보기</div>
+				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
 					<div class="admin_box pointer"
@@ -96,7 +96,7 @@
 			<div>
 				<div class="admin_header">
 					<div>신고목록</div>
-				<div>자세히보기</div>
+				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
 					<div class="admin_box pointer"
@@ -121,6 +121,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- 모달 -->
 	<div class="admin_modal_bg"
 		v-if="modalflg"
 	>
@@ -226,6 +227,218 @@
 			</div>
 		</div>
 	</div>
+	<!-- 등록페이지 -->
+	<!-- 축제등록 -->
+	<div v-if="mainflg===1&&subflg===0" class="admin_frame">
+		<div>축제등록</div>
+		<div>
+			<div>주소</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>제목</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>내용</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>사진1</div>
+			<input id="shop_file" type="file" accept="image/*">
+			<div>사진2</div>
+			<input id="shop_file" type="file" accept="image/*">
+			<div>사진3</div>
+			<input id="shop_file" type="file" accept="image/*">
+		</div>
+		<div>
+			<div>내용</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>지역</div>
+			<select>
+				<option class=" font_air bold">경상북도</option>
+				<option class=" font_air bold">경상남도</option>
+			</select>
+		</div>
+		<div>
+			<select>
+				<option class=" font_air bold">옵션들</option>
+			</select>
+		</div>
+		<div>
+			<div>축제,관광</div>
+			<select>
+				<option class=" font_air bold">축제</option>
+				<option class=" font_air bold">관광</option>
+			</select>
+		</div>
+		<div>
+			<div>축제시작</div>
+			<input type="date">
+		</div>
+		<div>
+			<div>축제종료</div>
+			<input type="date">
+		</div>
+		<div>
+			<div>주차</div>
+			<input type="checkbox">
+		</div>
+		<div>
+			<div>친구끼리가기좋은</div>
+			<input type="checkbox">
+		</div>
+		<div>
+			<div>가족끼리가기좋은</div>
+			<input type="checkbox">
+		</div>
+		<div>
+			<div>연인끼리가기좋은</div>
+			<input type="checkbox">
+		</div>
+		<div>
+			<div>입장료</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>이용시간</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>휴일</div>
+			<input type="text">
+		</div>
+		<div>
+			<div>연락처</div>
+			<input type="text">
+		</div>
+	</div>
+	<!-- 관광등록 -->
+	<div v-if="mainflg===1&&subflg===1" class="admin_frame">
+		<div>
+			<div>관광등록</div>
+			<div>
+				<div>주소</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>제목</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>내용</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>사진1</div>
+				<input id="shop_file" type="file" accept="image/*">
+				<div>사진2</div>
+				<input id="shop_file" type="file" accept="image/*">
+				<div>사진3</div>
+				<input id="shop_file" type="file" accept="image/*">
+			</div>
+			<div>
+				<div>내용</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>지역</div>
+				<select>
+					<option class=" font_air bold">경상북도</option>
+					<option class=" font_air bold">경상남도</option>
+				</select>
+			</div>
+			<div>
+				<select>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+					<option class=" font_air bold">옵션들</option>
+				</select>
+			</div>
+			<div>
+				<div>주차</div>
+				<input type="checkbox">
+			</div>
+			<div>
+				<div>친구끼리가기좋은</div>
+				<input type="checkbox">
+			</div>
+			<div>
+				<div>가족끼리가기좋은</div>
+				<input type="checkbox">
+			</div>
+			<div>
+				<div>연인끼리가기좋은</div>
+				<input type="checkbox">
+			</div>
+			<div>
+				<div>입장료</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>이용시간</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>휴일</div>
+				<input type="text">
+			</div>
+			<div>
+				<div>연락처</div>
+				<input type="text">
+			</div>
+		</div>
+	</div>
+	<!-- 공지등록 -->
+	<div v-if="mainflg===1&&subflg===2" class="admin_frame">
+		테스트2
+	</div>
+	<!-- 등록페이지 -->
+	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
+		테스트3
+	</div>
+	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
+		테스트4
+	</div>
+	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
+		테스트5
+	</div>
+	<!-- 등록페이지 -->
+	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
+		테스트6
+	</div>
+	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
+		테스트7
+	</div>
+	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
+		유저검색
+		<select v-model="searchtype">
+			<option class=" font_air bold" value="0">유저번호</option>
+			<option class=" font_air bold" value="1">email</option>
+		</select>
+		<input type="text" v-model="searchval" @keyup.enter="searchuser">
+		<button
+			@click="searchuser"
+		>검색</button>
+		<div>
+			검색결과
+			<div>유저번호 : </div>
+			<div>이메일 : </div>
+			<div>이름 : </div>
+			<div>닉네임 : </div>
+			<div>전화번호 : </div>
+			<div>생년월일 : </div>
+			<div>성별 : </div>
+		</div>
+	</div>
 </template>
 <script>
 export default {
@@ -241,7 +454,11 @@ export default {
 	data() {
 		return {
 			today: "",
+			searchval: "",
+			searchtype: "",
 			sign_cnt: 0,
+			mainflg: 0,
+			subflg: 0,
 			drop_cnt: 0,
 			data: [],
 			r_data: [],
@@ -251,6 +468,7 @@ export default {
 			modalReport_r:{},
 			modalflg:false,
 			answer: "",
+			selectUserData: {},
 		}
 	},
 
@@ -417,11 +635,13 @@ export default {
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
 		},
-		// 답변질문 클릭
+		// 삭제안하고 플래그변경
 		keepdata(id){
 			this.$store.commit('setLoading',true);
-			const URL = '/admin/report?id='+id
-			axios.post(URL)
+			const formData = new FormData();
+			formData.append('id', id);
+			const URL = '/admin/report'
+			axios.post(URL,formData)
 			.then(res => {
 				if(res.data.code === "0"){
 						alert('정상처리되었습니다');
@@ -430,6 +650,32 @@ export default {
 					}else{
 						alert(res.data.errorMsg);
 					}
+			})
+			.catch(err => {
+				alert("데이터 에러 발생");
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 플래그변경
+		flgchg(main,sub){
+			this.mainflg = main;
+			this.subflg = sub;
+		},
+		// 유저검색
+		searchuser(){
+			this.$store.commit('setLoading',true);
+			console.log(this.searchval);
+			console.log(this.searchtype);
+			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.selectUserData=res.data.data
+				}else if(res.data.code === "1"){
+					alert(res.data.errorMsg);
+				}
 			})
 			.catch(err => {
 				alert("데이터 에러 발생");
