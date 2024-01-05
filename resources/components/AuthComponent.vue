@@ -71,7 +71,7 @@
 				<button
 					class="pointer auth_chk_btn font_air bold"
 					v-if="repeat_flg"
-				><router-link to="/main" class="font_air bold">나가기</router-link></button>	
+				><router-link to="/main" class="auth_exit font_air bold">나가기</router-link></button>	
 				<div
 					v-if="timeout_flg"
 					class="auth_errmsg font_air bold"
@@ -203,6 +203,7 @@ export default {
 					this.timeout_flg = false;
 					this.errorMsg = []
 					this.repeat_flg = true
+					this.timerstop();
 				}
 			})
 			.catch(err => {

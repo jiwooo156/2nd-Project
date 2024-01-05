@@ -82,6 +82,7 @@ Route::middleware('myValidation')->prefix('main')->group(function() {
     Route::get('/info', [InfoController::class, 'getMainInfo']);
 });
 
+// 디테일 라우터
 Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');
@@ -93,6 +94,26 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });
 
+// 자유&정보 게시판 라우터 생성
+Route::middleware('myValidation')->prefix('board')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
+
+// 질문&건의 게시판 라우터 생성
+Route::middleware('myValidation')->prefix('qna')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
+
+// 게시글 작성 라우터 생성
+Route::middleware('myValidation')->prefix('post')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+});
 
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
@@ -102,7 +123,16 @@ Route::get('/user', function () {
     return view('welcome');
 });
 
-
+// 어드민 페이지
+Route::middleware('myValidation')->prefix('admin')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/user', [UserController::class, 'adminchk']);
+    Route::get('/data/{id}', [UserController::class, 'dataget']);
+    Route::post('/data', [UserController::class, 'answerdata']);
+    Route::get('/report', [UserController::class, 'reportget']);
+});
 
 // 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {

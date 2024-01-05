@@ -15,6 +15,30 @@
 				<div class="font_air bold center detail_place">
 					장소 : {{this.detaildata.place}}
 				</div>
+				<div class="font_air bold center detail_place">
+					주차 : {{this.detaildata.parking_flg}}
+				</div>
+				<div class="font_air bold center detail_place">
+					커플 : {{this.detaildata.couple_flg}}
+				</div>
+				<div class="font_air bold center detail_place">
+					친구 : {{this.detaildata.friend_flg}}
+				</div>
+				<div class="font_air bold center detail_place">
+					가족 : {{this.detaildata.family_flg}}
+				</div>
+				<div class="font_air bold center detail_place">
+					요금 : {{this.detaildata.fee}}
+				</div>
+				<div class="font_air bold center detail_place">
+					운영시간 : {{this.detaildata.time}}
+				</div>
+				<div class="font_air bold center detail_place">
+					휴일 : {{this.detaildata.holyday}}
+				</div>
+				<div class="font_air bold center detail_place">
+					전화번호 : {{this.detaildata.tel}}
+				</div>
 				<div 
 					v-if="this.detaildata.main_flg==='축제'"
 					class="font_air bold center detail_tofrom"
@@ -114,7 +138,7 @@
 				<font-awesome-icon :icon="['fass', 'caret-down']" />
 			</span>
 		</div>
-	
+		<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 	</div>
 </template>
 <script>
@@ -177,7 +201,7 @@ export default {
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
-				formData.append('nick', this.$store.state.NowUser);
+				formData.append('flg', '0');
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){

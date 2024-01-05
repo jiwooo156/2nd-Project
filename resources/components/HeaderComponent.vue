@@ -1,6 +1,6 @@
 <template>
     <!-- 헤더 영역 -->
-    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
+    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/admin'&&$route.fullPath != '/error'">
 		<header class="header">
 			<div class="header_left">
 				<router-link to="/main" class="logo">안냥</router-link>
@@ -12,7 +12,7 @@
 							<router-link to="/main">홈이야요</router-link>
 						</li>
 						<li class="header_li_2">
-							<a href="#" target="_self">경상도오</a>
+							<router-link to="/region?ns=경상북도" target="_self">경상도오</router-link>
 							<ul class="depth1">
 								<li>
 									<router-link to="/region?ns=경상북도">경상북도구</router-link>
@@ -24,7 +24,7 @@
 							</ul>
 						</li>
 						<li class="header_li_3">
-							<a href="#" target="_self">커뮤니티</a>
+							<router-link to="/main">커뮤니티</router-link>
 							<ul class="depth1">
 								<li>
 									<a href="#" target="_self" onclick="">자유게시판</a>
@@ -63,13 +63,16 @@
                             {{ $store.state.NowUser }}
                         </router-link>
                     </li>
-					<li @click="logout" class="pointer gnb_logout gnb_li">로그아웃</li>
+					<li @click="logout" class="pointer gnb_logout gnb_li">	
+						<font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+						로그아웃
+					</li>
 				</ul>
 			</div>
 		</header>
 		<div class="hidden-on-mobile">
 			<!-- 여기에 모바일 화면에서만 보이게 하고 싶은 컨텐츠를 넣으세요 -->
-			<nav class="navbar navbar-expand-lg  bg-light fixed-top p-3">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 			<div class="container-fluid">
 				<router-link to="/main" class="navbar-brand font_air bold">      
 					<img src="/img/logo.png" alt="" width="100" height="35">
@@ -83,16 +86,16 @@
 						<router-link to="/main" class="nav-link active font_air bold" aria-current="page">홈이야요</router-link>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<router-link to="/region?ns=경상북도" class="nav-link active font_air bold" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							경상도오
-						</a>
+						</router-link>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<li>
-								<router-link to="/region?ns=경상북도" class="dropdown-item font_air bold">경상북도구</router-link>
+								<router-link to="/region?ns=경상북도" class="header_ns dropdown-item font_air bold">경상북도구</router-link>
 							</li>
 							<li> 
 								<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
-								<router-link to="/region?ns=경상남도" class="dropdown-item font_air bold">경상남돈디</router-link>
+								<router-link to="/region?ns=경상남도" class="header_ns dropdown-item font_air bold">경상남돈디</router-link>
 							</li>
 						</ul>
 					</li>
@@ -102,17 +105,17 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<li>
-								<a href="#" class="dropdown-item font_air bold">자유게시판</a>
+								<a href="#" class="dropdown-item header_ns font_air bold">자유게시판</a>
 							</li>
 							<li> 
 								<router-link to="/community" class="dropdown-item font_air bold">정보게시판</router-link>
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 
-								<a href="#" class="dropdown-item font_air bold">질문게시판</a>
+								<a href="#" class="dropdown-item header_ns font_air bold">질문게시판</a>
 							</li>
 							<li> 
-								<a href="#" class="dropdown-item font_air bold">건의게시판</a>
+								<a href="#" class="dropdown-item header_ns font_air bold">건의게시판</a>
 							</li>
 						</ul>
 					</li>
@@ -133,7 +136,10 @@
 									{{ $store.state.NowUser }}
 								</router-link>
 							</li>
-							<li @click="logout" class="nav-link active font_air bold">로그아웃</li>
+							<li @click="logout" class="nav-link active font_air bold">
+								<font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+								로그아웃
+							</li>
 						</ul>	
 				</ul>
 				</div>

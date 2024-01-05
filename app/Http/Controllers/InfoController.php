@@ -80,6 +80,7 @@ class InfoController extends Controller
             select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at', 'users.email')
             ->join('users', 'replies.u_id', '=', 'users.id')
             ->where('replies.b_id', $req->id)
+            ->where('replies.flg', '0')
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
@@ -101,7 +102,7 @@ class InfoController extends Controller
     // 댓글작성
     public function repliewirte(Request $req) {
         // 리퀘스트온 값중 댓글 보드아이디 data에 저장
-        $data = $req->only('replie','b_id');
+        $data = $req->only('replie','b_id','flg');
         // u_id라는 키값에 세션에 저장된 pk값 저장
         $data["u_id"] = Auth::user()->id;
         try { 

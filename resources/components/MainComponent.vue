@@ -4,11 +4,11 @@
 			<div class="main_1">
 				<div class="main_1_box">
           <div class="main_txt">
-            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도, 좋아요!<br></div>
+            <div class="main_txt_up animate__animated animate__lightSpeedInRight">놀러오세요! 경상도!<br></div>
             <div class="main_txt_down">블루베리스무디 맛있어요.<br>이의이승이뭐냐구요?<br>일단, 와보면 알아요!</div>
           </div>
 					<!-- 날씨는 반응형 태블릿 때 사라짐 -->
-					<div class="main_wea">
+					<div class="main_wea" v-if="!weatherflg">
             <div class="main_wea_up"></div>
 						<div class="main_wea_down">
               <div class="main_wea_icon">{{ this.description }}</div>
@@ -156,7 +156,7 @@
 			</div>
     </div>
 	</div>
-	<div class="main_topBtn"></div>
+  <div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 </template>
 
 <script>
@@ -171,6 +171,8 @@ export default {
       // 오늘
 			today: "",
       description: '',
+      weatherflg: false,
+
     };
   },
   created() {
@@ -192,7 +194,7 @@ export default {
         this.fixedinfoList = res.data.fixed;
     })
       .catch(err => {
-        console.log("캐치");
+        // console.log("캐치");
         alert("데이터 에러 발생");
       })
     },
@@ -201,7 +203,7 @@ export default {
         if (this.cityRanLoop) {
             clearInterval(this.cityRanLoop);
         }
-        let cities = ['대구', '포항', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
+        let cities = ['대구', '경주', '구미', '부산', '울산', '창원', '김해', '밀양'];      
         let i = 0; // 도시 인덱스를 유지할 변수 추가
         const cityRan = () => {
             let city = cities[i];
@@ -232,12 +234,14 @@ export default {
             })
             .catch((error) => {
               console.log('에러에러');
+              clearInterval(this.cityRanLoop);
+              this.weatherflg = true
             });
         };
         // 최초 한 번 호출
         cityRan();
-        // 10초마다 반복 실행
-        this.cityRanLoop = setInterval(cityRan, 5000);
+        // 5초마다 반복 실행
+        this.cityRanLoop = setInterval(cityRan, 8000);
     },
     getToday() {
 			const now = new Date();

@@ -10,6 +10,7 @@
 </template>
 <script>
 import MainComponent from './MainComponent.vue'
+import AdminComponent from './AdminComponent.vue'
 import LoginComponent from './LoginComponent.vue'
 import SigninComponent from './SigninComponent.vue'
 import UserComponent from './UserComponent.vue'
@@ -20,12 +21,15 @@ import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
 import FooterComponent from './FooterComponent.vue'
 import DetailComponent from './DetailComponent.vue'
+import BoardComponent from './BoardComponent.vue'
+import QnaComponent from './QnaComponent.vue'
+import PostComponent from './PostComponent.vue'
 import CommunityComponent from './CommunityComponent.vue'
 export default {
 
     name: 'OpenComponent',
     components: {
-        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,CommunityComponent
+        MainComponent,LoginComponent,SigninComponent,UserComponent,UserChk,RegionComponent,HeaderComponent,RegionComponent,AuthComponent,ErrorComponent,FooterComponent,DetailComponent,
     },
     methods: {
         localStoragechk(){
