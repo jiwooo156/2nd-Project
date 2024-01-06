@@ -19,7 +19,10 @@
 						<div class="info_sortc pointer">좋아요순</div>
 					</div>
 				</div>
-				<div class="info_btnwrite pointer">글 작성하기</div>
+				<div class="info_btnwrite pointer">
+					<font-awesome-icon :icon="['fas', 'pencil']" />
+					글 작성하기
+				</div>
 			</div>
 			<div class="info_list">
 				<table>
@@ -73,6 +76,9 @@
 			<div class="info_page pointer">1</div>
 			<div class="info_page pointer">2</div>
 			<div class="info_page pointer">3</div>
+			<div class="info_page pointer">4</div>
+			<div class="info_page pointer">5</div>
+			<div class="info_page pointer">...</div>
 			<div class="info_next pointer">다음페이지</div>
 		</div>
 	</div>
@@ -82,6 +88,6 @@ export default {
 	name: "BoardComponent",
 }
 </script>
-<style lang="">
+<style>
 	
 </style>

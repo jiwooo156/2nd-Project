@@ -407,4 +407,67 @@ class InfoController extends Controller
             'tour' => $tour,
         ],200);
     }
+    // 정보게시판 페이지 정보조회(목록)
+    public function infomationget(Requet $req) {
+        
+    }
+    // 커뮤니티 디테일 페이지 정보조회
+    public function communityget(Request $req) {
+        // 리퀘스트온 아이디값으로 커뮤니티 테이블 조회
+        $community_result = Community::
+        where('id',$req->id)
+        ->get();
+        // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
+        if(!($req->cookie('hits'.$req->id))&&count($community_result)===1){    
+            // 조회수 1증가  
+            try { 
+                // 트랜잭션 시작
+                DB::beginTransaction();
+                // 조회된 값의 조회수 1증가
+                $community_result[0]->hits++;
+                // 저장
+                $community_result[0]->save();
+                DB::commit();    
+            // 실패시
+            } catch(Exception $e){
+                DB::rollback();
+            }
+        // 쿠키값이있고 조회된값이 1개일때
+        }
+        if(count($community_result)===1){            
+            // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
+            $replie_count = Replie::
+            where('b_id', $req->id)
+            ->count();
+            // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
+            $replie_result = Replie::
+            select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at', 'users.email')
+            ->join('users', 'replies.u_id', '=', 'users.id')
+            ->where('replies.b_id', $req->id)
+            ->where('replies.flg', '1')
+            ->orderBy('replies.created_at', 'desc')
+            ->limit(20)
+            ->get();
+            // 리퀘스트온 아이디값으로 좋아요 갯수 조회 (like 모델 생성하기)
+            $heart_count = like::
+            select('b_id','flg', 'deleted_at')
+            ->where('b_id', $req->id)
+            ->where('deleted_at', null)
+            ->count();
+            Log::debug( $replie_result);
+            return response()->json([
+                'code' => '0',
+                'data' => $community_result,
+                'replie' => $replie_result,
+                'repliecount' =>  $replie_count,
+                'heartcnt' => $heart_count,
+            ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
+        // 조회된값이 없거나 실패일시
+        }else{
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '게시글 조회에 실패하였습니다',
+            ], 200);
+        }
+    }
 }
