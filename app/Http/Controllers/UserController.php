@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Del_Reason;
 use App\Models\Authenticate;
 use App\Models\Admin;
+use App\Models\Restaint;
 use App\Models\Community;
 use App\Models\Replie;
 use App\Models\Report;
@@ -17,6 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Console\Scheduling\Schedule;
 
 
 class UserController extends Controller
@@ -147,13 +149,22 @@ class UserController extends Controller
             ], 200);
         // 값이 조회됬을때
         }else if($result){
-            Log::debug("회원들오는곳");
+            $restaint = Restaint::where('u_id',$result->id)
+            ->orderby('restaint_at','desc')
+            ->first();
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
                 return response()->json([
                     'code' => 'E06'
                     ,'errorMsg' => $errorMsg
                 ], 400);
+            }
+            if($restaint->restaint_at > now()){
+                Log::debug("제제아이디");
+                return response()->json([
+                    'code' => 'E07',
+                    'data' => $restaint
+                ], 200);
             }
             Auth::login($result);
             Auth::user();
@@ -826,7 +837,7 @@ class UserController extends Controller
             ], 400);
         }
     }
-    // 게시글유지 플레그만 변경
+    // 유저조회
     public function userget(Request $req){
         $case = ['id','email'];
         $data = User::
@@ -836,7 +847,7 @@ class UserController extends Controller
             return response()->json([
                 'code' => '1',
                 'errorMsg' => '조회된 회원이 없습니다'
-            ], 400);
+            ], 200);
         }else if(!empty($data)){
             return response()->json([
                 'code' => '0',
@@ -848,5 +859,16 @@ class UserController extends Controller
                 'errorMsg' => '회원조회에 실패했습니다'
             ], 400);
         }
+    }
+    // 특정시간에 동작
+    public function test(Request $req){
+        $schedule->call(function () {
+            // 여기에 실행할 쿼리문을 작성
+            \DB::statement('YOUR SQL QUERY HERE');
+        })->when(function () {
+            // 특정 날짜와 시간에만 실행되도록 설정
+            $targetDateTime = '2024-01-15 15:30:00'; // 예시: 2024년 1월 15일 오후 3시 30분
+            return now()->toDateTimeString() === $targetDateTime;
+        });
     }
 }

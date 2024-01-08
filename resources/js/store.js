@@ -25,7 +25,7 @@ const store = createStore({
 			beforeUrl: "",
 			loading: false,
 			nsFlg: "",
-			setQtFlg: "",
+			qtFlg: "",
 			setCategoryFlg: "",
 		}
 	},
@@ -276,12 +276,15 @@ const store = createStore({
 						context.commit('setNowUser', localStorage.getItem('nick'));
 						context.commit('setNowEmail', localStorage.getItem('email'));
 						router.push('/admin')
+					}else if(res.data.code === "E07"){
+						alert('해당계정은. '+res.data.data.restaint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restaint)
 					}else{
 						console.log('else');
 						alert(err.response.data.errorMsg);
 					}
 				})
 				.catch(err => {
+					console.log("제제진입 캣치")
 					if(err.response.data.errorMsg.email){
 						alert(err.response.data.errorMsg.email)
 					}else if(err.response.data.errorMsg.password){
