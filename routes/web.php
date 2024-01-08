@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController; //유저컨틀롤러 추가
 use Illuminate\Support\Facades\Log; //로그확인추가
-use App\Http\Controllers\InfoController; //축제 및 관광 인포 컨트롤러 추가
+use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
+use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
+use App\Http\Controllers\CoummunityController; //커뮤니티 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------
@@ -73,13 +74,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 1218 차민지 추가 메인에서 사용될 라우터 생성
+// 1218 차민지 메인에서 사용될 라우터 생성
 // 컨트롤러 생성하고 문지기인 라우터를 연결해줘야 함
 Route::middleware('myValidation')->prefix('main')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
     Route::get('/info', [InfoController::class, 'getMainInfo']);
+});
+
+// 질문&건의 게시판 라우터 생성
+Route::middleware('myValidation')->prefix('qna')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/qna', [CoummunityController::class, 'getQnaList']);
 });
 
 // 디테일 라우터
@@ -103,12 +112,6 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     Route::get('/info/{flg}', [InfoController::class, 'infomationget']);
 });
 
-// 질문&건의 게시판 라우터 생성
-Route::middleware('myValidation')->prefix('qna')->group(function() {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-});
 
 // 커뮤니티 디테일 라우터 생성
 Route::middleware('myValidation')->prefix('community')->group(function() {

@@ -25,7 +25,7 @@ const store = createStore({
 			beforeUrl: "",
 			loading: false,
 			nsFlg: "",
-			setQtFlg: "",
+			qtFlg: "",
 		}
 	},
 
