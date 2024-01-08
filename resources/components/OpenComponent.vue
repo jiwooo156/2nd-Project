@@ -36,7 +36,6 @@ export default {
         UserChk,
         RegionComponent,
         HeaderComponent,
-        RegionComponent,
         AuthComponent,
         ErrorComponent,
         FooterComponent,

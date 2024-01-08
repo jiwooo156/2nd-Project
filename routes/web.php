@@ -99,6 +99,8 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
+    // 커뮤니티 flg = 1 정보게시판 정보조회
+    Route::get('/info/{flg}', [InfoController::class, 'infomationget']);
 });
 
 // 질문&건의 게시판 라우터 생성
@@ -106,6 +108,18 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
+});
+
+// 커뮤니티 디테일 라우터 생성
+Route::middleware('myValidation')->prefix('community')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/info/{id}', [InfoController::class, 'communityget']);
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
+    Route::get('/more', [InfoController::class, 'morereplie']);
+    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
 });
 
 // 게시글 작성 라우터 생성
@@ -158,12 +172,6 @@ Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/moresearcht',[InfoController::class, 'moresearcht']);
 });
 
-// 0105 정지우 정보게시판 라우터 생성
-Route::middleware('myValidation')->prefix('community')->group(function() {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-});
 
 
 // 잘못된 URL입력시

@@ -8,12 +8,12 @@ import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
 import AdminComponent from '../components/AdminComponent.vue';
 import DetailComponent from '../components/DetailComponent.vue';
-import CommunityComponent from '../components/CommunityComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
 import BoardComponent from '../components/BoardComponent.vue';
 import QnaComponent from '../components/QnaComponent.vue';
 import PostComponent from '../components/PostComponent.vue';
+import CommunityComponent from '../components/CommunityComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -51,7 +51,7 @@ const routes = [
 	},
 	{
 		path: "/community",
-		component : CommunityComponent
+		component : PostComponent
 	},
 	{
 		path: "/login",
