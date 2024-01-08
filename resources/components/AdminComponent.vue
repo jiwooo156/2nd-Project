@@ -70,7 +70,13 @@
 			</div>
 			<div>
 				<div class="admin_header">
-					<div>미 답변 질문</div>
+					<div class="position-relative admin_header_num">
+						미 답변 질문
+					<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
+						99+
+						<span class="visually-hidden">unread messages</span>
+					</span>
+					</div>
 				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
