@@ -269,6 +269,7 @@ input[type='date']:valid::before {
 }
 .header_icon{
 	display: flex;	
+	vertical-align:middle;
 }
 .header_icon div{
 	padding-right: 5px;
@@ -1600,7 +1601,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 1000px;
 }
 .detail_container{
-	padding: 70px 10px 10px 10px;
+	padding: 53px 10px 10px 10px;
 }
 .detail_header{
     padding: 10px;
@@ -1722,6 +1723,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 /* 질문페이지 */
 .qna_header h1 {
 	text-align: center;
+	font-size: 3rem;
 }
 .qna_frame {
     margin: 100px auto;
@@ -1729,12 +1731,26 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 1000px;
 }
 .qna_container {
-    padding: 70px 10px 10px 10px;
+    padding: 53px 10px 10px 10px;
+}
+.qna_header_bot {
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #d2d2d2;
+	display: flex;
+	justify-content: space-between;
+  	align-items: flex-end;
 }
 .qna_drop {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
 	background-color: #fff;
 	color: #000;
 	border: none;
+	width: 30%;
+}
+.qna_drop a {
+	background-color: #fff;
+	color: #000;
 }
 .qna_drop:hover {
 	background-color: #fff;
@@ -1744,13 +1760,111 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #fff;
 	color: #000;
 }
+.qna_drop_item {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
 .qna_drop_item:active {
 	background-color: #E9ECEF;
 	color: #000;
 }
-.qna_btn button{
+.qna_btn button {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
+	border: none;
+	background: none;
+	color: #979797;
+	padding: 0 1rem;
+}
+.qna_btn div button span {
+	font-size: 0.45rem;
+	padding-right: 0.5rem;
+}
+/* font-awesome 가운데 정렬 */
+.font_center {
+	vertical-align:middle;
+}
+.qna_header_r div {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	color: #494949;
+}
+.qna_header_r span{
+	color: #D14C6C;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.qna_content {
+	padding-top: 1.5rem;
+}
+.card-body h6 {
+	color: #D14C6C;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.card-body h5 {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.card-body p {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.card-body span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.qna_card_tit {
+	font-size: 1.15rem;
+}
+.qna_card {
+	border-bottom: 1px solid #d2d2d2;
+	font-size: 0.95rem;
+}
+.qna_card_span {
+	padding-right: 0.3rem;
+}
+.qna_card_etc {
+	padding-right: 1rem;
+}
+.qna_gray {
+	color: #656565;
+	font-size: 0.8rem;
+}
+.qna_btn_bot button {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background: #D14C6C;
+	color: #fff;
+	padding: 0.5rem 0.8rem;
+}
+#qna_font {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	color: #141414;
+	border: none;
+	border-radius: 0px;
+	vertical-align:middle;
+	font-size: 1.1rem;
+}
+.qna_wait {
+	border-radius: 15px;
+	background-color: #4A63AD;
+	color: #fff;
+	padding: 6px 9px;
+	font-size: 0.85rem;
+}
+.qna_answer {
+	border-radius: 15px;
+	background-color: #D27E12;
+	color: #fff;
+	padding: 6px 9px;
+	font-size: 0.85rem;
+}
+.qna_lock {
+	font-size: 1rem;
+	vertical-align:middle;
 }
 
 /* 어드민 */
@@ -1887,7 +2001,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 /* 정보게시판 목록 */
 .info_list {
-	width: 90%;
+	width: 100%;
 	max-width: 1000px;
     margin: 50px auto;
     text-align: center;
@@ -2520,6 +2634,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.info_writer {
 		width: 10%;
+	}
+	.info_create_at {
+		width: 15%;
 	}
 	.col_hidden {
 		display: none;

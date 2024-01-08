@@ -10,6 +10,7 @@ import AdminComponent from '../components/AdminComponent.vue';
 import DetailComponent from '../components/DetailComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
+// 3차 프로젝트를 위한 라우터
 import BoardComponent from '../components/BoardComponent.vue';
 import QnaComponent from '../components/QnaComponent.vue';
 import PostComponent from '../components/PostComponent.vue';
@@ -51,7 +52,7 @@ const routes = [
 	},
 	{
 		path: "/community",
-		component : PostComponent
+		component : CommunityComponent
 	},
 	{
 		path: "/login",
