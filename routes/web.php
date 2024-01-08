@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log; //로그확인추가
 use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
 use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
-use App\Http\Controllers\CoummunityController; //커뮤니티 컨트롤러 추가
+use App\Http\Controllers\CommunityController; //커뮤니티 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/qna', [CoummunityController::class, 'getQnaList']);
+    Route::get('/qna', [CommunityController::class, 'getQnaList']);
 });
 
 // 디테일 라우터
