@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -41,7 +42,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
+    protected function serializeDate(DateTimeInterface $date){
+        return $date->format('Y-m-d H:i:s');
+    }
     /**
      * The attributes that should be cast.
      *

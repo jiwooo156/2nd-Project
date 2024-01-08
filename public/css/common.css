@@ -1892,6 +1892,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_content{
 	display: flex;
     gap: 10px;
+	width: 100vw;
 }
 .admin_modal_bg{
 	background-color: #8686868f;

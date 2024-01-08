@@ -73,8 +73,7 @@
 					<div class="position-relative admin_header_num">
 						미 답변 질문
 					<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
-						99+
-						<span class="visually-hidden">unread messages</span>
+						{{ this.d_cnt }}
 					</span>
 					</div>
 				<div class="pointer">자세히보기</div>
@@ -101,7 +100,11 @@
 			</div>
 			<div>
 				<div class="admin_header">
-					<div>신고목록</div>
+					<div class="position-relative">신고목록
+						<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
+							{{ this.r_cnt }}
+						</span>
+					</div>
 				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
@@ -146,7 +149,7 @@
 				<input type="text" class="admin_modal_input" 
 					v-model="answer"
 					@input="koreaName"
-					@keyup.enter="repliewrite"
+					@keyup.enter="adminAnswer(now_data.id)"
 				>
 				<div class="admin_modal_btn_box">
 					<div class="admin_modal_btn pointer"
@@ -197,6 +200,7 @@
 				v-if="Object.keys(this.modalReport_b).length > 0"
 			>
 				<div class="admin_modal_title">신고된커뮤</div>
+				
 				<div class="admin_modal_container">
 					<div class="pointer">작성유저번호 : {{ modalReport_b.u_id }}</div>
 					<div class="pointer">작성유저Email : {{ modalReport_b.email }}</div>
@@ -434,15 +438,71 @@
 		<button
 			@click="searchuser"
 		>검색</button>
-		<div>
-			검색결과
-			<div>유저번호 : {{ this.selectUserData.id }}</div>
-			<div>이메일 : {{ this.selectUserData.id }}</div>
-			<div>이름 : {{ this.selectUserData.id }}</div>
-			<div>닉네임 : {{ this.selectUserData.id }}</div>
-			<div>전화번호 : {{ this.selectUserData.id }}</div>
-			<div>생년월일 : {{ this.selectUserData.id }}</div>
-			<div>성별 : {{ this.selectUserData.id }}</div>
+		<div v-if="searchflg">
+			<div>
+				검색결과
+				<div>유저번호 : {{ this.selectUserData.id }}</div>
+				<div>이메일 : {{ this.selectUserData.email }}</div>
+				<div>이름 : {{ this.selectUserData.name }}</div>
+				<div>닉네임 : {{ this.selectUserData.nick }}</div>
+				<div>전화번호 : {{ this.selectUserData.phone }}</div>
+				<div>생년월일 : {{ this.selectUserData.birthdate }}</div>
+				<div>성별 : {{ this.selectUserData.gender }}</div>
+				<div>제재당한횟수 : {{ this.selectUserData.cnt }}</div>
+				<div
+					v-if=" this.selectUserData.cnt > 0 "
+				>제재종료일 : {{ this.selectUserData.res_at }}</div>
+			</div>
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">유저제재</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body" >
+							<div>
+								<span>제재기간</span>
+								<select class="form-select" aria-label="Default select example" v-model="restraint_date">
+									<option class=" font_air bold" value="0">1일</option>
+									<option class=" font_air bold" value="1">3일</option>
+									<option class=" font_air bold" value="2">7일</option>
+									<option class=" font_air bold" value="3">15일</option>
+									<option class=" font_air bold" value="4">30일</option>
+									<option class=" font_air bold" value="5">영구제재</option>
+								</select>
+							</div>
+							<div>
+								<span>제재사유</span>
+								<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
+									<option class=" font_air bold">욕설 및 혐오 표현</option>
+									<option class=" font_air bold">불법 콘텐츠 게시</option>
+									<option class=" font_air bold">스팸 활동</option>
+									<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
+									<option class=" font_air bold">기타</option>
+								</select>
+								<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
+									maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
+							</div>
+						
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary admin_boot_modal_close" data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary"
+								@click="restraintuser"
+							>적용</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+				v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0"
+			>유저제재</div>
+			<div class="btn btn-danger btn-sm"
+				@click="clearestraint"
+				v-if="this.selectUserData.res_at >= this.todaytime"
+			>제제해제</div>
+			<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
 		</div>
 	</div>
 </template>
@@ -460,10 +520,17 @@ export default {
 	data() {
 		return {
 			today: "",
+			todaytime: "",
+			restraint_msg: "",
+			restraint_msg2: "",
+			restraint_date: "",
 			searchval: "",
-			searchtype: "",
+			searchtype: "유저번호",
+			r_cnt: 0,
+			d_cnt: 0,
 			sign_cnt: 0,
 			mainflg: 0,
+			searchflg: false,
 			subflg: 0,
 			drop_cnt: 0,
 			data: [],
@@ -473,16 +540,23 @@ export default {
 			modalReport_b:{},
 			modalReport_r:{},
 			modalflg:false,
+			restraintinput:false,
 			answer: "",
 			selectUserData: {},
 		}
 	},
-
+	watch: {
+		restraint_msg(){
+			this.restraint_msg_chk();
+		},
+	},
 	created() {
 		this.getToday();
 		this.adminchk();
 	},
-
+	updated() {
+		this.getToDayTime();
+	},
 	mounted() {
 
 	},
@@ -500,7 +574,9 @@ export default {
 					this.sign_cnt = res.data.sign_cnt; 
 					this.drop_cnt = res.data.drop_cnt; 
 					this.data = res.data.data; 
+					this.d_cnt = res.data.d_cnt; 
 					this.r_data = res.data.r_data;
+					this.r_cnt = res.data.r_cnt;
 					this.r_data.forEach(item => {
 						item.flg = item.flg === '0' ? '커뮤' : '댓글';
 					});
@@ -528,6 +604,16 @@ export default {
 			const month = String(now.getMonth() + 1).padStart(2, '0');
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
+		},
+		getToDayTime() {
+			const now = new Date();
+			const year = now.getFullYear();
+			const month = String(now.getMonth() + 1).padStart(2, '0');
+			const day = String(now.getDate()).padStart(2, '0');
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+			const seconds = String(now.getSeconds()).padStart(2, '0');
+			this.todaytime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 		},
 		// 신고된거 가져오기
 		reportget(data){
@@ -575,8 +661,9 @@ export default {
 		},
 		// 답변달기
 		adminAnswer(id){
-			if(this.amswer === ""||this.amswer === null){
+			if(this.answer === ""||this.answer === null){
 				alert("답변을 입력해 주세요");
+				console.log(this.answer)
 			}else{
 				this.$store.commit('setLoading',true);
 				const URL = '/admin/data'
@@ -588,12 +675,12 @@ export default {
 					if(res.data.code === "0"){
 						alert('정상처리되었습니다');
 						this.closeModal();
-						this.amswer="";
+						this.answer="";
 						this.adminchk();
 					}else if(res.data.code === "1"){
 						alert('이미 삭제된 질문 입니다');
 						this.closeModal();
-						this.amswer="";
+						this.answer="";
 						this.adminchk();
 					}else{
 						alert(res.data.errorMsg);
@@ -614,12 +701,13 @@ export default {
 			axios.delete(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-						alert('정상처리되었습니다');
-						this.closeModal();
-						this.adminchk();
-					}else{
-						alert(res.data.errorMsg);
-					}
+					alert('정상처리되었습니다');
+					this.closeModal();
+					this.adminchk();
+					this.resetall();
+				}else{
+					alert(res.data.errorMsg);
+				}
 			})
 			.catch(err => {
 				alert("데이터 에러 발생");
@@ -653,6 +741,7 @@ export default {
 						alert('정상처리되었습니다');
 						this.closeModal();
 						this.adminchk();
+						this.resetall();
 					}else{
 						alert(res.data.errorMsg);
 					}
@@ -671,14 +760,81 @@ export default {
 		},
 		// 유저검색
 		searchuser(){
+			if(this.searchval ===""){
+				alert('값을 입력해 주세요')
+			}else if(this.searchtype ===""){
+				alert('값을 입력해 주세요')
+			}else{
+				this.$store.commit('setLoading',true);
+				const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
+				axios.get(URL)
+				.then(res => {
+					if(res.data.code === "0"){
+						this.selectUserData=res.data.data
+						this.searchflg=true;
+					}else if(res.data.code === "1"){
+						alert(res.data.errorMsg);
+					}
+				})
+				.catch(err => {
+					alert("데이터 에러 발생");
+				})
+				.finally(() => {
+					this.$store.commit('setLoading', false);
+				});
+			}
+		},
+		// 기타일시 작성인풋 소환
+		restraint_msg_chk(){
+			if(this.restraint_msg === "기타"){
+				this.restraintinput = true;
+			}else{
+				this.restraintinput = false;
+			}
+		},
+		// 유저제재하기
+		restraintuser(){
+			if(this.restraint_date ===""){
+				alert('제재기간 입력해 주세요')
+			}else if(this.restraint_msg ===""||(this.restraint_msg === "기타"&&this.restraint_msg2 === "")){
+				alert('제재사유를 입력해 주세요')
+			}else{
+				this.$store.commit('setLoading',true);
+				if(this.restraint_msg === "기타"){
+					this.restraint_msg = this.restraint_msg2
+				}
+				const URL = '/admin/userinfo'
+				const formData = new FormData();
+				formData.append('u_id', this.selectUserData.id);
+				formData.append('date', this.restraint_date);
+				formData.append('msg', this.restraint_msg);
+				axios.post(URL,formData)
+				.then(res => {
+					if(res.data.code === "0"){
+						alert("정상처리되었습니다");
+						document.querySelector('.admin_boot_modal_close').click();
+						this.resetall()
+					}
+				})
+				.catch(err => {
+					alert("데이터 에러 발생");
+				})
+				.finally(() => {
+					this.$store.commit('setLoading', false);
+				});
+			}
+		},
+		// 유저제재하기
+		clearestraint(){
 			this.$store.commit('setLoading',true);
-			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
-			axios.get(URL)
+			const URL = '/admin/restraint'
+			const formData = new FormData();
+			formData.append('u_id', this.selectUserData.id);
+			axios.post(URL,formData)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.selectUserData=res.data.data
-				}else if(res.data.code === "1"){
-					alert(res.data.errorMsg);
+					alert("정상처리되었습니다");
+					this.resetall()
 				}
 			})
 			.catch(err => {
@@ -688,6 +844,26 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
+		// 초기화용함수
+		resetall(){
+			this.today= "";
+			this.restraint_msg= "";
+			this.restraint_msg2= "";
+			this.restraint_date= "";
+			this.searchval= "";
+			this.searchtype= "유저번호";
+			this.sign_cnt= 0;
+			this.searchflg=false;
+			this.drop_cnt= 0;
+			this.data= [];
+			this.r_data= [];
+			this.now_data= {};
+			this.now_report= {};
+			this.modalflg=false;
+			this.restraintinput=false;
+			this.answer= "";
+			this.selectUserData= {};
+		}
 	}
 }
 </script>

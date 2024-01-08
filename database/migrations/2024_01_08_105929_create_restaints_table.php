@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('restaints', function (Blueprint $table) {
+        Schema::create('restraints', function (Blueprint $table) {
             $table->id();
             $table->integer('u_id');
-            $table->string('restaint',20);
-            $table->timestamp('restaint_at');
+            $table->string('restraint',20);
+            $table->dateTime('restraint_at');
             $table->timestamps();
             $table->softDeletes();  
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaints');
+        Schema::dropIfExists('restraints');
     }
 };

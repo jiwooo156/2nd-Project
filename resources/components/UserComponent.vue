@@ -195,6 +195,22 @@ export default {
 			err_nick3: false,
 			com_nick: false,
 			nickChkFlg: false,
+			settings: {
+				itemsToShow: 1,
+				snapAlign: 'start',
+			},
+			breakpoints: {
+      		// 700px and up
+				700: {
+					itemsToShow: 4,
+					snapAlign: 'start',
+				},
+				// 1024 and up
+				1024: {
+					itemsToShow: 8,
+					snapAlign: 'start',
+				},
+			},
 		}
 	},
 	watch: {
