@@ -2,64 +2,34 @@
 	<div class="qna_frame">
 		<div class="qna_container">
 			<div class="qna_header">
-				<h1>질문게시판</h1>
-				<!-- <h1>건의게시판</h1> -->
+				<h1>{{ this.nowns }}게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<div class="dropdown">
-							<!-- ***전체 카테고리 색상 잘 나오는지 확인!! -->
-							<!-- 바텀 마진주기 -->
-							<a
-								class="btn btn-outline-light dropdown-toggle qna_drop py-3"
-								href="#"
-								role="button"
-								id="dropdownMenuLink"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								전체
-							</a>
-							<ul
-								class="dropdown-menu btn-sm"
-								aria-labelledby="dropdownMenuLink"
-							>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">축제</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">관광</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">기타</a>
-								</li>
-							</ul>
-						</div>
+						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option selected class="qna_drop_item">전체</option>
+							<option value="1" class="qna_drop_item">축제</option>
+							<option value="2" class="qna_drop_item">관광</option>
+							<option value="3" class="qna_drop_item">기타</option>
+						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								최신순
-							</button>
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								조회수순
-							</button>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn">
+									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+								</button>
+							</div>
 							<!-- <button type="button">
 								<span class="font_center"
 									><font-awesome-icon :icon="['fas', 'circle']"
 								/></span>
 								답변완료
 							</button> -->
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								좋아요순
-							</button>
 							<!-- <button type="button">
 								<span class="font_center"
 									><font-awesome-icon :icon="['fas', 'circle']"
@@ -75,16 +45,44 @@
 						</div>
 					</div>
 				</div>
-				<!-- 세로 3개 가로 3개 해서 항상 9개씩 가져오기 -->
-				<!-- 반응형 2개씩/좌우 패딩?마진? -->
-				<!-- TheView/AppCard 참고해서 v-for문 돌리기 -->
+			</div>
+				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<div class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div class="card" style="width: 19rem">
+					<!-- 질문 게시판 리스트 -->
+					<div v-for="qna in this.qnacomList" :key="qna.id" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">축제</h6>
+							<h6 class="card-subtitle mb-2 qna_pink">{{ qna.flg }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
-								24년도 지역축제 책자 및 정리된 리스트 요청
-								<!-- 유저가 비밀글 설정 시 -->
+								{{ qna.title }}
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ qna.u_id }}</span
+								>
+								<span class="card-text">{{ qna.created_at }}</span>
+							</div>
+							<div class="qna_def pt-3">
+								<span class="card-text qna_card_etc qna_gray"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+									>좋아요</span
+								>
+								<span class="card-text qna_gray"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'eye']" /></span
+									>{{ qna.hits }}</span
+								>
+							</div>
+						</div>
+					</div>
+					<!-- 건의 게시판 리스트 -->
+					<!-- <div v-for="tendinous in this.tendinouscomList" :key="tendinous.id" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ tendinous.flg }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ tendinous.title }}
 								<span class="qna_lock font_center"
 									><font-awesome-icon :icon="['fas', 'lock']"
 								/></span>
@@ -93,270 +91,30 @@
 								<span class="card-text"
 									><span class="qna_card_span font_center"
 										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
+									>{{ tendinous.u_id }}</span
 								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<!-- <div class="qna_def pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
+								<span class="card-text">{{ tendinous.created_at }}</span>
 							</div> -->
 							<!-- *건의 접수대기 -->
-							<div class="qna_def pt-3 d-flex flex-row-reverse">
+							<!-- <div class="qna_def pt-3 d-flex flex-row-reverse">
 								<span class="card-text qna_wait">접수대기</span>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">기타</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								문화체육관광 사이버안전센터 취약점이행점검 중입니다.
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<!-- <div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
 							</div> -->
 							<!-- *건의 답변완료 -->
-							<div class="qna_def pt-3 d-flex flex-row-reverse">
+							<!-- <div class="qna_def pt-3 d-flex flex-row-reverse">
 								<span class="card-text qna_answer">답변완료</span>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">기타</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								회원가입 안 되고 이메일 인증 안 됨
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">관광</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								이의이승 웹사이트 개편 해주세요
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">기타</h6>
-							<h5 class="card-title mb-3 qna_card_tit">회원탈퇴 처리</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">축제</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								축제 사진좀 많이 넣어주세요.
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">축제</h6>
-							<h5 class="card-title mb-3 qna_card_tit">질문드립니다.</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">관광</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								경상도 트램 투어에 대해 문의합니다
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
-					<div class="card" style="width: 19rem">
-						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">관광</h6>
-							<h5 class="card-title mb-3 qna_card_tit">
-								고등학생들 수학여행 루트 추천 부탁드립니다.
-							</h5>
-							<div class="pb-3 d-flex justify-content-between qna_card">
-								<span class="card-text"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>닉네임</span
-								>
-								<span class="card-text">2024-01-06</span>
-							</div>
-							<div class="pt-3">
-								<span class="card-text qna_card_etc qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>35</span
-								>
-								<span class="card-text qna_gray"
-									><span class="qna_card_span font_center"
-										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>4.15k</span
-								>
-							</div>
-						</div>
-					</div>
+							</div> -->
+						<!-- </div>
+					</div> -->
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 					<button type="button">질문하기</button>
-					<!-- <button type="button">건의하기</button> -->
 				</div>
 				<div>
 					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center qna_pagin">
 							<li class="page-item">
-								<a
-									id="qna_font"
-									class="page-link"
-									href="#"
-									aria-label="Previous"
-								>
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angle-left']"
-									/></span>
+								<a id="qna_font" class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true"><font-awesome-icon :icon="['fas', 'angle-left']"/></span>
 								</a>
 							</li>
 							<li class="page-item">
@@ -403,13 +161,66 @@
 						</ul>
 					</nav>
 				</div>
-			</div>
-			<!-- top_btn -->
+			<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 		</div>
 	</div>
 	<!-- <div class="qna_qt">{{ this.nowns }}</div> -->
 </template>
 
-<script></script>
+<script>
+export default {
+	name: 'QnaComponent',
+	data() {
+		return {
+			// 질문게시판 데이터 불러오기
+			qnacomList: [],
+			// 건의게시판 데이터 불러오기
+			tendinouscomList: [],
+			nowns: "",
+			// 오늘
+			today: "",
+		}
+	},
+	created() {
+		// 로컬스토리지에 저장된 정보있는지 확인
+		let boo = localStorage.getItem('nick') ?  true : false;
+		this.$store.commit('setLocalFlg', boo);
+		this.getQna();
+		// 파라미터의 qt확인해서 store의 qtFlg셋팅
+		// url의 파라미터 중 qt 세팅함
+		const objUrlParam = new URLSearchParams(window.location.search);
+		console.log(objUrlParam);
+		this.nowns = objUrlParam.get('qt')
+		console.log(this.nowns);
+		if(this.nowns==="질문"){
+			this.$store.commit('setQtFlg','1');
+		}else if(this.nowns==="건의"){
+			this.$store.commit('setQtFlg','2');
+		}
+		this.getQna( objUrlParam.get('qt') );
+	},
+	methods: {
+		getQna(qt){
+			// url 가져오기	
+			const URL = '/qna/state?qt='+ qt;
+			axios.get(URL)
+			.then(res => {
+				console.log("getQna"+res.data);
+				this.qnacomList = res.data.qnaList;
+				this.tendinouscomList = res.data.tendinousList;
+				if(res.data.code === '0') {
+					this.states = res.data.data;
+				} else {
+					this.$router.push('/error');
+				}
+			})
+			.catch(err => {
+				// console.log("캐치");
+				alert("데이터 에러 발생");
+			})
+		},
+	},
+}
+</script>
 
 <style lang="scss" scoped></style>

@@ -408,9 +408,31 @@ class InfoController extends Controller
         ],200);
     }
     // 정보게시판 페이지 정보조회(목록)
-    public function infomationget(Requet $req) {
-        
-    }
+    public function informationget(Requet $req) {
+        Log::debug("**** informationget start ****");
+        Log::debug("게시판 플래그 : ".$req->flg);
+        // 커뮤니티 flg가 1(정보게시판)인 게시글 조회
+        if($req->flg === 1) {
+            Log::debug("인포함수진입");
+            $informresult = Community::
+                select('community.id', 'community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick')
+                ->join('users', 'community.u_id', '=', 'users.id')
+                ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
+                    $join->on('community.id', '=', 'lik.b_id');
+                })
+                ->select('community.id', 'community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
+                ->where('community.flg', '=', '1')
+                ->whereNull('community.deleted_at')
+                ->orderBy('community.id','desc')
+                ->get();
+                Log::debug($informresult);
+                return response()->json([
+                    'code' => '0',
+                    'information' => $informresult,
+                ], 200);
+            }           
+        }
+
     // 커뮤니티 디테일 페이지 정보조회
     public function communityget(Request $req) {
         // 리퀘스트온 아이디값으로 커뮤니티 테이블 조회

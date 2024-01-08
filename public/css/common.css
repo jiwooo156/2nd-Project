@@ -269,6 +269,7 @@ input[type='date']:valid::before {
 }
 .header_icon{
 	display: flex;	
+	vertical-align:middle;
 }
 .header_icon div{
 	padding-right: 5px;
@@ -1600,7 +1601,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 1000px;
 }
 .detail_container{
-	padding: 70px 10px 10px 10px;
+	padding: 53px 10px 10px 10px;
 }
 .detail_header{
     padding: 10px;
@@ -1722,6 +1723,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 /* 질문페이지 */
 .qna_header h1 {
 	text-align: center;
+	font-size: 3rem;
 }
 .qna_frame {
     margin: 100px auto;
@@ -1729,14 +1731,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 1000px;
 }
 .qna_container {
-    padding: 70px 10px 10px 10px;
+    padding: 53px 10px 10px 10px;
 }
 .qna_header_bot {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #d2d2d2;
 	display: flex;
 	justify-content: space-between;
-  align-items: flex-end;
+  	align-items: flex-end;
 }
 .qna_drop {
 	font-family: 'Cafe24SsurroundAir';
@@ -1744,6 +1746,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #fff;
 	color: #000;
 	border: none;
+	width: 30%;
 }
 .qna_drop a {
 	background-color: #fff;
@@ -1773,9 +1776,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #979797;
 	padding: 0 1rem;
 }
-.qna_btn button span {
+.qna_btn div button span {
 	font-size: 0.45rem;
-	padding-right: 0.2rem;
+	padding-right: 0.5rem;
 }
 /* font-awesome 가운데 정렬 */
 .font_center {
@@ -1999,7 +2002,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 /* 정보게시판 목록 */
 .info_list {
-	width: 90%;
+	width: 100%;
 	max-width: 1000px;
     margin: 50px auto;
     text-align: center;
@@ -2632,6 +2635,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.info_writer {
 		width: 10%;
+	}
+	.info_create_at {
+		width: 15%;
 	}
 	.col_hidden {
 		display: none;

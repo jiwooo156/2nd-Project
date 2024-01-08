@@ -331,7 +331,7 @@ export default {
 			.then(res => {
 				// console.log("getState");
 				// console.log("레스데이터"+res.data);
-
+				console.log("getState"+res.data);
 				if(res.data.code === '0') {
 					this.states = res.data.data;
 				} else {

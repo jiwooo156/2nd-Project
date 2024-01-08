@@ -24,19 +24,19 @@
 							</ul>
 						</li>
 						<li class="header_li_3">
-							<router-link to="/main">커뮤니티</router-link>
+							<router-link to="/board?flg=0">커뮤니티</router-link>
 							<ul class="depth1">
 								<li>
-									<a href="#" target="_self" onclick="">자유게시판</a>
+									<router-link to="/board?flg=0">자유게시판</router-link>
 								</li>
 								<li>
-									<router-link to="/board">정보게시판</router-link>
+									<router-link to="/board?flg=1">정보게시판</router-link>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">질문게시판</a>
+									<router-link to="/qna">질문게시판</router-link>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">건의게시판</a>
+									<router-link to="/qna">건의게시판</router-link>
 								</li>
 							</ul>
 						</li>
@@ -100,22 +100,22 @@
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<router-link to="/board?flg=0" class="nav-link active font_air bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							커뮤니티
-						</a>
+						</router-link>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<li>
-								<a href="#" class="dropdown-item header_ns font_air bold">자유게시판</a>
+								<router-link to="/board?flg=0" class="dropdown-item header_ns font_air bold">자유게시판</router-link>
 							</li>
 							<li> 
-								<router-link to="/board" class="dropdown-item header_ns font_air bold">정보게시판</router-link>
+								<router-link to="/board?flg=1" class="dropdown-item header_ns font_air bold">정보게시판</router-link>
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">질문게시판</a>
+								<router-link to="/qna" class="dropdown-item header_ns font_air bold">질문게시판</router-link>
 							</li>
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">건의게시판</a>
+								<router-link to="/qna" class="dropdown-item header_ns font_air bold">건의게시판</router-link>
 							</li>
 						</ul>
 					</li>
