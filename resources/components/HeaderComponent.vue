@@ -94,7 +94,6 @@
 								<router-link to="/region?ns=경상북도" class="header_ns dropdown-item font_air bold">경상북도구</router-link>
 							</li>
 							<li> 
-								<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
 								<router-link to="/region?ns=경상남도" class="header_ns dropdown-item font_air bold">경상남돈디</router-link>
 							</li>
 						</ul>
