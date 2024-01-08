@@ -99,8 +99,8 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    // 커뮤니티 flg = 1 정보게시판 정보조회
-    Route::get('/info/{flg}', [InfoController::class, 'infomationget']);
+    // 0108 정지우 정보게시판 목록 정보조회
+    Route::get('/info', [InfoController::class, 'informationget']);
 });
 
 // 질문&건의 게시판 라우터 생성

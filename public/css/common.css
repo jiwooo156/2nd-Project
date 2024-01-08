@@ -1998,7 +1998,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 /* 정보게시판 목록 */
 .info_list {
-	width: 90%;
+	width: 100%;
 	max-width: 1000px;
     margin: 50px auto;
     text-align: center;
@@ -2631,6 +2631,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.info_writer {
 		width: 10%;
+	}
+	.info_create_at {
+		width: 15%;
 	}
 	.col_hidden {
 		display: none;
