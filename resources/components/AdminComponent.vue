@@ -70,7 +70,13 @@
 			</div>
 			<div>
 				<div class="admin_header">
-					<div>미 답변 질문</div>
+					<div class="position-relative admin_header_num">
+						미 답변 질문
+					<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
+						99+
+						<span class="visually-hidden">unread messages</span>
+					</span>
+					</div>
 				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
@@ -430,13 +436,13 @@
 		>검색</button>
 		<div>
 			검색결과
-			<div>유저번호 : </div>
-			<div>이메일 : </div>
-			<div>이름 : </div>
-			<div>닉네임 : </div>
-			<div>전화번호 : </div>
-			<div>생년월일 : </div>
-			<div>성별 : </div>
+			<div>유저번호 : {{ this.selectUserData.id }}</div>
+			<div>이메일 : {{ this.selectUserData.id }}</div>
+			<div>이름 : {{ this.selectUserData.id }}</div>
+			<div>닉네임 : {{ this.selectUserData.id }}</div>
+			<div>전화번호 : {{ this.selectUserData.id }}</div>
+			<div>생년월일 : {{ this.selectUserData.id }}</div>
+			<div>성별 : {{ this.selectUserData.id }}</div>
 		</div>
 	</div>
 </template>
@@ -666,8 +672,6 @@ export default {
 		// 유저검색
 		searchuser(){
 			this.$store.commit('setLoading',true);
-			console.log(this.searchval);
-			console.log(this.searchtype);
 			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
 			axios.get(URL)
 			.then(res => {
