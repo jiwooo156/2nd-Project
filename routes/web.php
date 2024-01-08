@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log; //로그확인추가
 use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
 use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
-use App\Http\Controllers\CoummunityController; //커뮤니티 컨트롤러 추가
+use App\Http\Controllers\CommunityController; //커뮤니티 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/qna', [CoummunityController::class, 'getQnaList']);
+    Route::get('/qna', [CommunityController::class, 'getQnaList']);
 });
 
 // 디테일 라우터
@@ -152,6 +152,8 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::delete('/report', [UserController::class, 'reportdel']);
     Route::post('/report', [UserController::class, 'reportpost']);
     Route::get('/userinfo', [UserController::class, 'userget']);
+    Route::post('/userinfo', [UserController::class, 'restraintuser']);
+    Route::post('/restraint', [UserController::class, 'restraintreset']);
 });
 
 // 1213 정지우 지역페이지 라우터 생성

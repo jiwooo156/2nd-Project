@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DateTimeInterface;
 
-class Restaint extends Model
+class restraint extends Model
 {
     use HasFactory,SoftDeletes;
     protected $guarded = ['id']; 
-    protected $table = 'restaints';
+    protected $table = 'restraints';
     protected function serializeDate(DateTimeInterface $date){
         return $date->format('Y-m-d H:i:s');
     }

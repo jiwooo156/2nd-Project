@@ -33,10 +33,10 @@
 									<router-link to="/board?flg=1">정보게시판</router-link>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">질문게시판</a>
+									<router-link to="/qna">질문게시판</router-link>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">건의게시판</a>
+									<router-link to="/qna">건의게시판</router-link>
 								</li>
 							</ul>
 						</li>
@@ -111,10 +111,10 @@
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">질문게시판</a>
+								<router-link to="/qna" class="dropdown-item header_ns font_air bold">질문게시판</router-link>
 							</li>
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">건의게시판</a>
+								<router-link to="/qna" class="dropdown-item header_ns font_air bold">건의게시판</router-link>
 							</li>
 						</ul>
 					</li>

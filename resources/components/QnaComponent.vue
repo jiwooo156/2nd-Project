@@ -49,7 +49,7 @@
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<div class="qna_content d-flex justify-content-between row g-3 px-2">
 					<!-- 질문 게시판 리스트 -->
-					<div v-for="qna in this.qnacomList" :key="qna" class="card" style="width: 19rem">
+					<div v-for="qna in this.qnacomList" :key="qna.id" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ qna.flg }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -78,7 +78,7 @@
 						</div>
 					</div>
 					<!-- 건의 게시판 리스트 -->
-					<!-- <div v-for="tendinous in this.tendinouscomList" :key="tendinous" class="card" style="width: 19rem">
+					<!-- <div v-for="tendinous in this.tendinouscomList" :key="tendinous.id" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ tendinous.flg }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -177,6 +177,8 @@ export default {
 			// 건의게시판 데이터 불러오기
 			tendinouscomList: [],
 			nowns: "",
+			// 오늘
+			today: "",
 		}
 	},
 	created() {
@@ -187,24 +189,33 @@ export default {
 		// 파라미터의 qt확인해서 store의 qtFlg셋팅
 		// url의 파라미터 중 qt 세팅함
 		const objUrlParam = new URLSearchParams(window.location.search);
-		this.nowns = objUrlParam.get('ns')
+		console.log(objUrlParam);
+		this.nowns = objUrlParam.get('qt')
+		console.log(this.nowns);
 		if(this.nowns==="질문"){
 			this.$store.commit('setQtFlg','1');
 		}else if(this.nowns==="건의"){
 			this.$store.commit('setQtFlg','2');
 		}
+		this.getQna( objUrlParam.get('qt') );
 	},
 	methods: {
-		getQna(){
+		getQna(qt){
 			// url 가져오기	
-			const URL = '/qna/community?today='+this.today;
+			const URL = '/qna/state?qt='+ qt;
 			axios.get(URL)
 			.then(res => {
+				console.log("getQna"+res.data);
 				this.qnacomList = res.data.qnaList;
 				this.tendinouscomList = res.data.tendinousList;
+				if(res.data.code === '0') {
+					this.states = res.data.data;
+				} else {
+					this.$router.push('/error');
+				}
 			})
 			.catch(err => {
-				console.log("캐치");
+				// console.log("캐치");
 				alert("데이터 에러 발생");
 			})
 		},
