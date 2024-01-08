@@ -2,9 +2,9 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<div class="detail_type font_air bold center">
+				<!-- <div class="detail_type font_air bold center">
 					{{this.detaildata.ns_flg}} {{this.detaildata.states_name}} {{this.detaildata.main_flg}}
-				</div>
+				</div> -->
 				<div class="detail_header font_air bold">
 					<div class="detail_title  center">
 						{{this.detaildata.title}}
@@ -12,45 +12,22 @@
 				</div>
 			</div>
 			<div>
-				<div class="font_air bold center detail_place">
-					장소 : {{this.detaildata.place}}
+
+				<div class="font_air bold detail_hits">
+					{{this.detaildata.작성일자}} 작성
 				</div>
-				<div class="font_air bold center detail_place">
-					주차 : {{this.detaildata.parking_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					커플 : {{this.detaildata.couple_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					친구 : {{this.detaildata.friend_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					가족 : {{this.detaildata.family_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					요금 : {{this.detaildata.fee}}
-				</div>
-				<div class="font_air bold center detail_place">
-					운영시간 : {{this.detaildata.time}}
-				</div>
-				<div class="font_air bold center detail_place">
-					휴일 : {{this.detaildata.holiday}}
-				</div>
-				<div class="font_air bold center detail_place">
-					전화번호 : {{this.detaildata.tel}}
-				</div>
-				<div 
-					v-if="this.detaildata.main_flg==='축제'"
-					class="font_air bold center detail_tofrom"
-					>
-					축제기간 : {{this.detaildata.start_at}} ~ {{this.detaildata.end_at}}
+				<div class="font_air bold detail_hits" v-if="this.detaildata.updated_at">
+					(수정됨)
 				</div>
 				<div class="font_air bold detail_hits">
 					조회수 : {{this.detaildata.hits}}
 				</div>
+				<div class="font_air bold detail_hits">
+					좋아요 : {{this.detaildata.좋아요수}}
+				</div>
 			</div>
 			<div class="detail_body">
-				<div class="detail_img"
+				<!-- <div class="detail_img"
 					v-if="this.detaildata.img1||this.detaildata.img2||this.detaildata.img3"
 				>
 					<img :src="this.detaildata.img1"
@@ -64,9 +41,16 @@
 					<img :src="this.detaildata.img3"
 						v-if="this.detaildata.img3"
 					>
-				</div>
+				</div> -->
 				<div class="detail_content font_air bold">
 					{{this.detaildata.content}}
+				</div>
+				<div class="detail_content font_air bold">
+					<!-- fas : 꽉 찬 하트 -->
+					<font-awesome-icon v-if="isHearted" :icon="['fas', 'heart']" @click="toggleHeart()" />
+					<!-- far : 빈 하트 -->
+    				<font-awesome-icon v-else :icon="['far', 'heart']" />
+					좋아요 {{this.detaildata.좋아요수}}
 				</div>
 			</div>
 		</div>
@@ -156,6 +140,7 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
+			isHearted: false,
 		}
 	},
 	watch: {
@@ -178,14 +163,14 @@ export default {
 			let params = new URLSearchParams(window.location.search);
 			this.b_id = params.get('id');
 			
-			const URL = '/detail/info/'+this.b_id;
+			const URL = '/community/info/'+this.b_id;
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
 					this.repliecount = res.data.repliecount;
-					
+					this.heartcount = res.data.heartcnt;			
 				}else if(res.data.code==="E99"){
 					alert(res.data.errmsg);
 				}
@@ -326,6 +311,10 @@ export default {
 				return teststr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
 			}
 		},	
+		// 하트에 입력값 반영
+		toggleHeart() {
+			this.isHearted = !this.isHearted;
+		}
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

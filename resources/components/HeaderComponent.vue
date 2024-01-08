@@ -1,6 +1,6 @@
 <template>
     <!-- 헤더 영역 -->
-    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
+    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/admin'&&$route.fullPath != '/error'">
 		<header class="header">
 			<div class="header_left">
 				<router-link to="/main" class="logo">안냥</router-link>
@@ -30,7 +30,7 @@
 									<a href="#" target="_self" onclick="">자유게시판</a>
 								</li>
 								<li>
-									<a href="#" target="_self" onclick="">정보게시판</a>
+									<router-link to="/board">정보게시판</router-link>
 								</li>
 								<li>
 									<a href="#" target="_self" onclick="">질문게시판</a>
@@ -108,7 +108,7 @@
 								<a href="#" class="dropdown-item header_ns font_air bold">자유게시판</a>
 							</li>
 							<li> 
-								<a href="#" class="dropdown-item header_ns font_air bold">정보게시판</a>
+								<router-link to="/board" class="dropdown-item header_ns font_air bold">정보게시판</router-link>
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 

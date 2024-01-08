@@ -79,6 +79,7 @@ const store = createStore({
 	actions: {
 		// 메인 데이터 불러오기
 		actionGetMainInfo(context) {
+			context.commit('setLoading',true);
 			const url = '/api/main';
 			axios.get(url)
 			.then(res => {
@@ -87,6 +88,9 @@ const store = createStore({
 			.catch(err => {
 				console.log(err);
 			})
+			.finally(() => {
+				context.commit('setLoading',false);
+			});
 		},
 		// // 이메일 중복확인
 		// actionEmailChk(context){
@@ -172,6 +176,7 @@ const store = createStore({
 		// },	
 		// 회원가입
 		actionSignIn(context){
+			context.commit('setLoading',true);
 			if(context.state.nickFlg===1){
 				let email = document.querySelector('#signin_email')
 				let pw = document.querySelector('#signin_pw')
@@ -219,12 +224,16 @@ const store = createStore({
 					console.log("캣치")
 					alert(err.response.data.errorMsg);
 				})
+				.finally(() => {
+					context.commit('setLoading',false);
+				});
 			}else{
 				alert("닉네임 인증을 해주세요")
 			}
 		},
 		// 로그인
 		actionLogin(context){
+			context.commit('setLoading',true);
 			let email = document.querySelector('#login_email').value;
 			let pw = document.querySelector('#login_pw').value;
 				// const URL = '/api/login''
@@ -244,19 +253,25 @@ const store = createStore({
 				axios.post(URL,formData,HEADER)
 				.then(res => {
 					if(res.data.code === "0"){	
-						console.log('로그인성공')
-						console.log(res.data.data.nick)
 						localStorage.setItem('nick', res.data.data.nick);
 						localStorage.setItem('email', email);
 						context.commit('setLocalFlg', true);
 						context.commit('setNowUser', localStorage.getItem('nick'));
 						context.commit('setNowEmail', localStorage.getItem('email'));
-						console.log("저장된이메일"+context.state.NowEmail);
 						if(!(context.state.beforeUrl === "/login"||context.state.beforeUrl=== "signin"||context.state.beforeUrl=== "authemail")){
 							router.push(context.state.beforeUrl)
 						}else{
 							router.push('/main')
 						}
+					}else if(res.data.code === "1"){
+						alert('환영합니다. '+res.data.data.name+" 관리자님")
+						localStorage.setItem('nick', res.data.data.nick);
+						localStorage.setItem('email', email);
+						localStorage.setItem('admin', res.data.data.id);
+						context.commit('setLocalFlg', true);
+						context.commit('setNowUser', localStorage.getItem('nick'));
+						context.commit('setNowEmail', localStorage.getItem('email'));
+						router.push('/admin')
 					}else{
 						console.log('else');
 						alert(err.response.data.errorMsg);
@@ -271,6 +286,9 @@ const store = createStore({
 						alert(err.response.data.errorMsg[0])
 					}
 				})
+				.finally(() => {
+					context.commit('setLoading',false);
+				});
 		},
 		// 로그아웃
 		actionLogout(context){

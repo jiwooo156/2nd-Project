@@ -6,12 +6,14 @@ import SigninComponent from '../components/SigninComponent.vue';
 import UserComponent from '../components/UserComponent.vue';
 import RegionComponent from '../components/RegionComponent.vue';
 import AuthComponent from '../components/AuthComponent.vue';
+import AdminComponent from '../components/AdminComponent.vue';
 import DetailComponent from '../components/DetailComponent.vue';
 import UserChk from '../components/UserChk.vue';
 import ErrorComponent from '../components/ErrorComponent.vue';
 import BoardComponent from '../components/BoardComponent.vue';
 import QnaComponent from '../components/QnaComponent.vue';
 import PostComponent from '../components/PostComponent.vue';
+import CommunityComponent from '../components/CommunityComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -48,10 +50,25 @@ const routes = [
 		component : PostComponent
 	},
 	{
+		path: "/community",
+		component : PostComponent
+	},
+	{
 		path: "/login",
 		component: LoginComponent,
 		beforeEnter: (to, from, next) => {
 			if (store.state.localFlg) {
+				next('/');
+			} else {
+				next();
+			}
+		},
+	},
+	{
+		path: "/admin",
+		component: AdminComponent,
+		beforeEnter: (to, from, next) => {
+			if (!localStorage.getItem('admin')) {
 				next('/');
 			} else {
 				next();
