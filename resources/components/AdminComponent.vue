@@ -436,13 +436,13 @@
 		>검색</button>
 		<div>
 			검색결과
-			<div>유저번호 : </div>
-			<div>이메일 : </div>
-			<div>이름 : </div>
-			<div>닉네임 : </div>
-			<div>전화번호 : </div>
-			<div>생년월일 : </div>
-			<div>성별 : </div>
+			<div>유저번호 : {{ this.selectUserData.id }}</div>
+			<div>이메일 : {{ this.selectUserData.id }}</div>
+			<div>이름 : {{ this.selectUserData.id }}</div>
+			<div>닉네임 : {{ this.selectUserData.id }}</div>
+			<div>전화번호 : {{ this.selectUserData.id }}</div>
+			<div>생년월일 : {{ this.selectUserData.id }}</div>
+			<div>성별 : {{ this.selectUserData.id }}</div>
 		</div>
 	</div>
 </template>
@@ -672,8 +672,6 @@ export default {
 		// 유저검색
 		searchuser(){
 			this.$store.commit('setLoading',true);
-			console.log(this.searchval);
-			console.log(this.searchtype);
 			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
 			axios.get(URL)
 			.then(res => {
