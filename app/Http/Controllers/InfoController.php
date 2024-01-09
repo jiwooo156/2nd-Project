@@ -419,9 +419,9 @@ class InfoController extends Controller
             ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
                 $join->on('community.id', '=', 'lik.b_id');
             })
-            ->where('community.category_flg', $req->flg)
+            ->where('community.flg', $req->flg)
             ->where('community.deleted_at',null)
-            ->orderBy('community.id','desc')
+            ->orderBy('community.created_at','desc')
             ->get();
         // $test = DB::select(
         //     "SELECT

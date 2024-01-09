@@ -6,52 +6,25 @@
 				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<div class="dropdown">
-							<a
-								class="btn btn-outline-light dropdown-toggle qna_drop py-3"
-								href="#"
-								role="button"
-								id="dropdownMenuLink"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								전체
-							</a>
-							<ul
-								class="dropdown-menu btn-sm"
-								aria-labelledby="dropdownMenuLink"
-							>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">축제</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">관광</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">기타</a>
-								</li>
-							</ul>
-						</div>
+						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option selected class="qna_drop_item">전체</option>
+							<option value="1" class="qna_drop_item">축제</option>
+							<option value="2" class="qna_drop_item">관광</option>
+							<option value="3" class="qna_drop_item">기타</option>
+						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								최신순
-							</button>
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								조회수순
-							</button>
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								좋아요순
-							</button>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn">
+									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+								</button>
+							</div>
 						</div>
 					</div>
 					<!-- 반응형 숨기기 -->
