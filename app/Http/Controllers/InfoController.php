@@ -454,7 +454,7 @@ class InfoController extends Controller
         )
         ->join('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) likes'), 'community.id', '=', 'likes.b_id')
-        ->where('community.flg', 0)
+        ->where('community.flg', $req->flg)
         ->whereNull('community.deleted_at')
         ->orderByDesc('community.id')
         ->get();

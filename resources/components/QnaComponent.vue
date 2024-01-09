@@ -203,7 +203,7 @@ export default {
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL)
 			.then(res => {
-				console.log("then");
+				console.log("then 시작");
 				console.log("레스데이터"+res.data);
 				if(res.data.code === '0') {
 					this.infolist = res.data.information;
