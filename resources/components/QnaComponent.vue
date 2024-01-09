@@ -7,11 +7,11 @@
 				<h1 v-else="this.nowflg==='3'">건의게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<select v-model="selectedCategory" class="form-select qna_drop my-3" aria-label=".form-select-sm">
-							<option :value="null" selected class="qna_drop_item">전체</option>
-							<option :value="0" class="qna_drop_item">축제</option>
-							<option :value="1" class="qna_drop_item">관광</option>
-							<option :value="2" class="qna_drop_item">기타</option>
+						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option selected class="qna_drop_item">전체</option>
+							<option class="qna_drop_item">축제</option>
+							<option class="qna_drop_item">관광</option>
+							<option class="qna_drop_item">기타</option>
 						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<!-- 질문게시판 -->
@@ -53,9 +53,6 @@
 			</div>
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<!-- 질문 게시판 리스트 -->
-				<div>
-					<div v-for="item in filteredData" :key="item.id">{{ item.name }} - {{ item.category_flg }}</div>
-				</div>
 				<div v-if="this.nowflg==='2'" class="qna_content d-flex justify-content-between row g-3 px-2">
 					<div v-for="infodata in infolist" :key="infodata" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
@@ -172,10 +169,6 @@
 					</nav>
 				</div>
 			<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
-			<!-- 테스트용 입니다. -->
-			<div>
-
-			</div>
 		</div>
 	</div>
 </template>
@@ -187,15 +180,6 @@ export default {
 		return {
 			infolist: [],
 			nowflg: "",
-			// 예시
-			festivals: [
-				{ id: 1, name: '축제1', category_flg: 0 },
-				{ id: 2, name: '관광1', category_flg: 1 },
-				{ id: 3, name: '축제2', category_flg: 0 },
-				{ id: 4, name: '기타1', category_flg: 2 },
-				// ... (축제 데이터 계속 추가)
-				],
-			selectedCategory: null,
 		}
 	},
 	created() {
@@ -209,15 +193,6 @@ export default {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="2"? "3":"2";
 		this.getInfo(this.nowflg);
-	},
-	computed: {
-		filteredData() {
-			if (this.selectedCategory === null) {
-				return this.festivals;
-			} else {
-				return this.festivals.filter(data => data.category_flg === this.selectedCategory);
-			}
-		},
 	},
 	methods: {
 		// 질문&건의 게시글 데이터 출력
@@ -263,10 +238,6 @@ export default {
 		const day = String(dateObject.getDate()).padStart(2, "0");
 
 		return `${year}-${month}-${day}`;
-		},
-		// 버튼 클릭시 카테고리별 데이터 출력
-		filterData(category) {
-			this.selectedCategory = category;
 		},
 	},
 }
