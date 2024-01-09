@@ -26,7 +26,7 @@ const store = createStore({
 			loading: false,
 			nsFlg: "",
 			qtFlg: "",
-			setCategoryFlg: "",
+			categoryflg: "",
 		}
 	},
 

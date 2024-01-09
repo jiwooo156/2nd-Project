@@ -33,10 +33,10 @@
 									<router-link to="/board?flg=1">정보게시판</router-link>
 								</li>
 								<li>
-									<router-link to="/qna">질문게시판</router-link>
+									<router-link to="/qna?flg=2">질문게시판</router-link>
 								</li>
 								<li>
-									<router-link to="/qna">건의게시판</router-link>
+									<router-link to="/qna?flg=3">건의게시판</router-link>
 								</li>
 							</ul>
 						</li>
@@ -94,7 +94,6 @@
 								<router-link to="/region?ns=경상북도" class="header_ns dropdown-item font_air bold">경상북도구</router-link>
 							</li>
 							<li> 
-								<!-- 아예 페이지를 새로 불러옴(created 구문을 실행하기 위해서) -->
 								<router-link to="/region?ns=경상남도" class="header_ns dropdown-item font_air bold">경상남돈디</router-link>
 							</li>
 						</ul>
@@ -112,10 +111,10 @@
 							</li>
 							<!-- <li><hr class="dropdown-divider"></li> -->
 							<li> 
-								<router-link to="/qna" class="dropdown-item header_ns font_air bold">질문게시판</router-link>
+								<router-link to="/qna?flg=2" class="dropdown-item header_ns font_air bold">질문게시판</router-link>
 							</li>
 							<li> 
-								<router-link to="/qna" class="dropdown-item header_ns font_air bold">건의게시판</router-link>
+								<router-link to="/qna?flg=3" class="dropdown-item header_ns font_air bold">건의게시판</router-link>
 							</li>
 						</ul>
 					</li>

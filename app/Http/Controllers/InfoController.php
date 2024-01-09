@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Info;
 use App\Models\Replie;
+use App\Models\Community;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -68,7 +69,7 @@ class InfoController extends Controller
             } catch(Exception $e){
                 DB::rollback();
             }
-        // 쿠키값이있고 조회된값이 1개일때
+        // 조회된값이 1개일때
         }
         if(count($info_result)===1){            
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
@@ -407,31 +408,98 @@ class InfoController extends Controller
             'tour' => $tour,
         ],200);
     }
+    
     // 정보게시판 페이지 정보조회(목록)
-    public function informationget(Requet $req) {
+    public function informationget(Request $req) {
         Log::debug("**** informationget start ****");
         Log::debug("게시판 플래그 : ".$req->flg);
-        // 커뮤니티 flg가 1(정보게시판)인 게시글 조회
-        if($req->flg === 1) {
-            Log::debug("인포함수진입");
-            $informresult = Community::
-                select('community.id', 'community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick')
-                ->join('users', 'community.u_id', '=', 'users.id')
-                ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
-                    $join->on('community.id', '=', 'lik.b_id');
-                })
-                ->select('community.id', 'community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
-                ->where('community.flg', '=', '1')
-                ->whereNull('community.deleted_at')
-                ->orderBy('community.id','desc')
-                ->get();
-                Log::debug($informresult);
-                return response()->json([
-                    'code' => '0',
-                    'information' => $informresult,
-                ], 200);
-            }           
-        }
+        Log::debug("인포함수진입");
+        $informresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'community.admin_flg',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->orderBy('community.created_at', 'desc')
+        ->get();
+        $infocnt = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->orderBy('community.created_at', 'desc')
+        ->count();
+        Log::debug($informresult);
+        Log::debug($infocnt);
+        
+        return response()->json([
+            'code' => '0',
+            'information' => $informresult,
+            'infocnt' => $infocnt,
+        ], 200);          
+    }
+
+    // 카테고리로 정렬한 게시글 목록 조회
+    public function categoryinfoget(Request $req) {
+        Log::debug("**** categoryinfoget start ****");
+        Log::debug("게시판 플래그 : ".$req->flg);
+        Log::debug("카테고리함수진입");
+        $categoryresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->where('community.category_flg', $req->category_flg)
+        ->orderBy('community.created_at', 'desc')
+        ->get();
+        $categorycnt = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->orderBy('community.created_at', 'desc')
+        ->count();
+        Log::debug($categoryresult);
+        Log::debug($categorycnt);
+        
+        return response()->json([
+            'code' => '0',
+            'categorydata' => $categoryresult,
+            'categorycnt' => $categorycnt,
+        ], 200); 
+    }
 
     // 커뮤니티 디테일 페이지 정보조회
     public function communityget(Request $req) {
@@ -470,19 +538,12 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            // 리퀘스트온 아이디값으로 좋아요 갯수 조회 (like 모델 생성하기)
-            $heart_count = like::
-            select('b_id','flg', 'deleted_at')
-            ->where('b_id', $req->id)
-            ->where('deleted_at', null)
-            ->count();
             Log::debug( $replie_result);
             return response()->json([
                 'code' => '0',
                 'data' => $community_result,
                 'replie' => $replie_result,
-                'repliecount' =>  $replie_count,
-                'heartcnt' => $heart_count,
+                'repliecount' =>  $replie_count
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
