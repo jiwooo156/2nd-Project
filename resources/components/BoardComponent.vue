@@ -2,62 +2,35 @@
 	<div class="qna_frame">
 		<div class="qna_container">
 			<div class="qna_header">
-				<h1 v-if="nowflg===0">자유게시판</h1>
-				<h1 v-else="nowflg===1">정보게시판</h1>
+				<h1 v-if="this.nowflg==='0'">자유게시판</h1>
+				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<div class="dropdown">
-							<a
-								class="btn btn-outline-light dropdown-toggle qna_drop py-3"
-								href="#"
-								role="button"
-								id="dropdownMenuLink"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								전체
-							</a>
-							<ul
-								class="dropdown-menu btn-sm"
-								aria-labelledby="dropdownMenuLink"
-							>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">축제</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">관광</a>
-								</li>
-								<li>
-									<a class="dropdown-item qna_drop_item" href="#">기타</a>
-								</li>
-							</ul>
-						</div>
+						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option selected class="qna_drop_item">전체</option>
+							<option value="1" class="qna_drop_item">축제</option>
+							<option value="2" class="qna_drop_item">관광</option>
+							<option value="3" class="qna_drop_item">기타</option>
+						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								최신순
-							</button>
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								조회수순
-							</button>
-							<button type="button">
-								<span class="font_center"
-									><font-awesome-icon :icon="['fas', 'circle']"
-								/></span>
-								좋아요순
-							</button>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn">
+									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+								</button>
+								<button type="button" class="btn">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+								</button>
+							</div>
 						</div>
 					</div>
 					<!-- 반응형 숨기기 -->
 					<div class="qna_header_r">
 						<div>
-							총 <span class="qna_pink">50</span>건의 게시글이 있습니다.
+							총 <span class="qna_pink"> {{ cntinfo }}</span>건의 게시글이 있습니다.
 						</div>
 					</div>
 				</div>
@@ -103,7 +76,7 @@
 							<td>{{ infodata.nick }}</td>
 							<td>{{ infodata.created_at }}</td>
 							<td class="col_hidden">{{ infodata.hits }}</td>
-							<!-- <td class="col_hidden">15</td> -->
+							<td class="col_hidden">{{ infodata.cnt }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -181,47 +154,27 @@ export default {
 		return {
 			infolist: [],
 			nowflg: "",
+			cntinfo: 0,
 		}
 	},
 	created() {
-		// const objUrlParam = new URLSearchParams(window.location.search);
-		// this.nowflg = objUrlParam.get('flg');
-		// this.getInfo(this.nowflg);
 		const objUrlParam = new URLSearchParams(window.location.search);
-		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
+		this.nowflg = objUrlParam.get('flg');
+		console.log(this.nowflg )
 		this.getInfo( this.nowflg );
+		this.getCategoryInfo( this.nowflg );
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
-		// const objUrlParam = new URLSearchParams(window.location.search);
-		// console.log(objUrlParam);
-		// this.nowflg = objUrlParam.get('flg');
-		// console.log("nowflg="+this.nowflg);
-		// // 파라미터의 ns를 확인해서 store의 NsFlg셋팅
-		// // url의 파라미터 중 ns를 세팅함
-		// // if(this.nowflg==="0"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','0');
-		// // }else if(this.nowflg==="1"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','1');
-		// // }else if(this.nowflg==="2"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','2');
-		// // }else if(this.nowflg==="3"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','3');
-		// // }
-		// this.getInfo(objUrlParam.get('flg'));
-
-		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
 		this.getInfo( this.nowflg );
+		this.getCategoryInfo( this.nowflg );
 	},
 	mounted() {
 	},
 	methods: {
+		// 해당 게시판의 모든 게시글 조회
 		getInfo(flg) {
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?flg='+ flg;
@@ -233,12 +186,20 @@ export default {
 				console.log("레스데이터"+res.data);
 				if(res.data.code === '0') {
 					this.infolist = res.data.information;
+					this.cntinfo = res.data.infocnt;
 				}
+				console.log('nowflg='+this.nowflg )
 			})
 			.catch(err => {
         		this.$router.push('/error');
 			})
 		},
+
+		// 해당 게시판의 특정 category 게시글 조회
+		getCategoryInfo(flg) {
+			const URL = '/board/info?flg='+ flg;
+			console.log("getinfo 함수진입")
+		}
 	}
 }
 </script>
