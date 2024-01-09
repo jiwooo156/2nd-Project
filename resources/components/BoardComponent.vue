@@ -30,7 +30,7 @@
 					<!-- 반응형 숨기기 -->
 					<div class="qna_header_r">
 						<div>
-							총 <span class="qna_pink">50</span>건의 게시글이 있습니다.
+							총 <span class="qna_pink"> {{ cntinfo }}</span>건의 게시글이 있습니다.
 						</div>
 					</div>
 				</div>
@@ -154,6 +154,7 @@ export default {
 		return {
 			infolist: [],
 			nowflg: "",
+			cntinfo: 0,
 		}
 	},
 	created() {
@@ -161,16 +162,19 @@ export default {
 		this.nowflg = objUrlParam.get('flg');
 		console.log(this.nowflg )
 		this.getInfo( this.nowflg );
+		this.getCategoryInfo( this.nowflg );
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
 		this.getInfo( this.nowflg );
+		this.getCategoryInfo( this.nowflg );
 	},
 	mounted() {
 	},
 	methods: {
+		// 해당 게시판의 모든 게시글 조회
 		getInfo(flg) {
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?flg='+ flg;
@@ -182,6 +186,7 @@ export default {
 				console.log("레스데이터"+res.data);
 				if(res.data.code === '0') {
 					this.infolist = res.data.information;
+					this.cntinfo = res.data.infocnt;
 				}
 				console.log('nowflg='+this.nowflg )
 			})
@@ -189,6 +194,12 @@ export default {
         		this.$router.push('/error');
 			})
 		},
+
+		// 해당 게시판의 특정 category 게시글 조회
+		getCategoryInfo(flg) {
+			const URL = '/board/info?flg='+ flg;
+			console.log("getinfo 함수진입")
+		}
 	}
 }
 </script>

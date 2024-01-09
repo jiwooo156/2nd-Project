@@ -33,10 +33,10 @@
 									<router-link to="/board?flg=1">정보게시판</router-link>
 								</li>
 								<li>
-									<router-link to="/qna?flg=2">질문게시판</router-link>
+									<router-link to="/board?flg=2">질문게시판</router-link>
 								</li>
 								<li>
-									<router-link to="/qna?flg=3">건의게시판</router-link>
+									<router-link to="/board?flg=3">건의게시판</router-link>
 								</li>
 							</ul>
 						</li>
