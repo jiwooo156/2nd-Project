@@ -6,8 +6,8 @@
 				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
-							<option selected class="qna_drop_item">전체</option>
+						<select @change="formSelect($event)" class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option selected value="0" class="qna_drop_item">전체</option>
 							<option value="1" class="qna_drop_item">축제</option>
 							<option value="2" class="qna_drop_item">관광</option>
 							<option value="3" class="qna_drop_item">기타</option>
@@ -155,6 +155,7 @@ export default {
 			infolist: [],
 			nowflg: "",
 			cntinfo: 0,
+			formSelectData: 0,
 		}
 	},
 	created() {
@@ -168,16 +169,16 @@ export default {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
-		this.getInfo( this.nowflg );
-		this.getCategoryInfo( this.nowflg );
+		this.getInfo( this.nowflg, this.formSelectData );
 	},
 	mounted() {
 	},
 	methods: {
 		// 해당 게시판의 모든 게시글 조회
-		getInfo(flg) {
+		getInfo(flg, data) {
+			console.log(data);
 			// 해당url의 데이터 가져오기
-			const URL = '/board/info?flg='+ flg;
+			const URL = '/board/info?flg='+ flg + '&category=' + this.formSelectData;
 			console.log("getinfo 함수진입")
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL)
@@ -195,10 +196,15 @@ export default {
 			})
 		},
 
-		// 해당 게시판의 특정 category 게시글 조회
-		getCategoryInfo(flg) {
-			const URL = '/board/info?flg='+ flg;
-			console.log("getinfo 함수진입")
+		formSelect(event) {
+			console.log(event.target.value);
+			if(event.target.value == 1) {
+				this.formSelectData = '축제'
+			} else if (event.target.value == 2) {
+				this.formSelectData = '관광'
+			} else if (event.target.value == 3) {
+				this.formSelectData = '기타'
+			}
 		}
 	}
 }
