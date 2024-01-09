@@ -420,6 +420,7 @@ class InfoController extends Controller
             'community.title',
             'community.created_at',
             'community.hits',
+            'community.admin_flg',
             'users.nick',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
