@@ -410,18 +410,56 @@ class InfoController extends Controller
     }
     
     // 정보게시판 페이지 정보조회(목록)
+    public function informationget(Request $req) {
+        Log::debug("**** informationget start ****");
+        Log::debug("게시판 플래그 : ".$req->flg);
+        Log::debug("인포함수진입");
+        $informresult = Community::select('community.id','community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
+                $join->on('community.id', '=', 'lik.b_id');
+            })
+            ->where('community.category_flg', $req->flg)
+            ->where('community.deleted_at',null)
+            ->orderBy('community.id','desc')
+            ->get();
+        // $test = DB::select(
+        //     "SELECT
+        //         comm.id
+        //         ,comm.title
+        //         ,comm.created_at
+        //         ,comm.hits
+        //         ,comm.category_flg
+        //         ,us.nick
+        //         ,lik.cnt
+        //     FROM
+        //         community comm
+        //         JOIN users us
+        //             ON comm.u_id = us.id
+        //         JOIN (SELECT b_id, COUNT(b_id) cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) lik
+        //             ON comm.id = lik.b_id
+        //     WHERE comm.flg = 1
+        //     AND comm.deleted_at IS NULL
+        //     ORDER BY comm.id DESC"
+        // );
+        Log::debug($informresult);
+        
+        return response()->json([
+            'code' => '0',
+            'information' => $informresult,
+        ], 200);          
+    }
+    // 정보게시판 페이지 정보조회(목록)
     // public function informationget(Request $req) {
     //     Log::debug("**** informationget start ****");
     //     Log::debug("게시판 플래그 : ".$req->flg);
     //     Log::debug("인포함수진입");
     //     $informresult = Community::
-    //         select('community.id','community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
-    //         ->join('users', 'community.u_id', '=', 'users.id')
-    //         ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
-    //             $join->on('community.id', '=', 'lik.b_id');
-    //         })
-    //         ->where('community.flg', '=', '1')
-    //         ->where('community.deleted_at',null)
+    //         select('community.id','community.category_flg','community.title','community.created_at','community.hits','users.nick')
+    //         ->join('users','community.u_id','users.id')
+    //         ->where('community.flg','=','1')
+    //         ->where('community.category_flg',$req->flg)
+    //         ->where('community.deleted_at', null)
     //         ->orderBy('community.id','desc')
     //         ->get();
     //         Log::debug($informresult);
@@ -430,25 +468,6 @@ class InfoController extends Controller
     //             'information' => $informresult,
     //         ], 200);          
     //     }
-    // 정보게시판 페이지 정보조회(목록)
-    public function informationget(Request $req) {
-        Log::debug("**** informationget start ****");
-        Log::debug("게시판 플래그 : ".$req->flg);
-        Log::debug("인포함수진입");
-        $informresult = Community::
-            select('community.id','community.category_flg','community.title','community.created_at','community.hits','users.nick')
-            ->join('users','community.u_id','users.id')
-            ->where('community.flg','=','1')
-            ->where('community.category_flg',$req->flg)
-            ->where('community.deleted_at', null)
-            ->orderBy('community.id','desc')
-            ->get();
-            Log::debug($informresult);
-            return response()->json([
-                'code' => '0',
-                'information' => $informresult,
-            ], 200);          
-        }
 
     // 커뮤니티 디테일 페이지 정보조회
     public function communityget(Request $req) {

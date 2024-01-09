@@ -2,8 +2,8 @@
 	<div class="qna_frame">
 		<div class="qna_container">
 			<div class="qna_header">
-				<h1 v-if="nowflg===0">자유게시판</h1>
-				<h1 v-else="nowflg===1">정보게시판</h1>
+				<h1 v-if="this.nowflg==='0'">자유게시판</h1>
+				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
 						<div class="dropdown">
@@ -188,7 +188,8 @@ export default {
 		// this.nowflg = objUrlParam.get('flg');
 		// this.getInfo(this.nowflg);
 		const objUrlParam = new URLSearchParams(window.location.search);
-		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
+		this.nowflg = objUrlParam.get('flg');
+		console.log(this.nowflg )
 		this.getInfo( this.nowflg );
 	},
 	beforeRouteUpdate() {
@@ -234,6 +235,7 @@ export default {
 				if(res.data.code === '0') {
 					this.infolist = res.data.information;
 				}
+				console.log('nowflg='+this.nowflg )
 			})
 			.catch(err => {
         		this.$router.push('/error');
