@@ -88,7 +88,7 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/qna', [CommunityController::class, 'getQnaList']);
+    Route::get('/list', [CommunityController::class, 'getQnaList']);
 });
 
 // 디테일 라우터

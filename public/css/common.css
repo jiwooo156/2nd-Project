@@ -1746,7 +1746,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #fff;
 	color: #000;
 	border: none;
-	width: 30%;
+	width: 6rem;
 }
 .qna_drop a {
 	background-color: #fff;
