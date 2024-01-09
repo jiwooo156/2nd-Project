@@ -1797,6 +1797,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .qna_content {
 	padding-top: 1.5rem;
 }
+.card:hover {
+	border: 1px solid #D14C6C;
+	box-shadow: 1px 1px 20px #ddd;
+}
 .card-body h6 {
 	color: #D14C6C;
 	font-family: 'Cafe24SsurroundAir';
@@ -1813,6 +1817,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .card-body span {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
+	vertical-align: middle;
+    line-height: 1rem;
 }
 .qna_card_tit {
 	font-size: 1.15rem;
