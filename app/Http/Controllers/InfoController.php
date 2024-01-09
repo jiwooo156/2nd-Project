@@ -414,15 +414,16 @@ class InfoController extends Controller
         Log::debug("**** informationget start ****");
         Log::debug("게시판 플래그 : ".$req->flg);
         Log::debug("인포함수진입");
-        $informresult = Community::select('community.id','community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
-                $join->on('community.id', '=', 'lik.b_id');
-            })
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at',null)
-            ->orderBy('community.created_at','desc')
-            ->get();
+        // $informresult = Community::select('community.id','community.title', 'community.created_at', 'community.hits', 'community.category_flg', 'users.nick', 'lik.cnt')
+        //     ->join('users', 'community.u_id', '=', 'users.id')
+        //     ->join(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS null GROUP BY b_id) as lik'), function ($join) {
+        //         $join->on('community.id', '=', 'lik.b_id');
+        //     })
+        //     ->where('community.flg', $req->flg)
+        //     ->where('community.deleted_at',null)
+        //     ->orderBy('community.id','desc')
+        //     ->get();
+
         // $test = DB::select(
         //     "SELECT
         //         comm.id
@@ -442,6 +443,21 @@ class InfoController extends Controller
         //     AND comm.deleted_at IS NULL
         //     ORDER BY comm.id DESC"
         // );
+        $informresult = Community::select(
+            'community.id',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'community.category_flg',
+            'users.nick',
+            DB::raw('COALESCE(likes.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) likes'), 'community.id', '=', 'likes.b_id')
+        ->where('community.flg', 0)
+        ->whereNull('community.deleted_at')
+        ->orderByDesc('community.id')
+        ->get();
         Log::debug($informresult);
         
         return response()->json([

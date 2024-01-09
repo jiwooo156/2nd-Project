@@ -76,7 +76,7 @@
 							<td>{{ infodata.nick }}</td>
 							<td>{{ infodata.created_at }}</td>
 							<td class="col_hidden">{{ infodata.hits }}</td>
-							<!-- <td class="col_hidden">15</td> -->
+							<td class="col_hidden">{{ infodata.cnt }}</td>
 						</tr>
 					</tbody>
 				</table>
