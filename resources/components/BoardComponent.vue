@@ -184,37 +184,12 @@ export default {
 		}
 	},
 	created() {
-		// const objUrlParam = new URLSearchParams(window.location.search);
-		// this.nowflg = objUrlParam.get('flg');
-		// this.getInfo(this.nowflg);
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
 		console.log(this.nowflg )
 		this.getInfo( this.nowflg );
 	},
 	beforeRouteUpdate() {
-		// url의 파라미터를 가져옴
-		// const objUrlParam = new URLSearchParams(window.location.search);
-		// console.log(objUrlParam);
-		// this.nowflg = objUrlParam.get('flg');
-		// console.log("nowflg="+this.nowflg);
-		// // 파라미터의 ns를 확인해서 store의 NsFlg셋팅
-		// // url의 파라미터 중 ns를 세팅함
-		// // if(this.nowflg==="0"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','0');
-		// // }else if(this.nowflg==="1"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','1');
-		// // }else if(this.nowflg==="2"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','2');
-		// // }else if(this.nowflg==="3"){
-		// // 	console.log(this.nowflg);
-		// // 	this.$store.commit('setCategoryFlg','3');
-		// // }
-		// this.getInfo(objUrlParam.get('flg'));
-
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
