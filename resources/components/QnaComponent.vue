@@ -1,3 +1,4 @@
+<!-- php artisan route:clear -->
 <template>
 	<div class="qna_frame">
 		<div class="qna_container">
