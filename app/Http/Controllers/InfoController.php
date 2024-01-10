@@ -412,73 +412,51 @@ class InfoController extends Controller
     // 정보게시판 페이지 정보조회(목록)
     public function informationget(Request $req) {
         Log::debug("**** informationget start ****");
-        Log::debug("게시판 플래그 : ".$req);
+        Log::debug("게시판 플래그 : ".$req->flg);
+        Log::debug("카테고리 플래그 : ".$req->category);
+        Log::debug("정렬순 플래그 : ".$req->rangevalue);
         Log::debug("인포함수진입");
-        if(!($req->category)) {
-            $informresult = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->orderBy('community.created_at', 'desc')
-            ->get();
-            $infocnt = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->orderBy('community.created_at', 'desc')
-            ->count();
+        $informresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'community.admin_flg',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt'
+        ))
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null);
+
+        if (!($req->category == "")) {
+            Log::debug("category_flg 있음");
+            $informresult
+                ->where('community.category_flg', $req->category)
+                ->orderBy('community.created_at', 'desc');
         } else {
-            $informresult = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->where('community.category_flg', $req->category)
-            ->orderBy('community.created_at', 'desc')
-            ->get();
-            $infocnt = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->where('community.category_flg', $req->category)
-            ->orderBy('community.created_at', 'desc')
-            ->count();
+            Log::debug("category_flg 없음");
+            $informresult->orderBy('community.created_at', 'desc');
         }
+
+        if ($req->orderby) {
+            Log::debug("orderby flg 있음");
+            Log::debug("orderby : ".$req->orderby);
+            if($req->orderby === 1) {
+                $informresult->orderBy('community.created_at', 'desc');
+            } else if ($req->orderby === 2) {
+                $informresult->orderBy('community.hits', 'desc');
+            } else {
+                $informresult->orderBy('lik.cnt', 'desc');
+            }
+        }
+
+        $informresult = $informresult->paginate(20);
+
+        $infocnt = $informresult->count();
+
         Log::debug($informresult);
         Log::debug($infocnt);
         
@@ -487,55 +465,6 @@ class InfoController extends Controller
             'information' => $informresult,
             'infocnt' => $infocnt,
         ], 200);          
-    }
-
-    // 정보게시판 카테고리 설정시 리렌더링?
-    
-
-    // 카테고리로 정렬한 게시글 목록 조회
-    public function categoryinfoget(Request $req) {
-        Log::debug("**** categoryinfoget start ****");
-        Log::debug("게시판 플래그 : ".$req->flg);
-        Log::debug("카테고리함수진입");
-        $categoryresult = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->where('community.category_flg', $req->category_flg)
-        ->orderBy('community.created_at', 'desc')
-        ->get();
-        $categorycnt = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->orderBy('community.created_at', 'desc')
-        ->count();
-        Log::debug($categoryresult);
-        Log::debug($categorycnt);
-        
-        return response()->json([
-            'code' => '0',
-            'categorydata' => $categoryresult,
-            'categorycnt' => $categorycnt,
-        ], 200); 
     }
 
     // 커뮤니티 디테일 페이지 정보조회
