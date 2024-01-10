@@ -1931,6 +1931,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .admin_modal_btn_box{
 	display: flex;
+	justify-content: space-between;
 }
 .admin_modal_btn{
 	background-color: #00a678;
@@ -1941,7 +1942,47 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     font-size: 1.3em;
     color: #a5a5a5;
 }
-
+.admin_report_card_header{
+	display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.admin_report_card_header_span0{
+	padding: 2px 10px;
+	border-radius: 10px;
+	background-color: #6dffd6;
+	color: #fff;
+}
+.admin_report_card_header_span1{
+	padding: 2px 10px;
+	border-radius: 10px;
+	background-color: #ff7878;
+	color: #fff;
+}
+.admin_report_card_header_span2{
+	padding: 2px 10px;
+	border-radius: 10px;
+	background-color: #fc26df;
+	color: #fff;
+}
+.admin_report_card_header_span3{
+	padding: 2px 10px;
+	border-radius: 10px;
+	background-color: #5184d2;
+	color: #fff;
+}
+.admin_report_card_header_span4{
+	padding: 2px 10px;
+	border-radius: 10px;
+	background-color: #6dffd6;
+	color: #fff;
+}
+.admin_report_span_to{
+	background-color: #ffbcbc;
+}
+.admin_report_span_from{
+	background-color: #b2d1ff;
+}
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
 	display: flex;

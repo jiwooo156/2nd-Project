@@ -170,7 +170,7 @@
 </div>
 </template>
 <script>
-
+import Swal from 'sweetalert2';
 
 export default {
 	name: 'UserComponent',
@@ -276,7 +276,12 @@ export default {
 							}
 						} else {
 							this.nickChkFlg = false;
-							alert("닉네임체크에 실패하였습니다");
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: "닉네임체크에 실패하였습니다",
+								confirmButtonText: '확인'
+							})
 						}
 					})
 					.catch(err => {
@@ -293,7 +298,12 @@ export default {
 				this.$store.commit('setUserInfo',res.data.data);
 			})
 			.catch(err => {
-				alert("유저정보를 불러오는대 실패했습니다. \n다시시도해주세요");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: "유저정보를 불러오는대 실패했습니다. \n다시시도해주세요",
+                    confirmButtonText: '확인'
+                })
 			})
 		},
 		// 비밀번호변경
@@ -446,7 +456,12 @@ export default {
 			if(this.user_com_pw&&this.user_com_pw_chk){
 				this.$store.dispatch('actionChangePw');
 			}else{
-				alert("입력값을 확인해 주세요");
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '입력값을 확인해 주세요.',
+                    confirmButtonText: '확인'
+                })
 			}
 		},
 		usernickchange(){
@@ -470,15 +485,35 @@ export default {
 						this.$store.commit('setNickFlg',0);
 						localStorage.setItem('nick', nick.value);
 						this.$store.commit('setNowUser',nick.value);
-						alert('정상처리되었습니다');
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '정상처리되었습니다.',
+							confirmButtonText: '확인'
+						})
 					}else if(res.data.code === "0"){
-						alert(res.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+						})
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+						})
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})
 				})
 			}else{
 				this.nickval();

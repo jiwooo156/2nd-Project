@@ -150,9 +150,9 @@ class UserController extends Controller
         // 값이 조회됬을때
         }else if($result){
             $restaint = Restraint::
-            where('u_id',$result->id)
-            ->orderby('restraint_at','desc')
-            ->first();
+                where('u_id',$result->id)
+                ->orderby('restraint_at','desc')
+                ->first();
             Log::debug( $restaint);
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
@@ -161,8 +161,7 @@ class UserController extends Controller
                     ,'errorMsg' => $errorMsg
                 ], 400);
             }
-            Log::debug($restaint->restaint_at > now());
-            if("트루펄스".$restaint->restaint_at > now()){
+            if($restaint->restaint_at > now()){
                 return response()->json([
                     'code' => 'E07',
                     'data' => $restaint
@@ -721,7 +720,7 @@ class UserController extends Controller
     }
     // modal용 report data획득
     public function reportget(Request $req){
-        if($req->flg==="커뮤"){
+        if($req->flg==="0"){
             Log::debug("보드일때");
             $data = Community::withTrashed()
             ->select('users.email','community.*')
@@ -729,7 +728,6 @@ class UserController extends Controller
             ->where('community.id',$req->b_id)
             ->first();
         }else{
-            Log::debug("댓글일떄");
             $data = Replie::withTrashed()
             ->select('users.email','replies.*')
             ->where('replies.id',$req->b_id)
@@ -748,6 +746,7 @@ class UserController extends Controller
             $data = Community::withTrashed()
             ->where('id',$req->id)
             ->first();
+            Log::debug($data);
             if($data->deleted_at !== null){
                 return response()->json([
                     'code' => '1',
@@ -792,28 +791,22 @@ class UserController extends Controller
             DB::beginTransaction();
             // 삭제처리
             Log::debug($req->flg);
-            if($req->flg==="댓글"){
-                Log::debug("댓글");
+            if($req->flg==="1"){
                 $data = Report::
                     where('b_id',$req->id)
                     ->where('flg',1)
                     ->first();
-                Log::debug( $data);
                 $result = Replie::destroy($req->id);
             }else{
-                Log::debug("커뮤");
                 $data = Report::
                     where('b_id',$req->id)
                     ->where('flg',0)
                     ->first();
-                Log::debug( $data);
                 $result = Community::destroy($req->id);
             }
-            // 삭제 정상시
-            if($result){
-                // 조회된 값의 어드민플레그 1로 변경
-                $data->admin_flg = "1";
-            }
+            // 조회된 값의 어드민플레그 1로 변경
+            Log::debug('삭제완료');
+            $data->admin_flg = "1";
             // 변경한 값 저장
             $data->save();
             // 저장
@@ -840,7 +833,7 @@ class UserController extends Controller
                 where('id',$req->id)
                 ->first();
             // 삭제 정상시
-            $data->admin_flg = "1";
+            $data->admin_flg = "2";
             // 변경한 값 저장
             $data->save();
             // 저장
@@ -864,8 +857,6 @@ class UserController extends Controller
             ->where($case[$req->flg],$req->val)
             ->orderby('id','desc')
             ->first();
-
-        // 서브쿼리사용법
         $result = Restraint::
             where('u_id',$data->id)
             ->orderby('restraint_at','desc')
@@ -941,6 +932,76 @@ class UserController extends Controller
             $data->save();
             // 저장
             Log::debug($data);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '변경 실패.'
+            ], 400);
+        }
+    }
+    // 신고데이터 전체 가져오기
+    public function reportall(Request $req){
+        $data = Report::
+            select('users.email','reports.*')
+            // ->where('reports.admin_flg', 0)
+            ->join('users', 'reports.u_id', '=', 'users.id')
+            ->orderby('reports.created_at','asc')
+            ->get();
+        
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ], 200);
+    }
+    // 삭제된게시물 복구
+    public function repairpost(Request $req){
+        try {
+            Log::debug($req->flg);
+            // 트랜잭션시작
+            DB::beginTransaction();
+            if($req->flg==="0"){
+                // 커뮤니티 게시글 조회
+                $data = Community::withTrashed()
+                    ->where('id',$req->id)
+                    ->first();
+                // 삭제일자 삭제
+                $data->deleted_at = null;
+                // 저장
+                $data->save();
+            }else if($req->flg==="1"){
+                // 댓글 조회
+                $data = Replie::withTrashed()
+                    ->where('id',$req->id)
+                    ->first();
+                // 삭제일자 삭제
+                $data->deleted_at = null;
+                // 저장
+                $data->save();
+            }else{
+                // 없을시
+                Log::debug("없을때");
+                return response()->json([
+                    'code' => 'E99',
+                    'errorMsg' => '변경 실패.'
+                ], 400);
+            }
+            Log::debug("1차통과");
+            // 플래그변경위해 신고테이블조회
+            $result = Report::
+                where('b_id',$req->id)
+                ->where('flg',$req->flg)
+                ->first();
+            $result->admin_flg = 2;
+            // 변경한 값 저장
+            $result->save();
+            // 저장
+            Log::debug($result);
             DB::commit();
             return response()->json([
                 'code' => '0'
