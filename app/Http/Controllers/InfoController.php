@@ -408,7 +408,21 @@ class InfoController extends Controller
             'tour' => $tour,
         ],200);
     }
-    
+    // 질문게시판 페이징 출력
+    public function qnaPaging(Request $req) {
+        Log::debug("함수진입");
+        $list = Community::
+            select('community.id','community.category_flg','community.title','community.created_at','community.hits','users.nick','community.admin_flg',DB::raw('COALESCE(lik.cnt, 0) as cnt'))
+            ->limit(9)
+            ->offset($req->offset)
+            ->get();
+        Log::debug('함수종료');
+        Log::debug($list);
+        return response()->json([
+            'code' => '0',
+            'list' => $list,
+        ], 200);
+	}
     // 정보게시판 페이지 정보조회(목록)
     public function informationget(Request $req) {
         Log::debug("**** informationget start ****");
@@ -422,6 +436,7 @@ class InfoController extends Controller
                 'community.created_at',
                 'community.hits',
                 'users.nick',
+                'community.admin_flg',
                 DB::raw('COALESCE(lik.cnt, 0) as cnt')
             )
             ->join('users', 'community.u_id', '=', 'users.id')

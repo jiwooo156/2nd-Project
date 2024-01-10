@@ -106,7 +106,8 @@
 	</div>
 </template>
 <script>
-import VueCookies from "vue-cookies";    
+import VueCookies from "vue-cookies";
+import Swal from 'sweetalert2';
 
 export default {
 	name: 'SigninComponent',
@@ -526,7 +527,12 @@ export default {
 							}
 						} else {
 							this.nickChkFlg = false;
-							alert("닉네임체크에 실패하였습니다");
+							Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '닉네임체크에 실패하였습니다',
+							confirmButtonText: '확인'
+                })
 						}
 					})
 					.catch(err => {

@@ -88,6 +88,7 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
         return view('welcome');
     });
     Route::get('/info', [InfoController::class, 'informationget']);
+    Route::get('/list', [InfoController::class, 'qnaPaging']);
 });
 
 // 디테일 라우터
