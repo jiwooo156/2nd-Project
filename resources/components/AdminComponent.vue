@@ -1113,6 +1113,60 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
+		// 유저제재
+		modalRestraintuser(id,flg){
+			let date=['1일','3일','7일','15일','30일','영구제제']
+			Swal.fire({
+				title: '유저번호 : ' + id,
+				text: '재제사유 : ' + date[flg],
+				input: 'select',  // 'select'로 지정
+				inputOptions: {
+					'option1': '욕설 및 혐오 표현',
+					'option2': '불법 콘텐츠 게시',
+					'option3': '스팸 활동',
+					'option3': '악성 행위 및 고의적인 피해',
+					'option3': '기타',
+					// 추가적인 옵션들을 필요에 따라 정의
+				},
+				inputPlaceholder: '선택해주세요',  // 선택 전에 표시되는 플레이스홀더
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					// 사용자가 확인을 눌렀을 때의 동작
+					const selectedOption = result.value;
+					console.log('선택한 옵션:', selectedOption);				
+					// const URL = '/admin/report/repair'
+					// const formData = new FormData();
+					// formData.append('id',id);
+					// formData.append('flg',flg);
+					// axios.post(URL,formData)
+					// .then(res => {
+					// 	// this.resetall();
+					// 	// this.reportall();
+					// 	Swal.fire({
+					// 		icon: 'success',
+					// 		title: '완료',
+					// 		text: '정상처리되었습니다.',
+					// 		confirmButtonText: '확인'
+					// 	})
+					// })
+					// .catch(err => {
+					// 	Swal.fire({
+					// 		icon: 'error',
+					// 		title: 'Error',
+					// 		text: '에러 발생.',
+					// 		confirmButtonText: '확인'
+					// 	})
+					// })
+					// .finally(() => {
+					// 	this.$store.commit('setLoading', false);
+					// });
+				}
+			});
+		},
 		// 초기화용함수
 		resetall(){
 			this.restraint_msg= "";
