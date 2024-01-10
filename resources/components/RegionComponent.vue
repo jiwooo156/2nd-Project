@@ -455,10 +455,20 @@ export default {
 		searchFestival() {
 			// 조건 1 검색조건 아무것도 없이 클릭시
 			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword==="") {
-				alert("검색조건을 최소 1개이상 입력해 주세요.")
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '검색조건을 최소 1개이상 입력해 주세요.',
+                    confirmButtonText: '확인'
+                })
 			// 조건 2 시작일자보다 종료일자가 과거일시
 			}else if(this.startdate > this.enddate&&this.startdate!==""&&this.enddate!==""){
-				alert("종료일자를 시작일자 보다 크게 설정해 주세요")
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '종료일자를 시작일자 보다 크게 설정해 주세요.',
+                    confirmButtonText: '확인'
+                })
 			}else{
 				// 로딩시작
 				this.$store.commit('setLoading',true);

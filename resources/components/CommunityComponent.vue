@@ -126,6 +126,7 @@
 	</div>
 </template>
 <script>
+import Swal from 'sweetalert2';
 export default {
 	name: 'DetailComponent',
 
@@ -172,11 +173,21 @@ export default {
 					this.repliecount = res.data.repliecount;
 					this.heartcount = res.data.heartcnt;			
 				}else if(res.data.code==="E99"){
-					alert(res.data.errmsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errmsg,
+                    confirmButtonText: '확인'
+                })
 				}
 			})
 			.catch(err => {
-				alert('에러가 발생했습니다');
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러가 발생했습니다',
+                    confirmButtonText: '확인'
+                })
 			})
 		},
 		// 댓글작성
@@ -194,16 +205,30 @@ export default {
 						this.repliecount++;
 						this.repliedata.unshift(res.data.data);
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+                })
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+                })
 				})
 			}else{
-				alert("댓글을 작성해 주세요.")
-			}
-		
+				Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: '댓글을 작성해 주세요.',
+						confirmButtonText: '확인'
+                })
+			}		
 		},
 		// 시간초기화
 		converttime(date){
@@ -258,11 +283,21 @@ export default {
 						document.querySelector('#detail_replie'+id).remove();
 						this.repliecount--;
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+                		})
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+                		})
 				})
 			} else {
 				return;
@@ -281,11 +316,21 @@ export default {
 						this.moreflg = true;
 					}
 				}else{
-					alert(res.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+                })
 				}
 			})
 			.catch(err => {
-				alert(err.response.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+                })
 			})		
 		},
 		// 이메일 마스킹
