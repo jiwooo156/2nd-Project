@@ -149,6 +149,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::post('/data', [UserController::class, 'answerdata']);
     Route::get('/report', [UserController::class, 'reportget']);
     Route::get('/reportall', [UserController::class, 'reportall']);
+    Route::get('/requestall', [UserController::class, 'requestall']);
     Route::delete('/report', [UserController::class, 'reportdel']);
     Route::post('/report', [UserController::class, 'reportpost']);
     Route::post('/report/repair', [UserController::class, 'repairpost']);

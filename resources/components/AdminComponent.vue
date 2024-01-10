@@ -140,24 +140,53 @@
 			>
 				<div class="admin_modal_title">질문정보</div>
 				<div class="admin_modal_container">
-					<div>유저번호 : {{ now_data.u_id }}</div>
-					<div>이메일 : {{ now_data.email }}</div>
-					<div>제목 : {{ now_data.title }}</div>
-					<div>질문내용 : {{ now_data.content }}</div>
-					<div>질문일자 : {{ now_data.created_at }}</div>
+					<div class="input-group  mb-3">
+						<span class="input-group-text">유저번호</span>
+						<div aria-label="First name" class="form-control">
+							{{ now_data.u_id }}
+						</div>
+						<span class="input-group-text">Email</span>
+						<div aria-label="Last name" class="form-control">
+							{{ now_data.email }}
+						</div>
+					</div>
+					<div class="input-group">
+						<span class="input-group-text" id="inputGroup-sizing-default">번호</span>
+						<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							{{ now_data.id }}
+						</div>
+					</div>
+					<div class="input-group">
+						<span class="input-group-text" id="inputGroup-sizing-default">제목</span>
+						<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							{{ now_data.title }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">내용</span>
+						<textarea class="form-control admin_request_textarea" aria-label="With textarea" readonly style="background-color: #fff;">{{ now_data.content }}</textarea>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">작성시간</span>
+						<div class="form-control" aria-label="With textarea">{{ now_data.created_at }}</div>
+					</div>
 				</div>
-				<input type="text" class="admin_modal_input" 
-					v-model="answer"
-					@input="koreaName"
-					@keyup.enter="adminAnswer(now_data.id)"
-				>
-				<div class="admin_modal_btn_box">
-					<div class="admin_modal_btn pointer"
+				<div class="input-group mb-3">
+					<span class="input-group-text">답변</span>
+					<textarea class="form-control" aria-label="With textarea"
+						v-model="answer"
+						placeholder="최대 200글자까지 작성 가능합니다"
+						@input="koreaName"
+						@keyup.enter="adminAnswer(now_data.id)"
+					></textarea>
+				</div>
+				<div class="center">
+					<button type="button" class="btn btn-primary admin_request_btn_box"
 						@click="adminAnswer(now_data.id)"
-					>답변</div>
-					<div class="admin_modal_btn pointer"
+					>답변</button>
+					<button type="button" class="btn btn-secondary admin_request_btn_box"
 						@click="closeModal"
-					>취소</div>
+					>취소</button>
 				</div>
 			</div>
 			<div 
@@ -207,6 +236,12 @@
 						<span class="input-group-text admin_report_span_to">삭제일자</span>
 						<div class="form-control" aria-label="With textarea">{{ modalReport.deleted_at }}</div>
 					</div>
+					<div class="input-group mb-3"
+						v-if="this.now_report.admin_flg === '3'"
+					>
+						<span class="input-group-text admin_report_span_to">제제일자</span>
+						<div class="form-control" aria-label="With textarea">{{ modalReport.restraint_at }}</div>
+					</div>
 				</div>
 				<hr>
 				<div>
@@ -225,9 +260,15 @@
 						<span class="input-group-text admin_report_span_from">신고사유</span>
 						<div class="form-control" aria-label="With textarea">{{ this.now_report.content }}</div>
 					</div>
-					<div class="input-group mb-4">
+					<div class="input-group mb-3">
 						<span class="input-group-text admin_report_span_from">신고시간</span>
 						<div class="form-control" aria-label="With textarea">{{ this.now_report.created_at }}</div>
+					</div>
+					<div class="input-group mb-4"
+						v-if="this.now_report.admin_flg === '4'"
+					>
+						<span class="input-group-text admin_report_span_from">제재일자</span>
+						<div class="form-control" aria-label="With textarea">{{ this.now_report.restraint_at }}</div>
 					</div>
 				</div>
 				<div class="admin_modal_btn_box">
@@ -240,11 +281,12 @@
 						v-if="modalReport.deleted_at !== 'X'&&this.now_report.admin_flg !== '0'"
 					>게시글 복구</button>
 					<button type="button" class="btn btn-primary"
-						@click="keepdata(this.now_report.id)"
+						@click="keepdata(this.now_report.id,'2')"
 						v-if="this.now_report.admin_flg === '0'"
 					>게시글 유지</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning"
 						v-if="this.now_report.admin_flg === '3'"
+						@click="clearestraint(null,this.now_report.id)"
 					>
 						작성자 제재해제
 					</button>
@@ -254,15 +296,16 @@
 						작성자 제재
 					</button>	
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'0')">1일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'1')">3일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'2')">7일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'3')">15일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'4')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.modalReport.u_id,'5')">영구제재</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'0','0')">1일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'1','0')">3일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'2','0')">7일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'3','0')">15일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'4','0')">30일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'5','0')">영구제재</a></li>
 					</ul>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning"
 						v-if="this.now_report.admin_flg === '4'"
+						@click="clearestraint(null,this.now_report.id)"
 					>
 						신고자 제재해제
 					</button>
@@ -272,12 +315,12 @@
 						신고자 제재
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'0')">1일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'1')">3일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'2')">7일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'3')">15일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'4')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.u_id,'5')">영구제재</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'0','1')">1일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'1','1')">3일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'2','1')">7일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'3','1')">15일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'4','1')">30일</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'5','1')">영구제재</a></li>
 					</ul>
 					<button type="button" class="btn btn-secondary" @click="closeModal">취소</button>
 				</div>
@@ -468,16 +511,77 @@
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
 		테스트5
 	</div>
-	<!-- 등록페이지 -->
+	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
-		테스트6
+		신고목록
+		<div>
+			처리전
+		</div>
+		<div class="row row-cols-1 row-cols-md-4 g-4">
+			<div		
+				v-if="Object.keys(this.requestdata_before).length === 0"
+			>
+				새로운 건의가 없습니다.
+			</div>
+			<div class="col" 
+				v-for="data in requestdata_before" :key="data"
+			>
+				<div class="card">
+					<div class="card-body pointer"
+						@click="dataget(data)"
+					>
+						<div class="admin_report_card_header">
+							<h5 class="card-title">건의내용</h5>
+							<span :class="'admin_report_card_header_span0'">답변전</span>
+						</div>
+						<div class="card-text">유저번호 = {{ data.u_id }}</div>
+						<div class="card-text">제목 = {{ data.title }}</div>
+						<div class="card-text">내용 = {{ data.content }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div>
+			처리완료
+		</div>
+		<div class="row row-cols-1 row-cols-md-4 g-4">
+			<div		
+				v-if="Object.keys(this.requestdata_after).length === 0"
+			>
+				새로운 건의가 없습니다.
+			</div>
+			<div class="col" 
+				v-for="data in requestdata_after" :key="data"
+			>
+				<div class="card">
+					<div class="card-body pointer"
+						@click="dataget(data)"
+					>
+						<div class="admin_report_card_header">
+							<h5 class="card-title">건의내용</h5>
+							<span :class="'admin_report_card_header_span1'">답변후</span>
+						</div>
+						<div class="card-text">유저번호 = {{ data.u_id }}</div>
+						<div class="card-text">제목 = {{ data.title }}</div>
+						<div class="card-text">내용 = {{ data.content }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+	<!-- 신고페이지 -->
 	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
 		신고목록
 		<div>
 			처리전
 		</div>
 		<div class="row row-cols-1 row-cols-md-4 g-4">
+			<div		
+				v-if="Object.keys(this.reportdata_before).length === 0"
+			>
+				신고된 내용이 없습니다.
+			</div>
 			<div class="col" 
 				v-for="data in reportdata_before" :key="data"
 			>
@@ -505,6 +609,11 @@
 			처리완료
 		</div>
 		<div class="row row-cols-1 row-cols-md-4 g-4">
+			<div
+				v-if="Object.keys(this.reportdata_after).length === 0"
+			>
+				처리된 내용이 없습니다.
+			</div>
 			<div class="col" 
 				v-for="data in reportdata_after" :key="data"
 			>
@@ -528,6 +637,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- 유저관리 -->
 	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
 		유저관리
 		<select v-model="searchtype">
@@ -589,7 +699,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary admin_boot_modal_close" data-bs-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-primary"
-								@click="restraintuser()"
+								@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
 							>적용</button>
 						</div>
 					</div>
@@ -599,7 +709,7 @@
 				v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0"
 			>유저제재</div>
 			<div class="btn btn-danger btn-sm"
-				@click="clearestraint"
+				@click="clearestraint(this.selectUserData.id,null)"
 				v-if="this.selectUserData.res_at >= this.todaytime"
 			>제제해제</div>
 			<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
@@ -642,13 +752,14 @@ export default {
 			now_data: {},
 			now_report: {},
 			modalReport:{},
-			modalReport:{},
 			reportdata_before:{},
 			reportdata_after:{},
 			modalflg:false,
 			restraintinput:false,
 			answer: "",
 			selectUserData: {},
+			requestdata_before:{},
+			requestdata_after:{},
 		}
 	},
 	watch: {
@@ -668,6 +779,7 @@ export default {
 	},
 
 	methods: {
+		// 어드민체크
 		adminchk(){
 			this.$store.commit('setLoading',true);
 			let id = localStorage.getItem('admin')
@@ -703,7 +815,7 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 로그아웃호출
+		// 로그아웃
         logout(){
             this.$store.dispatch('actionLogout');
         },
@@ -731,6 +843,7 @@ export default {
 			this.$store.commit('setLoading',true);
 			this.now_data = {};
 			this.now_report = data;
+			this.now_report.restraint_at = this.now_report.restraint_at === null ? "X":this.now_report.restraint_at;
 			const URL = '/admin/report?b_id='+data.b_id+'&flg='+data.flg
 			axios.get(URL)
 			.then(res => {
@@ -743,6 +856,7 @@ export default {
 					res.data.data.flg ="질문게시판"
 				}
 				res.data.data.deleted_at = res.data.data.deleted_at === null ? "X":res.data.data.deleted_at;
+				res.data.data.restraint_at = res.data.data.restraint_at === null ? "X":res.data.data.restraint_at;
 				this.modalReport = res.data.data;
 				console.log(this.modalReport.deleted_at)
 				this.modalflg = true;
@@ -876,11 +990,12 @@ export default {
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
 		},
-		// 삭제안하고 플래그변경
-		keepdata(id){
+		// 플래그변경
+		keepdata(id,flg){
 			this.$store.commit('setLoading',true);
 			const formData = new FormData();
 			formData.append('id', id);
+			formData.append('flg', flg);
 			const URL = '/admin/report'
 			axios.post(URL,formData)
 			.then(res => {
@@ -922,6 +1037,9 @@ export default {
 			this.subflg = sub;
 			if(main===3,sub===1){
 				this.reportall()
+			}
+			if(main===3,sub===0){
+				this.requestall()
 			}
 			this.resetall()
 		},
@@ -980,15 +1098,15 @@ export default {
 			}
 		},
 		// 유저제재하기
-		restraintuser(){
-			if(this.restraint_date ===""){
+		restraintuser(u_id,date,msg){
+			if(date ===""){
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
 					text: '제재기간을 입력해 주세요.',
 					confirmButtonText: '확인'
 				})
-			}else if(this.restraint_msg ===""||(this.restraint_msg === "기타"&&this.restraint_msg2 === "")){
+			}else if(msg ===""||(msg === "기타"&&this.restraint_msg2 === "")){
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
@@ -997,14 +1115,15 @@ export default {
 				})
 			}else{
 				this.$store.commit('setLoading',true);
-				if(this.restraint_msg === "기타"){
-					this.restraint_msg = this.restraint_msg2
+				if(msg === "기타"){
+					msg = this.restraint_msg2
 				}
 				const URL = '/admin/userinfo'
 				const formData = new FormData();
-				formData.append('u_id', this.selectUserData.id);
-				formData.append('date', this.restraint_date);
-				formData.append('msg', this.restraint_msg);
+				formData.append('id', id);
+				formData.append('u_id', u_id);
+				formData.append('date', date);
+				formData.append('msg', msg);
 				axios.post(URL,formData)
 				.then(res => {
 					if(res.data.code === "0"){
@@ -1032,21 +1151,29 @@ export default {
 			}
 		},
 		// 유저제재풀기
-		clearestraint(){
+		clearestraint(u_id,id){
 			this.$store.commit('setLoading',true);
 			const URL = '/admin/restraint'
 			const formData = new FormData();
-			formData.append('u_id', this.selectUserData.id);
+			if(u_id === null){
+				formData.append('id', id);
+			}else{
+				formData.append('u_id', u_id);
+			}
 			axios.post(URL,formData)
 			.then(res => {
 				if(res.data.code === "0"){
 					this.resetall()
-					Swal.fire({
-						icon: 'success',
-						title: '완료',
-						text: '정상처리되었습니다.',
-						confirmButtonText: '확인'
-					})
+					if(u_id===null){
+						this.keepdata(id,'2')
+					}else{
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '정상처리되었습니다.',
+							confirmButtonText: '확인'
+						})
+					}
 				}
 			})
 			.catch(err => {
@@ -1114,57 +1241,136 @@ export default {
 			});
 		},
 		// 유저제재
-		modalRestraintuser(id,flg){
+		modalRestraintuser(id,u_id,flg,user){
+			let to=['작성자 재제','신고자 제제']
 			let date=['1일','3일','7일','15일','30일','영구제제']
 			Swal.fire({
-				title: '유저번호 : ' + id,
-				text: '재제사유 : ' + date[flg],
-				input: 'select',  // 'select'로 지정
+				title: to[user],
+				text: '유저번호 : '+u_id+'\n'+'재제사유 : '+date[flg],
+				input: 'select',
 				inputOptions: {
-					'option1': '욕설 및 혐오 표현',
-					'option2': '불법 콘텐츠 게시',
-					'option3': '스팸 활동',
-					'option3': '악성 행위 및 고의적인 피해',
-					'option3': '기타',
-					// 추가적인 옵션들을 필요에 따라 정의
+					'욕설 및 혐오 표현': '욕설 및 혐오 표현',
+					'불법 콘텐츠 게시': '불법 콘텐츠 게시',
+					'스팸 활동': '스팸 활동',
+					'악성 행위 및 고의적인 피해': '악성 행위 및 고의적인 피해',
+					'기타': '기타',
 				},
-				inputPlaceholder: '선택해주세요',  // 선택 전에 표시되는 플레이스홀더
+				inputPlaceholder: '선택해주세요',
 				showCancelButton: true,
 				confirmButtonText: '확인',
 				cancelButtonText: '취소',
+				preConfirm: (input) => {
+					// 공백입력시 예외사항
+					return new Promise((resolve) => {
+						if (input.trim() === '') {
+							Swal.showValidationMessage('답변을 입력해 주세요.');
+						}
+						resolve(input);
+					});
+				}
 			})
 			.then((result) => {
 				if (result.isConfirmed) {
 					// 사용자가 확인을 눌렀을 때의 동작
-					const selectedOption = result.value;
-					console.log('선택한 옵션:', selectedOption);				
-					// const URL = '/admin/report/repair'
-					// const formData = new FormData();
-					// formData.append('id',id);
-					// formData.append('flg',flg);
-					// axios.post(URL,formData)
-					// .then(res => {
-					// 	// this.resetall();
-					// 	// this.reportall();
-					// 	Swal.fire({
-					// 		icon: 'success',
-					// 		title: '완료',
-					// 		text: '정상처리되었습니다.',
-					// 		confirmButtonText: '확인'
-					// 	})
-					// })
-					// .catch(err => {
-					// 	Swal.fire({
-					// 		icon: 'error',
-					// 		title: 'Error',
-					// 		text: '에러 발생.',
-					// 		confirmButtonText: '확인'
-					// 	})
-					// })
-					// .finally(() => {
-					// 	this.$store.commit('setLoading', false);
-					// });
+					const val = result.value;	
+					if(val==="기타"){
+						Swal.fire({
+							title: '제재사유',
+							input: 'text',
+							inputPlaceholder: '20자 이내로 작성해 주세요',
+							showCancelButton: true,
+							confirmButtonText: '확인',
+							cancelButtonText: '취소',
+							preConfirm: (input) => {
+								// 공백입력시 예외사항
+								return new Promise((resolve) => {
+									if (input.trim() === '') {
+										Swal.showValidationMessage('답변을 입력해 주세요.');
+									}
+									resolve(input);
+								});
+							}
+						})
+						.then((result) => {
+							if (result.isConfirmed) {
+								const val = result.value;
+								const URL = '/admin/userinfo'
+								const formData = new FormData();
+								formData.append('id', id);
+								formData.append('u_id', u_id);
+								formData.append('date', flg);
+								formData.append('msg', val);
+								axios.post(URL,formData)
+								.then(res => {
+									if(res.data.code === "0"){
+										if(user==="0"){
+											this.keepdata(this.now_report.id,'3')
+										}else{
+											this.keepdata(this.now_report.id,'4')
+										}
+									}
+								})
+								.catch(err => {
+									Swal.fire({
+										icon: 'error',
+										title: 'Error',
+										text: '에러 발생.',
+										confirmButtonText: '확인'
+									})
+								})	
+							}					
+						})
+					}else{
+						const val = result.value;
+						const URL = '/admin/userinfo'
+						const formData = new FormData();
+						formData.append('id', id);
+						formData.append('u_id', u_id);
+						formData.append('date', flg);
+						formData.append('msg', val);
+						axios.post(URL,formData)
+						.then(res => {
+							if(res.data.code === "0"){
+								if(user==="0"){
+									this.keepdata(this.now_report.id,'3')
+								}else{
+									this.keepdata(this.now_report.id,'4')
+								}
+							}
+						})
+						.catch(err => {
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: '에러 발생.',
+								confirmButtonText: '확인'
+							})
+						})		
+					}
 				}
+			});
+		},
+		// 전체건의 불러오기
+		requestall(){
+			this.$store.commit('setLoading',true);
+			const URL = '/admin/requestall'
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.requestdata_before = res.data.data.filter(item => item.admin_flg === "0");
+					this.requestdata_after = res.data.data.filter(item => item.admin_flg !== "0");
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
 			});
 		},
 		// 초기화용함수

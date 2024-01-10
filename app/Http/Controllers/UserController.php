@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Del_Reason;
 use App\Models\Authenticate;
 use App\Models\Admin;
-use App\Models\Restraint;
 use App\Models\Community;
 use App\Models\Replie;
 use App\Models\Report;
@@ -149,11 +148,10 @@ class UserController extends Controller
             ], 200);
         // 값이 조회됬을때
         }else if($result){
-            $restaint = Restraint::
-                where('u_id',$result->id)
+            $data = Report::
+                where('r_id',$result->id)
                 ->orderby('restraint_at','desc')
                 ->first();
-            Log::debug( $restaint);
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
                 return response()->json([
@@ -161,10 +159,10 @@ class UserController extends Controller
                     ,'errorMsg' => $errorMsg
                 ], 400);
             }
-            if($restaint->restaint_at > now()){
+            if($data->restraint_at > now()){
                 return response()->json([
                     'code' => 'E07',
-                    'data' => $restaint
+                    'data' => $data
                 ], 200);
             }
             Auth::login($result);
@@ -723,16 +721,20 @@ class UserController extends Controller
         if($req->flg==="0"){
             Log::debug("보드일때");
             $data = Community::withTrashed()
-            ->select('users.email','community.*')
-            ->join('users', 'community.u_id', '=', 'users.id')
+            ->select('users.email','community.*','reports.restraint_at')
             ->where('community.id',$req->b_id)
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->leftjoin('reports', 'community.u_id', '=', 'reports.r_id')
             ->first();
         }else{
             $data = Replie::withTrashed()
-            ->select('users.email','replies.*')
+            ->select('users.email','replies.*','reports.restraint_at')
             ->where('replies.id',$req->b_id)
             ->join('users', 'replies.u_id', '=', 'users.id')
+            ->leftjoin('reports', 'replies.u_id', '=', 'reports.r_id')
             ->first();
+            Log::debug("댓글일때");
+            Log::debug($data);
         }
         return response()->json([
             'code' => '0',
@@ -832,8 +834,8 @@ class UserController extends Controller
             $data = Report::
                 where('id',$req->id)
                 ->first();
-            // 삭제 정상시
-            $data->admin_flg = "2";
+            // 플레그변경
+            $data->admin_flg = $req->flg;
             // 변경한 값 저장
             $data->save();
             // 저장
@@ -857,7 +859,7 @@ class UserController extends Controller
             ->where($case[$req->flg],$req->val)
             ->orderby('id','desc')
             ->first();
-        $result = Restraint::
+        $result = Report::
             where('u_id',$data->id)
             ->orderby('restraint_at','desc')
             ->get();
@@ -889,20 +891,34 @@ class UserController extends Controller
             $date =[1,3,7,15,30,36500];
             // 트랜잭션시작
             DB::beginTransaction();
-            // 인서트할 데이터 추가
-            $data['u_id'] = $req->u_id;
-            $data['restraint'] = $req->msg;
-            Log::debug($req->date);
-            if ($req->date === "5") {
-                $data['restraint_at'] = Carbon::parse('9999-01-01 00:00:00');
+            if($req->id){
+                $data = Report::
+                    where('id',$req->id)
+                    ->first();
+                $data->r_id = $req->u_id;
+                $data->restraint = $req->msg;
+                Log::debug($req->date);
+                if ($req->date === "5") {
+                    $data->restraint_at = Carbon::parse('9999-01-01 00:00:00');
+                }else{
+                    $data->restraint_at = date("Y-m-d H:i:s", strtotime("+".$date[$req->date]." days"));
+                }  
+                $data->save();
             }else{
-                $data['restraint_at'] = date("Y-m-d H:i:s", strtotime("+".$date[$req->date]." days"));
+                // 인서트할 데이터 추가
+                $data['r_id'] = $req->u_id;
+                $data['restraint'] = $req->msg;
+                Log::debug($req->date);
+                if ($req->date === "5") {
+                    $data['restraint_at'] = Carbon::parse('9999-01-01 00:00:00');
+                }else{
+                    $data['restraint_at'] = date("Y-m-d H:i:s", strtotime("+".$date[$req->date]." days"));
+                    Log::debug($data['restraint_at']);
+                }
+                // 처리결과를 인서트
+                $data = Report::create($data);
             }
-            // 처리결과를 인서트
-            $data = Restraint::create($data);
-            // 변경한 값 저장
             // 저장
-            Log::debug($data);
             DB::commit();
             return response()->json([
                 'code' => '0'
@@ -921,17 +937,23 @@ class UserController extends Controller
         try {
             // 트랜잭션시작
             DB::beginTransaction();
-            $data = Restraint::
-            where('u_id',$req->u_id)
-            ->orderby('restraint_at','desc')
-            ->first();
-            $data['u_id'] = $req->u_id;
-            Log::debug($req->date);
-                $data['restraint_at'] = date("Y-m-d H:i:s", strtotime("now"));
-            // 변경한 값 저장
-            $data->save();
+            // 리퀘스트온 아이디가 있을때
+            if($req->id){
+                $data = Report::
+                where('id',$req->id)
+                ->first();
+                $data['restraint_at'] = null;
+                // 변경한 값 저장
+                $data->save();
+            }else{
+                $data = Report::
+                where('u_id',$req->u_id)
+                ->get();
+                $data['restraint_at'] = null;
+                // 변경한 값 저장
+                $data->save();
+            }
             // 저장
-            Log::debug($data);
             DB::commit();
             return response()->json([
                 'code' => '0'
@@ -949,16 +971,16 @@ class UserController extends Controller
     public function reportall(Request $req){
         $data = Report::
             select('users.email','reports.*')
-            // ->where('reports.admin_flg', 0)
             ->join('users', 'reports.u_id', '=', 'users.id')
             ->orderby('reports.created_at','asc')
             ->get();
-        
+        Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
         ], 200);
     }
+    
     // 삭제된게시물 복구
     public function repairpost(Request $req){
         try {
@@ -1014,6 +1036,19 @@ class UserController extends Controller
                 'errorMsg' => '변경 실패.'
             ], 400);
         }
+    }
+    // 건의 전체 가져오기
+    public function requestall(Request $req){
+        $data = Community::
+            select('users.email','community.*')
+            ->where('community.flg', "3")
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->orderby('community.created_at','asc')
+            ->get();
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ], 200);
     }
     // 특정시간에 동작
     public function test(Request $req){
