@@ -25,7 +25,6 @@ import BoardComponent from './BoardComponent.vue'
 import QnaComponent from './QnaComponent.vue'
 import PostComponent from './PostComponent.vue'
 import CommunityComponent from './CommunityComponent.vue'
-import Swal from 'sweetalert2';
 
 export default {
 
