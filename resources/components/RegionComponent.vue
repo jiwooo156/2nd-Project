@@ -184,6 +184,7 @@ import axios from 'axios'
 import { defineComponent } from 'vue'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import Swal from 'sweetalert2';
 
 export default {
 	name: 'RegionComponent',
@@ -359,7 +360,14 @@ export default {
 			.catch(err => {
 				// console.log("캐치");
 				// 로딩종료
-				alert("데이터 에러 발생");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생.',
+                    confirmButtonText: '확인'
+                })
+
+			
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -396,7 +404,12 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생',
+                    confirmButtonText: '확인'
+                })
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -427,7 +440,12 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생',
+                    confirmButtonText: '확인'
+                })
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -488,7 +506,12 @@ export default {
 				})
 				.catch(err => {
 					// console.log("캐치");
-					alert("데이터 에러 발생")
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생.',
+                    confirmButtonText: '확인'
+                })
 				})
 				.finally(() => {
 					this.$store.commit('setLoading', false);
@@ -509,7 +532,12 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생',
+                    confirmButtonText: '확인'
+                })
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -529,7 +557,12 @@ export default {
 			})
 			.catch(err => {
 				// console.log("캐치");
-				alert("데이터 에러 발생");
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생',
+                    confirmButtonText: '확인'
+                })
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
