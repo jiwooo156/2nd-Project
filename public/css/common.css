@@ -2005,6 +2005,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .admin_request_textarea:focus{
 	box-shadow: none;
+	outline: none;
+}
+.admin_page_box_ul{
+	justify-content: center;
+}
+.admin_page_box_ul li a{
+	color: #000;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {

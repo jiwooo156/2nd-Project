@@ -171,18 +171,36 @@
 						<div class="form-control" aria-label="With textarea">{{ now_data.created_at }}</div>
 					</div>
 				</div>
-				<div class="input-group mb-3">
+				<div class="input-group mb-3"
+					v-if="now_data.admin_flg==='0'"
+				>
 					<span class="input-group-text">답변</span>
 					<textarea class="form-control" aria-label="With textarea"
 						v-model="answer"
 						placeholder="최대 200글자까지 작성 가능합니다"
 						@input="koreaName"
-						@keyup.enter="adminAnswer(now_data.id)"
 					></textarea>
+				</div>
+				<div class="input-group mb-3"
+					v-if="now_data.admin_flg==='1'"
+				>
+					<span class="input-group-text">답변내용</span>
+					<textarea class="form-control admin_request_textarea" id="admin_request_textarea" aria-label="With textarea"
+						readonly
+					>{{ now_data.replie }}</textarea>
 				</div>
 				<div class="center">
 					<button type="button" class="btn btn-primary admin_request_btn_box"
+						v-if="now_data.admin_flg==='0'"
 						@click="adminAnswer(now_data.id)"
+					>답변</button>
+					<button type="button" class="btn btn-primary admin_request_btn_box"
+						v-if="now_data.admin_flg==='1'&&!updateflg"
+						@click="updateready"
+					>수정</button>
+					<button type="button" class="btn btn-primary admin_request_btn_box"
+						v-if="updateflg"
+						@click="updateAnswer(now_data.id)"
 					>답변</button>
 					<button type="button" class="btn btn-secondary admin_request_btn_box"
 						@click="closeModal"
@@ -513,7 +531,7 @@
 	</div>
 	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
-		신고목록
+		건의목록
 		<div>
 			처리전
 		</div>
@@ -549,7 +567,7 @@
 			<div		
 				v-if="Object.keys(this.requestdata_after).length === 0"
 			>
-				새로운 건의가 없습니다.
+				답변한 건의가 없습니다.
 			</div>
 			<div class="col" 
 				v-for="data in requestdata_after" :key="data"
@@ -622,7 +640,7 @@
 						@click="reportget(data)"
 					>
 						<div class="admin_report_card_header">
-							<h5 class="card-title">신고한 유저</h5>
+							<h5 class="card-title">신고한 유저{{data.id}}</h5>
 							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
 						</div>
 						<div class="card-text">유저번호 = {{ data.u_id }}</div>
@@ -755,6 +773,7 @@ export default {
 			reportdata_before:{},
 			reportdata_after:{},
 			modalflg:false,
+			updateflg:false,
 			restraintinput:false,
 			answer: "",
 			selectUserData: {},
@@ -879,6 +898,7 @@ export default {
 			this.modalReport = {};
 			this.now_data = {};
 			this.modalflg = false;
+			this.updateflg = false;
 			this.$store.commit('setLoading', false);
 		},
 		// 답변달기
@@ -899,15 +919,21 @@ export default {
 				axios.post(URL,formData)
 				.then(res => {
 					if(res.data.code === "0"){
+						console.log('댄진입')
+						if(this.mainflg===3&&this.subflg===0){
+							console.log('질문게시판일떄')
+							this.requestall();
+						}else{
+							this.adminchk();
+						}
+						this.answer="";
+						this.closeModal();
 						Swal.fire({
 							icon: 'success',
 							title: '완료',
 							text: '정상처리되었습니다.',
 							confirmButtonText: '확인'
 						})
-						this.closeModal();
-						this.answer="";
-						this.adminchk();
 					}else if(res.data.code === "1"){
 						Swal.fire({
 							icon: 'error',
@@ -948,9 +974,15 @@ export default {
 			.then(res => {
 				if(res.data.code === "0"){
 					this.closeModal();
-					this.resetall();
-					this.reportall();
-					this.adminchk();
+					if(this.mainflg===3&&this.subflg===1){
+						this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '1';
+					}else{
+						// const del = this.reportdata_before.findIndex(item => item.id === this.now_report.id);
+						// if (del !== -1) {
+						// 	this.reportdata_before.splice(del, 1);
+						// }
+						this.adminchk();
+					}
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -1188,15 +1220,17 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 신고데이터 전체불러오기
+		// 신고데이터 10개불러오기
 		reportall(){
 			this.$store.commit('setLoading',true);
 			const URL = '/admin/reportall'
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.reportdata_before = res.data.data.filter(item => item.admin_flg === "0");
-					this.reportdata_after = res.data.data.filter(item => item.admin_flg !== "0");
+					this.reportdata_before = res.data.data_before;
+					this.reportdata_before_cnt = res.data.b_cnt;
+					this.reportdata_after = res.data.data_after;
+					this.reportdata_after = res.data.a_cnt;
 				}
 			})
 			.catch(err => {
@@ -1219,8 +1253,8 @@ export default {
 			formData.append('flg',flg);
 			axios.post(URL,formData)
 			.then(res => {
-				this.resetall();
-				this.reportall();
+				this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '2';
+				this.closeModal();
 				Swal.fire({
 					icon: 'success',
 					title: '완료',
@@ -1357,8 +1391,10 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.requestdata_before = res.data.data.filter(item => item.admin_flg === "0");
-					this.requestdata_after = res.data.data.filter(item => item.admin_flg !== "0");
+					this.requestdata_before = res.data.data_before;
+					this.requestdata_after = res.data.data_after;
+					// this.requestdata_before = res.data.data.filter(item => item.admin_flg === "0");
+					// this.requestdata_after = res.data.data.filter(item => item.admin_flg !== "0");
 				}
 			})
 			.catch(err => {
@@ -1368,6 +1404,51 @@ export default {
                     text: '에러 발생.',
                     confirmButtonText: '확인'
                 })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 답변수정준비
+		updateready(){
+			let input = document.querySelector('#admin_request_textarea')
+				input.removeAttribute('readonly');
+			this.updateflg = true;
+		},
+		// 답변수정
+		updateAnswer(id){
+			this.$store.commit('setLoading',true);
+			let input = document.querySelector('#admin_request_textarea')
+			const URL = '/admin/data'
+			// 풋일때 형태
+			const formData = {
+				id: id,
+				replie: input.value
+			};
+			axios.put(URL,formData)
+			.then(res => {
+				if(res.data.code === "0"){
+					// 이렇게 하면 안됨;;;;;;;
+					// input.setAttribute('readonly');
+					input.readOnly = true;
+					this.updateflg = false;
+					this.requestdata_after.find(item => item.id === id).replie = input.value;
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					})
+				}
+			})
+			.catch(err => {
+				console.log("캐치")
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
+					confirmButtonText: '확인'
+				})
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -1389,7 +1470,8 @@ export default {
 			this.restraintinput=false;
 			this.answer= "";
 			this.selectUserData= {};
-		}
+		},
+	
 	}
 }
 </script>

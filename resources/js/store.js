@@ -4,6 +4,7 @@ import { createStore } from "vuex";
 import axios from "axios";   //엑시오스 사용
 import router from  "./router.js";    //라우터 사용
 import VueCookies from "vue-cookies";    //쿠키사용
+import Swal from 'sweetalert2';
 
 
 
@@ -277,7 +278,11 @@ const store = createStore({
 						context.commit('setNowEmail', localStorage.getItem('email'));
 						router.push('/admin')
 					}else if(res.data.code === "E07"){
-						alert('해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint)
+						Swal.fire({
+							title: '<span style="color: #f27474;">Error</span>',
+							html: res.data.data.restraint_at+' 까지 <br> 이용이 제한된 계정 입니다.'+'<br><span style="color: #f27474;">제재사유</span> : '+res.data.data.restraint,
+							icon: 'error'
+						});
 					}else{
 						console.log('else');
 						alert(err.response.data.errorMsg);

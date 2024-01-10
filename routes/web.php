@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log; //로그확인추가
 use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
 use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
+use App\Http\Controllers\AdminController; //어드민 컨트롤러 추가
 
 /*
 |--------------------------------------------------------------------------
@@ -145,18 +146,19 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/user', [UserController::class, 'adminchk']);
-    Route::get('/data/{id}', [UserController::class, 'dataget']);
-    Route::post('/data', [UserController::class, 'answerdata']);
-    Route::get('/report', [UserController::class, 'reportget']);
-    Route::get('/reportall', [UserController::class, 'reportall']);
-    Route::get('/requestall', [UserController::class, 'requestall']);
-    Route::delete('/report', [UserController::class, 'reportdel']);
-    Route::post('/report', [UserController::class, 'reportpost']);
-    Route::post('/report/repair', [UserController::class, 'repairpost']);
-    Route::get('/userinfo', [UserController::class, 'userget']);
-    Route::post('/userinfo', [UserController::class, 'restraintuser']);
-    Route::post('/restraint', [UserController::class, 'restraintreset']);
+    Route::get('/user', [AdminController::class, 'adminchk']);
+    Route::get('/data/{id}', [AdminController::class, 'dataget']);
+    Route::post('/data', [AdminController::class, 'answerdata']);
+    Route::put('/data', [AdminController::class, 'answerupdate']);
+    Route::get('/report', [AdminController::class, 'reportget']);
+    Route::get('/reportall', [AdminController::class, 'reportall']);
+    Route::get('/requestall', [AdminController::class, 'requestall']);
+    Route::delete('/report', [AdminController::class, 'reportdel']);
+    Route::post('/report', [AdminController::class, 'reportpost']);
+    Route::post('/report/repair', [AdminController::class, 'repairpost']);
+    Route::get('/userinfo', [AdminController::class, 'userget']);
+    Route::post('/userinfo', [AdminController::class, 'restraintuser']);
+    Route::post('/restraint', [AdminController::class, 'restraintreset']);
 });
 
 // 1213 정지우 지역페이지 라우터 생성
