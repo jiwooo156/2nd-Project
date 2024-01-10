@@ -115,6 +115,7 @@
 <script>
 import ConsentComponent from './ConsentComponent.vue'
 import SecConsent from './SecConsent.vue'
+import Swal from 'sweetalert2';
 
 export default {
 	name: 'AuthComponent',
@@ -267,11 +268,21 @@ export default {
 					// 타이머 함수 호출
 					this.timer1();
 				}else{
-					alert(res.data.errorMsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
 				}
 			})
 			.catch(err => {
-				alert(err.response.data.errorMsg);
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);

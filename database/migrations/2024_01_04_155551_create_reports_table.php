@@ -16,10 +16,11 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->integer('u_id');
-            $table->integer('b_id');
-            $table->char('flg', 1);
-            $table->char('admin_flg', 1);
+            $table->integer('u_id')->nullable();
+            $table->integer('b_id')->nullable();
+            $table->string('content',100)->nullable();
+            $table->char('flg', 1)->nullable();
+            $table->char('admin_flg', 1)->nullable();
             $table->timestamps();
             $table->softDeletes();  
         });

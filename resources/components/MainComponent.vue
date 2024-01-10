@@ -158,8 +158,8 @@
 	</div>
   <div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 </template>
-
 <script>
+import Swal from 'sweetalert2';
 export default {
   name: 'MainComponent',
   data() {
@@ -195,7 +195,12 @@ export default {
     })
       .catch(err => {
         // console.log("캐치");
-        alert("데이터 에러 발생");
+        Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '데이터 에러 발생',
+                    confirmButtonText: '확인'
+                })
       })
     },
     getWeather() {

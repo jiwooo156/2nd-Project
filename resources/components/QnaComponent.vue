@@ -2,186 +2,396 @@
 <template>
 	<div class="qna_frame">
 		<div class="qna_container">
-			<div class="qna_header">
-				<h1 v-if="this.nowflg==='2'">질문게시판</h1>
-				<h1 v-else="this.nowflg==='3'">건의게시판</h1>
-				<div class="qna_header_bot">
-					<div class="qna_header_l">
-						<select class="form-select qna_drop my-3" aria-label=".form-select-sm">
-							<option selected class="qna_drop_item">전체</option>
-							<option class="qna_drop_item">축제</option>
-							<option class="qna_drop_item">관광</option>
-							<option class="qna_drop_item">기타</option>
-						</select>
-						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
-						<!-- 질문게시판 -->
-						<div v-if="this.nowflg==='2'" class="qna_btn">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn">
-									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
-								</button>
-								<button type="button" class="btn">
-									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
-								</button>
-								<button type="button" class="btn">
-									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
-								</button>
-							</div>	
+			<!-- 질문게시판 -->
+			<div v-if="this.nowflg==='2'" class="qna_q">
+				<div class="qna_header">
+					<h1>질문게시판</h1>
+					<div class="qna_header_bot">
+						<div class="qna_header_l">
+							<!-- qna_btn 숨기고 my-3 삭제했음 -->
+							<select v-model="selectedCategory" @change="filterData" class="form-select qna_drop" aria-label=".form-select-sm">
+								<option value="all" class="qna_drop_item" selected>전체</option>
+								<option value="festival" class="qna_drop_item">축제</option>
+								<option value="tourism" class="qna_drop_item">관광</option>
+								<option value="etc" class="qna_drop_item">기타</option>
+							</select>
+							<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
+							<!-- <div class="qna_btn">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn">
+										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+									</button>
+									<button type="button" class="btn">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+									</button>
+									<button type="button" class="btn">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+									</button>
+								</div>	
+							</div> -->
 						</div>
-						<!-- 건의게시판 -->
-						<div v-else="this.nowflg==='3'" class="qna_btn">
-							<div class="btn-group" role="group">
-								<button type="button" class="btn">
-									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
-								</button>
-								<button type="button" class="btn">
-									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>답변완료
-								</button>
-								<button type="button" class="btn">
-									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>접수대기
-								</button>
+						<!-- 반응형 숨기기 -->
+						<div class="qna_header_r">
+							<div v-if="selectedCategory === 'all'">
+								총 <span class="qna_pink">{{ infolist.length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'festival'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '0').length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'tourism'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '1').length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'etc'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '2').length }}</span>건의 게시글이 있습니다.
 							</div>
 						</div>
 					</div>
-					<!-- 반응형 숨기기 -->
-					<div class="qna_header_r">
-						<div>
-							총 <span class="qna_pink">50</span>건의 게시글이 있습니다.
-						</div>
-					</div>
-				</div>
-			</div>
+				</div>	
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
-				<!-- 질문 게시판 리스트 -->
-				<div v-if="this.nowflg==='2'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="infodata in infolist" :key="infodata" class="card" style="width: 19rem">
+				<!-- 전체 필터 -->
+				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(infodata.category_flg) }}</h6>
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
-								{{ infodata.title }}
+								{{ info.title }}
 							</h5>
 							<div class="pb-3 d-flex justify-content-between qna_card">
 								<span class="card-text"
 									><span class="qna_card_span font_center"
 										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>{{ infodata.nick }}</span
+									>{{ info.nick }}</span
 								>
-								<span class="card-text">{{ formatEventDate(infodata.created_at) }}</span>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
 							</div>
 							<div class="qna_def pt-3">
 								<span class="card-text qna_card_etc qna_gray"
 									><span class="qna_card_span"
 										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
-									>{{ infodata.lik ?? 0 }}</span
+									>{{ info.cnt ?? 0 }}</span
 								>
 								<span class="card-text qna_gray"
 									><span class="qna_card_span"
 										><font-awesome-icon :icon="['fas', 'eye']" /></span
-									>{{ infodata.hits }}</span
+									>{{ info.hits }}</span
 								>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- 건의 게시판 리스트 -->
-				<div v-else="this.nowflg==='3'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="infodata in infolist" :key="infodata" class="card" style="width: 19rem">
+				<!-- 축제 필터 -->
+				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
-							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(infodata.category_flg) }}</h6>
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
-								{{ infodata.title }}
-								<span class="qna_lock font_center"
-									><font-awesome-icon :icon="['fas', 'lock']"
-								/></span>
+								{{ info.title }}
 							</h5>
 							<div class="pb-3 d-flex justify-content-between qna_card">
 								<span class="card-text"
 									><span class="qna_card_span font_center"
 										><font-awesome-icon :icon="['fas', 'user']" /></span
-									>{{ infodata.nick }}</span
+									>{{ info.nick }}</span
 								>
-								<span class="card-text">{{ formatEventDate(infodata.created_at) }}</span>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3">
+								<span class="card-text qna_card_etc qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+									>{{ info.lik ?? 0 }}</span
+								>
+								<span class="card-text qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'eye']" /></span
+									>{{ info.hits }}</span
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 관광 필터 -->
+				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3">
+								<span class="card-text qna_card_etc qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+									>{{ info.lik ?? 0 }}</span
+								>
+								<span class="card-text qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'eye']" /></span
+									>{{ info.hits }}</span
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 기타 필터 -->
+				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex flex-row justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3">
+								<span class="card-text qna_card_etc qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+									>{{ info.lik ?? 0 }}</span
+								>
+								<span class="card-text qna_gray"
+									><span class="qna_card_span"
+										><font-awesome-icon :icon="['fas', 'eye']" /></span
+									>{{ info.hits }}</span
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
+					<button type="button">질문하기</button>
+				</div>
+			</div>
+			<!-- 건의게시판 -->
+			<div v-else="this.nowflg==='3'" class="qna_t">
+				<div class="qna_header">
+					<h1>건의게시판</h1>
+					<div class="qna_header_bot">
+						<div class="qna_header_l">
+							<select v-model="selectedCategory" @change="filterData" class="form-select qna_drop" aria-label=".form-select-sm">
+								<option value="all" class="qna_drop_item" selected>전체</option>
+								<option value="festival" class="qna_drop_item">축제</option>
+								<option value="tourism" class="qna_drop_item">관광</option>
+								<option value="etc" class="qna_drop_item">기타</option>
+							</select>
+							<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
+							<!-- <div class="qna_btn">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn">
+										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+									</button>
+									<button type="button" class="btn">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>답변완료
+									</button>
+									<button type="button" class="btn">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>접수대기
+									</button>
+								</div>	
+							</div> -->
+						</div>
+						<!-- 반응형 숨기기 -->
+						<div class="qna_header_r">
+							<div v-if="selectedCategory === 'all'">
+								총 <span class="qna_pink">{{ infolist.length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'festival'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '0').length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'tourism'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '1').length }}</span>건의 게시글이 있습니다.
+							</div>
+							<div v-else-if="selectedCategory === 'etc'">
+								총 <span class="qna_pink">{{ infolist.filter(info => info.category_flg === '2').length }}</span>건의 게시글이 있습니다.
+							</div>
+						</div>
+					</div>
+				</div>	
+				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
+				<!-- 전체 필터 -->
+				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+								<span class="qna_lock font_center"><font-awesome-icon :icon="['fas', 'lock']"/></span>
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
 							</div>
 							<div class="qna_def pt-3 d-flex flex-row-reverse">
-								<span class="card-text" :class="{ 'qna_wait': infodata.admin_flg === '0', 'qna_answer': infodata.admin_flg === '1' }">
-									{{ infodata.admin_flg === '0' ? '접수대기' : '답변완료' }}
+								<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
+									{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
 								</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div v-if="this.nowflg==='2'" class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-					<button type="button">질문하기</button>
+				<!-- 축제 필터 -->
+				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+								<span class="qna_lock font_center"><font-awesome-icon :icon="['fas', 'lock']"/></span>
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3 d-flex flex-row-reverse">
+								<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
+									{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div v-else="this.nowflg==='3'" class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
+				<!-- 관광 필터 -->
+				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+								<span class="qna_lock font_center"><font-awesome-icon :icon="['fas', 'lock']"/></span>
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3 d-flex flex-row-reverse">
+								<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
+									{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 기타 필터 -->
+				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex justify-content-between row g-3 px-2">
+					<div v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
+						<div class="card-body d-flex flex-column justify-content-around">
+							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
+							<h5 class="card-title mb-3 qna_card_tit">
+								{{ info.title }}
+								<span class="qna_lock font_center"><font-awesome-icon :icon="['fas', 'lock']"/></span>
+							</h5>
+							<div class="pb-3 d-flex justify-content-between qna_card">
+								<span class="card-text"
+									><span class="qna_card_span font_center"
+										><font-awesome-icon :icon="['fas', 'user']" /></span
+									>{{ info.nick }}</span
+								>
+								<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							</div>
+							<div class="qna_def pt-3 d-flex flex-row-reverse">
+								<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
+									{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 					<button type="button">건의하기</button>
 				</div>
-				<div>
-					<nav aria-label="Page navigation">
-						<ul class="pagination justify-content-center qna_pagin">
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true"><font-awesome-icon :icon="['fas', 'angle-left']"/></span>
-								</a>
-							</li>
-							<li class="page-item">
-								<a
-									id="qna_font"
-									class="page-link"
-									href="#"
-									aria-label="Previous"
-								>
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angles-left']"
-									/></span>
-								</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">2</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">3</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">4</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">5</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angle-right']"
-									/></span>
-								</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angles-right']"
-									/></span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
+			</div>
+			<!-- 아래 공통영역 -->
+			<div class="page">
+				<nav aria-label="Page navigation">
+					<ul class="pagination justify-content-center qna_pagin">
+						<li class="page-item">
+							<a id="qna_font" class="page-link" aria-label="Previous">
+								<span aria-hidden="true"><font-awesome-icon :icon="['fas', 'angle-left']"/></span>
+							</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#">1</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#">3</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#">4</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#">5</a>
+						</li>
+						<li class="page-item">
+							<a id="qna_font" class="page-link" href="#" aria-label="Next">
+								<span aria-hidden="true"
+									><font-awesome-icon :icon="['fas', 'angle-right']"
+								/></span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
 			<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 		</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
 	name: 'QnaComponent',
 	data() {
 		return {
+			// 전체 데이터
 			infolist: [],
+			// url로 페이지 이동 설정
 			nowflg: "",
+			// 선택된 카테고리를 저장하는 초기값
+			selectedCategory: 'all',
+			// //한 페이지 당 게시글 수
+			// listCnt: 9,
+			// // 오프셋
+			// offset: 9, 
+			// // 페이지 번호 초기화
+			// pageNum:  1,
+			listData: [],
+			page: 1,
+			limit: 5,
+			block: 5,
 		}
 	},
+	// mounted() {
+	// 	this.pagingMethod(this.page)
+	// },
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
@@ -193,10 +403,13 @@ export default {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="2"? "3":"2";
 		this.getInfo(this.nowflg);
+		// 필터 초기화 'all'
+		this.selectedCategory = 'all';
 	},
 	methods: {
 		// 질문&건의 게시글 데이터 출력
 		getInfo(flg) {
+			// 스피너 로딩바
 			this.$store.commit('setLoading',true);
 			// 해당url의 데이터 가져오기
 			const URL = '/qna/info?flg='+ flg;
@@ -210,6 +423,7 @@ export default {
 					this.infolist = res.data.information;
 				}
 				console.log('nowflg='+this.nowflg )
+				
 			})
 			.catch(err => {
 				this.$router.push('/error');
@@ -239,6 +453,54 @@ export default {
 
 		return `${year}-${month}-${day}`;
 		},
+		// 테스트용!!!
+		// pagingMethod(page) {
+		// 	this.listData = this.paymentInfo.slice(
+		// 		(page - 1) * this.limit,
+		// 		page * this.limit
+		// 	)
+		// 	this.page = page
+		// 	this.pageDataSetting(this.total, this.limit, this.block, page)
+		// },
+		// pageDataSetting(total, limit, block, page) {
+		// 	const totalPage = Math.ceil(total/limit);
+		// 	let currentPage = page;
+		// 	const first = currentPage > 1 ? parseInt(currentPage, 10) - parseing(1, 10) : null
+		// 	const end = 
+		// 		totalPage !== currentPage
+		// 		? parseIng(currentPage, 10) + parseIng(1, 10)
+		// 		: null;
+		// 	let startIndex = (Math.ceil(currentPage/block) - 1) * block + 1;
+		// 	let endIndex = startIndex + block > totalpage ? totalPage : startIndex + block - 1;
+		// 	let list = []
+		// 	for (let index = startIndex; index <= endIndex; index ++) {
+		// 		list.push(index);
+		// 	}
+		// 	return { first, end, list, currentPage }
+		// },
+		// // 이건 아님
+		// qnaListPaging(page) {
+		// 	// 로딩 시작
+		// 	this.$store.commit('setLoading', true);
+		// 	// 한 페이지당 게시글 수 초기화
+		// 	this.listCnt = 9;
+		// 	const URL = `/qna/list?page=${page}&listCnt=${listCnt}`;
+		// 	axios.get(URL)
+		// 	.then(res => {
+		// 		if(res.data.code === '0') {
+		// 			this.offset = this.offset + 9;
+		// 			this.pageNum = res.data.pageingNum;
+		// 		}
+		// 		console.log('nowflg='+this.nowflg )
+				
+		// 	})
+		// 	.catch(err => {
+		// 		this.$router.push('/error');
+		// 	})
+		// 	.finally(() => {
+        //         this.$store.commit('setLoading', false);
+        //     });
+		// }
 	},
 }
 </script>

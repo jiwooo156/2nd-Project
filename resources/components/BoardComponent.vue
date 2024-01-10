@@ -224,7 +224,6 @@ export default {
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL, {
 				params: {
-
 					flg: this.nowflg,
 					category: this.formSelectData,
 					orderby: this.rangevalue,
@@ -232,26 +231,26 @@ export default {
 				}
 			})
 			.then(res => {
-				console.log('여긴가',res.data.information);
+				console.log('여긴가',res.data.informresult); // information
 				console.log("then");
 				console.log('category='+this.formSelectData );
 				console.log('nowflg='+this.nowflg );
-				this.pagination = res.data.information.links;
-				this.page = res.data.information.current_page;
-				this.pageChk  = res.data.information.current_page;
+				this.pagination = res.data.informresult.links; // information
+				this.page = res.data.informresult.current_page; // information
+				this.pageChk  = res.data.informresult.current_page; // information
 				if(!(this.formSelectData)){
 					console.log("if");
 					if(this.rangevalue) {
 						console.log("if로 진입, 버튼밸류는"+this.rangevalue);
 						if(res.data.code === '0') {
 							// this.page = res.data.information.links;
-							this.infolist = res.data.information.data;
+							this.infolist = res.data.informresult.data; // information
 							this.cntinfo = res.data.infocnt;
 							console.log("레스데이터1"+res.data);
 						}
 					} else {
 						if(res.data.code === '0') {
-							this.infolist = res.data.information.data;
+							this.infolist = res.data.informresult.data; // information
 							this.cntinfo = res.data.infocnt;
 							console.log("레스데이터2"+res.data);
 							}
@@ -263,13 +262,13 @@ export default {
 					if(this.rangevalue) {
 						console.log('orderby='+this.rangevalue);
 						if(res.data.code === '0') {
-							this.infolist = res.data.information.data;
+							this.infolist = res.data.informresult.data; // information
 							this.cntinfo = res.data.infocnt;
 							console.log("레스데이터3"+res.data);
 						}
 					} else {
 						if(res.data.code === '0') {
-							this.infolist = res.data.information.data;
+							this.infolist = res.data.informresult.data; // information
 							this.cntinfo = res.data.infocnt;
 							console.log("레스데이터4"+res.data);
 						}

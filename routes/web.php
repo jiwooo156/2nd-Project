@@ -88,6 +88,7 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
         return view('welcome');
     });
     Route::get('/info', [InfoController::class, 'informationget']);
+    Route::get('/list', [InfoController::class, 'qnaPaging']);
 });
 
 // 디테일 라우터
@@ -108,7 +109,7 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
         return view('welcome');
     });
     // 0108 정지우 정보게시판 목록 정보조회
-    Route::get('/info', [InfoController::class, 'informationget']);
+    Route::get('/info', [InfoController::class, 'commuinfoget']);
 });
 
 
@@ -149,6 +150,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::post('/data', [UserController::class, 'answerdata']);
     Route::get('/report', [UserController::class, 'reportget']);
     Route::get('/reportall', [UserController::class, 'reportall']);
+    Route::get('/requestall', [UserController::class, 'requestall']);
     Route::delete('/report', [UserController::class, 'reportdel']);
     Route::post('/report', [UserController::class, 'reportpost']);
     Route::post('/report/repair', [UserController::class, 'repairpost']);

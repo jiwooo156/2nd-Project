@@ -66,7 +66,39 @@
 					>
 				</div>
 				<div class="detail_content font_air bold">
-					{{this.detaildata.content}}
+					{{this.detaildata.content}}<br>  
+					<div >
+						<div>
+							<!-- <div class = "detail_content font_air bold 
+							detail_parking_flg">
+								#장소{{detaildata.place}}
+							</div> -->
+							<div class = "detail_parking_flg
+							detail_content font_air bold">
+								#주차{{detaildata.parking_flg}}   
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#커플{{detaildata.couple_flg}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#친구{{detaildata.friend_flg}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#요금{{detaildata.fee}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#운영시간{{detaildata.time}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#{{detaildata.holiday}}
+							</div>
+						</div>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -142,11 +174,13 @@
 	</div>
 </template>
 <script>
+import Swal from 'sweetalert2';
 export default {
 	name: 'DetailComponent',
 
 	data() {
 		return {
+			infolist: [],
 			detaildata: [],
 			repliedata: [],
 			replie: "",
@@ -187,11 +221,21 @@ export default {
 					this.repliecount = res.data.repliecount;
 					
 				}else if(res.data.code==="E99"){
-					alert(res.data.errmsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errmsg,
+                    confirmButtonText: '확인'
+                })
 				}
 			})
 			.catch(err => {
-				alert('에러가 발생했습니다');
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러가 발생했습니다',
+                    confirmButtonText: '확인'
+                })
 			})
 		},
 		// 댓글작성
@@ -209,14 +253,31 @@ export default {
 						this.repliecount++;
 						this.repliedata.unshift(res.data.data);
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
+
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
+
 				})
 			}else{
-				alert("댓글을 작성해 주세요.")
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '댓글을 작성해 주세요.',
+                    confirmButtonText: '확인'
+                })
 			}
 		
 		},
@@ -273,11 +334,21 @@ export default {
 						document.querySelector('#detail_replie'+id).remove();
 						this.repliecount--;
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+                })
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
 				})
 			} else {
 				return;
@@ -296,11 +367,21 @@ export default {
 						this.moreflg = true;
 					}
 				}else{
-					alert(res.data.errorMsg);
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
 				}
 			})
 			.catch(err => {
-				alert(err.response.data.errorMsg);
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
 			})		
 		},
 		// 이메일 마스킹
@@ -330,6 +411,12 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		next();
 	},
-
+	getEventFlg(data) {
+			if(data === '0') {
+				return '따봉';
+			}else if (data === '1') {
+				return '우우';
+			}
+		},
 }
 </script>
