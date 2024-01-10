@@ -1719,6 +1719,19 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_more_btn span{
 	font-size: 1rem;
 }
+.detail_parking_flg{
+	display: inline-block;
+    overflow: hidden;
+    background: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    color: #777;
+    border: 1px solid #d8d7d7;
+    border-radius: 5px;
+	padding: 10px;
+	margin: 5px;
+}
 /* qna페이지 */
 /* 질문페이지 */
 .qna_header h1 {

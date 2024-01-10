@@ -66,7 +66,39 @@
 					>
 				</div>
 				<div class="detail_content font_air bold">
-					{{this.detaildata.content}}
+					{{this.detaildata.content}}<br>  
+					<div >
+						<div>
+							<!-- <div class = "detail_content font_air bold 
+							detail_parking_flg">
+								#장소{{detaildata.place}}
+							</div> -->
+							<div class = "detail_parking_flg
+							detail_content font_air bold">
+								#주차{{detaildata.parking_flg}}   
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#커플{{detaildata.couple_flg}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#친구{{detaildata.friend_flg}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#요금{{detaildata.fee}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#운영시간{{detaildata.time}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#{{detaildata.holiday}}
+							</div>
+						</div>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -148,6 +180,7 @@ export default {
 
 	data() {
 		return {
+			infolist: [],
 			detaildata: [],
 			repliedata: [],
 			replie: "",
@@ -378,6 +411,12 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		next();
 	},
-
+	getEventFlg(data) {
+			if(data === '0') {
+				return '따봉';
+			}else if (data === '1') {
+				return '우우';
+			}
+		},
 }
 </script>
