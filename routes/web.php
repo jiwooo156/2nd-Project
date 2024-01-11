@@ -98,13 +98,21 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
         return view('welcome');
     });
     Route::get('/detail/{id}', [InfoController::class, 'detailComget']);
-    Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 조회
-    Route::post('/{id}', [InfoController::class, 'repliewirte']); // 작성
-    Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 삭제
-    Route::get('/more', [InfoController::class, 'morereplie']); // 더보기
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 댓글 조회
+    Route::post('/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
+    Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
 });
 
-// 디테일 라우터
+// 커뮤니티 작성 라우터 생성
+Route::middleware('myValidation')->prefix('write')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::post('/{id}', [InfoController::class, 'postwirte']); // 게시글 작성
+});
+
+// 관광&축제 디테일 라우터
 Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');

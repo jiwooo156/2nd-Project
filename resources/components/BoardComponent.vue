@@ -265,7 +265,7 @@ export default {
 				console.log('정렬순='+this.rangevalue );
 			})
 			.catch(err => {
-        		this.$router.push('/error');
+				this.$router.push('/error');
 			})
 		},
 	}

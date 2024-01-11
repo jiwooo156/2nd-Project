@@ -172,8 +172,8 @@
 						</div>
 					</routerLink>
 				</div>
-				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-					<button type="button">질문하기</button>
+				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
+					<router-link to="/write?flg=2" type="button">질문하기</router-link>
 				</div>
 			</div>
 			<!-- 건의게시판 -->
@@ -321,8 +321,8 @@
 						</div>
 					</routerLink>
 				</div>
-				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-					<button type="button">건의하기</button>
+				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
+					<router-link to="/write?flg=3" type="button">건의하기</router-link>
 				</div>
 			</div>
 			<!-- 아래 공통영역 -->
@@ -359,9 +359,6 @@
 					</ul>
 				</nav>
 			</div>
-			<!-- <div>
-				<PagingComponent :page="page" @onPage="onPage" v-if="this.lists.length !== 0"/>
-			</div> -->
 			<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 		</div>
 	</div>
@@ -369,14 +366,9 @@
 
 <script>
 import axios from 'axios';
-import PagingComponent from './PagingComponent.vue';
-import { mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'QnaComponent',
-	components: {
-        PagingComponent
-    },
 	data() {
 		return {
 			// 전체 데이터
@@ -385,11 +377,6 @@ export default {
 			nowflg: "",
 			// 선택된 카테고리를 저장하는 초기값
 			selectedCategory: 'all',
-			page: {
-				total: localStorage.getItem('total'),
-				page: localStorage.getItem('page'),
-				count: 20
-			},
 		}
 	},
 	created() {
@@ -406,11 +393,6 @@ export default {
 		// 필터 'all' 항상 초기화
 		this.selectedCategory = 'all';
 	},
-	computed: {
-        ...mapState([
-            'lists'
-        ]),
-    },
 	methods: {
 		// 질문&건의 게시글 데이터 출력
 		getInfo(flg) {
@@ -458,22 +440,6 @@ export default {
 
 		return `${year}-${month}-${day}`;
 		},
-		function(page) {
-            const payload = {
-                page: page,
-                count: this.page.count
-            }
-
-            this.adminList(payload)
-                .then(res => {
-                    this.page = res.data.page
-                })
-        },
-        onPage: function(page) {
-            this.main(page)
-            localStorage.setItem('page', page)
-        },
-        ...mapActions(['adminList'])
 	},
 }
 </script>

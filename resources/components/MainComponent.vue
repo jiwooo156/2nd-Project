@@ -148,8 +148,8 @@
             <div class="main_4_menu">
               <router-link to="/board?flg=0">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></router-link>
               <router-link to="/board?flg=1">질문<br>게시판<font-awesome-icon :icon="['fas', 'leaf']" /></router-link>
-              <router-link to="/board?flg=2">정보<br>게시판<font-awesome-icon :icon="['fas', 'file-pen']" /></router-link>
-              <router-link to="/board?flg=3">건의<br>게시판<font-awesome-icon :icon="['fas', 'triangle-exclamation']" /></router-link>
+              <router-link to="/qna?flg=2">정보<br>게시판<font-awesome-icon :icon="['fas', 'file-pen']" /></router-link>
+              <router-link to="/qna?flg=3">건의<br>게시판<font-awesome-icon :icon="['fas', 'triangle-exclamation']" /></router-link>
             </div>
           </div>
 				</div>
