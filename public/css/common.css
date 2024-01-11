@@ -1996,6 +1996,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_report_span_from{
 	background-color: #b2d1ff;
 }
+.admin_request_btn_box{
+	padding: 0px 30px;
+	margin: 0px 20px;
+}
+.admin_request_textarea{
+	background-color: #fff;
+}
+.admin_request_textarea:focus{
+	box-shadow: none;
+	outline: none;
+}
+.admin_page_box_ul{
+	justify-content: center;
+}
+.admin_page_box_ul li a{
+	color: #000;
+}
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
 	display: flex;

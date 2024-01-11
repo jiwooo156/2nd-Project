@@ -517,11 +517,11 @@ export default {
 				.catch(err => {
 					// console.log("캐치");
 					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '데이터 에러 발생.',
-                    confirmButtonText: '확인'
-                })
+						icon: 'error',
+						title: 'Error',
+						text: '데이터 에러 발생.',
+						confirmButtonText: '확인'
+					})
 				})
 				.finally(() => {
 					this.$store.commit('setLoading', false);

@@ -303,12 +303,7 @@ const store = createStore({
 						context.commit('setNowEmail', localStorage.getItem('email'));
 						router.push('/admin')
 					}else if(res.data.code === "E07"){
-						Swal.fire({
-							icon: 'warning',
-							title: '주의',
-							text: '해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint,
-							confirmButtonText: '확인'
-						})
+						alert('해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint)
 					}else{
 						console.log('else');
 						Swal.fire({
