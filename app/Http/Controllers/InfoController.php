@@ -530,7 +530,6 @@ class InfoController extends Controller
 
         $informresult = $informresult->paginate(10);
 
-
         Log::debug($informresult);
         Log::debug($infocnt);
         

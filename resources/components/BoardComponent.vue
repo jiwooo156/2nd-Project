@@ -99,15 +99,6 @@
 										{{ page.label }}
 									</span>
 								</a>
-								<!-- <router-link 
-									id="qna_font"
-									class="page-link"
-									to="#"
-								>
-									<span>
-										{{ page.label }}
-									</span>
-								</router-link> -->
 							</li>
 							<!-- <li class="page-item">
 								<a
@@ -177,29 +168,10 @@ export default {
 			infolist: [],
 			nowflg: "",
 			cntinfo: 0,
-			// categoryflg: "",
 			rangevalue: "1",
 			page: {},
 			pagination: {},
 			pageChk: {},
-			// options: [
-			// 	{
-			// 	value: "3",
-			// 	name: "전체",
-			// 	},
-			// 	{
-			// 	value: "0",
-			// 	name: "축제",
-			// 	},
-			// 	{
-			// 	value: "1",
-			// 	name: "관광",
-			// 	},
-			// 	{
-			// 	value: "2",
-			// 	name: "기타",
-			// 	}
-      		// ],
       		option: "3"
 		}
 	},
