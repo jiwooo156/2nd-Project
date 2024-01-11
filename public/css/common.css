@@ -1773,6 +1773,26 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_likes {
 	font-size: 0.95rem;
 }
+.detail_list {
+	color: #000;
+	background-color: #fff;
+}
+.detail_post_replie_container{
+    margin-top: 0px;
+}
+.post_btn_bot {
+	display: flex;
+	gap: 3px;
+}
+.post_btn_bot button {
+	color: #3d3d3d;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background-color: #eeeeee;
+	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
+}
 /* qna페이지 */
 /* 질문페이지 */
 .qna_header h1 {
@@ -1891,13 +1911,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #656565;
 	font-size: 0.8rem;
 }
-.qna_btn_bot button {
+.qna_btn_bot a {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	border: none;
 	background: #D14C6C;
 	color: #fff;
 	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
 }
 #qna_font {
 	font-family: 'Cafe24SsurroundAir';

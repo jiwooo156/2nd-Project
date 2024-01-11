@@ -25,12 +25,20 @@
 					{{this.detaildata.content}}<br>  
 				</div>
 			</div>
-			<div class="detail_post_like">
-				<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
-				<span class="detail_likes font_air bold">좋아요{{ this.infolist.lik }}</span>
+			<div class="detail_post_like d-flex justify-content-between">
+				<div>
+					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
+					<span class="detail_likes font_air bold">좋아요{{ this.infolist.lik }}</span>
+				</div>
+				<!-- 게시글을 작성한 사람만 가능 / 디폴트는 목록-->
+				<div class="post_btn_bot">
+						<button type="button">수정</button>
+						<button type="button">목록</button>
+						<button type="button">삭제</button>
+				</div>
 			</div>
 		</div>
-		<div class="detail_replie_container">
+		<div class="detail_post_replie_container">
 			<div class="detail_replie_write_box font_air bold">
 				<div class="font_air bold">
 					댓글쓰기  ({{ this.repliecount }})
@@ -118,7 +126,6 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
-			// usernick: [],
 		}
 	},
 	watch: {
@@ -140,10 +147,11 @@ export default {
 			let params = new URLSearchParams(window.location.search);
 			this.b_id = params.get('id');
 			const URL = '/post/detail/'+this.b_id;
-			console.log(URL);
 			axios.get(URL)
 			.then(res => {
+				console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
+					console.log("if 진입");
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
 					// this.usernick = res.data.usersnick;
@@ -157,6 +165,7 @@ export default {
                     confirmButtonText: '확인'
                 })
 				}
+				console.log("getinfo 함수 끝");
 			})
 			.catch(err => {
 				Swal.fire({

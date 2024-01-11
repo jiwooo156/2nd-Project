@@ -598,7 +598,7 @@ class InfoController extends Controller
     // ***********************************************
     // 커뮤니티 디테일 페이지 조회
     public function detailComget(Request $req) {
-        // 리퀘스트온 아이디값으로 인포테이블 조회
+        // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = Community::
         where('id',$req->id)
         ->get();
@@ -621,11 +621,7 @@ class InfoController extends Controller
         // 조회된값이 1개일때
         if(count($com_result)===1){            
             // 리퀘스트온 작성자 닉네임 조회
-            // $detail_nick = Community::
-            // select('community.id', 'community.u_id', 'users.nick')
-            // ->join('users', 'community.u_id', '=', 'users.id')
-            // ->where('id', $req->id)
-            // ->get();
+
             // 리퀘스트온 좋아요 조회
 
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
@@ -641,7 +637,7 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug($replie_result);
+            Log::debug($replie_result);            Log::debug("게시글 플래그는 ".$req->flg);
             return response()->json([
                 'code' => '0',
                 'data' => $com_result,
@@ -656,5 +652,36 @@ class InfoController extends Controller
                 'errorMsg' => '게시글 조회에 실패하였습니다',
             ], 200);
         }
+    }
+    // 게시글작성
+    public function postwirte(Request $req) {
+        // 리퀘스트온 값중 댓글 보드아이디 data에 저장
+        $content = $req->only('u_id','title','content', 'category_flg');
+        // u_id라는 키값에 세션에 저장된 pk값 저장
+        $data["u_id"] = Auth::user()->id;
+        try { 
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // data정보를 댓글테이블에 인서트
+            $result = Community::create($data);
+            // 저장
+            DB::commit();    
+            // $result 안에 닉네임 추가
+            $result->nick = Auth::user()->nick;
+            return response()->json([
+                'code' => '0',
+                'comcontent' => $content,
+                'data' => $result,
+            ], 200);
+        // 실패시
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
+            ], 200);
+        }  
+        // 정상처리시
     }
 }
