@@ -50,7 +50,7 @@
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<!-- 전체 필터 -->
 				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -77,11 +77,11 @@
 								>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 축제 필터 -->
 				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -108,11 +108,11 @@
 								>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 관광 필터 -->
 				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -139,11 +139,11 @@
 								>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 기타 필터 -->
 				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex flex-row justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -170,7 +170,7 @@
 								>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 					<button type="button">질문하기</button>
@@ -223,7 +223,7 @@
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<!-- 전체 필터 -->
 				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -244,11 +244,11 @@
 								</span>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 축제 필터 -->
 				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -269,11 +269,11 @@
 								</span>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 관광 필터 -->
 				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -294,11 +294,11 @@
 								</span>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<!-- 기타 필터 -->
 				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex justify-content-between row g-3 px-2">
-					<div v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
+					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 							<h5 class="card-title mb-3 qna_card_tit">
@@ -319,7 +319,7 @@
 								</span>
 							</div>
 						</div>
-					</div>
+					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 					<button type="button">건의하기</button>
@@ -359,6 +359,9 @@
 					</ul>
 				</nav>
 			</div>
+			<!-- <div>
+				<PagingComponent :page="page" @onPage="onPage" v-if="this.lists.length !== 0"/>
+			</div> -->
 			<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
 		</div>
 	</div>
@@ -366,9 +369,14 @@
 
 <script>
 import axios from 'axios';
+import PagingComponent from './PagingComponent.vue';
+import { mapState, mapActions } from 'vuex'
 
 export default {
 	name: 'QnaComponent',
+	components: {
+        PagingComponent
+    },
 	data() {
 		return {
 			// 전체 데이터
@@ -377,25 +385,17 @@ export default {
 			nowflg: "",
 			// 선택된 카테고리를 저장하는 초기값
 			selectedCategory: 'all',
-			// //한 페이지 당 게시글 수
-			// listCnt: 9,
-			// // 오프셋
-			// offset: 9, 
-			// // 페이지 번호 초기화
-			// pageNum:  1,
-			listData: [],
-			page: 1,
-			limit: 5,
-			block: 5,
+			page: {
+				total: localStorage.getItem('total'),
+				page: localStorage.getItem('page'),
+				count: 20
+			},
 		}
 	},
-	// mounted() {
-	// 	this.pagingMethod(this.page)
-	// },
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
-		console.log(this.nowflg)
+		// console.log(this.nowflg)
 		this.getInfo(this.nowflg);
 	},
 	beforeRouteUpdate() {
@@ -403,9 +403,14 @@ export default {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="2"? "3":"2";
 		this.getInfo(this.nowflg);
-		// 필터 초기화 'all'
+		// 필터 'all' 항상 초기화
 		this.selectedCategory = 'all';
 	},
+	computed: {
+        ...mapState([
+            'lists'
+        ]),
+    },
 	methods: {
 		// 질문&건의 게시글 데이터 출력
 		getInfo(flg) {
@@ -453,54 +458,22 @@ export default {
 
 		return `${year}-${month}-${day}`;
 		},
-		// 테스트용!!!
-		// pagingMethod(page) {
-		// 	this.listData = this.paymentInfo.slice(
-		// 		(page - 1) * this.limit,
-		// 		page * this.limit
-		// 	)
-		// 	this.page = page
-		// 	this.pageDataSetting(this.total, this.limit, this.block, page)
-		// },
-		// pageDataSetting(total, limit, block, page) {
-		// 	const totalPage = Math.ceil(total/limit);
-		// 	let currentPage = page;
-		// 	const first = currentPage > 1 ? parseInt(currentPage, 10) - parseing(1, 10) : null
-		// 	const end = 
-		// 		totalPage !== currentPage
-		// 		? parseIng(currentPage, 10) + parseIng(1, 10)
-		// 		: null;
-		// 	let startIndex = (Math.ceil(currentPage/block) - 1) * block + 1;
-		// 	let endIndex = startIndex + block > totalpage ? totalPage : startIndex + block - 1;
-		// 	let list = []
-		// 	for (let index = startIndex; index <= endIndex; index ++) {
-		// 		list.push(index);
-		// 	}
-		// 	return { first, end, list, currentPage }
-		// },
-		// // 이건 아님
-		// qnaListPaging(page) {
-		// 	// 로딩 시작
-		// 	this.$store.commit('setLoading', true);
-		// 	// 한 페이지당 게시글 수 초기화
-		// 	this.listCnt = 9;
-		// 	const URL = `/qna/list?page=${page}&listCnt=${listCnt}`;
-		// 	axios.get(URL)
-		// 	.then(res => {
-		// 		if(res.data.code === '0') {
-		// 			this.offset = this.offset + 9;
-		// 			this.pageNum = res.data.pageingNum;
-		// 		}
-		// 		console.log('nowflg='+this.nowflg )
-				
-		// 	})
-		// 	.catch(err => {
-		// 		this.$router.push('/error');
-		// 	})
-		// 	.finally(() => {
-        //         this.$store.commit('setLoading', false);
-        //     });
-		// }
+		function(page) {
+            const payload = {
+                page: page,
+                count: this.page.count
+            }
+
+            this.adminList(payload)
+                .then(res => {
+                    this.page = res.data.page
+                })
+        },
+        onPage: function(page) {
+            this.main(page)
+            localStorage.setItem('page', page)
+        },
+        ...mapActions(['adminList'])
 	},
 }
 </script>

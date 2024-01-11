@@ -26,7 +26,6 @@ const store = createStore({
 			beforeUrl: "",
 			loading: false,
 			nsFlg: "",
-			qtFlg: "",
 			categoryflg: "",
 		}
 	},
@@ -71,9 +70,6 @@ const store = createStore({
 		},
 		setNsFlg(state, str){
 			state.nsFlg=str;
-		},
-		setQtFlg(state, str){
-			state.qtFlg=str;
 		},
 		setCategoryFlg(state, str){
 			state.categoryflg=str;
