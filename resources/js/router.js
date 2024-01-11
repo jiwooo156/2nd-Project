@@ -13,7 +13,8 @@ import ErrorComponent from '../components/ErrorComponent.vue';
 // 3차 프로젝트를 위한 라우터
 import BoardComponent from '../components/BoardComponent.vue';
 import QnaComponent from '../components/QnaComponent.vue';
-import PostComponent from '../components/PostComponent.vue';
+import PostDetailComponent from '../components/PostDetailComponent.vue';
+import PostWriteComponent from '../components/PostWriteComponent.vue';
 import CommunityComponent from '../components/CommunityComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
@@ -48,7 +49,11 @@ const routes = [
 	},
 	{
 		path: "/post",
-		component : PostComponent
+		component : PostDetailComponent
+	},
+	{
+		path: "/write",
+		component : PostWriteComponent
 	},
 	{
 		path: "/community",

@@ -123,7 +123,7 @@
 				</div>
 			</div>
 
-      <!-- 4차 때 기능 넣을 거임 -->
+      <!-- 3차 때 기능 넣을 거임 -->
 			<div class="main_4">
         <div class="main_4_box">
           <div class="main_box_left"
@@ -146,10 +146,10 @@
           </div>
           <div class="main_box_right">
             <div class="main_4_menu">
-              <a href="#">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></a>
-              <a href="#">질문<br>게시판<font-awesome-icon :icon="['fas', 'leaf']" /></a>
-              <a href="#">정보<br>게시판<font-awesome-icon :icon="['fas', 'file-pen']" /></a>
-              <a href="#">건의<br>게시판<font-awesome-icon :icon="['fas', 'triangle-exclamation']" /></a>
+              <router-link to="/board?flg=0">자유<br>게시판<font-awesome-icon :icon="['fas', 'comments']" /></router-link>
+              <router-link to="/board?flg=1">질문<br>게시판<font-awesome-icon :icon="['fas', 'leaf']" /></router-link>
+              <router-link to="/board?flg=2">정보<br>게시판<font-awesome-icon :icon="['fas', 'file-pen']" /></router-link>
+              <router-link to="/board?flg=3">건의<br>게시판<font-awesome-icon :icon="['fas', 'triangle-exclamation']" /></router-link>
             </div>
           </div>
 				</div>

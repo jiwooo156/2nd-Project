@@ -1,11 +1,11 @@
 <template lang="">
 	<div class="post">
-		포스트
+		포스트작성
 	</div>
 </template>
 <script>
 export default {
-	name: "PostComponent",
+	name: "PostWriteComponent",
 }
 </script>
 <style lang="">
