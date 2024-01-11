@@ -474,57 +474,61 @@ class InfoController extends Controller
         Log::debug("**** commuinfoget start ****");
         Log::debug("게시판 플래그 : ".$req->flg);
         Log::debug("카테고리 플래그 : ".$req->category);
-        Log::debug("정렬순 플래그 : ".$req->rangevalue);
+        Log::debug("정렬순 플래그 : ".$req->orderby);
+        Log::debug("정렬순 플래그 타입 : ".gettype($req->orderby));
         Log::debug("인포함수진입");
-        if(!($req->category)) {
-            $informresult = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->orderBy('community.created_at', 'desc')
-            ->get();
-            $infocnt = Community::select(
-                'community.id',
-                'community.category_flg',
-                'community.title',
-                'community.created_at',
-                'community.hits',
-                'users.nick',
-                DB::raw('COALESCE(lik.cnt, 0) as cnt')
-            )
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-            ->where('community.flg', $req->flg)
-            ->where('community.deleted_at', null)
-            ->orderBy('community.created_at', 'desc')
-            ->count();
-        } else {
-            Log::debug("category_flg 없음");
-            $informresult->orderBy('community.created_at', 'desc');
+
+        $informresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null);
+
+        $infocnt = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null);
+
+        if ($req->category) {
+            Log::debug("category_flg 있음");
+            $informresult
+                ->where('community.category_flg', $req->category);
         }
 
         if ($req->orderby) {
             Log::debug("orderby flg 있음");
             Log::debug("orderby : ".$req->orderby);
-            if($req->orderby === 1) {
+            if($req->orderby === '1') {
                 $informresult->orderBy('community.created_at', 'desc');
-            } else if ($req->orderby === 2) {
+            } else if ($req->orderby === '2') {
                 $informresult->orderBy('community.hits', 'desc');
             } else {
                 $informresult->orderBy('lik.cnt', 'desc');
             }
+        } else {
+            Log::debug("orderby flg 없음");
+            Log::debug("orderby : ".$req->orderby);
+            $informresult->orderBy('community.created_at', 'desc');
         }
 
-        $informresult = $informresult->paginate(20);
+        $informresult = $informresult->get();
 
         $infocnt = $informresult->count();
 

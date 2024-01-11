@@ -89,7 +89,7 @@
 				<div>
 					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center qna_pagin">
-							<li v-for="(page, index) in pagination" :key="index">
+							<!-- <li v-for="(page, index) in pagination" :key="index">
 								
 								<a
 									id="qna_font"
@@ -100,7 +100,7 @@
 										{{ page.label }}
 									</span>
 								</a>
-							</li>
+							</li> -->
 							<!-- <li class="page-item">
 								<a
 									id="qna_font"
@@ -171,9 +171,9 @@ export default {
 			cntinfo: 0,
 			formSelectData: "",
 			rangevalue: "",
-			page: {},
-			pagination: {},
-			pageChk: {},
+			// page: {},
+			// pagination: {},
+			// pageChk: {},
 		}
 	},
 	created() {
@@ -187,7 +187,6 @@ export default {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
 		console.log("beforeupdated flg"+this.nowflg);
-		console.log("카테고리는"+this.formSelectData); // 안찍힘
 		// this.getInfo( this.nowflg, this.formSelectData );
 	},
 	mounted() {
@@ -207,13 +206,14 @@ export default {
 				console.log("categoryflg = 전체")
 			}
 			this.getInfo();
-			console.log("formselect함수"+this.formSelectData)
+			console.log("formselect함수끝"+this.formSelectData)
 		},
 		// button 클릭시 value 데이터바인딩
 		buttonclick(value) {
 			this.rangevalue = value;
 			console.log("버튼밸류:"+value);
 			this.getInfo();
+			console.log("버튼함수끝"+value);
 		},
 
 		// 해당 게시판의 모든 게시글 조회
@@ -227,53 +227,22 @@ export default {
 					flg: this.nowflg,
 					category: this.formSelectData,
 					orderby: this.rangevalue,
-					page: this.page,
+					// page: this.page,
 				}
 			})
 			.then(res => {
-				console.log('여긴가',res.data.informresult); // information
+				console.log('여긴가',res.data.information);
 				console.log("then");
 				console.log('category='+this.formSelectData );
 				console.log('nowflg='+this.nowflg );
-				this.pagination = res.data.informresult.links; // information
-				this.page = res.data.informresult.current_page; // information
-				this.pageChk  = res.data.informresult.current_page; // information
-				if(!(this.formSelectData)){
-					console.log("if");
-					if(this.rangevalue) {
-						console.log("if로 진입, 버튼밸류는"+this.rangevalue);
-						if(res.data.code === '0') {
-							// this.page = res.data.information.links;
-							this.infolist = res.data.informresult.data; // information
-							this.cntinfo = res.data.infocnt;
-							console.log("레스데이터1"+res.data);
-						}
-					} else {
-						if(res.data.code === '0') {
-							this.infolist = res.data.informresult.data; // information
-							this.cntinfo = res.data.infocnt;
-							console.log("레스데이터2"+res.data);
-							}
-					}					
-				} else {
-					console.log("else");
-					console.log('nowflg='+this.nowflg );
-					console.log('category='+this.formSelectData );
-					if(this.rangevalue) {
-						console.log('orderby='+this.rangevalue);
-						if(res.data.code === '0') {
-							this.infolist = res.data.informresult.data; // information
-							this.cntinfo = res.data.infocnt;
-							console.log("레스데이터3"+res.data);
-						}
-					} else {
-						if(res.data.code === '0') {
-							this.infolist = res.data.informresult.data; // information
-							this.cntinfo = res.data.infocnt;
-							console.log("레스데이터4"+res.data);
-						}
-					}
-				}
+				// this.pagination = res.data.information.links;
+				// this.page = res.data.information.current_page;
+				// this.pageChk  = res.data.information.current_page;
+				this.infolist = res.data.information;
+				console.log('인포리스트='+this.infolist );
+				this.cntinfo = res.data.infocnt;
+				console.log('카운트리스트='+this.cntinfo );
+				console.log('정렬순='+this.rangevalue );
 			})
 			.catch(err => {
         		this.$router.push('/error');
