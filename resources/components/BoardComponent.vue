@@ -6,22 +6,23 @@
 				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<select @change="formSelect($event)" class="form-select qna_drop my-3" aria-label=".form-select-sm">
-							<option selected value="0" class="qna_drop_item">전체</option>
-							<option value="1" class="qna_drop_item">축제</option>
-							<option value="2" class="qna_drop_item">관광</option>
-							<option value="3" class="qna_drop_item">기타</option>
+						<select v-model="option" @click="getInfo()" class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option value="3" class="qna_drop_item">전체</option>
+							<option value="0" class="qna_drop_item">축제</option>
+							<option value="1" class="qna_drop_item">관광</option>
+							<option value="2" class="qna_drop_item">기타</option>
 						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
+							<!-- 정렬 button -->
 							<div class="btn-group" role="group">
-								<button type="button" class="btn">
-									<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+								<button type="button" class="btn" value="1" @click="buttonclick(1)">
+									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
 								</button>
-								<button type="button" class="btn">
+								<button type="button" class="btn" value="2" @click="buttonclick(2)">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
 								</button>
-								<button type="button" class="btn">
+								<button type="button" class="btn" value="3" @click="buttonclick(3)">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 								</button>
 							</div>
@@ -87,7 +88,19 @@
 				<div>
 					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center qna_pagin">
-							<li class="page-item">
+							<li v-for="(page, index) in pagination" :key="index">
+								
+								<a
+									id="qna_font"
+									class="page-link"
+									@click="getInfo(page.label)"
+								>
+									<span>
+										{{ page.label }}
+									</span>
+								</a>
+							</li>
+							<!-- <li class="page-item">
 								<a
 									id="qna_font"
 									class="page-link"
@@ -98,8 +111,8 @@
 										><font-awesome-icon :icon="['fas', 'angle-left']"
 									/></span>
 								</a>
-							</li>
-							<li class="page-item">
+							</li> -->
+							<!-- <li class="page-item">
 								<a
 									id="qna_font"
 									class="page-link"
@@ -139,7 +152,7 @@
 										><font-awesome-icon :icon="['fas', 'angles-right']"
 									/></span>
 								</a>
-							</li>
+							</li> -->
 						</ul>
 					</nav>
 				</div>
@@ -155,57 +168,78 @@ export default {
 			infolist: [],
 			nowflg: "",
 			cntinfo: 0,
-			formSelectData: 0,
+			rangevalue: "1",
+			page: {},
+			pagination: {},
+			pageChk: {},
+      		option: "3"
 		}
 	},
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
-		console.log(this.nowflg )
-		this.getInfo( this.nowflg );
-		this.getCategoryInfo( this.nowflg );
+		console.log( "created flg"+this.nowflg )
+		this.getInfo();
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
-		this.getInfo( this.nowflg, this.formSelectData );
+		console.log("beforeupdated flg"+this.nowflg);
+		this.option = "3";
+		this.rangevalue = "1";
+		this.getInfo();
 	},
 	mounted() {
 	},
 	methods: {
-		// 해당 게시판의 모든 게시글 조회
-		getInfo(flg, data) {
-			console.log(data);
-			// 해당url의 데이터 가져오기
-			const URL = '/board/info?flg='+ flg + '&category=' + this.formSelectData;
-			console.log("getinfo 함수진입")
-			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
-			axios.get(URL)
-			.then(res => {
-				console.log("then");
-				console.log("레스데이터"+res.data);
-				if(res.data.code === '0') {
-					this.infolist = res.data.information;
-					this.cntinfo = res.data.infocnt;
-				}
-				console.log('nowflg='+this.nowflg )
-			})
-			.catch(err => {
-        		this.$router.push('/error');
-			})
+		// button 클릭시 value 데이터바인딩
+		buttonclick(value) {
+			this.rangevalue = value;
+			console.log("버튼밸류:"+value);
+			this.getInfo();
+			console.log("버튼함수끝"+value);
 		},
 
-		formSelect(event) {
-			console.log(event.target.value);
-			if(event.target.value == 1) {
-				this.formSelectData = '축제'
-			} else if (event.target.value == 2) {
-				this.formSelectData = '관광'
-			} else if (event.target.value == 3) {
-				this.formSelectData = '기타'
-			}
-		}
+		// 해당 게시판의 모든 게시글 조회
+		getInfo(page = 1) {
+			// 해당url의 데이터 가져오기
+			const URL = '/board/info?page='+page;
+			console.log("getinfo 함수진입")
+			console.log("nowflg="+this.nowflg)
+			console.log("option="+this.option)
+			console.log("rangevalue="+this.rangevalue)
+			console.log("page="+this.page)
+			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
+			axios.get(URL, {
+				params: {
+					flg: this.nowflg,
+					category: this.option,
+					orderby: this.rangevalue,
+					page: this.page,
+				}
+			})
+			.then(res => {
+				console.log('여긴가',res.data.information);
+				console.log("then");
+				console.log('category='+this.option );
+				console.log('nowflg='+this.nowflg );
+				this.pagination = res.data.information.links;
+				console.log('pagination='+this.pagination );
+				this.page = res.data.information.current_page;
+				console.log('page는 ',this.page);
+				this.pageChk  = res.data.information.current_page;
+				this.infolist = res.data.information.data;
+				console.log('인포리스트='+this.infolist );
+				this.cntinfo = res.data.infocnt;
+				console.log('카운트인포=', res.data.infocnt);
+				console.log('카운트인포='+this.cntinfo );
+				console.log('정렬순='+this.rangevalue );
+			})
+			.catch(err => {
+				this.$router.push('/error');
+			})
+		},
 	}
 }
 </script>

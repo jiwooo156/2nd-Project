@@ -1,108 +1,44 @@
-<template>
+<template lang="">
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
 				<div class="detail_type font_air bold center">
-					{{this.detaildata.ns_flg}} {{this.detaildata.states_name}} {{this.detaildata.main_flg}}
+					{{ getEventType(this.detaildata.flg) }}게시판
 				</div>
 				<div class="detail_header font_air bold">
 					<div class="detail_title  center">
-						{{this.detaildata.title}}
+						[{{ getCategoryEventType(this.detaildata.category_flg) }}] {{this.detaildata.title}}
 					</div>
 				</div>
 			</div>
-			<div>
-				<!-- <div class="font_air bold center detail_place">
-					장소 : {{this.detaildata.place}}
+			<div class="detail_flex">
+				<div class="font_air bold center detail_com_tofrom">
+					<!-- 닉네임 : {{ this.usernick.nick }} -->
+					작성일자 : {{ formatEventDate(this.detaildata.created_at) }}
 				</div>
-				<div class="font_air bold center detail_place">
-					주차 : {{this.detaildata.parking_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					커플 : {{this.detaildata.couple_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					친구 : {{this.detaildata.friend_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					가족 : {{this.detaildata.family_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					요금 : {{this.detaildata.fee}}
-				</div>
-				<div class="font_air bold center detail_place">
-					운영시간 : {{this.detaildata.time}}
-				</div>
-				<div class="font_air bold center detail_place">
-					휴일 : {{this.detaildata.holiday}}
-				</div>
-				<div class="font_air bold center detail_place">
-					전화번호 : {{this.detaildata.tel}}
-				</div> -->
-				<div 
-					v-if="this.detaildata.main_flg==='축제'"
-					class="font_air bold center detail_tofrom"
-					>
-					축제기간 : {{this.detaildata.start_at}} ~ {{this.detaildata.end_at}}
-				</div>
-				<div class="font_air bold detail_hits">
+				<div class="font_air bold detail_com_hits">
 					조회수 : {{this.detaildata.hits}}
 				</div>
 			</div>
 			<div class="detail_body">
-				<div class="detail_img"
-					v-if="this.detaildata.img1||this.detaildata.img2||this.detaildata.img3"
-				>
-					<img :src="this.detaildata.img1"
-						v-if="this.detaildata.img1"
-					>
-					<br>
-					<img :src="this.detaildata.img2"
-						v-if="this.detaildata.img2"
-					>
-					<br>
-					<img :src="this.detaildata.img3"
-						v-if="this.detaildata.img3"
-					>
-				</div>
 				<div class="detail_content font_air bold">
 					{{this.detaildata.content}}<br>  
-					<div >
-						<div>
-							<!-- <div class = "detail_content font_air bold 
-							detail_parking_flg">
-								#장소{{detaildata.place}}
-							</div> -->
-							<div class = "detail_parking_flg
-							detail_content font_air bold">
-								#주차{{detaildata.parking_flg}}   
-							</div>
-							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#커플{{detaildata.couple_flg}}
-							</div>
-							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#친구{{detaildata.friend_flg}}
-							</div>
-							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#요금{{detaildata.fee}}
-							</div>
-							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#운영시간{{detaildata.time}}
-							</div>
-							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#{{detaildata.holiday}}
-							</div>
-						</div>	
-					</div>
+				</div>
+			</div>
+			<div class="detail_post_like d-flex justify-content-between">
+				<div>
+					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
+					<span class="detail_likes font_air bold">좋아요{{ this.infolist.lik }}</span>
+				</div>
+				<!-- 게시글을 작성한 사람만 가능 / 디폴트는 목록-->
+				<div class="post_btn_bot">
+						<button type="button">수정</button>
+						<button type="button">목록</button>
+						<button type="button">삭제</button>
 				</div>
 			</div>
 		</div>
-		<div class="detail_replie_container">
+		<div class="detail_post_replie_container">
 			<div class="detail_replie_write_box font_air bold">
 				<div class="font_air bold">
 					댓글쓰기  ({{ this.repliecount }})
@@ -175,9 +111,9 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-export default {
-	name: 'DetailComponent',
 
+export default {
+	name: "PostDetailComponent",
 	data() {
 		return {
 			infolist: [],
@@ -203,21 +139,22 @@ export default {
 		this.$store.commit('setLocalFlg', boo);
 		this.getinfo();
 	},
-
-	updated() {
-	},
 	methods: {
 		getinfo(){
+			// 스피너 로딩바
+			this.$store.commit('setLoading',true);
 			// 현재url가져오기
 			let params = new URLSearchParams(window.location.search);
 			this.b_id = params.get('id');
-			
-			const URL = '/detail/info/'+this.b_id;
+			const URL = '/post/detail/'+this.b_id;
 			axios.get(URL)
 			.then(res => {
+				console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
+					console.log("if 진입");
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
+					// this.usernick = res.data.usersnick;
 					this.repliecount = res.data.repliecount;
 					
 				}else if(res.data.code==="E99"){
@@ -228,6 +165,7 @@ export default {
                     confirmButtonText: '확인'
                 })
 				}
+				console.log("getinfo 함수 끝");
 			})
 			.catch(err => {
 				Swal.fire({
@@ -237,15 +175,51 @@ export default {
                     confirmButtonText: '확인'
                 })
 			})
+			.finally(() => {
+                this.$store.commit('setLoading', false);
+            });
+		},
+		// flg 데이터 출력 변환
+		getEventType(data) {
+			if(data === '0') {
+				return '자유';
+			}else if (data === '1') {
+				return '정보';
+			}else if (data === '2') {
+				return '질문';
+			}else {
+				return '건의';
+			}
+		},
+		// category_flg 데이터 출력 변환
+		getCategoryEventType(data) {
+			if(data === '0') {
+				return '축제';
+			}else if (data === '1') {
+				return '관광';
+			}else if (data === '2') {
+				return '기타';
+			}else {
+				return '기타';
+			}
+		},
+		// created_at 데이터 출력 변환
+		formatEventDate(dateString) {
+			const dateObject = new Date(dateString);
+			const year = dateObject.getFullYear();
+			const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+			const day = String(dateObject.getDate()).padStart(2, "0");
+
+			return `${year}-${month}-${day}`;
 		},
 		// 댓글작성
 		repliewrite(){
 			if(this.replie){
-				const URL = '/detail/'+this.b_id;
+				const URL = '/post/'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
-				formData.append('flg', '0');
+				formData.append('flg', '1');
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){
@@ -326,7 +300,7 @@ export default {
 		// 댓글삭제
 		del_replie(id){		
 			if (confirm("댓글을 삭제하시겠습니까?")) {
-				const URL = '/detail/del/'+id;
+				const URL = '/post/del/'+id;
 				const formData = new FormData();
 				axios.post(URL,formData)
 				.then(res =>{
@@ -357,7 +331,7 @@ export default {
 		},
 		// 댓글추가 불러오기
 		morereplie(){
-			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
+			const URL = '/post/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
@@ -408,15 +382,8 @@ export default {
 			}
 		},	
 	},
-	beforeRouteLeave(to, from, next) {
-		next();
-	},
-	getEventFlg(data) {
-			if(data === '0') {
-				return '따봉';
-			}else if (data === '1') {
-				return '우우';
-			}
-		},
 }
 </script>
+<style lang="">
+	
+</style>

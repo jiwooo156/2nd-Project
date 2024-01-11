@@ -21,9 +21,10 @@ import UserChk from './UserChk.vue'
 import ErrorComponent from './ErrorComponent.vue'
 import FooterComponent from './FooterComponent.vue'
 import DetailComponent from './DetailComponent.vue'
-import BoardComponent from './BoardComponent.vue'
 import QnaComponent from './QnaComponent.vue'
-import PostComponent from './PostComponent.vue'
+import BoardComponent from './BoardComponent.vue'
+import PostDetailComponent from './PostDetailComponent.vue'
+import PostWriteComponent from './PostWriteComponent.vue'
 import CommunityComponent from './CommunityComponent.vue'
 
 export default {
@@ -43,7 +44,8 @@ export default {
         DetailComponent,
         BoardComponent,
         QnaComponent,
-        PostComponent,
+        PostDetailComponent,
+        PostWriteComponent,
         AdminComponent,
         CommunityComponent,
     },

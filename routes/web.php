@@ -92,7 +92,27 @@ Route::middleware('myValidation')->prefix('qna')->group(function() {
     Route::get('/list', [InfoController::class, 'qnaPaging']);
 });
 
-// 디테일 라우터
+// 커뮤니티 디테일 라우터 생성
+Route::middleware('myValidation')->prefix('post')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/detail/{id}', [InfoController::class, 'detailComget']);
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 댓글 조회
+    Route::post('/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
+    Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
+});
+
+// 커뮤니티 작성 라우터 생성
+Route::middleware('myValidation')->prefix('write')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::post('/{id}', [InfoController::class, 'postwirte']); // 게시글 작성
+});
+
+// 관광&축제 디테일 라우터
 Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/', function () {
         return view('welcome');
@@ -110,7 +130,7 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
         return view('welcome');
     });
     // 0108 정지우 정보게시판 목록 정보조회
-    Route::get('/info', [InfoController::class, 'informationget']);
+    Route::get('/info', [InfoController::class, 'commuinfoget']);
 });
 
 
