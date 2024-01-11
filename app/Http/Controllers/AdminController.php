@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Community;
 use App\Models\Replie;
+use App\Models\Like;
 use App\Models\Report;
+use App\Models\Info;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -475,6 +477,170 @@ class AdminController extends Controller
                 'errorMsg' => '변경실패 실패.'
             ], 400);
         }
+    }
+    // 통계불러오기
+    public function statistics(Request $req){
+        // 좋아요 누른 성별수
+        $gender = Like::
+            select('users.gender', DB::raw('COUNT(users.gender) as cnt'))
+            ->join('users', 'likes.u_id', '=', 'users.id')
+            ->where('likes.flg','0')
+            ->groupBy('users.gender')
+            ->get();
+        // 플래그별 좋아요 눌린 비율
+        $tag = Like::
+            select(
+                DB::raw("'couple_flg' as type"),
+                DB::raw('sum(infos.couple_flg) as cnt')
+            )
+            ->join('infos', 'likes.b_id', '=', 'infos.id')
+            ->where('likes.flg', '0')
+            ->groupBy('type')
+            ->union(
+                Like::
+                select(
+                    DB::raw("'friend_flg' as type"),
+                    DB::raw('sum(infos.friend_flg) as cnt')
+                )
+                ->join('infos', 'likes.b_id', '=', 'infos.id')
+                ->where('likes.flg', '0')
+                ->groupBy('type')
+            )
+            ->union(
+                Like::
+                select(
+                    DB::raw("'family_flg' as type"),
+                    DB::raw('sum(infos.family_flg) as cnt')
+                )
+                ->join('infos', 'likes.b_id', '=', 'infos.id')
+                ->where('likes.flg', '0')
+                ->groupBy('type')
+            )
+            ->get();
+        // 축제관광에서 좋아요 눌린 비율
+        $main = Like::
+            select('infos.main_flg', DB::raw('COUNT(infos.main_flg) as cnt'))
+            ->join('infos', 'likes.b_id', '=', 'infos.id')
+            ->groupBy('infos.main_flg')
+            ->where('likes.flg','0')
+            ->get();
+
+        // 나이대별 좋아요 누르는 비율
+        $age = Like::
+            select(DB::raw("COUNT(users.id) as cnt"), DB::raw("
+                CASE 
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 10 AND 19 THEN '10대'
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 20 AND 29 THEN '20대'
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 30 AND 39 THEN '30대'
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 40 AND 49 THEN '40대'
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 50 AND 59 THEN '50대'
+                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) >= 60 THEN '60대 이상'
+                    ELSE '기타' 
+                END as age"))
+            ->join('users', 'likes.u_id', '=', 'users.id')
+            ->where('likes.flg', '0')
+            ->groupBy('age')
+            ->get();
+            Log::debug("나이순 ".$age);
+
+        // 커뮤니티 좋아요 누른 성별수
+        $gender1 = Like::
+            select('users.gender', DB::raw('COUNT(users.gender) as cnt'))
+            ->join('users', 'likes.u_id', '=', 'users.id')
+            ->where('likes.flg','1')
+            ->groupBy('users.gender')
+            ->get();
+        // 커뮤니티 게시판 원하는정보 비율
+        $main1 = Like::
+            select(DB::raw('community.category_flg as type'), DB::raw('COUNT(community.category_flg) as cnt'))
+            ->join('community', 'likes.b_id', '=', 'community.id')
+            ->groupBy('community.category_flg')
+            ->where('likes.flg','1')
+            ->where('community.notice_flg','0')
+            ->get();
+
+        // 커뮤니티 게시판 원하는정보 비율
+        $flg = Like::
+            select(DB::raw('community.flg as type'), DB::raw('COUNT(community.flg) as cnt'))
+            ->join('community', 'likes.b_id', '=', 'community.id')
+            ->groupBy('community.flg')
+            ->where('likes.flg','1')
+            ->where('community.flg',"!=",'3')
+            ->where('community.notice_flg','0')
+            ->get();
+
+        // 여기서부터 조회수
+
+        // 플래그별 평균 조회수
+        $hit_flg = Info::
+            select(
+                DB::raw("'couple_flg' as type"),
+                DB::raw('ROUND(AVG(infos.hits)) as cnt')
+            )
+            ->where('couple_flg','1')
+            ->groupBy('type')
+            ->union(
+                Info::
+                select(
+                    DB::raw("'friend_flg' as type"),
+                    DB::raw('ROUND(AVG(infos.hits)) as cnt')
+                )
+                ->where('friend_flg','1')
+                ->groupBy('type')
+            )
+            ->union(
+                Info::
+                select(
+                    DB::raw("'family_flg' as type"),
+                    DB::raw('ROUND(AVG(infos.hits)) as cnt')
+                )
+                ->where('family_flg','1')
+                ->groupBy('type')
+            )
+            ->get();
+
+        // 축제 관광별 평균조회수
+        $hit_main = Info::
+            select(DB::raw('main_flg as type'), DB::raw('ROUND(AVG(infos.hits)) as cnt'))
+            ->groupBy('main_flg')
+            ->get();
+        // 도별 평균 조회수
+        $hit_ns = Info::
+            select(DB::raw('ns_flg as type'), DB::raw('ROUND(AVG(infos.hits)) as cnt'))
+            ->groupBy('ns_flg')
+            ->get();
+        // 가장 인기있는 도시 top5의 평균 조회수
+        $hit_n = Info::
+            select(DB::raw('states_name as type'), DB::raw('ROUND(AVG(infos.hits)) as cnt'))
+            ->Where('ns_flg','경상북도')
+            ->groupBy('states_name')
+            ->orderBy('cnt','desc')
+            ->limit(5)
+            ->get();
+        $hit_s = Info::
+            select(DB::raw('states_name as type'), DB::raw('ROUND(AVG(infos.hits)) as cnt'))
+            ->Where('ns_flg','경상남도')
+            ->groupBy('states_name')
+            ->orderBy('cnt','desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'code' => '0',
+            'gender' =>  $gender,
+            'gender1' =>  $gender1,
+            'tag' =>  $tag,
+            'flg' =>  $flg,
+            'main' =>  $main,
+            'main1' =>  $main1,
+            'age' =>  $age,
+            // 조회수영역
+            'hit_flg' =>  $hit_flg,      
+            'hit_main' =>  $hit_main,      
+            'hit_ns' =>  $hit_ns,      
+            'hit_n' =>  $hit_n,      
+            'hit_s' =>  $hit_s,      
+        ], 200);
     }
     // 특정시간에 동작
     public function test(Request $req){

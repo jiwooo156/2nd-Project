@@ -179,6 +179,7 @@
 						v-model="answer"
 						placeholder="최대 200글자까지 작성 가능합니다"
 						@input="koreaName"
+						@keyup.enter="adminAnswer(now_data.id)"
 					></textarea>
 				</div>
 				<div class="input-group mb-3"
@@ -523,11 +524,91 @@
 	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
 		테스트3
 	</div>
+	<!-- 조회수통계 -->
 	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
-		테스트4
+		<div>조회수 통계</div>
+		<div>축제관광</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>성비</div>
+				<Doughnut :data="h_chart1.data" :options="h_chart1.options" />
+			</div>
+			<div>
+				<div>축제 관광 비율</div>
+				<Doughnut :data="h_chart2.data" :options="h_chart2.options" />
+			</div>
+			<div>
+				<div>축제 관광 비율</div>
+				<Doughnut :data="h_chart3.data" :options="h_chart3.options" />
+			</div>
+		</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>나이 떄</div>
+				<Doughnut :data="h_chart4.data" :options="h_chart4.options" />
+			</div>
+			<div>
+				<div>좋아요가 많이눌린 플래그</div>
+				<Doughnut :data="h_chart5.data" :options="h_chart5.options" />
+			</div>
+		</div>
+		<hr>
+		<div>커뮤니티</div>
+		<!-- <div class="admin_chart_flex center">
+			<div>
+				<div>성비</div>
+				<Doughnut :data="h_chart6.data" :options="chart5.options" />
+			</div>
+			<div>
+				<div>커뮤 주제</div>
+				<Doughnut :data="h_chart7.data" :options="chart6.options" />
+			</div>
+			<div>
+				<div>커뮤 카테고리</div>
+				<Doughnut :data="h_chart8.data" :options="chart7.options" />
+			</div>
+		</div> -->
 	</div>
+	<!-- 좋아요통계 -->
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
-		테스트5
+		<div>좋아요 통계</div>
+		<div>축제관광</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>성비</div>
+				<Doughnut :data="chart1.data" :options="chart1.options" />
+			</div>
+			<div>
+				<div>축제 관광 비율</div>
+				<Doughnut :data="chart2.data" :options="chart4.options" />
+			</div>
+		</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>나이 떄</div>
+				<Doughnut :data="chart3.data" :options="chart4.options" />
+			</div>
+			<div>
+				<div>좋아요가 많이눌린 플래그</div>
+				<Doughnut :data="chart4.data" :options="chart4.options" />
+			</div>
+		</div>
+		<hr>
+		<div>커뮤니티</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>성비</div>
+				<Doughnut :data="chart5.data" :options="chart5.options" />
+			</div>
+			<div>
+				<div>커뮤 주제</div>
+				<Doughnut :data="chart6.data" :options="chart6.options" />
+			</div>
+			<div>
+				<div>커뮤 카테고리</div>
+				<Doughnut :data="chart7.data" :options="chart7.options" />
+			</div>
+		</div>
 	</div>
 	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
@@ -655,7 +736,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- 유저관리 -->
+	<!-- 유저관리페이지 -->
 	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
 		유저관리
 		<select v-model="searchtype">
@@ -736,6 +817,10 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Doughnut } from 'vue-chartjs'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
 	name: 'AdminComponent',
@@ -744,7 +829,7 @@ export default {
 	},
 	
 	components: {
-
+		Doughnut,
 	},
 
 	data() {
@@ -777,8 +862,236 @@ export default {
 			restraintinput:false,
 			answer: "",
 			selectUserData: {},
+			likegender: {},
+			likeage: {},
+			liketag: {},
+			likemain: {},
+			likegender_c: {},
+			likemain_c: {},
+			likeflg: {},
+			hit_flg: {},
+			hit_main: {},
+			hit_ns: {},
+			hit_n: {},
+			hit_s: {},
 			requestdata_before:{},
 			requestdata_after:{},
+			// 차트1 좋아요성비
+			chart1:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666 ',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 차트2 좋아요축제관광
+			chart2:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#66c2ff ',"#ff6666 "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 차트3 좋아요나이
+			chart3:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#df995d","#ecdf55","#afec55","#5582ec","#2c20b0","#a824d0"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 차트4 좋아요플래그
+			chart4:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 차트5 커뮤니티좋아요성비
+			chart5:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666 ',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 350, // 원하는 가로 크기
+					height: 350, // 원하는 세로 크기
+				},
+			},
+			// 차트6 커뮤니티 축제관광별 비율
+			chart6:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 350, // 원하는 가로 크기
+					height: 350, // 원하는 세로 크기
+				},
+			},
+			// 차트7 커뮤니티 게시판별 비율
+			chart7:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 350, // 원하는 가로 크기
+					height: 350, // 원하는 세로 크기
+				},
+			},
+			// 조회수 차트1 플래그
+			h_chart1:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 조회수 차트2 축제관광
+			h_chart2:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 조회수 차트3 북도남도
+			h_chart3:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 조회수 차트4 북도인기5
+			h_chart4:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec","#2c20b0"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			// 조회수 차트5 남도 인기5
+			h_chart5:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec","#2c20b0"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
 		}
 	},
 	watch: {
@@ -789,12 +1102,20 @@ export default {
 	created() {
 		this.getToday();
 		this.adminchk();
+		this.statistics()
 	},
 	updated() {
 		this.getToDayTime();
 	},
 	mounted() {
-
+		this.chart1.data.labels = [];
+		this.chart1.data.datasets[0].data = [];
+		this.chart2.data.labels = [];
+		this.chart2.data.datasets[0].data = [];
+		this.chart3.data.labels = [];
+		this.chart3.data.datasets[0].data = [];
+		this.chart4.data.labels = [];
+		this.chart4.data.datasets[0].data = [];
 	},
 
 	methods: {
@@ -895,8 +1216,6 @@ export default {
 		// 모달클로즈
 		closeModal(){
 			this.$store.commit('setLoading',true);
-			this.modalReport = {};
-			this.now_data = {};
 			this.modalflg = false;
 			this.updateflg = false;
 			this.$store.commit('setLoading', false);
@@ -967,20 +1286,30 @@ export default {
 			}
 		},
 		// 게시물 삭제
-		delreplie(id,flg){
+		delreplie(id,flg){	
 			this.$store.commit('setLoading', true);
 			const URL = '/admin/report?id='+id+'&flg='+flg
 			axios.delete(URL)
 			.then(res => {
 				if(res.data.code === "0"){
+					console.log("정상진입")
 					this.closeModal();
 					if(this.mainflg===3&&this.subflg===1){
-						this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '1';
+						if((this.reportdata_before.find(item => item.id === this.now_report.id && item.admin_flg === '3'))||(this.reportdata_after.find(item => item.id === this.now_report.id && item.admin_flg === '3'))){
+							if(this.reportdata_before.find(item => item.id === this.now_report.id)){
+								this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '3';
+							}else{
+								this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '3';
+							}
+						}else{
+							if(this.reportdata_before.find(item => item.id === this.now_report.id)){
+								this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '1';
+							}else{
+								this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '1';
+							}
+						}
 					}else{
-						// const del = this.reportdata_before.findIndex(item => item.id === this.now_report.id);
-						// if (del !== -1) {
-						// 	this.reportdata_before.splice(del, 1);
-						// }
+						console.log("엘스로")
 						this.adminchk();
 					}
 					Swal.fire({
@@ -1022,7 +1351,7 @@ export default {
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
 		},
-		// 플래그변경
+		// 게시글유지
 		keepdata(id,flg){
 			this.$store.commit('setLoading',true);
 			const formData = new FormData();
@@ -1160,7 +1489,6 @@ export default {
 				.then(res => {
 					if(res.data.code === "0"){
 						document.querySelector('.admin_boot_modal_close').click();
-						this.resetall()
 						Swal.fire({
 							icon: 'success',
 							title: '완료',
@@ -1253,7 +1581,21 @@ export default {
 			formData.append('flg',flg);
 			axios.post(URL,formData)
 			.then(res => {
-				this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '2';
+				if(this.mainflg===3&&this.subflg===1){
+					if((this.reportdata_before.find(item => item.id === this.now_report.id && item.admin_flg === '3'))||(this.reportdata_after.find(item => item.id === this.now_report.id && item.admin_flg === '3'))){
+						if(this.reportdata_before.find(item => item.id === this.now_report.id)){
+							this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '3';
+						}else{
+							this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '3';
+						}
+					}else{
+						if(this.reportdata_before.find(item => item.id === this.now_report.id)){
+							this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '2';
+						}else{
+							this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '2';
+						}
+					}
+				}
 				this.closeModal();
 				Swal.fire({
 					icon: 'success',
@@ -1274,7 +1616,7 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 유저제재
+		// 모달유저제재
 		modalRestraintuser(id,u_id,flg,user){
 			let to=['작성자 재제','신고자 제제']
 			let date=['1일','3일','7일','15일','30일','영구제제']
@@ -1454,6 +1796,137 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
+		// 좋아요통계가져오기
+		statistics(){
+			this.$store.commit('setLoading',true);
+			const URL = '/admin/statistics'
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					// 성별
+					this.likegender = res.data.gender;	
+					for(let i = 0; i < this.likegender.length; i++){
+						this.chart1.data.labels[i] = this.likegender[i].gender==='M'?'남성':'여성';
+						this.chart1.data.datasets[0].data[i]=this.likegender[i].cnt;
+					}
+					// 축제관광
+					this.likemain = res.data.main;	
+					for(let i = 0; i < this.likemain.length; i++){
+						this.chart2.data.labels[i] = this.likemain[i].main_flg==='축제'?'축제':'관광';
+						this.chart2.data.datasets[0].data[i]=this.likemain[i].cnt;
+					}
+					// 좋아요나이
+					this.likeage = res.data.age;	
+					for(let i = 0; i < this.likeage.length; i++){
+						this.chart3.data.labels[i] = this.likeage[i].age;
+						this.chart3.data.datasets[0].data[i]=this.likeage[i].cnt;
+					}
+					// 추천플래그
+					this.liketag = res.data.tag;	
+					for(let i = 0; i < this.liketag.length; i++){
+						if (this.liketag[i].type === "couple_flg") {
+							this.liketag[i].type = "커플추천";
+						} else if (this.liketag[i].type === "friend_flg") {
+							this.liketag[i].type = "친구추천";
+						} else if (this.liketag[i].type === "family_flg") {
+							this.liketag[i].type = "가족추천";
+						}
+						this.chart4.data.labels[i] = this.liketag[i].type;
+						this.chart4.data.datasets[0].data[i]=this.liketag[i].cnt;
+					}
+					// 커뮤 성별
+					this.likegender_c = res.data.gender1;	
+					for(let i = 0; i < this.likegender_c.length; i++){
+						this.chart5.data.labels[i] = this.likegender_c[i].gender==='M'?'남성':'여성';
+						this.chart5.data.datasets[0].data[i]=this.likegender_c[i].cnt;
+					}
+					// 커뮤 테마
+					this.likemain_c = res.data.main1;	
+					for(let i = 0; i < this.likemain_c.length; i++){
+						if (this.likemain_c[i].type === "0") {
+							this.likemain_c[i].type = "축제";
+						} else if (this.likemain_c[i].type === "1") {
+							this.likemain_c[i].type = "관광";
+						} else if (this.likemain_c[i].type === "2") {
+							this.likemain_c[i].type = "기타";
+						}
+						this.chart6.data.labels[i] = this.likemain_c[i].type;
+						this.chart6.data.datasets[0].data[i]=this.likemain_c[i].cnt;
+					}
+					// 커뮤 게시판
+					this.likeflg = res.data.flg;	
+					for(let i = 0; i < this.likeflg.length; i++){
+						if (this.likeflg[i].type === "0") {
+							this.likeflg[i].type = "자유게시판";
+						} else if (this.likeflg[i].type === "1") {
+							this.likeflg[i].type = "정보게시판";
+						} else if (this.likeflg[i].type === "2") {
+							this.likeflg[i].type = "질문게시판";
+						}
+						this.chart7.data.labels[i] = this.likeflg[i].type;
+						this.chart7.data.datasets[0].data[i]=this.likeflg[i].cnt;
+					}
+					// 여기서부터 조회수
+					// 조회수 플래그
+					this.hit_flg = res.data.hit_flg;	
+					for(let i = 0; i < this.hit_flg.length; i++){
+						if (this.hit_flg[i].type === "couple_flg") {
+							this.hit_flg[i].type = "커플추천";
+						} else if (this.hit_flg[i].type === "friend_flg") {
+							this.hit_flg[i].type = "친구추천";
+						} else if (this.hit_flg[i].type === "family_flg") {
+							this.hit_flg[i].type = "가족추천";
+						}
+						this.h_chart1.data.labels[i] = this.hit_flg[i].type;
+						this.h_chart1.data.datasets[0].data[i]=this.hit_flg[i].cnt;
+					}
+					console.log("통과1")
+					// 조회수 축제관광
+					this.hit_main = res.data.hit_main;	
+					for(let i = 0; i < this.hit_main.length; i++){
+						this.h_chart2.data.labels[i] = this.hit_main[i];
+						this.h_chart2.data.datasets[0].data[i]=this.hit_main[i].cnt;
+					};
+					console.log("통과2")
+					// 조회수 ns
+					this.hit_ns = res.data.hit_ns;	
+					this.hit_ns.forEach(tag => {
+					});
+					for(let i = 0; i < this.hit_ns.length; i++){
+						this.h_chart3.data.labels[i] = this.hit_ns[i];
+						this.h_chart3.data.datasets[0].data[i]=this.hit_ns[i].cnt;
+					}
+					// 조회수 n top5
+					this.hit_n = res.data.hit_n;	
+					this.hit_n.forEach(tag => {
+					});
+					for(let i = 0; i < this.hit_n.length; i++){
+						this.h_chart4.data.labels[i] = this.hit_n[i].type;
+						this.h_chart4.data.datasets[0].data[i]=this.hit_n[i].cnt;
+					}
+					// 조회수 s top5
+					this.hit_s = res.data.hit_s;	
+					this.hit_s.forEach(tag => {
+					});
+					for(let i = 0; i < this.hit_s.length; i++){
+						this.h_chart5.data.labels[i] = this.hit_s[i].type;
+						this.h_chart5.data.datasets[0].data[i]=this.hit_s[i].cnt;
+					}
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                });
+				console.log(err);
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
 		// 초기화용함수
 		resetall(){
 			this.restraint_msg= "";
@@ -1461,17 +1934,11 @@ export default {
 			this.restraint_date= "";
 			this.searchval= "";
 			this.searchtype= "유저번호";
-			this.sign_cnt= 0;
 			this.searchflg=false;
-			this.drop_cnt= 0;
-			this.now_data= {};
-			this.now_report= {};
 			this.modalflg=false;
 			this.restraintinput=false;
 			this.answer= "";
-			this.selectUserData= {};
 		},
-	
 	}
 }
 </script>

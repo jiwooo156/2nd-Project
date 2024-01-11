@@ -153,6 +153,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/report', [AdminController::class, 'reportget']);
     Route::get('/reportall', [AdminController::class, 'reportall']);
     Route::get('/requestall', [AdminController::class, 'requestall']);
+    Route::get('/statistics', [AdminController::class, 'statistics']);
     Route::delete('/report', [AdminController::class, 'reportdel']);
     Route::post('/report', [AdminController::class, 'reportpost']);
     Route::post('/report/repair', [AdminController::class, 'repairpost']);
