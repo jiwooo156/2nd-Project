@@ -214,22 +214,42 @@ const store = createStore({
 				axios.post(URL, formData, HEADER)
 				.then(res => {		
 					if(res.data.code === "0"){
-						alert("회원가입에 성공 했습니다.");
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '회원가입에 성공 했습니다.',
+							confirmButtonText: '확인'
+						})
 						router.push('/login')
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'res.data.errorMsg',
+							confirmButtonText: '확인'
+						})
 					}
 				})
 				.catch(err => {
 					// 캣치
 					console.log("캣치")
-					alert(err.response.data.errorMsg);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})					
 				})
 				.finally(() => {
 					context.commit('setLoading',false);
 				});
 			}else{
-				alert("닉네임 인증을 해주세요")
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '닉네임 인증을 해주세요',
+                    confirmButtonText: '확인'
+                })
 			}
 		},
 		// 로그인
@@ -265,7 +285,12 @@ const store = createStore({
 							router.push('/main')
 						}
 					}else if(res.data.code === "1"){
-						alert('환영합니다. '+res.data.data.name+" 관리자님")
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '환영합니다. '+res.data.data.name+" 관리자님",
+							confirmButtonText: '확인'
+						})
 						localStorage.setItem('nick', res.data.data.nick);
 						localStorage.setItem('email', email);
 						localStorage.setItem('admin', res.data.data.id);
@@ -275,23 +300,44 @@ const store = createStore({
 						router.push('/admin')
 					}else if(res.data.code === "E07"){
 						Swal.fire({
-							title: '<span style="color: #f27474;">Error</span>',
-							html: res.data.data.restraint_at+' 까지 <br> 이용이 제한된 계정 입니다.'+'<br><span style="color: #f27474;">제재사유</span> : '+res.data.data.restraint,
-							icon: 'error'
-						});
+							icon: 'warning',
+							title: '주의',
+							text: '해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint,
+							confirmButtonText: '확인'
+						})
 					}else{
 						console.log('else');
-						alert(err.response.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg,
+							confirmButtonText: '확인'
+						})
 					}
 				})
 				.catch(err => {
 					console.log("제제진입 캣치")
 					if(err.response.data.errorMsg.email){
-						alert(err.response.data.errorMsg.email)
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg.email,
+							confirmButtonText: '확인'
+						})
 					}else if(err.response.data.errorMsg.password){
-						alert(err.response.data.errorMsg.password)
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg.password,
+							confirmButtonText: '확인'
+						})
 					}else{
-						alert(err.response.data.errorMsg[0])
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg[0],
+							confirmButtonText: '확인'
+						})
 					}
 				})
 				.finally(() => {
@@ -327,7 +373,12 @@ const store = createStore({
 					}
 				})
 				.catch(err => {
-					alert(err.response.data.errorMsg)
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})
 				})
 		},
 		// 유저정보페이지 비밀번호 체크
@@ -414,14 +465,29 @@ const store = createStore({
 				.then(res => {
 					if(res.data.code === "0"){	
 						context.commit('setPasswordModalFlg',false);
-						alert('정상처리되었습니다');
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '정상처리되었습니다.',
+							confirmButtonText: '확인'
+						})
 						router.push('/userchk')
 					}else{
-						alert(res.data.errorMsg);
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+						})
 					}
 				})
 				.catch(err => {
-					alert("비밀번호의 값을 다시한번 확인해주세요");
+					Swal.fire({
+						icon: 'warning',
+						title: '주의',
+						text: '비밀번호의 값을 다시한번 확인해주세요',
+						confirmButtonText: '확인'
+					})
 				})
 		},
 		// 유저 탈퇴
@@ -456,15 +522,30 @@ const store = createStore({
 			axios.post(URL,formData,HEADER)
 			.then(res => {
 				if(res.data.code === "0"){
-					alert("정상적으로 탈퇴 되었습니다");
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상적으로 탈퇴 되었습니다',
+						confirmButtonText: '확인'
+					})
 					context.dispatch('actionLogout');
 				}else{
-					alert("회원탈퇴중 오류가 발생했습니다.");
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: '회원탈퇴중 오류가 발생했습니다.',
+						confirmButtonText: '확인'
+					})
 				}
 			
 			})
 			.catch(err => {
-				alert(err.response.data)
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data,
+                    confirmButtonText: '확인'
+                })
 			})
 		},
 	},
