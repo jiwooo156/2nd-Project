@@ -6,12 +6,11 @@
 				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<!-- 카테고리 select -->
-						<select @change="formSelect($event)" class="form-select qna_drop my-3" aria-label=".form-select-sm">
-							<option selected class="qna_drop_item" >전체</option>
-							<option value="1" class="qna_drop_item" >축제</option>
-							<option value="2" class="qna_drop_item" >관광</option>
-							<option value="3" class="qna_drop_item" >기타</option>
+						<select v-model="option" @click="getInfo()" class="form-select qna_drop my-3" aria-label=".form-select-sm">
+							<option value="3" class="qna_drop_item">전체</option>
+							<option value="0" class="qna_drop_item">축제</option>
+							<option value="1" class="qna_drop_item">관광</option>
+							<option value="2" class="qna_drop_item">기타</option>
 						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
@@ -89,18 +88,27 @@
 				<div>
 					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center qna_pagin">
-							<!-- <li v-for="(page, index) in pagination" :key="index">
+							<li v-for="(page, index) in pagination" :key="index">
 								
 								<a
 									id="qna_font"
 									class="page-link"
-									href="#"
+									@click="getInfo(page.label)"
 								>
 									<span>
 										{{ page.label }}
 									</span>
 								</a>
-							</li> -->
+								<!-- <router-link 
+									id="qna_font"
+									class="page-link"
+									to="#"
+								>
+									<span>
+										{{ page.label }}
+									</span>
+								</router-link> -->
+							</li>
 							<!-- <li class="page-item">
 								<a
 									id="qna_font"
@@ -169,45 +177,50 @@ export default {
 			infolist: [],
 			nowflg: "",
 			cntinfo: 0,
-			formSelectData: "",
-			rangevalue: "",
-			// page: {},
-			// pagination: {},
-			// pageChk: {},
+			// categoryflg: "",
+			rangevalue: "1",
+			page: {},
+			pagination: {},
+			pageChk: {},
+			// options: [
+			// 	{
+			// 	value: "3",
+			// 	name: "전체",
+			// 	},
+			// 	{
+			// 	value: "0",
+			// 	name: "축제",
+			// 	},
+			// 	{
+			// 	value: "1",
+			// 	name: "관광",
+			// 	},
+			// 	{
+			// 	value: "2",
+			// 	name: "기타",
+			// 	}
+      		// ],
+      		option: "3"
 		}
 	},
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
 		console.log( "created flg"+this.nowflg )
-		this.getInfo( this.nowflg );
+		this.getInfo();
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
 		console.log("beforeupdated flg"+this.nowflg);
-		// this.getInfo( this.nowflg, this.formSelectData );
+		this.option = "3";
+		this.rangevalue = "1";
+		this.getInfo();
 	},
 	mounted() {
 	},
 	methods: {
-		// select 클릭시 value 데이터바인딩 반영
-		formSelect(event) {
-			console.log("formselect함수"+event.target.value);
-			if(event.target.value == 1) {
-				this.formSelectData = '0'
-			} else if (event.target.value == 2) {
-				this.formSelectData = '1'
-			} else if (event.target.value == 3) {
-				this.formSelectData = '2'
-			} else {
-				this.formSelectData = ''
-				console.log("categoryflg = 전체")
-			}
-			this.getInfo();
-			console.log("formselect함수끝"+this.formSelectData)
-		},
 		// button 클릭시 value 데이터바인딩
 		buttonclick(value) {
 			this.rangevalue = value;
@@ -217,31 +230,38 @@ export default {
 		},
 
 		// 해당 게시판의 모든 게시글 조회
-		getInfo() {
+		getInfo(page = 1) {
 			// 해당url의 데이터 가져오기
-			const URL = '/board/info';
+			const URL = '/board/info?page='+page;
 			console.log("getinfo 함수진입")
+			console.log("nowflg="+this.nowflg)
+			console.log("option="+this.option)
+			console.log("rangevalue="+this.rangevalue)
+			console.log("page="+this.page)
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL, {
 				params: {
 					flg: this.nowflg,
-					category: this.formSelectData,
+					category: this.option,
 					orderby: this.rangevalue,
-					// page: this.page,
+					page: this.page,
 				}
 			})
 			.then(res => {
 				console.log('여긴가',res.data.information);
 				console.log("then");
-				console.log('category='+this.formSelectData );
+				console.log('category='+this.option );
 				console.log('nowflg='+this.nowflg );
-				// this.pagination = res.data.information.links;
-				// this.page = res.data.information.current_page;
-				// this.pageChk  = res.data.information.current_page;
-				this.infolist = res.data.information;
+				this.pagination = res.data.information.links;
+				console.log('pagination='+this.pagination );
+				this.page = res.data.information.current_page;
+				console.log('page는 ',this.page);
+				this.pageChk  = res.data.information.current_page;
+				this.infolist = res.data.information.data;
 				console.log('인포리스트='+this.infolist );
 				this.cntinfo = res.data.infocnt;
-				console.log('카운트리스트='+this.cntinfo );
+				console.log('카운트인포=', res.data.infocnt);
+				console.log('카운트인포='+this.cntinfo );
 				console.log('정렬순='+this.rangevalue );
 			})
 			.catch(err => {

@@ -506,7 +506,8 @@ class InfoController extends Controller
         ->where('community.flg', $req->flg)
         ->where('community.deleted_at', null);
 
-        if ($req->category) {
+        Log::debug("category_flg 타입 : ".gettype($req->category));
+        if (!($req->category === "3")) {
             Log::debug("category_flg 있음");
             $informresult
                 ->where('community.category_flg', $req->category);
@@ -519,18 +520,16 @@ class InfoController extends Controller
                 $informresult->orderBy('community.created_at', 'desc');
             } else if ($req->orderby === '2') {
                 $informresult->orderBy('community.hits', 'desc');
-            } else {
+            } else if ($req->orderby === '3') {
                 $informresult->orderBy('lik.cnt', 'desc');
             }
-        } else {
-            Log::debug("orderby flg 없음");
-            Log::debug("orderby : ".$req->orderby);
-            $informresult->orderBy('community.created_at', 'desc');
         }
 
-        $informresult = $informresult->get();
-
+        $informresult->get();
         $infocnt = $informresult->count();
+
+        $informresult = $informresult->paginate(10);
+
 
         Log::debug($informresult);
         Log::debug($infocnt);
