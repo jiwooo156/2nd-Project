@@ -180,6 +180,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/userinfo', [AdminController::class, 'userget']);
     Route::post('/userinfo', [AdminController::class, 'restraintuser']);
     Route::post('/restraint', [AdminController::class, 'restraintreset']);
+    Route::post('/board', [AdminController::class, 'boardpost']);
 });
 
 // 1213 정지우 지역페이지 라우터 생성

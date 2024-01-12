@@ -746,6 +746,116 @@ class AdminController extends Controller
             'u_time' =>  $u_time,   
         ], 200);
     }
+    // 게시글 추가
+    public function boardpost(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            if($req->main_flg==="0"||$req->main_flg==="1"){
+                // 기본 데이터
+                Log::debug($req->ns_flg);
+                $data = $req->only('title','content','ns_flg','states_name','place');
+                // 변동데이터
+                // 이미지
+                if($req->img1==="undefined"&&$req->img2==="undefined"&&$req->img3==="undefined"){
+                    $data['img1'] = '/img/default.png';
+                }else if($req->img1!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img1->extension();
+                    $req->img1->move(public_path('img'), $imgName);
+                    $data['img1'] = '/img/'.$imgName;
+                }else if($req->img2!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img2->extension();
+                    $req->img2->move(public_path('img'), $imgName);
+                    $data['img2'] = '/img/'.$imgName;
+                }else if($req->img3!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img3->extension();
+                    $req->img3->move(public_path('img'), $imgName);
+                    $data['img3'] = '/img/'.$imgName;
+                }
+                // 플래그(커플친구가족주차)
+                if($req->couple_flg){
+                    $data['couple_flg']="1";
+                }
+                if($req->friend_flg){
+                    $data['friend_flg']="1";
+                }
+                if($req->family_flg){
+                    $data['family_flg']="1";
+                }
+                if($req->parking_flg){
+                    $data['parking_flg']="1";
+                }
+                // 부가정보
+                if($req->fee){
+                    $data['fee'] = $req->fee;
+                }
+                if($req->time){
+                    $data['time'] = $req->time;
+                }
+                if($req->holiday){
+                    $data['holiday'] = $req->holiday;
+                }
+                if($req->tel){
+                    $data['tel'] = $req->tel;
+                }
+                if($req->main_flg==="0"){
+                    $data['start_at'] = $req->start_at;
+                    $data['end_at'] = $req->end_at;
+                    $data['main_flg'] = "축제";
+                }else{
+                    $data['main_flg'] = "관광";
+                }
+                // 축제테이블에 생성
+                Info::create($data);
+            }else{
+                Log::debug("여기진입");
+                Log::debug($req->img1.$req->img2.$req->img3);
+                $data = $req->only('title','content');
+                $data['u_id'] = Auth::user()->id;
+                $data['category_flg'] = "2";
+                $data['notice_flg'] = "1";
+                if($req->img1!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img1->extension();
+                    $req->img1->move(public_path('img'), $imgName);
+                    $data['img1'] = '/img/'.$imgName;
+                }else if($req->img2!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img2->extension();
+                    $req->img2->move(public_path('img'), $imgName);
+                    $data['img2'] = '/img/'.$imgName;
+                }else if($req->img3!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img3->extension();
+                    $req->img3->move(public_path('img'), $imgName);
+                    $data['img3'] = '/img/'.$imgName;
+                }
+                if($req->main_flg==="2"){
+                    $data['flg'] = "0";
+                }
+                if($req->main_flg==="3"){
+                    $data['flg'] = "1";
+                }
+                if($req->main_flg==="4"){
+                    $data['flg'] = "2";
+                }
+                if($req->main_flg==="5"){
+                    $data['flg'] = "3";
+                }
+                // 커뮤니티에 생성
+                Community::create($data);
+            }
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '변경실패 실패.'
+            ], 400);
+        }
+    }
     // 특정시간에 동작
     public function test(Request $req){
         $schedule->call(function () {

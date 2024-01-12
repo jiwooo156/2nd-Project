@@ -353,12 +353,12 @@
 			<div>
 				<div class="col-md-3 position-relative mb-3">
 					<label for="validationTooltip04" class="form-label">등록위치</label>
-					<select class="form-select" id="validationTooltip04" required v-model="admin_category">
+					<select class="form-select" id="validationTooltip04" required v-model="admin_category" @change="resetall">
 						<option value="0">축제</option>
 						<option value="1">관광</option>
 						<option value="2">(자유)공지</option>
-						<option value="3">(질문)공지</option>
-						<option value="4">(정보)공지</option>
+						<option value="3">(정보)공지</option>
+						<option value="4">(질문)공지</option>
 						<option value="5">(건의)공지</option>
 					</select>
 				</div>
@@ -375,9 +375,9 @@
 					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_place">
 				</div>
 				<div class="input-group mb-3 align-items-center">
-					<input class="form-control" type="file" accept="image/*" @change="imgchk">
-					<input class="form-control" type="file" accept="image/*" @change="imgchk">
-					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+					<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
+					<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
+					<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
 				</div>
 				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
 					<span class="input-group-text">지역</span>
@@ -947,6 +947,26 @@ export default {
 			u_time: {},
 			requestdata_before:{},
 			requestdata_after:{},
+			admin_title:"",
+			admin_content:"",
+			admin_place:"",
+			admin_img1:null,
+			admin_img2:null,
+			admin_img3:null,
+			admin_ns:"경상북도",
+			admin_state_n:"",
+			admin_state_s:"",
+			admin_start_f:"",
+			admin_end_f:"",
+			admin_chk_flg1:false,
+			admin_chk_flg2:false,
+			admin_chk_flg3:false,
+			admin_chk_flg4:false,
+			admin_category:"0",
+			admin_fee:"",
+			admin_time:"",
+			admin_holiday:"",
+			admin_tel:"",
 			// 차트1 좋아요성비
 			chart1:{
 				data: {
@@ -1242,26 +1262,6 @@ export default {
 					height: 300, // 원하는 세로 크기
 				},
 			},
-			admin_title:"",
-			admin_content:"",
-			admin_place:"",
-			admin_img1:null,
-			admin_img2:null,
-			admin_img3:null,
-			admin_ns:"경상북도",
-			admin_state_n:"",
-			admin_state_s:"",
-			admin_start_f:"",
-			admin_end_f:"",
-			admin_chk_flg1:false,
-			admin_chk_flg2:false,
-			admin_chk_flg3:false,
-			admin_chk_flg4:false,
-			admin_category:"0",
-			admin_fee:"",
-			admin_time:"",
-			admin_holiday:"",
-			admin_tel:"",
 		}
 	},
 	watch: {
@@ -2114,18 +2114,19 @@ export default {
 			});
 		},
 		// 이미지등록시 데이터 바인딩
-		imgchk(img) {
-			let nowimg = img.target.files[0];
-			if (img.target === this.$refs.fileInput1) {
-			this.admin_img1 = nowimg;
-			} else if (img.target === this.$refs.fileInput2) {
-			this.admin_img2 = nowimg;
-			} else if (img.target === this.$refs.fileInput3) {
-			this.admin_img3 = nowimg;
-			}
-		},
+		// imgchk(img) {
+		// 	let nowimg = img.target.files[0];
+		// 	if (img.target === this.$refs.fileInput1) {
+		// 	this.admin_img1 = nowimg;
+		// 	} else if (img.target === this.$refs.fileInput2) {
+		// 	this.admin_img2 = nowimg;
+		// 	} else if (img.target === this.$refs.fileInput3) {
+		// 	this.admin_img3 = nowimg;
+		// 	}
+		// },
 		// 초기화용함수
 		resetall(){
+			console.log("초기화함수")
 			this.restraint_msg= "";
 			this.restraint_msg2= "";
 			this.restraint_date= "";
@@ -2134,7 +2135,210 @@ export default {
 			this.searchflg=false;
 			this.modalflg=false;
 			this.restraintinput=false;
-			this.answer= "";
+			this.answer="";
+			this.admin_title="";
+			this.admin_content="";
+			this.admin_place="";
+			this.admin_img1= new FileReader();
+			this.admin_img2=null;
+			this.admin_img3=null;
+			this.admin_state_n="";
+			this.admin_state_s="";
+			this.admin_start_f="";
+			this.admin_end_f="";
+			this.admin_chk_flg1=false;
+			this.admin_chk_flg2=false;
+			this.admin_chk_flg3=false;
+			this.admin_chk_flg4=false;
+			let img1 = document.querySelector('#admin_file_img1');
+			img1.value = ""; 
+			let img2 = document.querySelector('#admin_file_img2');
+			img2.value = ""; 
+			let img3 = document.querySelector('#admin_file_img3');
+			img3.value = ""; 
+			this.admin_fee="";
+			this.admin_time="";
+			this.admin_holiday="";
+			this.admin_tel="";
+		},
+		// 게시글 추가
+		insert_board(){
+			// 빈값 방어
+			if(this.admin_category==="0"){
+				if(this.admin_title===""||this.admin_content===""||this.admin_place===""||this.admin_start_f===""||this.admin_end_f===""||(this.admin_start_f > this.admin_end_f)||(this.admin_ns==="경상남도"&&this.admin_state_s==="")||(this.admin_ns==="경상북도"&&this.admin_state_n==="")){
+					if(this.admin_place===""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '주소를 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if((this.admin_ns==="경상남도"&&this.admin_state_s==="")||(this.admin_ns==="경상북도"&&this.admin_state_n==="")){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '시.군을 선택해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_start_f===""||this.admin_end_f===""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '축제기간을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_start_f > this.admin_end_f){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '축제시작일이 축제종료일 보다 미래 입니다.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_title === ""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '제목을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_content === ""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '내용을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}
+				}
+			}else if(this.admin_category==="1"){
+				if(this.admin_title===""||this.admin_content===""||this.admin_place===""||this.admin_ns==="경상남도"&&this.admin_state_s===""||this.admin_ns==="경상북도"&&this.admin_state_n===""){
+					if(this.admin_place===""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '주소를 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if((this.admin_ns==="경상남도"&&this.admin_state_s==="")||(this.admin_ns==="경상북도"&&this.admin_state_n==="")){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '시.군을 선택해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_title === ""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '제목을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}else if(this.admin_content === ""){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '내용을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+						return;
+					}
+				}
+			}else{
+				if(this.admin_title === ""){
+					Swal.fire({
+						icon: 'warning',
+						title: '주의',
+						text: '제목을 입력해 주세요.',
+						confirmButtonText: '확인'
+					})
+					return;
+				}else if((this.admin_content === "")){
+					Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '내용을 입력해 주세요.',
+							confirmButtonText: '확인'
+						})
+					return;
+				}
+			};
+			let img1 = document.querySelector('#admin_file_img1');
+			let img2 = document.querySelector('#admin_file_img2');
+			let img3 = document.querySelector('#admin_file_img3');
+			this.$store.commit('setLoading', true);
+			const URL = '/admin/board'
+			const formData = new FormData();
+				formData.append('main_flg',this.admin_category);
+				formData.append('title',this.admin_title);
+				formData.append('content',this.admin_content);
+				console.log( img1.files[0])
+				console.log( img2.files[0])
+				console.log( img3.files[0])
+				formData.append('img1', img1.files[0]);
+				formData.append('img2', img2.files[0]);
+				formData.append('img3', img3.files[0]);
+			if(this.admin_category==="0"){
+				formData.append('start_at',this.admin_start_f);
+				formData.append('end_at',this.admin_end_f);
+			}
+			if(this.admin_category==="0"||this.admin_category==="1"){
+				if(this.admin_chk_flg1){
+					formData.append('parking_flg','1');
+				}
+				if(this.admin_chk_flg2){
+					formData.append('couple_flg','1');
+				}
+				if(this.admin_chk_flg3){
+					formData.append('friend_flg','1');
+				}
+				if(this.admin_chk_flg4){
+					formData.append('family_flg','1');
+				}
+				formData.append('place',this.admin_place);
+				formData.append('ns_flg',this.admin_ns);
+				if(this.admin_ns==="경상북도"){
+					formData.append('states_name',this.admin_state_n);
+					console.log(this.admin_state_n);
+				}else{
+					formData.append('states_name',this.admin_state_s);
+				}
+				formData.append('fee',this.admin_fee);
+				formData.append('time',this.admin_time);
+				formData.append('holiday',this.admin_holiday);
+				formData.append('tell',this.admin_tel);
+			}
+			axios.post(URL,formData)
+			.then(res => {
+				if(res.data.code==="0"){
+					this.resetall()
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					})
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
+					confirmButtonText: '확인'
+				})
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			})
 		},
 	}
 }

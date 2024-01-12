@@ -12,24 +12,7 @@ use DateTimeInterface;
 class Info extends Model
 {
     use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
-    protected $fillable = [
-        'id'
-        ,'title'
-        ,'content'
-        ,'img1'
-        ,'img2'
-        ,'img3'
-        ,'hits'
-        ,'ns_flg'
-        ,'states_flg'
-        ,'main_flg'
-        ,'place'
-        ,'start_at'
-        ,'end_at'
-        ,'created_at'
-        ,'updated_at'
-        ,'deleted_at'
-    ];
+    protected $guarded = ['id'];
     protected $table = 'infos';
     // public $timestamps = true; 기본값
     protected function serializeDate(DateTimeInterface $date){
