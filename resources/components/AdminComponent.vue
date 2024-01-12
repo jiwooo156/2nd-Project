@@ -23,7 +23,7 @@
 							통계
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">가입&탈퇴</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">유저</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(2,1)">조회수</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(2,2)">좋아요</div></li>
 						</ul>
@@ -520,9 +520,31 @@
 	<div v-if="mainflg===1&&subflg===2" class="admin_frame">
 		테스트2
 	</div>
-	<!-- 등록페이지 -->
+	<!-- 통계페이지 -->
+	<!-- 유저통계 -->
 	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
-		테스트3
+		<div>조회수 통계</div>
+		<div>축제관광</div>
+		<div class="admin_chart_flex center">
+			<div class="admin_chart_line">
+				<div>유저통계(%)</div>
+				<Bar :data="u_chart1.data" :options="u_chart1.options" />
+			</div>
+		</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>한달간 유저 탈퇴 수</div>
+				<Doughnut :data="u_chart2.data" :options="u_chart2.options" />
+			</div>
+			<div>
+				<div>회원 탈퇴 사유 비율</div>
+				<Doughnut :data="u_chart3.data" :options="u_chart3.options" />
+			</div>
+			<div>
+				<div>유저들 주 활동 시간대</div>
+				<Doughnut :data="u_chart4.data" :options="u_chart4.options" />
+			</div>
+		</div>
 	</div>
 	<!-- 조회수통계 -->
 	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
@@ -530,44 +552,28 @@
 		<div>축제관광</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>성비</div>
+				<div>테마별 평균 조회수</div>
 				<Doughnut :data="h_chart1.data" :options="h_chart1.options" />
 			</div>
 			<div>
-				<div>축제 관광 비율</div>
+				<div>축제 관광 평균 조회수</div>
 				<Doughnut :data="h_chart2.data" :options="h_chart2.options" />
 			</div>
 			<div>
-				<div>축제 관광 비율</div>
+				<div>북도 남도 평균 조회수</div>
 				<Doughnut :data="h_chart3.data" :options="h_chart3.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>나이 떄</div>
+				<div>북도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
 				<Doughnut :data="h_chart4.data" :options="h_chart4.options" />
 			</div>
 			<div>
-				<div>좋아요가 많이눌린 플래그</div>
+				<div>남도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
 				<Doughnut :data="h_chart5.data" :options="h_chart5.options" />
 			</div>
 		</div>
-		<hr>
-		<div>커뮤니티</div>
-		<!-- <div class="admin_chart_flex center">
-			<div>
-				<div>성비</div>
-				<Doughnut :data="h_chart6.data" :options="chart5.options" />
-			</div>
-			<div>
-				<div>커뮤 주제</div>
-				<Doughnut :data="h_chart7.data" :options="chart6.options" />
-			</div>
-			<div>
-				<div>커뮤 카테고리</div>
-				<Doughnut :data="h_chart8.data" :options="chart7.options" />
-			</div>
-		</div> -->
 	</div>
 	<!-- 좋아요통계 -->
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
@@ -580,13 +586,13 @@
 			</div>
 			<div>
 				<div>축제 관광 비율</div>
-				<Doughnut :data="chart2.data" :options="chart4.options" />
+				<Doughnut :data="chart2.data" :options="chart2.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
 				<div>나이 떄</div>
-				<Doughnut :data="chart3.data" :options="chart4.options" />
+				<Doughnut :data="chart3.data" :options="chart3.options" />
 			</div>
 			<div>
 				<div>좋아요가 많이눌린 플래그</div>
@@ -817,10 +823,32 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Doughnut } from 'vue-chartjs'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+import {
+  Chart as ChartJS,
+	ArcElement,
+	CategoryScale,
+	BarElement,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+} from 'chart.js'
+import { Doughnut,Line,Bar  } from 'vue-chartjs'
+
+ChartJS.register(
+	ArcElement,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	BarElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+)
 
 export default {
 	name: 'AdminComponent',
@@ -829,7 +857,7 @@ export default {
 	},
 	
 	components: {
-		Doughnut,
+		Doughnut,Line,Bar,
 	},
 
 	data() {
@@ -874,6 +902,11 @@ export default {
 			hit_ns: {},
 			hit_n: {},
 			hit_s: {},
+			u_gender1: {},
+			u_gender2: {},
+			inout: {},
+			del_flg: {},
+			u_time: {},
 			requestdata_before:{},
 			requestdata_after:{},
 			// 차트1 좋아요성비
@@ -1092,6 +1125,86 @@ export default {
 					height: 300, // 원하는 세로 크기
 				},
 			},
+			// 유저 성비 차트
+			u_chart1:{
+				data: {
+					labels: [],
+					datasets: [
+					{
+						label: '여성',
+						borderColor: '#f87979',
+						backgroundColor: 'rgba(248, 121, 121, 0.3)',
+						data: [],
+						fill: false,
+					},
+					{
+						label: '남자',
+						borderColor: '#65b2ff',
+						backgroundColor: 'rgba(101, 178, 255, 0.3)',
+						data: [],
+						fill: false,
+					}
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					// width: 1000, // 원하는 가로 크기
+					// height: 400, // 원하는 세로 크기
+				},
+			},
+			u_chart2:{
+				data: {
+					labels: ['회원유지','탈퇴'],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			u_chart3:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec","#2c20b0"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			u_chart4:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			
 		}
 	},
 	watch: {
@@ -1108,14 +1221,7 @@ export default {
 		this.getToDayTime();
 	},
 	mounted() {
-		this.chart1.data.labels = [];
-		this.chart1.data.datasets[0].data = [];
-		this.chart2.data.labels = [];
-		this.chart2.data.datasets[0].data = [];
-		this.chart3.data.labels = [];
-		this.chart3.data.datasets[0].data = [];
-		this.chart4.data.labels = [];
-		this.chart4.data.datasets[0].data = [];
+	
 	},
 
 	methods: {
@@ -1884,33 +1990,56 @@ export default {
 					// 조회수 축제관광
 					this.hit_main = res.data.hit_main;	
 					for(let i = 0; i < this.hit_main.length; i++){
-						this.h_chart2.data.labels[i] = this.hit_main[i];
+						this.h_chart2.data.labels[i] = this.hit_main[i].type;
 						this.h_chart2.data.datasets[0].data[i]=this.hit_main[i].cnt;
 					};
 					console.log("통과2")
 					// 조회수 ns
 					this.hit_ns = res.data.hit_ns;	
-					this.hit_ns.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_ns.length; i++){
-						this.h_chart3.data.labels[i] = this.hit_ns[i];
+						this.h_chart3.data.labels[i] = this.hit_ns[i].type;
 						this.h_chart3.data.datasets[0].data[i]=this.hit_ns[i].cnt;
 					}
 					// 조회수 n top5
 					this.hit_n = res.data.hit_n;	
-					this.hit_n.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_n.length; i++){
 						this.h_chart4.data.labels[i] = this.hit_n[i].type;
 						this.h_chart4.data.datasets[0].data[i]=this.hit_n[i].cnt;
 					}
 					// 조회수 s top5
 					this.hit_s = res.data.hit_s;	
-					this.hit_s.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_s.length; i++){
 						this.h_chart5.data.labels[i] = this.hit_s[i].type;
 						this.h_chart5.data.datasets[0].data[i]=this.hit_s[i].cnt;
+					}
+
+					// 여기서부터 유저
+					// 유저 가입통계
+					this.u_gender1 = res.data.u_gender.filter(item => item.type === "F");
+					this.u_gender2 = res.data.u_gender.filter(item => item.type === "M");
+					for (let i = 0; i < this.u_gender1.length; i++) {
+					this.u_chart1.data.labels[i] = this.u_gender1[i].age;
+					this.u_chart1.data.datasets[0].data[i] = this.u_gender1[i].per;
+					}
+					for (let i = 0; i < this.u_gender2.length; i++) {
+					this.u_chart1.data.datasets[1].data[i] = this.u_gender2[i].per;
+					}
+					// 유저 한달갈 탈퇴율
+					this.inout = res.data.inout;	
+					for(let i = 0; i < this.inout.length; i++){
+						this.u_chart2.data.datasets[0].data[i]=this.inout[i].cnt;
+					}
+					// 유저 탈퇴사유 빈도
+					this.del_flg = res.data.del_flg;	
+					for(let i = 0; i < this.del_flg.length; i++){
+						this.u_chart3.data.labels[i] = this.del_flg[i].type;
+						this.u_chart3.data.datasets[0].data[i]=this.del_flg[i].per;
+					}
+					// 유저 활동시간
+					this.u_time = res.data.u_time;	
+					for(let i = 0; i < this.u_time.length; i++){
+						this.u_chart4.data.labels[i] = this.u_time[i].time;
+						this.u_chart4.data.datasets[0].data[i]=this.u_time[i].per;
 					}
 				}
 			})
