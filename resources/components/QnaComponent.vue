@@ -8,7 +8,6 @@
 					<h1>질문게시판</h1>
 					<div class="qna_header_bot">
 						<div class="qna_header_l">
-							<!-- qna_btn 숨기고 my-3 삭제했음 -->
 							<select v-model="selectedCategory" @change="filterData" class="form-select qna_drop" aria-label=".form-select-sm">
 								<option value="all" class="qna_drop_item" selected>전체</option>
 								<option value="festival" class="qna_drop_item">축제</option>
@@ -16,19 +15,46 @@
 								<option value="etc" class="qna_drop_item">기타</option>
 							</select>
 							<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
-							<!-- <div class="qna_btn">
+							<div class="qna_btn">
 								<div class="btn-group" role="group">
-									<button type="button" class="btn">
+									<button v-if="selectedCategory === 'all'" type="button" class="btn" @click="latest">
 										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
 									</button>
-									<button type="button" class="btn">
+									<button v-else-if="selectedCategory === 'festival'" type="button" class="btn" @click="latest">
+										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+									</button>
+									<button v-else-if="selectedCategory === 'tourism'" type="button" class="btn" @click="latest">
+										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+									</button>
+									<button v-else-if="selectedCategory === 'etc'" type="button" class="btn" @click="latest">
+										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
+									</button>
+									<button v-if="selectedCategory === 'all'" type="button" class="btn" @click="views">
 										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
 									</button>
-									<button type="button" class="btn">
+									<button v-else-if="selectedCategory === 'festival'" type="button" class="btn" @click="views">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+									</button>
+									<button v-else-if="selectedCategory === 'tourism'" type="button" class="btn" @click="views">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+									</button>
+									<button v-else-if="selectedCategory === 'etc'" type="button" class="btn" @click="views">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
+									</button>
+									<button v-if="selectedCategory === 'all'" type="button" class="btn" @click="likes">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+									</button>
+									<button v-else-if="selectedCategory === 'festival'" type="button" class="btn" @click="likes">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+									</button>
+									<button v-else-if="selectedCategory === 'tourism'" type="button" class="btn" @click="likes">
+										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
+									</button>
+									<button v-else-if="selectedCategory === 'etc'" type="button" class="btn" @click="likes">
 										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 									</button>
 								</div>	
-							</div> -->
+							</div>
 						</div>
 						<!-- 반응형 숨기기 -->
 						<div class="qna_header_r">
@@ -67,7 +93,7 @@
 							<div class="qna_def pt-3">
 								<span class="card-text qna_card_etc qna_gray"
 									><span class="qna_card_span"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+										><font-awesome-icon :icon="['fas', 'heart']" /></span
 									>{{ info.cnt ?? 0 }}</span
 								>
 								<span class="card-text qna_gray"
@@ -98,7 +124,7 @@
 							<div class="qna_def pt-3">
 								<span class="card-text qna_card_etc qna_gray"
 									><span class="qna_card_span"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+										><font-awesome-icon :icon="['fas', 'heart']" /></span
 									>{{ info.lik ?? 0 }}</span
 								>
 								<span class="card-text qna_gray"
@@ -129,7 +155,7 @@
 							<div class="qna_def pt-3">
 								<span class="card-text qna_card_etc qna_gray"
 									><span class="qna_card_span"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+										><font-awesome-icon :icon="['fas', 'heart']" /></span
 									>{{ info.lik ?? 0 }}</span
 								>
 								<span class="card-text qna_gray"
@@ -160,7 +186,7 @@
 							<div class="qna_def pt-3">
 								<span class="card-text qna_card_etc qna_gray"
 									><span class="qna_card_span"
-										><font-awesome-icon :icon="['fas', 'thumbs-up']" /></span
+										><font-awesome-icon :icon="['fas', 'heart']" /></span
 									>{{ info.lik ?? 0 }}</span
 								>
 								<span class="card-text qna_gray"
@@ -173,7 +199,7 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write?flg=2" type="button">질문하기</router-link>
+					<router-link to="/write?flg=2" type="button" @click="checklocal2">질문하기</router-link>
 				</div>
 			</div>
 			<!-- 건의게시판 -->
@@ -188,20 +214,6 @@
 								<option value="tourism" class="qna_drop_item">관광</option>
 								<option value="etc" class="qna_drop_item">기타</option>
 							</select>
-							<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
-							<!-- <div class="qna_btn">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn">
-										<span class="font_center" ><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
-									</button>
-									<button type="button" class="btn">
-										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>답변완료
-									</button>
-									<button type="button" class="btn">
-										<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>접수대기
-									</button>
-								</div>	
-							</div> -->
 						</div>
 						<!-- 반응형 숨기기 -->
 						<div class="qna_header_r">
@@ -222,7 +234,7 @@
 				</div>	
 				<!-- 반응형 2개씩/좌우 패딩?마진?조정하고 닉네임 들어가는 줄 hidden하기-->
 				<!-- 전체 필터 -->
-				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2">
+				<div v-if="selectedCategory === 'all'" class="qna_content d-flex justify-content-between row g-3 px-2" @click="checklocal_t">
 					<routerLink :to="'/post?id='+info.id" v-for="info in infolist" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -247,7 +259,7 @@
 					</routerLink>
 				</div>
 				<!-- 축제 필터 -->
-				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2">
+				<div v-else-if="selectedCategory === 'festival'" class="qna_content d-flex justify-content-between row g-3 px-2" @click="checklocal_t">
 					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '0')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -272,7 +284,7 @@
 					</routerLink>
 				</div>
 				<!-- 관광 필터 -->
-				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2">
+				<div v-else-if="selectedCategory === 'tourism'" class="qna_content d-flex justify-content-between row g-3 px-2" @click="checklocal_t">
 					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '1')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -297,7 +309,7 @@
 					</routerLink>
 				</div>
 				<!-- 기타 필터 -->
-				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex justify-content-between row g-3 px-2">
+				<div v-else-if="selectedCategory === 'etc'" class="qna_content d-flex justify-content-between row g-3 px-2" @click="checklocal_t">
 					<routerLink :to="'/post?id='+info.id" v-for="info in infolist.filter(info => info.category_flg === '2')" :key="info" class="card" style="width: 19rem">
 						<div class="card-body d-flex flex-column justify-content-around">
 							<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -322,7 +334,7 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write?flg=3" type="button">건의하기</router-link>
+					<router-link to="/write?flg=3" type="button" @click="checklocal3">건의하기</router-link>
 				</div>
 			</div>
 			<!-- 아래 공통영역 -->
@@ -377,6 +389,7 @@ export default {
 			nowflg: "",
 			// 선택된 카테고리를 저장하는 초기값
 			selectedCategory: 'all',
+			selectedList: 'latest',
 		}
 	},
 	created() {
@@ -419,6 +432,27 @@ export default {
                 this.$store.commit('setLoading', false);
             });
 		},
+		latest() {
+			this.infolist.sort(function(a, b) {
+				return new Date(b.created_at) - new Date(a.created_at);
+			});
+		},
+		views() {
+			this.infolist.sort(function(a, b) {
+				return b.hits - a.hits;
+			});
+		},
+		likes() {
+			this.infolist.sort(function(a, b) {
+				return b.cnt - a.cnt;
+			});
+		},
+		wait() {
+			return this.infolist.filter(item => item.admin_flg === '0');
+		},
+		answer() {
+			return this.infolist.filter(item => item.admin_flg === '1');
+		},
 		// category_flg 데이터 출력 변환
 		getEventType(data) {
 			if(data === '0') {
@@ -439,6 +473,39 @@ export default {
 		const day = String(dateObject.getDate()).padStart(2, "0");
 
 		return `${year}-${month}-${day}`;
+		},
+		// 글작성 버튼 클릭 시 로그인 확인
+		// 질문 로그인 확인
+		checklocal2() {
+			if (!localStorage.getItem('nick')) {
+				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
+					this.$router.push('/login');
+				} else {
+					this.$router.push('/qna?flg=2');
+				}
+			} else {
+				this.$router.push('/write?flg=3');
+			}
+		},
+		// 건의 로그인 확인
+		checklocal3() {
+			if (!localStorage.getItem('nick')) {
+				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
+					this.$router.push('/login');
+				} else {
+					this.$router.push('/qna?flg=3');
+				}
+			} else {
+				this.$router.push('/write?flg=3');
+			}
+		},
+		
+		// 작성 게시글 확인 할 때 작성자만 확인 가능
+		// 건의 로그인 확인
+
+		// 유저 본인 확인(삭제&수정 버튼 활성화를 위한)
+		checkUser(email) {
+			return email === localStorage.getItem('email');
 		},
 	},
 }

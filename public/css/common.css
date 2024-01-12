@@ -1630,7 +1630,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-size: 1.3rem;
 }
 .detail_tofrom{
-    padding: 0.5rem 0rem;
+    padding: 0;
+	font-size: 1.1rem;
 }
 .detail_body{
 	padding: 20px;
@@ -1644,7 +1645,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_hits{
 	text-align: right;
 	padding-bottom: 0.5rem;
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 }
 .detail_img{
 	text-align: center;
@@ -1751,14 +1752,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding-bottom: 0.5rem;
 }
 .detail_com_tofrom {
-	padding: 0;
 	margin: 0;
-	font-size: 0.85rem;
+	font-size: 0.95rem;
+	line-height: 0.95rem;
+	padding: 0 0.3rem;
 }
 .detail_com_hits {
 	padding: 0;
 	margin: 0;
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 }
 .detail_post_like {
 	margin-top: 1rem;
@@ -1772,6 +1774,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .detail_likes {
 	font-size: 0.95rem;
+	margin-right: 0.4rem;
 }
 .detail_list {
 	color: #000;
@@ -1793,6 +1796,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding: 0.5rem 0.8rem;
 	border-radius: 18px 18px 18px 18px;
 }
+
 /* qna페이지 */
 /* 질문페이지 */
 .qna_header h1 {
@@ -1912,6 +1916,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-size: 0.8rem;
 }
 .qna_btn_bot a {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background: #D14C6C;
+	color: #fff;
+	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
+}
+.qna_btn_bot button {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	border: none;
