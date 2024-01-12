@@ -139,7 +139,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/info/{id}', [InfoController::class, 'communityget']);
+    Route::get('/info', [InfoController::class, 'communityget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
     Route::get('/more', [InfoController::class, 'morereplie']);
     Route::post('/{id}', [InfoController::class, 'repliewirte']);

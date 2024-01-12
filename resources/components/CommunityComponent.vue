@@ -2,28 +2,30 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<!-- <div class="detail_type font_air bold center">
-					{{this.detaildata.ns_flg}} {{this.detaildata.states_name}} {{this.detaildata.main_flg}}
-				</div> -->
+				<div v-if="this.detaildata.flg === 0" class="detail_type font_air bold center">
+					자유게시판
+				</div>
+				<div v-else="this.detaildata.flg === 1" class="detail_type font_air bold center">
+					정보게시판
+				</div>
 				<div class="detail_header font_air bold">
 					<div class="detail_title  center">
 						{{this.detaildata.title}}
 					</div>
 				</div>
 			</div>
-			<div>
-
+			<div class="detail_flex">
 				<div class="font_air bold detail_hits">
-					{{this.detaildata.작성일자}} 작성
+					{{this.detaildata.nick}}
 				</div>
-				<div class="font_air bold detail_hits" v-if="this.detaildata.updated_at">
+				<div class="font_air bold detail_hits">
+					{{this.detaildata.created_at}}
+				</div>
+				<div class="font_air bold detail_hits" v-if="!(this.detaildata.created_at === this.detaildata.updated_at)">
 					(수정됨)
 				</div>
 				<div class="font_air bold detail_hits">
 					조회수 : {{this.detaildata.hits}}
-				</div>
-				<div class="font_air bold detail_hits">
-					좋아요 : {{this.detaildata.좋아요수}}
 				</div>
 			</div>
 			<div class="detail_body">
@@ -45,13 +47,19 @@
 				<div class="detail_content font_air bold">
 					{{this.detaildata.content}}
 				</div>
-				<div class="detail_content font_air bold">
-					<!-- fas : 꽉 찬 하트 -->
-					<font-awesome-icon v-if="isHearted" :icon="['fas', 'heart']" @click="toggleHeart()" />
-					<!-- far : 빈 하트 -->
-    				<font-awesome-icon v-else :icon="['far', 'heart']" />
-					좋아요 {{this.detaildata.좋아요수}}
-				</div>
+				
+			</div>
+			<div class="detail_content font_air bold">
+				<!-- fas : 꽉 찬 하트 -->
+				<font-awesome-icon :icon="['fas', 'heart']" @click="toggleHeart()" />
+				<!-- far : 빈 하트 -->
+				<font-awesome-icon :icon="['far', 'heart']" />
+				좋아요 {{this.detaildata.cnt}}
+			</div>
+			<div class="post_btn_bot">
+				<button type="button" v-if="this.detaildata.u_id === this.userauth">수정</button>
+				<button type="button" @click="goBack">목록</button>
+				<button type="button">삭제</button>
 			</div>
 		</div>
 		<div class="detail_replie_container">
@@ -142,6 +150,7 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			isHearted: false,
+			userauth: ""
 		}
 	},
 	watch: {
@@ -153,7 +162,11 @@ export default {
 		// 로컬스토리지에 저장된 정보있는지 확인
 		let boo = localStorage.getItem('nick') ?  true : false;
 		this.$store.commit('setLocalFlg', boo);
-		this.getinfo();
+
+		// 현재url가져오기
+		let params = new URLSearchParams(window.location.search);
+		this.b_id = params.get('id');
+		this.getinfo(this.b_id);
 	},
 
 	updated() {
@@ -164,14 +177,16 @@ export default {
 			let params = new URLSearchParams(window.location.search);
 			this.b_id = params.get('id');
 			
-			const URL = '/community/info/'+this.b_id;
+			const URL = '/community/info?id='+this.b_id;
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
 					this.repliecount = res.data.repliecount;
-					this.heartcount = res.data.heartcnt;			
+					this.userauth = res.data.userauth;
+					console.log('zcdvc'+this.userauth);
+					console.log('zcdvc'+this.detaildata.u_id);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -193,7 +208,7 @@ export default {
 		// 댓글작성
 		repliewrite(){
 			if(this.replie){
-				const URL = '/detail/'+this.b_id;
+				const URL = '/community/'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
@@ -275,7 +290,7 @@ export default {
 		// 댓글삭제
 		del_replie(id){		
 			if (confirm("댓글을 삭제하시겠습니까?")) {
-				const URL = '/detail/del/'+id;
+				const URL = '/community/del/'+id;
 				const formData = new FormData();
 				axios.post(URL,formData)
 				.then(res =>{
@@ -306,7 +321,7 @@ export default {
 		},
 		// 댓글추가 불러오기
 		morereplie(){
-			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
+			const URL = '/community/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
@@ -359,7 +374,11 @@ export default {
 		// 하트에 입력값 반영
 		toggleHeart() {
 			this.isHearted = !this.isHearted;
-		}
+		},
+		// 뒤로가기 동작 실행
+		goBack() {
+			this.$router.go(-1);
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

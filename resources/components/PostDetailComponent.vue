@@ -12,9 +12,10 @@
 				</div>
 			</div>
 			<div class="detail_flex">
-				<div class="font_air bold center detail_com_tofrom">
-					<!-- 닉네임 : {{ this.usernick.nick }} -->
-					작성일자 : {{ formatEventDate(this.detaildata.created_at) }}
+				<div>
+					<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
+					<span class="font_air bold detail_com_tofrom">|</span>
+					<span class="font_air bold detail_com_tofrom">{{ formatEventDate(this.detaildata.created_at) }}</span>
 				</div>
 				<div class="font_air bold detail_com_hits">
 					조회수 : {{this.detaildata.hits}}
@@ -28,14 +29,19 @@
 			<div class="detail_post_like d-flex justify-content-between">
 				<div>
 					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
-					<span class="detail_likes font_air bold">좋아요{{ this.infolist.lik }}</span>
+					<span class="detail_likes font_air bold">좋아요</span>
+					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
-				<!-- 게시글을 작성한 사람만 가능 / 디폴트는 목록-->
+				<!-- 작성자일 경우 -->
 				<div class="post_btn_bot">
-						<button type="button">수정</button>
-						<button type="button">목록</button>
-						<button type="button">삭제</button>
+					<button type="button">수정</button>
+					<button type="button" @click="goBack">목록</button>
+					<button type="button">삭제</button>
 				</div>
+				<!-- 작성자 아닐 경우 -->
+				<!-- <div class="post_btn_bot">
+					<button type="button" @click="goBack">목록</button>
+				</div> -->
 			</div>
 		</div>
 		<div class="detail_post_replie_container">
@@ -156,14 +162,13 @@ export default {
 					this.repliedata = res.data.replie;
 					// this.usernick = res.data.usersnick;
 					this.repliecount = res.data.repliecount;
-					
 				}else if(res.data.code==="E99"){
 					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: res.data.errmsg,
-                    confirmButtonText: '확인'
-                })
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errmsg,
+						confirmButtonText: '확인'
+					})
 				}
 				console.log("getinfo 함수 끝");
 			})
@@ -275,6 +280,10 @@ export default {
 			}
 			return '방금 전';
 		},
+		// 뒤로가기 동작 실행
+		goBack() {
+			this.$router.go(-1);
+		},
 		// 몇글자 적은지 확인
 		replieLength() {
 			this.replie_length = this.replie.length;
@@ -289,7 +298,7 @@ export default {
 				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
 					this.$router.push('/login');
 				} else {
-					return
+					return;
 				}
 			}
 		},

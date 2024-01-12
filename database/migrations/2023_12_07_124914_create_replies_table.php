@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->integer('b_id');
-            $table->string('nick',8);
-            $table->string('content',200);
+            $table->integer('u_id');
+            $table->string('replie',200);
             $table->timestamps();
             $table->softDeletes();  
         });

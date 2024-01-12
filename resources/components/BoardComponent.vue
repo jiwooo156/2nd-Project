@@ -73,7 +73,11 @@
 						<tr class="pointer">
 							<td class="col_hidden">{{ infodata.id }}</td>
 							<td>{{ infodata.category_flg }}</td>
-							<td class="info_title">{{ infodata.title }}</td>
+							<td class="info_title">
+								<router-link :to="'/community?id='+infodata.id">
+									{{ infodata.title }}
+								</router-link>
+							</td>
 							<td>{{ infodata.nick }}</td>
 							<td>{{ infodata.created_at }}</td>
 							<td class="col_hidden">{{ infodata.hits }}</td>
@@ -90,7 +94,7 @@
 						<ul class="pagination justify-content-center qna_pagin">
 							<li v-for="(page, index) in pagination" :key="index">
 								
-								<a
+								<a v-if="!(page.url === null)"
 									id="qna_font"
 									class="page-link"
 									@click="getInfo(page.label)"
@@ -200,23 +204,34 @@ export default {
 			this.getInfo();
 			console.log("버튼함수끝"+value);
 		},
+		// 문자열 영문인 경우, 특정단어로 바꿔줌
+		// replaceString(data) {
+		// 	if(data.label.includes('pagination')) {
+		// 		if(data.url === null ) {
+		// 			return "이전"
+		// 		} else {
+		// 			return "다음"
+		// 		}
+		// 	}
+		// },
 
 		// 해당 게시판의 모든 게시글 조회
 		getInfo(page = 1) {
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?page='+page;
+			
 			console.log("getinfo 함수진입")
 			console.log("nowflg="+this.nowflg)
 			console.log("option="+this.option)
 			console.log("rangevalue="+this.rangevalue)
-			console.log("page="+this.page)
+			console.log("page="+page)
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL, {
 				params: {
-					flg: this.nowflg,
-					category: this.option,
-					orderby: this.rangevalue,
-					page: this.page,
+					"flg": this.nowflg,
+					"category": this.option,
+					"orderby": this.rangevalue,
+					"page": page,
 				}
 			})
 			.then(res => {
