@@ -56,6 +56,11 @@
 				<font-awesome-icon :icon="['far', 'heart']" />
 				좋아요 {{this.detaildata.cnt}}
 			</div>
+			<div class="post_btn_bot">
+				<button type="button" v-if="this.detaildata.u_id === this.userauth">수정</button>
+				<button type="button" @click="goBack">목록</button>
+				<button type="button">삭제</button>
+			</div>
 		</div>
 		<div class="detail_replie_container">
 			<div class="detail_replie_write_box font_air bold">
@@ -145,6 +150,7 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			isHearted: false,
+			userauth: ""
 		}
 	},
 	watch: {
@@ -177,7 +183,10 @@ export default {
 				if(res.data.code==="0"){
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
-					this.repliecount = res.data.repliecount;	
+					this.repliecount = res.data.repliecount;
+					this.userauth = res.data.userauth;
+					console.log('zcdvc'+this.userauth);
+					console.log('zcdvc'+this.detaildata.u_id);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -365,7 +374,11 @@ export default {
 		// 하트에 입력값 반영
 		toggleHeart() {
 			this.isHearted = !this.isHearted;
-		}
+		},
+		// 뒤로가기 동작 실행
+		goBack() {
+			this.$router.go(-1);
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

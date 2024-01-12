@@ -520,7 +520,7 @@ class InfoController extends Controller
             'infocnt' => $infocnt,
         ], 200);          
     }
-    // - id, 게시판플래그, 카테고리플래그, 제목, 내용, 작성일자, 수정일자, 삭제일자, 조회수, 닉네임, 좋아요수
+    
     // 0112 정지우 커뮤니티 디테일 페이지 정보조회 
     public function communityget(Request $req) {
         Log::debug("**** communityget start ****");
@@ -528,6 +528,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 커뮤니티 테이블 조회
         $communityresult = Community::select(
                 'community.id',
+                'community.u_id',
                 'community.flg',
                 'community.category_flg',
                 'community.title',
@@ -544,7 +545,14 @@ class InfoController extends Controller
             ->where('community.id',$req->id)
             ->get();
 
-            Log::debug("커뮤니티결과 : ".$communityresult);
+        Log::debug("커뮤니티결과 : ".$communityresult);
+
+        $auth_id = "";
+        $auth = Auth::user();
+        if(!empty($auth)){
+            $auth_id = $auth->id;
+        }
+
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($communityresult)===1){    
             // 조회수 1증가  
@@ -578,12 +586,13 @@ class InfoController extends Controller
             ->get();
             Log::debug("댓글 결과 : ".$replieresult);
             Log::debug("댓글 갯수 : ".$repliecnt);
-
+            
             return response()->json([
                 'code' => '0',
                 'data' => $communityresult,
                 'replie' => $replieresult,
-                'repliecount' =>  $repliecnt
+                'repliecount' =>  $repliecnt,
+                'userauth' => $auth_id
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
