@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email', 50);
-            $table->string('password');
+            $table->string('password',);
             $table->string('name', 10);
             $table->char('gender', 1);
             $table->string('phone', 11);
-            $table->char('birthdate', 8);
+            $table->char('birthdate', 15);
             $table->string('nick', 8);
             $table->timestamps();
             $table->softDeletes();  

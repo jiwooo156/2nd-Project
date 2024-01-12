@@ -23,7 +23,7 @@
 							통계
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">가입&탈퇴</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">유저</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(2,1)">조회수</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(2,2)">좋아요</div></li>
 						</ul>
@@ -346,93 +346,131 @@
 			</div>
 		</div>
 	</div>
-	<!-- 등록페이지 -->
+	<!-- 등록 및 수정 -->
 	<!-- 축제등록 -->
 	<div v-if="mainflg===1&&subflg===0" class="admin_frame">
-		<div>축제등록</div>
-		<div>
-			<div>주소</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>제목</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>내용</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>사진1</div>
-			<input id="shop_file" type="file" accept="image/*">
-			<div>사진2</div>
-			<input id="shop_file" type="file" accept="image/*">
-			<div>사진3</div>
-			<input id="shop_file" type="file" accept="image/*">
-		</div>
-		<div>
-			<div>내용</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>지역</div>
-			<select>
-				<option class=" font_air bold">경상북도</option>
-				<option class=" font_air bold">경상남도</option>
-			</select>
-		</div>
-		<div>
-			<select>
-				<option class=" font_air bold">옵션들</option>
-			</select>
-		</div>
-		<div>
-			<div>축제,관광</div>
-			<select>
-				<option class=" font_air bold">축제</option>
-				<option class=" font_air bold">관광</option>
-			</select>
-		</div>
-		<div>
-			<div>축제시작</div>
-			<input type="date">
-		</div>
-		<div>
-			<div>축제종료</div>
-			<input type="date">
-		</div>
-		<div>
-			<div>주차</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>친구끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>가족끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>연인끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>입장료</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>이용시간</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>휴일</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>연락처</div>
-			<input type="text">
-		</div>
+		<form class="row g-3 needs-validation admin_form" validate>
+			<div>
+				<div class="col-md-3 position-relative mb-3">
+					<label for="validationTooltip04" class="form-label">등록위치</label>
+					<select class="form-select" id="validationTooltip04" required v-model="admin_category">
+						<option value="0">축제</option>
+						<option value="1">관광</option>
+						<option value="2">(자유)공지</option>
+						<option value="3">(질문)공지</option>
+						<option value="4">(정보)공지</option>
+						<option value="5">(건의)공지</option>
+					</select>
+				</div>
+				<div class="input-group mb-1">
+					<span class="input-group-text" id="basic-addon1">제목</span>
+					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_title">
+				</div>
+				<div class="input-group mb-1">
+					<span class="input-group-text">내용</span>
+					<textarea class="form-control" aria-label="With textarea" v-model="admin_content"></textarea>
+				</div>
+				<div class="input-group mb-1" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text" >주소</span>
+					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_place">
+				</div>
+				<div class="input-group mb-3 align-items-center">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">지역</span>
+					<select class="form-select" id="validationTooltip04" v-model="admin_ns">
+						<option>경상북도</option>
+						<option>경상남도</option>
+					</select>
+					<span class="input-group-text">시.군</span>
+					<!-- 북도 -->
+					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_n" v-if="admin_ns==='경상북도'">
+						<option>경산시</option>
+						<option>경주시</option>
+						<option>고령군</option>
+						<option>구미시</option>
+						<option>김천시</option>
+						<option>문경시</option>
+						<option>봉화군</option>
+						<option>상주시</option>
+						<option>성주군</option>
+						<option>안동시</option>
+						<option>영덕군</option>
+						<option>영양군</option>
+						<option>영주시</option>
+						<option>영천시</option>
+						<option>울릉군</option>
+						<option>울진군</option>
+						<option>의성군</option>
+						<option>예천군</option>
+						<option>청도군</option>
+						<option>청송군</option>
+						<option>칠곡군</option>
+						<option>포항시</option>
+					</select>
+					<!-- 남도 -->
+					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_s" v-if="admin_ns==='경상남도'">			
+						<option>거제시</option>
+						<option>거창군</option>
+						<option>고성군</option>
+						<option>김해시</option>
+						<option>남해군</option>
+						<option>밀양시</option>
+						<option>사천시</option>
+						<option>산청군</option>
+						<option>양산시</option>
+						<option>의령군</option>
+						<option>진주시</option>
+						<option>창녕군</option>
+						<option>창원시</option>
+						<option>통영시</option>
+						<option>하동군</option>
+						<option>함안군</option>
+						<option>함양군</option>
+						<option>합천군</option>
+					</select>
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'">
+					<span class="input-group-text">축제기간</span>
+					<input type="date" class="form-control" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_start_f">
+					<input type="date" class="form-control" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_end_f">
+				</div>
+				<div class="input-group mb-3 d-flex justify-content-evenly" v-if="admin_category==='0'||admin_category==='1'">
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_parking" v-model="admin_chk_flg1">
+						<label class="form-check-label pointer" for="admin_parking">주차가능 여부</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_couple" v-model="admin_chk_flg2">
+						<label class="form-check-label pointer" for="admin_couple">커플 추천</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_friend" v-model="admin_chk_flg3">
+						<label class="form-check-label pointer" for="admin_friend">친구 추천</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_family" v-model="admin_chk_flg4">
+						<label class="form-check-label pointer" for="admin_family">가족 추천</label>
+					</div>
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">입장료</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_fee">
+					<span class="input-group-text">이용시간</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_time">
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">휴일</span>
+					<input type="text" class="form-control" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_holiday">
+					<span class="input-group-text">연락처</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_tel">
+				</div>
+			</div>
+			<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
+		</form>
 	</div>
 	<!-- 관광등록 -->
 	<div v-if="mainflg===1&&subflg===1" class="admin_frame">
@@ -520,9 +558,31 @@
 	<div v-if="mainflg===1&&subflg===2" class="admin_frame">
 		테스트2
 	</div>
-	<!-- 등록페이지 -->
+	<!-- 통계페이지 -->
+	<!-- 유저통계 -->
 	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
-		테스트3
+		<div>조회수 통계</div>
+		<div>축제관광</div>
+		<div class="admin_chart_flex center">
+			<div class="admin_chart_line">
+				<div>유저통계(%)</div>
+				<Bar :data="u_chart1.data" :options="u_chart1.options" />
+			</div>
+		</div>
+		<div class="admin_chart_flex center">
+			<div>
+				<div>한달간 유저 탈퇴 수</div>
+				<Doughnut :data="u_chart2.data" :options="u_chart2.options" />
+			</div>
+			<div>
+				<div>회원 탈퇴 사유 비율</div>
+				<Doughnut :data="u_chart3.data" :options="u_chart3.options" />
+			</div>
+			<div>
+				<div>유저들 주 활동 시간대</div>
+				<Doughnut :data="u_chart4.data" :options="u_chart4.options" />
+			</div>
+		</div>
 	</div>
 	<!-- 조회수통계 -->
 	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
@@ -530,44 +590,28 @@
 		<div>축제관광</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>성비</div>
+				<div>테마별 평균 조회수</div>
 				<Doughnut :data="h_chart1.data" :options="h_chart1.options" />
 			</div>
 			<div>
-				<div>축제 관광 비율</div>
+				<div>축제 관광 평균 조회수</div>
 				<Doughnut :data="h_chart2.data" :options="h_chart2.options" />
 			</div>
 			<div>
-				<div>축제 관광 비율</div>
+				<div>북도 남도 평균 조회수</div>
 				<Doughnut :data="h_chart3.data" :options="h_chart3.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>나이 떄</div>
+				<div>북도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
 				<Doughnut :data="h_chart4.data" :options="h_chart4.options" />
 			</div>
 			<div>
-				<div>좋아요가 많이눌린 플래그</div>
+				<div>남도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
 				<Doughnut :data="h_chart5.data" :options="h_chart5.options" />
 			</div>
 		</div>
-		<hr>
-		<div>커뮤니티</div>
-		<!-- <div class="admin_chart_flex center">
-			<div>
-				<div>성비</div>
-				<Doughnut :data="h_chart6.data" :options="chart5.options" />
-			</div>
-			<div>
-				<div>커뮤 주제</div>
-				<Doughnut :data="h_chart7.data" :options="chart6.options" />
-			</div>
-			<div>
-				<div>커뮤 카테고리</div>
-				<Doughnut :data="h_chart8.data" :options="chart7.options" />
-			</div>
-		</div> -->
 	</div>
 	<!-- 좋아요통계 -->
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
@@ -580,13 +624,13 @@
 			</div>
 			<div>
 				<div>축제 관광 비율</div>
-				<Doughnut :data="chart2.data" :options="chart4.options" />
+				<Doughnut :data="chart2.data" :options="chart2.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
 				<div>나이 떄</div>
-				<Doughnut :data="chart3.data" :options="chart4.options" />
+				<Doughnut :data="chart3.data" :options="chart3.options" />
 			</div>
 			<div>
 				<div>좋아요가 많이눌린 플래그</div>
@@ -817,10 +861,32 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Doughnut } from 'vue-chartjs'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+import {
+	Chart as ChartJS,
+	ArcElement,
+	CategoryScale,
+	BarElement,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+} from 'chart.js'
+import { Doughnut,Line,Bar  } from 'vue-chartjs'
+
+ChartJS.register(
+	ArcElement,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	BarElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+)
 
 export default {
 	name: 'AdminComponent',
@@ -829,7 +895,7 @@ export default {
 	},
 	
 	components: {
-		Doughnut,
+		Doughnut,Line,Bar,
 	},
 
 	data() {
@@ -874,6 +940,11 @@ export default {
 			hit_ns: {},
 			hit_n: {},
 			hit_s: {},
+			u_gender1: {},
+			u_gender2: {},
+			inout: {},
+			del_flg: {},
+			u_time: {},
 			requestdata_before:{},
 			requestdata_after:{},
 			// 차트1 좋아요성비
@@ -1092,6 +1163,105 @@ export default {
 					height: 300, // 원하는 세로 크기
 				},
 			},
+			// 유저 성비 차트
+			u_chart1:{
+				data: {
+					labels: [],
+					datasets: [
+					{
+						label: '여성',
+						borderColor: '#f87979',
+						backgroundColor: 'rgba(248, 121, 121, 0.3)',
+						data: [],
+						fill: false,
+					},
+					{
+						label: '남자',
+						borderColor: '#65b2ff',
+						backgroundColor: 'rgba(101, 178, 255, 0.3)',
+						data: [],
+						fill: false,
+					}
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					// width: 1000, // 원하는 가로 크기
+					// height: 400, // 원하는 세로 크기
+				},
+			},
+			u_chart2:{
+				data: {
+					labels: ['회원유지','탈퇴'],
+					datasets: [
+						{
+							backgroundColor: ['#ff6666',"#66c2ff "],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			u_chart3:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec","#2c20b0"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			u_chart4:{
+				data: {
+					labels: [],
+					datasets: [
+						{
+							backgroundColor: ['#e75454',"#ecdf55","#afec55","#5582ec"],
+							data: []
+						}
+					]
+				},
+				options: {
+					responsive: false,
+					maintainAspectRatio: false,
+					width: 300, // 원하는 가로 크기
+					height: 300, // 원하는 세로 크기
+				},
+			},
+			admin_title:"",
+			admin_content:"",
+			admin_place:"",
+			admin_img1:null,
+			admin_img2:null,
+			admin_img3:null,
+			admin_ns:"경상북도",
+			admin_state_n:"",
+			admin_state_s:"",
+			admin_start_f:"",
+			admin_end_f:"",
+			admin_chk_flg1:false,
+			admin_chk_flg2:false,
+			admin_chk_flg3:false,
+			admin_chk_flg4:false,
+			admin_category:"0",
+			admin_fee:"",
+			admin_time:"",
+			admin_holiday:"",
+			admin_tel:"",
 		}
 	},
 	watch: {
@@ -1108,14 +1278,7 @@ export default {
 		this.getToDayTime();
 	},
 	mounted() {
-		this.chart1.data.labels = [];
-		this.chart1.data.datasets[0].data = [];
-		this.chart2.data.labels = [];
-		this.chart2.data.datasets[0].data = [];
-		this.chart3.data.labels = [];
-		this.chart3.data.datasets[0].data = [];
-		this.chart4.data.labels = [];
-		this.chart4.data.datasets[0].data = [];
+	
 	},
 
 	methods: {
@@ -1884,33 +2047,56 @@ export default {
 					// 조회수 축제관광
 					this.hit_main = res.data.hit_main;	
 					for(let i = 0; i < this.hit_main.length; i++){
-						this.h_chart2.data.labels[i] = this.hit_main[i];
+						this.h_chart2.data.labels[i] = this.hit_main[i].type;
 						this.h_chart2.data.datasets[0].data[i]=this.hit_main[i].cnt;
 					};
 					console.log("통과2")
 					// 조회수 ns
 					this.hit_ns = res.data.hit_ns;	
-					this.hit_ns.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_ns.length; i++){
-						this.h_chart3.data.labels[i] = this.hit_ns[i];
+						this.h_chart3.data.labels[i] = this.hit_ns[i].type;
 						this.h_chart3.data.datasets[0].data[i]=this.hit_ns[i].cnt;
 					}
 					// 조회수 n top5
 					this.hit_n = res.data.hit_n;	
-					this.hit_n.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_n.length; i++){
 						this.h_chart4.data.labels[i] = this.hit_n[i].type;
 						this.h_chart4.data.datasets[0].data[i]=this.hit_n[i].cnt;
 					}
 					// 조회수 s top5
 					this.hit_s = res.data.hit_s;	
-					this.hit_s.forEach(tag => {
-					});
 					for(let i = 0; i < this.hit_s.length; i++){
 						this.h_chart5.data.labels[i] = this.hit_s[i].type;
 						this.h_chart5.data.datasets[0].data[i]=this.hit_s[i].cnt;
+					}
+
+					// 여기서부터 유저
+					// 유저 가입통계
+					this.u_gender1 = res.data.u_gender.filter(item => item.type === "F");
+					this.u_gender2 = res.data.u_gender.filter(item => item.type === "M");
+					for (let i = 0; i < this.u_gender1.length; i++) {
+					this.u_chart1.data.labels[i] = this.u_gender1[i].age;
+					this.u_chart1.data.datasets[0].data[i] = this.u_gender1[i].per;
+					}
+					for (let i = 0; i < this.u_gender2.length; i++) {
+					this.u_chart1.data.datasets[1].data[i] = this.u_gender2[i].per;
+					}
+					// 유저 한달갈 탈퇴율
+					this.inout = res.data.inout;	
+					for(let i = 0; i < this.inout.length; i++){
+						this.u_chart2.data.datasets[0].data[i]=this.inout[i].cnt;
+					}
+					// 유저 탈퇴사유 빈도
+					this.del_flg = res.data.del_flg;	
+					for(let i = 0; i < this.del_flg.length; i++){
+						this.u_chart3.data.labels[i] = this.del_flg[i].type;
+						this.u_chart3.data.datasets[0].data[i]=this.del_flg[i].per;
+					}
+					// 유저 활동시간
+					this.u_time = res.data.u_time;	
+					for(let i = 0; i < this.u_time.length; i++){
+						this.u_chart4.data.labels[i] = this.u_time[i].time;
+						this.u_chart4.data.datasets[0].data[i]=this.u_time[i].per;
 					}
 				}
 			})
@@ -1926,6 +2112,17 @@ export default {
 			.finally(() => {
 				this.$store.commit('setLoading', false);
 			});
+		},
+		// 이미지등록시 데이터 바인딩
+		imgchk(img) {
+			let nowimg = img.target.files[0];
+			if (img.target === this.$refs.fileInput1) {
+			this.admin_img1 = nowimg;
+			} else if (img.target === this.$refs.fileInput2) {
+			this.admin_img2 = nowimg;
+			} else if (img.target === this.$refs.fileInput3) {
+			this.admin_img3 = nowimg;
+			}
 		},
 		// 초기화용함수
 		resetall(){

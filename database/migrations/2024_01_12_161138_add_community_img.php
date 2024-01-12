@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('replies', function (Blueprint $table) {
-            $table->id();
-            $table->integer('b_id');
-            $table->integer('u_id');
-            $table->string('replie',200);
-            $table->timestamps();
-            $table->softDeletes();  
+        Schema::table('community', function (Blueprint $table) {
+            $table->string('img1',100)->after('content')->nullable();
+            $table->string('img2',100)->after('img1')->nullable();
+            $table->string('img3',100)->after('img2')->nullable();
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('replies');
+        //
     }
 };
