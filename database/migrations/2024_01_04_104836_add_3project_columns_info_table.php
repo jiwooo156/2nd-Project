@@ -18,8 +18,8 @@ return new class extends Migration
             $table->char('friend_flg', 1)->default("0")->after('couple_flg');
             $table->char('family_flg', 1)->default("0")->after('friend_flg');
             $table->char('parking_flg', 1)->default("0")->after('family_flg');
-            $table->string('fee', 100)->default("없음")->after('parking_flg');
-            $table->string('time', 100)->default("없음")->after('fee');
+            $table->string('fee', 500)->default("없음")->after('parking_flg');
+            $table->string('time', 500)->default("없음")->after('fee');
             $table->string('holiday', 50)->default("연중무휴")->after('time');
             $table->string('tel', 30)->default("없음")->after('holyday');
         });

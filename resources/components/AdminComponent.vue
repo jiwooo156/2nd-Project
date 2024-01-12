@@ -346,93 +346,131 @@
 			</div>
 		</div>
 	</div>
-	<!-- 등록페이지 -->
+	<!-- 등록 및 수정 -->
 	<!-- 축제등록 -->
 	<div v-if="mainflg===1&&subflg===0" class="admin_frame">
-		<div>축제등록</div>
-		<div>
-			<div>주소</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>제목</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>내용</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>사진1</div>
-			<input id="shop_file" type="file" accept="image/*">
-			<div>사진2</div>
-			<input id="shop_file" type="file" accept="image/*">
-			<div>사진3</div>
-			<input id="shop_file" type="file" accept="image/*">
-		</div>
-		<div>
-			<div>내용</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>지역</div>
-			<select>
-				<option class=" font_air bold">경상북도</option>
-				<option class=" font_air bold">경상남도</option>
-			</select>
-		</div>
-		<div>
-			<select>
-				<option class=" font_air bold">옵션들</option>
-			</select>
-		</div>
-		<div>
-			<div>축제,관광</div>
-			<select>
-				<option class=" font_air bold">축제</option>
-				<option class=" font_air bold">관광</option>
-			</select>
-		</div>
-		<div>
-			<div>축제시작</div>
-			<input type="date">
-		</div>
-		<div>
-			<div>축제종료</div>
-			<input type="date">
-		</div>
-		<div>
-			<div>주차</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>친구끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>가족끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>연인끼리가기좋은</div>
-			<input type="checkbox">
-		</div>
-		<div>
-			<div>입장료</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>이용시간</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>휴일</div>
-			<input type="text">
-		</div>
-		<div>
-			<div>연락처</div>
-			<input type="text">
-		</div>
+		<form class="row g-3 needs-validation admin_form" validate>
+			<div>
+				<div class="col-md-3 position-relative mb-3">
+					<label for="validationTooltip04" class="form-label">등록위치</label>
+					<select class="form-select" id="validationTooltip04" required v-model="admin_category">
+						<option value="0">축제</option>
+						<option value="1">관광</option>
+						<option value="2">(자유)공지</option>
+						<option value="3">(질문)공지</option>
+						<option value="4">(정보)공지</option>
+						<option value="5">(건의)공지</option>
+					</select>
+				</div>
+				<div class="input-group mb-1">
+					<span class="input-group-text" id="basic-addon1">제목</span>
+					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_title">
+				</div>
+				<div class="input-group mb-1">
+					<span class="input-group-text">내용</span>
+					<textarea class="form-control" aria-label="With textarea" v-model="admin_content"></textarea>
+				</div>
+				<div class="input-group mb-1" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text" >주소</span>
+					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_place">
+				</div>
+				<div class="input-group mb-3 align-items-center">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+					<input class="form-control" type="file" accept="image/*" @change="imgchk">
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">지역</span>
+					<select class="form-select" id="validationTooltip04" v-model="admin_ns">
+						<option>경상북도</option>
+						<option>경상남도</option>
+					</select>
+					<span class="input-group-text">시.군</span>
+					<!-- 북도 -->
+					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_n" v-if="admin_ns==='경상북도'">
+						<option>경산시</option>
+						<option>경주시</option>
+						<option>고령군</option>
+						<option>구미시</option>
+						<option>김천시</option>
+						<option>문경시</option>
+						<option>봉화군</option>
+						<option>상주시</option>
+						<option>성주군</option>
+						<option>안동시</option>
+						<option>영덕군</option>
+						<option>영양군</option>
+						<option>영주시</option>
+						<option>영천시</option>
+						<option>울릉군</option>
+						<option>울진군</option>
+						<option>의성군</option>
+						<option>예천군</option>
+						<option>청도군</option>
+						<option>청송군</option>
+						<option>칠곡군</option>
+						<option>포항시</option>
+					</select>
+					<!-- 남도 -->
+					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_s" v-if="admin_ns==='경상남도'">			
+						<option>거제시</option>
+						<option>거창군</option>
+						<option>고성군</option>
+						<option>김해시</option>
+						<option>남해군</option>
+						<option>밀양시</option>
+						<option>사천시</option>
+						<option>산청군</option>
+						<option>양산시</option>
+						<option>의령군</option>
+						<option>진주시</option>
+						<option>창녕군</option>
+						<option>창원시</option>
+						<option>통영시</option>
+						<option>하동군</option>
+						<option>함안군</option>
+						<option>함양군</option>
+						<option>합천군</option>
+					</select>
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'">
+					<span class="input-group-text">축제기간</span>
+					<input type="date" class="form-control" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_start_f">
+					<input type="date" class="form-control" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_end_f">
+				</div>
+				<div class="input-group mb-3 d-flex justify-content-evenly" v-if="admin_category==='0'||admin_category==='1'">
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_parking" v-model="admin_chk_flg1">
+						<label class="form-check-label pointer" for="admin_parking">주차가능 여부</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_couple" v-model="admin_chk_flg2">
+						<label class="form-check-label pointer" for="admin_couple">커플 추천</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_friend" v-model="admin_chk_flg3">
+						<label class="form-check-label pointer" for="admin_friend">친구 추천</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input pointer" type="checkbox" id="admin_family" v-model="admin_chk_flg4">
+						<label class="form-check-label pointer" for="admin_family">가족 추천</label>
+					</div>
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">입장료</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_fee">
+					<span class="input-group-text">이용시간</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_time">
+				</div>
+				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
+					<span class="input-group-text">휴일</span>
+					<input type="text" class="form-control" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_holiday">
+					<span class="input-group-text">연락처</span>
+					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_tel">
+				</div>
+			</div>
+			<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
+		</form>
 	</div>
 	<!-- 관광등록 -->
 	<div v-if="mainflg===1&&subflg===1" class="admin_frame">
@@ -825,7 +863,7 @@
 import Swal from 'sweetalert2';
 
 import {
-  Chart as ChartJS,
+	Chart as ChartJS,
 	ArcElement,
 	CategoryScale,
 	BarElement,
@@ -1204,7 +1242,26 @@ export default {
 					height: 300, // 원하는 세로 크기
 				},
 			},
-			
+			admin_title:"",
+			admin_content:"",
+			admin_place:"",
+			admin_img1:null,
+			admin_img2:null,
+			admin_img3:null,
+			admin_ns:"경상북도",
+			admin_state_n:"",
+			admin_state_s:"",
+			admin_start_f:"",
+			admin_end_f:"",
+			admin_chk_flg1:false,
+			admin_chk_flg2:false,
+			admin_chk_flg3:false,
+			admin_chk_flg4:false,
+			admin_category:"0",
+			admin_fee:"",
+			admin_time:"",
+			admin_holiday:"",
+			admin_tel:"",
 		}
 	},
 	watch: {
@@ -2055,6 +2112,17 @@ export default {
 			.finally(() => {
 				this.$store.commit('setLoading', false);
 			});
+		},
+		// 이미지등록시 데이터 바인딩
+		imgchk(img) {
+			let nowimg = img.target.files[0];
+			if (img.target === this.$refs.fileInput1) {
+			this.admin_img1 = nowimg;
+			} else if (img.target === this.$refs.fileInput2) {
+			this.admin_img2 = nowimg;
+			} else if (img.target === this.$refs.fileInput3) {
+			this.admin_img3 = nowimg;
+			}
 		},
 		// 초기화용함수
 		resetall(){

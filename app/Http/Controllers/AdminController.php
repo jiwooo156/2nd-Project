@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Community;
 use App\Models\Del_Reason;
+use App\Models\Del_title;
 use App\Models\Replie;
 use App\Models\Like;
 use App\Models\Report;
@@ -525,6 +526,15 @@ class AdminController extends Controller
                 ->groupBy('type')
             )
             ->get();
+        
+            // 총 퍼센트 계산
+            $total = $tag->sum('cnt');
+            
+            // 각 퍼센트 값을 전체에서의 비율로 변경
+            $tag = $tag->map(function ($item) use ($total) {
+                $item->cnt = round(($item->cnt / $total) * 100, 2);
+                return $item;
+            });
         // 축제관광에서 좋아요 눌린 비율
         $main = Like::
             select(
@@ -545,19 +555,27 @@ class AdminController extends Controller
         // 나이대별 좋아요 누르는 비율
         $age = Like::
             select(DB::raw("COUNT(users.id) as cnt"), DB::raw("
-                CASE 
-                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 10 AND 19 THEN '10대'
-                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 20 AND 29 THEN '20대'
-                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 30 AND 39 THEN '30대'
-                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 40 AND 49 THEN '40대'
-                    WHEN YEAR(CURDATE()) - YEAR(users.birthdate) >= 50 THEN '50대 이상'
-                    ELSE '기타' 
-                END as age"))
+            CASE 
+                WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 10 AND 19 THEN '10대'
+                WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 20 AND 29 THEN '20대'
+                WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 30 AND 39 THEN '30대'
+                WHEN YEAR(CURDATE()) - YEAR(users.birthdate) BETWEEN 40 AND 49 THEN '40대'
+                WHEN YEAR(CURDATE()) - YEAR(users.birthdate) >= 50 THEN '50대 이상'
+                ELSE '기타' 
+            END as age"))
             ->join('users', 'likes.u_id', '=', 'users.id')
             ->where('likes.flg', '0')
             ->groupBy('age')
             ->get();
-            Log::debug("나이순 ".$age);
+        
+            // 총 퍼센트 계산
+            $total = $age->sum('cnt');
+            
+            // 각 퍼센트 값을 전체에서의 비율로 변경
+            $age = $age->map(function ($item) use ($total) {
+                $item->cnt = round(($item->cnt / $total) * 100, 2);
+                return $item;
+            });
 
         // 커뮤니티 좋아요 누른 성별수
         $gender1 = Like::
@@ -566,6 +584,12 @@ class AdminController extends Controller
             ->where('likes.flg','1')
             ->groupBy('users.gender')
             ->get();
+            $total = $gender1->sum('cnt');
+            // 각 퍼센트 값을 전체에서의 비율로 변경
+            $gender1 = $gender1->map(function ($item) use ($total) {
+                $item->cnt = round(($item->cnt / $total) * 100, 2);
+                return $item;
+            });
         // 커뮤니티 게시판 원하는정보 비율
         $main1 = Like::
             select(DB::raw('community.category_flg as type'), DB::raw('COUNT(community.category_flg) as cnt'))
@@ -574,7 +598,12 @@ class AdminController extends Controller
             ->where('likes.flg','1')
             ->where('community.notice_flg','0')
             ->get();
-
+            $total = $main1->sum('cnt');
+            // 각 퍼센트 값을 전체에서의 비율로 변경
+            $main1 = $main1->map(function ($item) use ($total) {
+                $item->cnt = round(($item->cnt / $total) * 100, 2);
+                return $item;
+            });
         // 커뮤니티 게시판 원하는정보 비율
         $flg = Like::
             select(DB::raw('community.flg as type'), DB::raw('COUNT(community.flg) as cnt'))
@@ -584,7 +613,12 @@ class AdminController extends Controller
             ->where('community.flg',"!=",'3')
             ->where('community.notice_flg','0')
             ->get();
-
+            $total = $flg->sum('cnt');
+            // 각 퍼센트 값을 전체에서의 비율로 변경
+            $flg = $flg->map(function ($item) use ($total) {
+                $item->cnt = round(($item->cnt / $total) * 100, 2);
+                return $item;
+            });
         // 여기서부터 조회수
 
         // 플래그별 평균 조회수
@@ -669,11 +703,13 @@ class AdminController extends Controller
         // 회원 탈퇴한 사람들 사유비율
         $del_flg = Del_Reason::
             select(
-                'del_flg as type',
+                'del_titles.del_msg as type',
                 DB::raw('ROUND((COUNT(*) / (SELECT COUNT(*) FROM del_reasons)) * 100, 2) as per')
             )
-            ->groupBy('del_flg')
+            ->join('del_titles','del_reasons.del_flg','del_titles.del_flg')
+            ->groupBy('del_titles.del_msg')
             ->get();
+        Log::debug($del_flg);
         // 유저들 주 활동 시간대
         $u_time = Replie::withTrashed()
             ->select(

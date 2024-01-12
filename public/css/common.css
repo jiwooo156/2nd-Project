@@ -1976,7 +1976,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_content{
 	display: flex;
     gap: 10px;
-	width: 100vw;
 }
 .admin_modal_bg{
 	background-color: #8686868f;
@@ -2080,6 +2079,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_chart_line{
 	width: 80%;
 	height: 320px;
+}
+.admin_form{
+	width: 70%;
+	margin: 0 auto;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
