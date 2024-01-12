@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('auth_token', 256);
             $table->timestamp('auth_start')->default(DB::raw('now()'));
             $table->timestamp('auth_end')->default(DB::raw('DATE_ADD(now(), INTERVAL 5 MINUTE)'));
-            $table->char('del_flg', 1)->default("0");
+            $table->char('auth_flg', 1)->default("0");
         });
     }
 

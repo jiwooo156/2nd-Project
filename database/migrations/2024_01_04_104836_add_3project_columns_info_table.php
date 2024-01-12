@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('fee', 500)->default("없음")->after('parking_flg');
             $table->string('time', 500)->default("없음")->after('fee');
             $table->string('holiday', 50)->default("연중무휴")->after('time');
-            $table->string('tel', 30)->default("없음")->after('holyday');
+            $table->string('tel', 30)->default("없음")->after('holiday');
         });
     }
 
