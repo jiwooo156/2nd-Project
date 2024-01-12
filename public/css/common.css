@@ -1911,7 +1911,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #656565;
 	font-size: 0.8rem;
 }
-.qna_btn_bot a {
+/* .qna_btn_bot a를 .qna_btn_bot button로 변경함 */
+.qna_btn_bot button {    
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	border: none;

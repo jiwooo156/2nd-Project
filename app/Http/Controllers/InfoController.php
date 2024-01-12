@@ -134,7 +134,7 @@ class InfoController extends Controller
     // 댓글삭제
     public function repliedel(Request $req) {
         try {
-            // 세션에 저장되 유저정보 조회
+            // 세션에 저장된 유저정보 조회
             $auth = Auth::user();
             // 세션에 유저정보 닉네임과 일치하고 리퀘스트 온 아이디값으로 유저테이블에 조회
             $result = Replie::
@@ -469,7 +469,7 @@ class InfoController extends Controller
         ], 200);          
     }
 
-    // 2222222 정보게시판 페이지 정보조회 22222222(목록)
+    // 0112 정지우 정보게시판 페이지 정보조회 (목록) 완료
     public function commuinfoget(Request $req) {
         Log::debug("**** commuinfoget start ****");
         Log::debug("게시판 플래그 : ".$req->flg);
@@ -539,24 +539,41 @@ class InfoController extends Controller
             'infocnt' => $infocnt,
         ], 200);          
     }
-
-
-    // 커뮤니티 디테일 페이지 정보조회
+    // - id, 게시판플래그, 카테고리플래그, 제목, 내용, 작성일자, 수정일자, 삭제일자, 조회수, 닉네임, 좋아요수
+    // 0112 정지우 커뮤니티 디테일 페이지 정보조회 
     public function communityget(Request $req) {
+        Log::debug("**** communityget start ****");
+        Log::debug("커뮤디테일 함수진입");
         // 리퀘스트온 아이디값으로 커뮤니티 테이블 조회
-        $community_result = Community::
-        where('id',$req->id)
-        ->get();
+        $communityresult = Community::select(
+                'community.id',
+                'community.flg',
+                'community.category_flg',
+                'community.title',
+                'community.content',
+                'community.created_at',
+                'community.updated_at',
+                'community.deleted_at',
+                'community.hits',
+                'users.nick',
+                DB::raw('COALESCE(lik.cnt, 0) as cnt')
+            )
+            ->join('users', 'community.u_id', '=', 'users.id')
+            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+            ->where('community.id',$req->id)
+            ->get();
+
+            Log::debug("커뮤니티결과 : ".$communityresult);
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
-        if(!($req->cookie('hits'.$req->id))&&count($community_result)===1){    
+        if(!($req->cookie('hits'.$req->id))&&count($communityresult)===1){    
             // 조회수 1증가  
             try { 
                 // 트랜잭션 시작
                 DB::beginTransaction();
                 // 조회된 값의 조회수 1증가
-                $community_result[0]->hits++;
+                $communityresult[0]->hits++;
                 // 저장
-                $community_result[0]->save();
+                $communityresult[0]->save();
                 DB::commit();    
             // 실패시
             } catch(Exception $e){
@@ -564,13 +581,13 @@ class InfoController extends Controller
             }
         // 쿠키값이있고 조회된값이 1개일때
         }
-        if(count($community_result)===1){            
+        if(count($communityresult)===1){            
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
-            $replie_count = Replie::
+            $repliecnt = Replie::
             where('b_id', $req->id)
             ->count();
             // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
-            $replie_result = Replie::
+            $replieresult = Replie::
             select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at', 'users.email')
             ->join('users', 'replies.u_id', '=', 'users.id')
             ->where('replies.b_id', $req->id)
@@ -578,12 +595,14 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug( $replie_result);
+            Log::debug("댓글 결과 : ".$replieresult);
+            Log::debug("댓글 갯수 : ".$repliecnt);
+
             return response()->json([
                 'code' => '0',
-                'data' => $community_result,
-                'replie' => $replie_result,
-                'repliecount' =>  $replie_count
+                'data' => $communityresult,
+                'replie' => $replieresult,
+                'repliecount' =>  $repliecnt
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
@@ -593,6 +612,7 @@ class InfoController extends Controller
             ], 200);
         }
     }
+
     // ***********************************************
     // 커뮤니티 디테일 페이지 조회
     public function detailComget(Request $req) {
