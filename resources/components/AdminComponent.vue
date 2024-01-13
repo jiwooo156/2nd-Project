@@ -14,8 +14,8 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">축제 등록</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(1,1)">관광 등록</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(1,2)">공지 등록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,1)">게시물 조회</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,2)">댓글 조회</div></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
@@ -472,87 +472,81 @@
 			<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
 		</form>
 	</div>
-	<!-- 관광등록 -->
+	<!-- 게시글 조회 -->
 	<div v-if="mainflg===1&&subflg===1" class="admin_frame">
-		<div>
-			<div>관광등록</div>
-			<div>
-				<div>주소</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>제목</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>내용</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>사진1</div>
-				<input id="shop_file" type="file" accept="image/*">
-				<div>사진2</div>
-				<input id="shop_file" type="file" accept="image/*">
-				<div>사진3</div>
-				<input id="shop_file" type="file" accept="image/*">
-			</div>
-			<div>
-				<div>내용</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>지역</div>
-				<select>
-					<option class=" font_air bold">경상북도</option>
-					<option class=" font_air bold">경상남도</option>
+		<div class="admin_board_header">
+			<div class="col-md-3 position-relative mb-4 admin_board_header1">
+				<label for="validationTooltip04" class="form-label">등록위치</label>
+				<select class="form-select" id="validationTooltip04" required v-model="admin_board_cate">
+					<option value="0">전체</option>
+					<option value="1">축제</option>
+					<option value="2">관광</option>
+					<option value="3">자유</option>
+					<option value="4">정보</option>
+					<option value="5">질문</option>
+					<option value="6">건의</option>
 				</select>
 			</div>
-			<div>
-				<select>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
-					<option class=" font_air bold">옵션들</option>
+			<div class="admin_board_header2">
+				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate">
+					<option value="0">게시글번호</option>
+					<option value="1">유저번호</option>
+					<option value="2">제목</option>
+					<option value="3">내용</option>
 				</select>
+				<input type="text" class="form-control" aria-label="Text input with dropdown button" v-model="admin_sub_input">
+				<button class="btn btn-outline-secondary" type="button">검색</button>
 			</div>
-			<div>
-				<div>주차</div>
-				<input type="checkbox">
-			</div>
-			<div>
-				<div>친구끼리가기좋은</div>
-				<input type="checkbox">
-			</div>
-			<div>
-				<div>가족끼리가기좋은</div>
-				<input type="checkbox">
-			</div>
-			<div>
-				<div>연인끼리가기좋은</div>
-				<input type="checkbox">
-			</div>
-			<div>
-				<div>입장료</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>이용시간</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>휴일</div>
-				<input type="text">
-			</div>
-			<div>
-				<div>연락처</div>
-				<input type="text">
-			</div>
+		</div>	
+		<table class="table table-hover  table-border mb-3">
+			<thead>
+				<tr>
+					<th scope="col">게시글번호</th>
+					<th scope="col">작성자번호</th>
+					<th scope="col">제목</th>
+					<th scope="col">내용</th>
+					<th scope="col">작성위치</th>
+					<th scope="col">작성시간</th>
+				</tr>			
+			</thead>
+			<tbody>
+				<tr v-for="data in boards" :key="data">
+					<th scope="row" class="admin_table_th">{{ data.id }}</th>
+					<td class="admin_table_th">{{ data.u_id }}</td>
+					<td class="admin_table_td1">{{ data.title }}</td>
+					<td class="admin_table_td">{{ data.content }}</td>
+					<td class="admin_table_td2">{{ data.flg }}</td>
+					<td class="admin_table_td2">{{ data.created_at }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class='admin_page'>
+			<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item poiner"
+					id="prevbtn"
+				>
+					<span  class="page-link" 
+					@click="get_board(this.prevnum)"
+					>이전</span>
+				</li>
+				<li class="page-item poiner"		
+					v-for="num in numbox" :key="num"
+					:id="'page'+num"
+					@click="get_board(num)"
+					>
+					<span  class="page-link">{{ num }}</span>
+				</li>
+				<li class="page-item poiner"
+					id="nextbtn"
+					@click="get_board(this.nextnum)"
+				>
+					<span  class="page-link">다음</span>
+				</li>
+			</ul>
+		</nav>
 		</div>
+	
 	</div>
 	<!-- 공지등록 -->
 	<div v-if="mainflg===1&&subflg===2" class="admin_frame">
@@ -950,9 +944,6 @@ export default {
 			admin_title:"",
 			admin_content:"",
 			admin_place:"",
-			admin_img1:null,
-			admin_img2:null,
-			admin_img3:null,
 			admin_ns:"경상북도",
 			admin_state_n:"",
 			admin_state_s:"",
@@ -967,6 +958,17 @@ export default {
 			admin_time:"",
 			admin_holiday:"",
 			admin_tel:"",
+			admin_board_cate:"0",
+			admin_sub_cate:"0",
+			admin_sub_input:"",
+			page:1,
+			lastpage:1,
+			first_num:1,
+			last_num:1,
+			prevnum:1,
+			nextnum:1,
+			numbox:[],
+			boards: {},
 			// 차트1 좋아요성비
 			chart1:{
 				data: {
@@ -1559,6 +1561,9 @@ export default {
 		flgchg(main,sub){
 			this.mainflg = main;
 			this.subflg = sub;
+			if(main===1,sub===1){
+				this.get_board(1)
+			}
 			if(main===3,sub===1){
 				this.reportall()
 			}
@@ -1898,8 +1903,6 @@ export default {
 				if(res.data.code === "0"){
 					this.requestdata_before = res.data.data_before;
 					this.requestdata_after = res.data.data_after;
-					// this.requestdata_before = res.data.data.filter(item => item.admin_flg === "0");
-					// this.requestdata_after = res.data.data.filter(item => item.admin_flg !== "0");
 				}
 			})
 			.catch(err => {
@@ -2113,17 +2116,6 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 이미지등록시 데이터 바인딩
-		// imgchk(img) {
-		// 	let nowimg = img.target.files[0];
-		// 	if (img.target === this.$refs.fileInput1) {
-		// 	this.admin_img1 = nowimg;
-		// 	} else if (img.target === this.$refs.fileInput2) {
-		// 	this.admin_img2 = nowimg;
-		// 	} else if (img.target === this.$refs.fileInput3) {
-		// 	this.admin_img3 = nowimg;
-		// 	}
-		// },
 		// 초기화용함수
 		resetall(){
 			console.log("초기화함수")
@@ -2139,9 +2131,6 @@ export default {
 			this.admin_title="";
 			this.admin_content="";
 			this.admin_place="";
-			this.admin_img1= new FileReader();
-			this.admin_img2=null;
-			this.admin_img3=null;
 			this.admin_state_n="";
 			this.admin_state_s="";
 			this.admin_start_f="";
@@ -2149,13 +2138,19 @@ export default {
 			this.admin_chk_flg1=false;
 			this.admin_chk_flg2=false;
 			this.admin_chk_flg3=false;
-			this.admin_chk_flg4=false;
+			this.admin_chk_flg4=false;		
 			let img1 = document.querySelector('#admin_file_img1');
-			img1.value = ""; 
 			let img2 = document.querySelector('#admin_file_img2');
-			img2.value = ""; 
 			let img3 = document.querySelector('#admin_file_img3');
-			img3.value = ""; 
+			if (img1 !== null && img1.value !== null) {
+				img1.value = "";
+			}
+			if (img2 !== null && img2.value !== null) {
+				img2.value = ""; 
+			}
+			if (img3 !== null && img3.value !== null) {
+				img3.value = ""; 
+			}
 			this.admin_fee="";
 			this.admin_time="";
 			this.admin_holiday="";
@@ -2340,6 +2335,106 @@ export default {
 				this.$store.commit('setLoading', false);
 			})
 		},
+		// 모든보드정보 조회
+		get_board(page){
+			this.$store.commit('setLoading',true);
+			let URL = '';
+			// if(num === '1'){
+			// 	if(this.admin_sub_input === ""){
+			// 		console.log("검색어 입력 x")
+			// 		Swal.fire({
+			// 			icon: 'warning',
+			// 			title: '주의',
+			// 			text: '검색 내용을 입력해 주세요.',
+			// 			confirmButtonText: '확인'
+			// 		})
+			// 		return;
+			// 	}
+			// 	console.log("검색조건있을때")
+			// 	URL = '/admin/board?flg='+this.admin_board_cate+"&sub_flg="+this.admin_sub_cate+"&val="+this.admin_sub_input+"&page="+page
+			// }else{
+			// 	console.log("검색조건업을때")
+			// }
+			URL = '/admin/board?flg='+this.admin_board_cate+"&page="+page
+			console.log("검색시작")
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					// 없으면
+					for(let i = 0; i < res.data.data.data.length; i++){
+						if(res.data.data.data[i].flg === '0'){
+							res.data.data.data[i].flg = '자유게시판'
+						}else if(res.data.data.data[i].flg === '1'){
+							res.data.data.data[i].flg = '정보게시판'
+						}else if(res.data.data.data[i].flg === '2'){
+							res.data.data.data[i].flg = '질문게시판'
+						}else if(res.data.data.data[i].flg === '3'){
+							res.data.data.data[i].flg = '건의게시판'
+						}else if(res.data.data.data[i].flg === '축제'){
+							res.data.data.data[i].flg = '축제게시판'
+							res.data.data.data[i].u_id = '관리자'
+						}else if( res.data.data.data[i].flg === '관광'){
+							res.data.data.data[i].flg = '관광게시판'
+							res.data.data.data[i].u_id = '관리자'
+						}
+					}
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					this.boards = res.data.data.data;
+					console.log(res.data.data);
+					if(res.data.data.prev_page_url===null){
+						document.querySelector("#prevbtn").classList.add("disabled");
+					}else if(res.data.data.next_page_url===null){
+						document.querySelector("#nextbtn").classList.add("disabled");
+					}else{
+						document.querySelector("#prevbtn").classList.remove("disabled");
+						document.querySelector("#nextbtn").classList.remove("disabled");		
+					}
+					this.paging()
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 페이징처리
+		paging(){
+			this.numbox = [];
+			if(this.lastpage < 5){
+				this.first_num = 1
+				this.last_num = this.lastpage
+			}else{
+				if(this.page <= 3){
+						this.first_num = 1
+						this.last_num = 5
+				}else if(this.page >= this.lastpage-2){
+					this.first_num = this.lastpage-4
+					this.last_num = this.lastpage
+				}else{
+					this.first_num = this.page-2
+					this.last_num = this.page+2
+				}
+			}
+			for(let i = this.first_num; i <= this.last_num; i++){
+				this.numbox.push(i);
+			}
+			if(this.page === 1){
+				this.prevnum = 1
+			}else if(this.page === this.lastpage){
+				this.nextnum = this.lastpage
+			}else{
+				this.nextnum = this.page+1
+				this.prevnum = this.page-1
+			}
+		}
 	}
 }
 </script>

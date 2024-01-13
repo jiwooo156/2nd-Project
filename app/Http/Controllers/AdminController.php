@@ -856,6 +856,19 @@ class AdminController extends Controller
             ], 400);
         }
     }
+    // 전체보드조회
+    public function boardget(Request $req){
+        Log::debug("함수진입");
+        $result = Info::select('id','u_id', 'created_at', 'title', 'content', 'main_flg as flg')
+            ->unionAll(Community::select('id','u_id','created_at', 'title', 'content', 'flg'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return response()->json([
+            'code' => '0',
+            'data' => $result
+        ], 200);
+        Log::debug($result);
+    }
     // 특정시간에 동작
     public function test(Request $req){
         $schedule->call(function () {
@@ -867,4 +880,5 @@ class AdminController extends Controller
             return now()->toDateTimeString() === $targetDateTime;
         });
     }
+    
 }

@@ -180,6 +180,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/userinfo', [AdminController::class, 'userget']);
     Route::post('/userinfo', [AdminController::class, 'restraintuser']);
     Route::post('/restraint', [AdminController::class, 'restraintreset']);
+    Route::get('/board', [AdminController::class, 'boardget']);
     Route::post('/board', [AdminController::class, 'boardpost']);
 });
 

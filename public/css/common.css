@@ -2098,6 +2098,48 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	width: 70%;
 	margin: 0 auto;
 }
+.admin_board_header{
+	display: flex;
+	justify-content: space-between;
+}
+.admin_board_header1{
+	width: 100px;
+}
+.admin_board_header2{
+	display: flex;
+    align-items: center;
+    width: 500px;
+}
+.admin_board_header2 select{
+	width: 150px;
+}
+.admin_board_header2 select{
+	width: 80px;
+}
+.admin_table_th {
+	width: 6%;	
+	text-align: center;
+}
+.admin_table_td {
+	white-space: nowrap;   
+	overflow: hidden;   
+	text-overflow: ellipsis; 
+	max-width: 700px; 
+
+}
+.admin_table_td2 {
+	width: 11%;
+}
+.admin_table_td1 {
+	white-space: nowrap;   
+	overflow: hidden;   
+	text-overflow: ellipsis;
+	width: 20%; 
+}
+.admin_page {
+	display: flex;
+    justify-content: center;
+}
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
 	display: flex;
