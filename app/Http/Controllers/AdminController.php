@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
@@ -35,7 +37,6 @@ class AdminController extends Controller
                 ->select('deleted_at')
                 ->where('deleted_at', '>=', $req->today)
                 ->count ();
-            Log::debug($req->today);
             // 오늘 가입자수
             $in = User::
                 where('created_at','>=', $req->today)
@@ -56,7 +57,6 @@ class AdminController extends Controller
                 ->where('community.admin_flg', 0)
                 ->orderby('community.created_at','asc')
                 ->count();
-            Log::debug($data);
             // 신고목록
             $report = Report::
                 select('users.email','reports.*')
@@ -90,7 +90,6 @@ class AdminController extends Controller
     // modal용 report data획득
     public function reportget(Request $req){
         if($req->flg==="0"){
-            Log::debug("보드일때");
             $data = Community::withTrashed()
             ->select('users.email','community.*','reports.restraint_at')
             ->where('community.id',$req->b_id)
@@ -104,8 +103,6 @@ class AdminController extends Controller
             ->join('users', 'replies.u_id', '=', 'users.id')
             ->leftjoin('reports', 'replies.u_id', '=', 'reports.r_id')
             ->first();
-            Log::debug("댓글일때");
-            Log::debug($data);
         }
         return response()->json([
             'code' => '0',
@@ -119,7 +116,6 @@ class AdminController extends Controller
             $data = Community::withTrashed()
             ->where('id',$req->id)
             ->first();
-            Log::debug($data);
             if($data->deleted_at !== null){
                 return response()->json([
                     'code' => '1',
@@ -145,6 +141,11 @@ class AdminController extends Controller
             $data->save();
             // 저장
             DB::commit();
+            // 메일발송 보내기
+                Mail::send('mail.mail_answer', ['data' => $data], function($message) use ($data, $req){
+                $message->to($req->email)->subject('이의이승페이지 문의내역');
+                $message->from('dldmldltmd@gmail.com');
+            });
             return response()->json([
                 'code' => '0'
             ], 200);
@@ -163,7 +164,6 @@ class AdminController extends Controller
             // 트랜잭션시작
             DB::beginTransaction();
             // 삭제처리
-            Log::debug($req->flg);
             if($req->flg==="1"){
                 $data = Report::
                     where('b_id',$req->id)
@@ -178,8 +178,9 @@ class AdminController extends Controller
                 $result = Community::destroy($req->id);
             }
             // 조회된 값의 어드민플레그 1로 변경
-            Log::debug('삭제완료');
-            $data->admin_flg = "1";
+            if(!($data->admin_flg === "3"||$data->admin_flg === "4")){
+                $data->admin_flg = "1";
+            }
             // 변경한 값 저장
             $data->save();
             // 저장
@@ -231,14 +232,15 @@ class AdminController extends Controller
             ->orderby('id','desc')
             ->first();
         $result = Report::
-            where('u_id',$data->id)
+            where('r_id',$data->id)
             ->orderby('restraint_at','desc')
             ->get();
+        Log::debug($result);
         $data->cnt= $result->count();
         if($result->count() > 0){
             $data->res_at= $result->first()->restraint_at;
+            $data->restraint= $result->first()->restraint;
         }
-        Log::debug($data);
         if(empty($data)){
             return response()->json([
                 'code' => '1',
@@ -268,7 +270,6 @@ class AdminController extends Controller
                     ->first();
                 $data->r_id = $req->u_id;
                 $data->restraint = $req->msg;
-                Log::debug($req->date);
                 if ($req->date === "5") {
                     $data->restraint_at = Carbon::parse('9999-01-01 00:00:00');
                 }else{
@@ -279,12 +280,10 @@ class AdminController extends Controller
                 // 인서트할 데이터 추가
                 $data['r_id'] = $req->u_id;
                 $data['restraint'] = $req->msg;
-                Log::debug($req->date);
                 if ($req->date === "5") {
                     $data['restraint_at'] = Carbon::parse('9999-01-01 00:00:00');
                 }else{
                     $data['restraint_at'] = date("Y-m-d H:i:s", strtotime("+".$date[$req->date]." days"));
-                    Log::debug($data['restraint_at']);
                 }
                 // 처리결과를 인서트
                 $data = Report::create($data);
@@ -317,12 +316,9 @@ class AdminController extends Controller
                 // 변경한 값 저장
                 $data->save();
             }else{
+                // 관리자가 제제해제 하는거라 모든 restraint_at null로 초기화
                 $data = Report::
-                where('u_id',$req->u_id)
-                ->get();
-                $data['restraint_at'] = null;
-                // 변경한 값 저장
-                $data->save();
+                where('r_id', $req->u_id)->update(['restraint_at' => null]);
             }
             // 저장
             DB::commit();
@@ -338,41 +334,28 @@ class AdminController extends Controller
             ], 400);
         }
     }
-    // 신고데이터 8개 가져오기
+    // 신고데이터 가져오기
     public function reportall(Request $req){
-        $data_before = Report::
+        $data = Report::
             select('users.email','reports.*')
             ->join('users', 'reports.u_id', '=', 'users.id')
-            ->where('reports.admin_flg', "0")
+            ->when($req->flg === "0", function ($query) {
+                return $query->where('reports.admin_flg', "0");
+            }, function ($query) {
+                return $query->where('reports.admin_flg', '!=', "0");
+            })
             ->orderby('reports.created_at','desc')
-            ->limit(8)
-            ->get();
-        $data_before_cnt = Report::
-            where('admin_flg', "0")
-            ->count();
-        $data_after = Report::
-            select('users.email','reports.*')
-            ->join('users', 'reports.u_id', '=', 'users.id')
-            ->where('reports.admin_flg','!=', "0")
-            ->orderby('reports.updated_at','desc')
-            ->limit(8)
-            ->get();
-        $data_after_cnt = Report::
-            where('admin_flg','!=', "0")
-            ->count();
+            ->paginate(8);
+        Log::debug($data);
         return response()->json([
             'code' => '0',
-            'data_before' => $data_before,
-            'b_cnt' => $data_before,
-            'data_after' => $data_after,
-            'a_cnt' => $data_after,
+            'data' => $data,
         ], 200);
     }
     
     // 삭제된게시물 복구
     public function repairpost(Request $req){
         try {
-            Log::debug($req->flg);
             // 트랜잭션시작
             DB::beginTransaction();
             if($req->flg==="0"){
@@ -395,23 +378,22 @@ class AdminController extends Controller
                 $data->save();
             }else{
                 // 없을시
-                Log::debug("없을때");
                 return response()->json([
                     'code' => 'E99',
                     'errorMsg' => '변경 실패.'
                 ], 400);
             }
-            Log::debug("1차통과");
             // 플래그변경위해 신고테이블조회
             $result = Report::
                 where('b_id',$req->id)
                 ->where('flg',$req->flg)
                 ->first();
-            $result->admin_flg = 2;
+            if(!($result->admin_flg === "3"||$result->admin_flg === "4")){
+                $result->admin_flg = '2';
+            }
             // 변경한 값 저장
             $result->save();
             // 저장
-            Log::debug($result);
             DB::commit();
             return response()->json([
                 'code' => '0'
@@ -425,31 +407,29 @@ class AdminController extends Controller
             ], 400);
         }
     }
-    // 건의 8개씩 가져오기
+    // 건의 가져오기
     public function requestall(Request $req){
-        $data_before = Community::
-            select('users.email','community.*')
-            ->where('community.flg', "3")
-            ->where('community.admin_flg', "0")
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->orderby('community.created_at','desc')
-            ->limit(8)
-            ->get();
-        $data_after = Community::
-            select('users.email','community.*','replies.replie')
-            ->where('community.flg', "3")
-            ->where('community.admin_flg', "1")
-            ->join('users', 'community.u_id', '=', 'users.id')
-            ->join('replies', 'community.id', '=', 'replies.b_id')
-            ->where('replies.flg', "1")
-            ->orderby('community.updated_at','desc')
-            ->limit(8)
-            ->get();
-        Log::debug($data_after);
+        if ($req->flg === "0") {
+            $data = Community::
+                select('users.email', 'community.*')
+                ->where('community.admin_flg', "0")
+                ->join('users', 'community.u_id', '=', 'users.id');
+        } else {
+            $data = Community::
+                select('users.email', 'community.*', 'replies.replie')
+                ->where('community.admin_flg', "1")
+                ->join('replies', 'community.id', '=', 'replies.b_id')
+                ->join('users', 'community.u_id', '=', 'users.id')
+                ->where('replies.flg', "1");
+        }
+        $data = 
+            $data
+                ->where('community.flg', "3")
+                ->orderBy('community.created_at', 'desc')
+                ->paginate(8);
         return response()->json([
             'code' => '0',
-            'data_before' => $data_before,
-            'data_after' => $data_after,
+            'data' => $data
         ], 200);
     }
     // 답변변경 변경
@@ -709,7 +689,6 @@ class AdminController extends Controller
             ->join('del_titles','del_reasons.del_flg','del_titles.del_flg')
             ->groupBy('del_titles.del_msg')
             ->get();
-        Log::debug($del_flg);
         // 유저들 주 활동 시간대
         $u_time = Replie::withTrashed()
             ->select(
@@ -723,7 +702,6 @@ class AdminController extends Controller
             )
             ->groupBy('time')
             ->get();
-        Log::debug($inout);
         return response()->json([
             'code' => '0',
             'gender' =>  $gender,
@@ -753,7 +731,6 @@ class AdminController extends Controller
             DB::beginTransaction();
             if($req->main_flg==="0"||$req->main_flg==="1"){
                 // 기본 데이터
-                Log::debug($req->ns_flg);
                 $data = $req->only('title','content','ns_flg','states_name','place');
                 // 변동데이터
                 // 이미지
@@ -808,8 +785,6 @@ class AdminController extends Controller
                 // 축제테이블에 생성
                 Info::create($data);
             }else{
-                Log::debug("여기진입");
-                Log::debug($req->img1.$req->img2.$req->img3);
                 $data = $req->only('title','content');
                 $data['u_id'] = Auth::user()->id;
                 $data['category_flg'] = "2";
@@ -858,16 +833,91 @@ class AdminController extends Controller
     }
     // 전체보드조회
     public function boardget(Request $req){
-        Log::debug("함수진입");
-        $result = Info::select('id','u_id', 'created_at', 'title', 'content', 'main_flg as flg')
-            ->unionAll(Community::select('id','u_id','created_at', 'title', 'content', 'flg'))
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        if ($req->flg === "0"&&empty($req->val)) {
+            $result = Info::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'main_flg as flg','deleted_at')
+            ->union(Community::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'flg','deleted_at'));
+        } else if (in_array($req->flg, ["1", "2"])) {
+            $result = Info::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'main_flg as flg','deleted_at')
+                ->where('main_flg', $req->flg === "1" ? '축제' : '관광');
+        } else if (in_array($req->flg, ["3", "4", "5", "6"])) {
+            $flgchange = ["3" => "0", "4" => "1", "5" => "2", "6" => "3"];
+            $result = Community::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'flg','deleted_at')
+                ->where('flg', $flgchange[$req->flg]);
+        // 전체 테이블에 조건 줄경우
+        } else if (!empty($req->val)&&$req->flg === "0") {
+            $data = Info::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'main_flg as flg','deleted_at')
+                ->when(!empty($req->val), function ($query) use ($req) {
+                    if (in_array($req->sub_flg, ["0", "1"])) {
+                        $subflgchange = ["0" => "id", "1" => "u_id"];
+                        return $query->where($subflgchange[$req->sub_flg], $req->val);
+                    } else if(in_array($req->sub_flg, ["2", "3"])){
+                        $subflgchange1 = ["2" => "title", "3" => "content"];
+                        return $query->where($subflgchange1[$req->sub_flg], 'LIKE', '%' . $req->val . '%');
+                    }
+                })->orderBy('created_at', 'desc')->get();
+            $data1 = Community::withTrashed()->select('id', 'u_id', 'created_at', 'title', 'content', 'flg','deleted_at')
+            ->when(!empty($req->val), function ($query) use ($req) {
+                if (in_array($req->sub_flg, ["0", "1"])) {
+                    $subflgchange = ["0" => "id", "1" => "u_id"];
+                    return $query->where($subflgchange[$req->sub_flg], $req->val);
+                } else if(in_array($req->sub_flg, ["2", "3"])){
+                    $subflgchange1 = ["2" => "title", "3" => "content"];
+                    return $query->where($subflgchange1[$req->sub_flg], 'LIKE', '%' . $req->val . '%');
+                }
+            })->orderBy('created_at', 'desc')->get();
+            // 2개의 값을 합쳐 자체 페이지네이션
+            $result = array_merge($data->toArray(), $data1->toArray());          
+            $total = new LengthAwarePaginator(
+                array_slice($result, ($req->page-1)*10, 10),
+                count($result),
+                10,
+                Paginator::resolveCurrentPage(),
+                ['path' => Paginator::resolveCurrentPath()]
+            );  
+            return response()->json([
+                'code' => '0',
+                'data' => $total
+            ], 200);
+        }
+        $result = $result
+        ->when(!empty($req->val), function ($query) use ($req) {
+            if (in_array($req->sub_flg, ["0", "1"])) {
+                $subflgchange = ["0" => "id", "1" => "u_id"];
+                return $query->where($subflgchange[$req->sub_flg],$req->val);
+            } else if(in_array($req->sub_flg, ["2", "3"])){
+                $subflgchange1 = ["2" => "title", "3" => "content"];
+                return $query->where($subflgchange1[$req->sub_flg], 'LIKE', '%' . $req->val . '%');
+            }
+        })
+        ->orderBy('created_at', 'desc')->paginate(10);
+        Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result
         ], 200);
-        Log::debug($result);
+    }
+    // 전체댓글조회
+    public function replieget(Request $req){
+        $result = Replie::withTrashed()->select('id', 'u_id', 'b_id', 'replie', 'flg', 'deleted_at', 'created_at')
+        ->when(in_array($req->flg, ["1"]), function ($query) use ($req) {
+            return $query->where('flg', $req->flg === "0");
+        })
+        ->when(in_array($req->flg, ["2"]), function ($query) use ($req) {
+            return $query->where('flg', $req->flg === 1); // 원하는 처리 추가
+        })
+        ->when(!empty($req->val), function ($query) use ($req) {
+            if (in_array($req->sub_flg, ["0", "1", "2"])) {
+                $subflgchange = ["0" => "id", "1" => "u_id", "2" => "b_id"];
+                return $query->where($subflgchange[$req->sub_flg], $req->val);
+            } else if ($req->sub_flg === "3") {  
+                return $query->where('replie', 'LIKE', '%' . $req->val . '%');
+            }
+        })
+        ->orderBy('created_at', 'desc')->paginate(10);
+        return response()->json([
+            'code' => '0',
+            'data' => $result
+        ], 200);
     }
     // 특정시간에 동작
     public function test(Request $req){

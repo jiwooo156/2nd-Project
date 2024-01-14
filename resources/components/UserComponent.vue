@@ -102,9 +102,10 @@
 				<br><br>
 				<label for="user_del_reason" class="font_air bold">탈퇴 사유 : </label>
 				<select name="reason" id="user_del_reason" v-model="delreason" class="font_air bold">
-					<option class="font_air bold">서비스 불만족</option>
+					<option class="font_air bold">서비스가 마음에 안듬</option>
 					<option class="font_air bold">원하는 정보가 없음</option>
-					<option class="font_air bold">불건전한 내용</option>
+					<option class="font_air bold">이용 빈도 및 필요성</option>
+					<option class="font_air bold">개인적인 이유</option>
 					<option class="font_air bold">기타</option>
 				</select>
 				<br>

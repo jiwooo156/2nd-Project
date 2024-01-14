@@ -179,7 +179,7 @@
 						v-model="answer"
 						placeholder="최대 200글자까지 작성 가능합니다"
 						@input="koreaName"
-						@keyup.enter="adminAnswer(now_data.id)"
+						@keyup.enter="adminAnswer(now_data.id,now_data.email)"
 					></textarea>
 				</div>
 				<div class="input-group mb-3"
@@ -193,7 +193,7 @@
 				<div class="center">
 					<button type="button" class="btn btn-primary admin_request_btn_box"
 						v-if="now_data.admin_flg==='0'"
-						@click="adminAnswer(now_data.id)"
+						@click="adminAnswer(now_data.id,now_data.email)"
 					>답변</button>
 					<button type="button" class="btn btn-primary admin_request_btn_box"
 						v-if="now_data.admin_flg==='1'&&!updateflg"
@@ -477,7 +477,7 @@
 		<div class="admin_board_header">
 			<div class="col-md-3 position-relative mb-4 admin_board_header1">
 				<label for="validationTooltip04" class="form-label">등록위치</label>
-				<select class="form-select" id="validationTooltip04" required v-model="admin_board_cate">
+				<select class="form-select" id="validationTooltip04" required v-model="admin_board_cate" @change="get_board(1)">
 					<option value="0">전체</option>
 					<option value="1">축제</option>
 					<option value="2">관광</option>
@@ -494,8 +494,11 @@
 					<option value="2">제목</option>
 					<option value="3">내용</option>
 				</select>
-				<input type="text" class="form-control" aria-label="Text input with dropdown button" v-model="admin_sub_input">
-				<button class="btn btn-outline-secondary" type="button">검색</button>
+				<input type="text" class="form-control" aria-label="Text input with dropdown button" 
+					v-model="admin_sub_input"
+					@keyup.enter="get_board(1)"
+				>
+				<button class="btn btn-outline-secondary" type="button" @click="get_board(1)">검색</button>
 			</div>
 		</div>	
 		<table class="table table-hover  table-border mb-3">
@@ -507,6 +510,7 @@
 					<th scope="col">내용</th>
 					<th scope="col">작성위치</th>
 					<th scope="col">작성시간</th>
+					<th scope="col">삭제여부</th>
 				</tr>			
 			</thead>
 			<tbody>
@@ -517,40 +521,102 @@
 					<td class="admin_table_td">{{ data.content }}</td>
 					<td class="admin_table_td2">{{ data.flg }}</td>
 					<td class="admin_table_td2">{{ data.created_at }}</td>
+					<td class="admin_table_td2">{{ data.deleted_at }}</td>
 				</tr>
+				<div
+					v-if="boards.length < 1"
+				>조회된 게시물이 없습니다.</div>
 			</tbody>
 		</table>
 		<div class='admin_page'>
 			<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="page-item poiner"
-					id="prevbtn"
-				>
-					<span  class="page-link" 
-					@click="get_board(this.prevnum)"
-					>이전</span>
-				</li>
-				<li class="page-item poiner"		
-					v-for="num in numbox" :key="num"
-					:id="'page'+num"
-					@click="get_board(num)"
-					>
-					<span  class="page-link">{{ num }}</span>
-				</li>
-				<li class="page-item poiner"
-					id="nextbtn"
-					@click="get_board(this.nextnum)"
-				>
-					<span  class="page-link">다음</span>
-				</li>
-			</ul>
-		</nav>
+				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="get_board(1)">&lt;&lt;</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="get_board(prevnum)">이전</span>
+					</li>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+						<span class="page-link" @click="get_board(num)">{{ num }}</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="get_board(nextnum)">다음</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="get_board(lastpage)">>></span>
+					</li>
+				</ul>
+			</nav>
 		</div>
-	
 	</div>
-	<!-- 공지등록 -->
+	<!-- 댓글조회 -->
 	<div v-if="mainflg===1&&subflg===2" class="admin_frame">
-		테스트2
+		<div class="admin_board_header">
+			<div class="col-md-3 position-relative mb-4 admin_board_header1">
+				<label for="validationTooltip1" class="form-label">등록위치</label>
+				<select class="form-select" id="validationTooltip1" required v-model="admin_board_cate1" @change="get_replie(1)">
+					<option value="0">전체</option>
+					<option value="1">축제&관광</option>
+					<option value="2">커뮤니티</option>
+				</select>
+			</div>
+			<div class="admin_board_header2">
+				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate1">
+					<option value="0">댓글번호</option>
+					<option value="1">유저번호</option>
+					<option value="2">게시글번호</option>
+					<option value="3">내용</option>
+				</select>
+				<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
+					v-model="admin_sub_input1"
+					@keyup.enter="get_replie(1)"
+				>
+				<button class="btn btn-outline-secondary" type="button" @click="get_replie(1)">검색</button>
+			</div>
+		</div>	
+		<table class="table table-hover  table-border mb-3">
+			<thead>
+				<tr>
+					<th scope="col">댓글번호</th>
+					<th scope="col">유저번호</th>
+					<th scope="col">게시글번호</th>
+					<th scope="col">내용</th>
+					<th scope="col">작성위치</th>
+					<th scope="col">작성시간</th>
+					<th scope="col">삭제여부</th>
+				</tr>			
+			</thead>
+			<tbody>
+				<tr v-for="data in replies" :key="data">
+					<th scope="row" class="admin_table_th">{{ data.id }}</th>
+					<td class="admin_table_th">{{ data.u_id }}</td>
+					<td class="admin_table_th">{{ data.b_id }}</td>
+					<td class="admin_table_td">{{ data.replie }}</td>
+					<td class="admin_table_th">{{ data.flg }}</td>
+					<td class="admin_table_td2">{{ data.created_at }}</td>
+					<td class="admin_table_td2">{{ data.deleted_at }}</td>
+				</tr>
+				<div
+					v-if="replies.length < 1"
+				>조회된 댓글이 없습니다.</div>
+			</tbody>
+		</table>
+		<div class='admin_page'>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="get_replie(prevnum)">이전</span>
+					</li>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+						<span class="page-link" @click="get_replie(num)">{{ num }}</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="get_replie(nextnum)">다음</span>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 	<!-- 통계페이지 -->
 	<!-- 유저통계 -->
@@ -651,17 +717,26 @@
 	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
 		건의목록
-		<div>
+		<div
+			class="pointer"
+			@click="requestall('0',1)"
+		>
 			처리전
+		</div>
+		<div
+			class="pointer"
+			@click="requestall('1',1)"
+		>
+			처리후
 		</div>
 		<div class="row row-cols-1 row-cols-md-4 g-4">
 			<div		
-				v-if="Object.keys(this.requestdata_before).length === 0"
+				v-if="Object.keys(this.requestdata).length === 0"
 			>
 				새로운 건의가 없습니다.
 			</div>
 			<div class="col" 
-				v-for="data in requestdata_before" :key="data"
+				v-for="data in requestdata" :key="data"
 			>
 				<div class="card">
 					<div class="card-body pointer"
@@ -669,7 +744,7 @@
 					>
 						<div class="admin_report_card_header">
 							<h5 class="card-title">건의내용</h5>
-							<span :class="'admin_report_card_header_span0'">답변전</span>
+							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.requestarr[data.admin_flg] }}</span>
 						</div>
 						<div class="card-text">유저번호 = {{ data.u_id }}</div>
 						<div class="card-text">제목 = {{ data.title }}</div>
@@ -678,55 +753,57 @@
 				</div>
 			</div>
 		</div>
-		<hr>
-		<div>
-			처리완료
-		</div>
-		<div class="row row-cols-1 row-cols-md-4 g-4">
-			<div		
-				v-if="Object.keys(this.requestdata_after).length === 0"
-			>
-				답변한 건의가 없습니다.
-			</div>
-			<div class="col" 
-				v-for="data in requestdata_after" :key="data"
-			>
-				<div class="card">
-					<div class="card-body pointer"
-						@click="dataget(data)"
-					>
-						<div class="admin_report_card_header">
-							<h5 class="card-title">건의내용</h5>
-							<span :class="'admin_report_card_header_span1'">답변후</span>
-						</div>
-						<div class="card-text">유저번호 = {{ data.u_id }}</div>
-						<div class="card-text">제목 = {{ data.title }}</div>
-						<div class="card-text">내용 = {{ data.content }}</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+					<span class="page-link" @click="requestall(request_flg,1)">&lt;&lt;</span>
+				</li>
+				<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+					<span class="page-link" @click="requestall(request_flg,prevnum)">이전</span>
+				</li>
+				<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+					<span class="page-link" @click="requestall(request_flg,num)">{{ num }}</span>
+				</li>
+				<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+					<span class="page-link" @click="requestall(request_flg,nextnum)">다음</span>
+				</li>
+				<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+					<span class="page-link" @click="requestall(request_flg,lastpage)">>></span>
+				</li>
+			</ul>
+		</nav>
 	</div>
 	<!-- 신고페이지 -->
 	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
 		신고목록
-		<div>
+		<div
+			class="pointer"
+			@click="reportall('0',1)"
+		>
 			처리전
+		</div>
+		<div
+			class="pointer"
+			@click="reportall('1',1)"
+		>
+			처리후
 		</div>
 		<div class="row row-cols-1 row-cols-md-4 g-4">
 			<div		
-				v-if="Object.keys(this.reportdata_before).length === 0"
+				v-if="Object.keys(this.reportdata).length === 0"
 			>
 				신고된 내용이 없습니다.
 			</div>
 			<div class="col" 
-				v-for="data in reportdata_before" :key="data"
+				v-for="data in reportdata" :key="data"
 			>
 				<div class="card">
 					<div class="card-body pointer"
 						@click="reportget(data)"
 					>
 						<div class="admin_report_card_header">
+							<h5 class="card-title"
+							>신고한 유저</h5>
 							<h5 class="card-title">신고한 유저</h5>
 							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
 						</div>
@@ -741,115 +818,151 @@
 				</div>
 			</div>
 		</div>
-		<hr>
-		<div>
-			처리완료
-		</div>
-		<div class="row row-cols-1 row-cols-md-4 g-4">
-			<div
-				v-if="Object.keys(this.reportdata_after).length === 0"
-			>
-				처리된 내용이 없습니다.
-			</div>
-			<div class="col" 
-				v-for="data in reportdata_after" :key="data"
-			>
-				<div class="card">
-					<div class="card-body pointer"
-						@click="reportget(data)"
-					>
-						<div class="admin_report_card_header">
-							<h5 class="card-title">신고한 유저{{data.id}}</h5>
-							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
-						</div>
-						<div class="card-text">유저번호 = {{ data.u_id }}</div>
-						<div class="card-text">email = {{ data.email }}</div>
-						<div class="card-text">신고사유 = {{ data.content }}</div>
-						<hr>
-						<h5 class="card-title">신고 당한 {{this.reportarr1[data.flg]}}</h5>
-						<div class="card-text">{{this.reportarr1[data.flg]}}번호 = {{ data.b_id }}</div>
-						<div class="card-text">신고시간 = {{ data.created_at }}</div>
-					</div>
-				</div>
-			</div>
+		<div class='admin_page'>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="reportall(report_flg,1)">&lt;&lt;</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="reportall(report_flg,prevnum)">이전</span>
+					</li>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+						<span class="page-link" @click="reportall(report_flg,num)">{{ num }}</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="reportall(report_flg,nextnum)">다음</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="reportall(report_flg,lastpage)">>></span>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 	<!-- 유저관리페이지 -->
 	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
-		유저관리
-		<select v-model="searchtype">
-			<option class=" font_air bold" value="0">유저번호</option>
-			<option class=" font_air bold" value="1">email</option>
-		</select>
-		<input type="text" v-model="searchval" @keyup.enter="searchuser">
-		<button
-			@click="searchuser"
-		>검색</button>
-		<div v-if="searchflg">
-			<div>
-				검색결과
-				<div>유저번호 : {{ this.selectUserData.id }}</div>
-				<div>이메일 : {{ this.selectUserData.email }}</div>
-				<div>이름 : {{ this.selectUserData.name }}</div>
-				<div>닉네임 : {{ this.selectUserData.nick }}</div>
-				<div>전화번호 : {{ this.selectUserData.phone }}</div>
-				<div>생년월일 : {{ this.selectUserData.birthdate }}</div>
-				<div>성별 : {{ this.selectUserData.gender }}</div>
-				<div>제재당한횟수 : {{ this.selectUserData.cnt }}</div>
-				<div
-					v-if=" this.selectUserData.cnt > 0 "
-				>제재종료일 : {{ this.selectUserData.res_at }}</div>
+		<div class="admin_frame9">
+			<div>유저검색</div>
+			<div class="input-group mb-3 admin_search_user_input_box">
+				<div class="admin_search_user_input_box_select">
+					<select v-model="searchtype" class="form-select admin_search_user_input_box_select" aria-label="Default select example">
+						<option class=" font_air bold" value="0">유저번호</option>
+						<option class=" font_air bold" value="1">email</option>
+					</select>
+				</div>
+				<input type="text"  v-model="searchval" @keyup.enter="searchuser" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+				<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="searchuser">검색</button>
 			</div>
-			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">유저제재</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<div v-if="searchflg">
+				<div>
+					검색결과
+					<div class="input-group mb-3">
+						<span class="input-group-text">유저번호</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.id }}
 						</div>
-						<div class="modal-body" >
-							<div>
-								<span>제재기간</span>
-								<select class="form-select" aria-label="Default select example" v-model="restraint_date">
-									<option class=" font_air bold" value="0">1일</option>
-									<option class=" font_air bold" value="1">3일</option>
-									<option class=" font_air bold" value="2">7일</option>
-									<option class=" font_air bold" value="3">15일</option>
-									<option class=" font_air bold" value="4">30일</option>
-									<option class=" font_air bold" value="5">영구제재</option>
-								</select>
-							</div>
-							<div>
-								<span>제재사유</span>
-								<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
-									<option class=" font_air bold">욕설 및 혐오 표현</option>
-									<option class=" font_air bold">불법 콘텐츠 게시</option>
-									<option class=" font_air bold">스팸 활동</option>
-									<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
-									<option class=" font_air bold">기타</option>
-								</select>
-								<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
-									maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
-							</div>
-						
+						<span class="input-group-text">이메일</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.email }}
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary admin_boot_modal_close" data-bs-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary"
-								@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
-							>적용</button>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">이름</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.name }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">닉네임</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.nick }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">전화번호</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.phone }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">생년월일</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.birthdate }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">성별</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.gender }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">제재당한횟수</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.cnt }}
+						</div>
+						<span class="input-group-text">제재사유</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.restraint }}
+						</div>
+						<span class="input-group-text">제재종료일</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.res_at }}
 						</div>
 					</div>
 				</div>
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">유저제재</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body" >
+								<div>
+									<span>제재기간</span>
+									<select class="form-select" aria-label="Default select example" v-model="restraint_date">
+										<option class=" font_air bold" value="0">1일</option>
+										<option class=" font_air bold" value="1">3일</option>
+										<option class=" font_air bold" value="2">7일</option>
+										<option class=" font_air bold" value="3">15일</option>
+										<option class=" font_air bold" value="4">30일</option>
+										<option class=" font_air bold" value="5">영구제재</option>
+									</select>
+								</div>
+								<div>
+									<span>제재사유</span>
+									<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
+										<option class=" font_air bold">욕설 및 혐오 표현</option>
+										<option class=" font_air bold">불법 콘텐츠 게시</option>
+										<option class=" font_air bold">스팸 활동</option>
+										<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
+										<option class=" font_air bold">기타</option>
+									</select>
+									<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
+										maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
+								</div>
+							
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary admin_boot_modal_close" data-bs-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-primary"
+									@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
+								>적용</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+					v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X'"
+				>유저제재</div>
+				<div class="btn btn-danger btn-sm"
+					@click="clearestraint(this.selectUserData.id,null)"
+					v-if="this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X'"
+				>제제해제</div>
+				<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
 			</div>
-			<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
-				v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0"
-			>유저제재</div>
-			<div class="btn btn-danger btn-sm"
-				@click="clearestraint(this.selectUserData.id,null)"
-				v-if="this.selectUserData.res_at >= this.todaytime"
-			>제제해제</div>
-			<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
 		</div>
 	</div>
 </template>
@@ -900,7 +1013,7 @@ export default {
 			restraint_msg2: "",
 			restraint_date: "",
 			searchval: "",
-			searchtype: "유저번호",
+			searchtype: "0",
 			r_cnt: 0,
 			d_cnt: 0,
 			sign_cnt: 0,
@@ -911,12 +1024,13 @@ export default {
 			data: [],
 			r_data: [],
 			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자제재",4:"신고자제재"},
+			requestarr: {0:"답변전",1:"답변완료"},
 			reportarr1: {0:"게시글",1:"댓글"},
 			now_data: {},
 			now_report: {},
 			modalReport:{},
-			reportdata_before:{},
-			reportdata_after:{},
+			reportdata:{},
+			report_flg:"0",
 			modalflg:false,
 			updateflg:false,
 			restraintinput:false,
@@ -939,8 +1053,8 @@ export default {
 			inout: {},
 			del_flg: {},
 			u_time: {},
-			requestdata_before:{},
-			requestdata_after:{},
+			requestdata:{},
+			request_flg:"0",
 			admin_title:"",
 			admin_content:"",
 			admin_place:"",
@@ -961,14 +1075,18 @@ export default {
 			admin_board_cate:"0",
 			admin_sub_cate:"0",
 			admin_sub_input:"",
+			admin_board_cate1:"0",
+			admin_sub_cate1:"0",
+			admin_sub_input1:"",
 			page:1,
 			lastpage:1,
 			first_num:1,
 			last_num:1,
 			prevnum:1,
-			nextnum:1,
+			nextnum:2,
 			numbox:[],
 			boards: {},
+			replies: {},
 			// 차트1 좋아요성비
 			chart1:{
 				data: {
@@ -1280,7 +1398,6 @@ export default {
 		this.getToDayTime();
 	},
 	mounted() {
-	
 	},
 
 	methods: {
@@ -1348,6 +1465,7 @@ export default {
 			this.$store.commit('setLoading',true);
 			this.now_data = {};
 			this.now_report = data;
+			console.log(this.now_report)
 			this.now_report.restraint_at = this.now_report.restraint_at === null ? "X":this.now_report.restraint_at;
 			const URL = '/admin/report?b_id='+data.b_id+'&flg='+data.flg
 			axios.get(URL)
@@ -1363,7 +1481,6 @@ export default {
 				res.data.data.deleted_at = res.data.data.deleted_at === null ? "X":res.data.data.deleted_at;
 				res.data.data.restraint_at = res.data.data.restraint_at === null ? "X":res.data.data.restraint_at;
 				this.modalReport = res.data.data;
-				console.log(this.modalReport.deleted_at)
 				this.modalflg = true;
 			})
 			.catch(err => {
@@ -1386,7 +1503,7 @@ export default {
 			this.$store.commit('setLoading', false);
 		},
 		// 답변달기
-		adminAnswer(id){
+		adminAnswer(id,email){
 			if(this.answer === ""||this.answer === null){
 				Swal.fire({
 					icon: 'warning',
@@ -1399,14 +1516,14 @@ export default {
 				const URL = '/admin/data'
 				const formData = new FormData();
 				formData.append('id', id);
+				formData.append('email', email);
 				formData.append('replie', this.answer);
 				axios.post(URL,formData)
 				.then(res => {
 					if(res.data.code === "0"){
 						console.log('댄진입')
 						if(this.mainflg===3&&this.subflg===0){
-							console.log('질문게시판일떄')
-							this.requestall();
+							this.requestall(this.request_flg,this.page);
 						}else{
 							this.adminchk();
 						}
@@ -1452,6 +1569,7 @@ export default {
 		},
 		// 게시물 삭제
 		delreplie(id,flg){	
+			console.log("플래그="+flg)
 			this.$store.commit('setLoading', true);
 			const URL = '/admin/report?id='+id+'&flg='+flg
 			axios.delete(URL)
@@ -1460,19 +1578,7 @@ export default {
 					console.log("정상진입")
 					this.closeModal();
 					if(this.mainflg===3&&this.subflg===1){
-						if((this.reportdata_before.find(item => item.id === this.now_report.id && item.admin_flg === '3'))||(this.reportdata_after.find(item => item.id === this.now_report.id && item.admin_flg === '3'))){
-							if(this.reportdata_before.find(item => item.id === this.now_report.id)){
-								this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '3';
-							}else{
-								this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '3';
-							}
-						}else{
-							if(this.reportdata_before.find(item => item.id === this.now_report.id)){
-								this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '1';
-							}else{
-								this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '1';
-							}
-						}
+						this.reportall(this.report_flg,this.page)
 					}else{
 						console.log("엘스로")
 						this.adminchk();
@@ -1508,11 +1614,12 @@ export default {
 		koreaName(e) {
 			this.answer = e.target.value;
 		},
-		// 답변질문 클릭
+		// 건의온거 가져오기
 		dataget(data){
 			this.$store.commit('setLoading',true);
 			this.modalReport = {};
 			this.now_data = data;
+			console.log(this.now_data)
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
 		},
@@ -1527,9 +1634,7 @@ export default {
 			.then(res => {
 				if(res.data.code === "0"){
 					this.closeModal();
-					this.resetall();
-					this.reportall();
-					this.adminchk();
+					this.reportall(this.report_flg,this.page);
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -1561,14 +1666,23 @@ export default {
 		flgchg(main,sub){
 			this.mainflg = main;
 			this.subflg = sub;
-			if(main===1,sub===1){
+			console.log(main)
+			console.log(sub)
+			if(main===1&&sub===1){
+				console.log("11진입")
 				this.get_board(1)
 			}
-			if(main===3,sub===1){
-				this.reportall()
+			if(main===1&&sub===2){
+				console.log("21진입")
+				this.get_replie(1)
 			}
-			if(main===3,sub===0){
-				this.requestall()
+			if(main===3&&sub===1){
+				console.log(main)
+				console.log(sub)
+				this.reportall(this.report_flg,1)
+			}
+			if(main===3&&sub===0){
+				this.requestall("0",1)
 			}
 			this.resetall()
 		},
@@ -1594,6 +1708,7 @@ export default {
 				axios.get(URL)
 				.then(res => {
 					if(res.data.code === "0"){
+						res.data.data.res_at = res.data.data.res_at === null?"X":res.data.data.res_at;
 						this.selectUserData=res.data.data
 						this.searchflg=true;
 					}else if(res.data.code === "1"){
@@ -1649,7 +1764,6 @@ export default {
 				}
 				const URL = '/admin/userinfo'
 				const formData = new FormData();
-				formData.append('id', id);
 				formData.append('u_id', u_id);
 				formData.append('date', date);
 				formData.append('msg', msg);
@@ -1657,6 +1771,7 @@ export default {
 				.then(res => {
 					if(res.data.code === "0"){
 						document.querySelector('.admin_boot_modal_close').click();
+						this.searchuser()
 						Swal.fire({
 							icon: 'success',
 							title: '완료',
@@ -1691,7 +1806,9 @@ export default {
 			axios.post(URL,formData)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.resetall()
+					if(!(this.mainflg === 3&&this.subflg === 1)){				
+						this.resetall()
+					}
 					if(u_id===null){
 						this.keepdata(id,'2')
 					}else{
@@ -1716,17 +1833,19 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 신고데이터 10개불러오기
-		reportall(){
+		// 신고데이터 불러오기
+		reportall(flg,page){
+			this.report_flg =flg;
 			this.$store.commit('setLoading',true);
-			const URL = '/admin/reportall'
+			const URL = '/admin/reportall?flg='+flg+'&page='+page
 			axios.get(URL)
 			.then(res => {
+				console.log("댄")
 				if(res.data.code === "0"){
-					this.reportdata_before = res.data.data_before;
-					this.reportdata_before_cnt = res.data.b_cnt;
-					this.reportdata_after = res.data.data_after;
-					this.reportdata_after = res.data.a_cnt;
+					this.reportdata = res.data.data.data;
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					this.paging();
 				}
 			})
 			.catch(err => {
@@ -1750,19 +1869,7 @@ export default {
 			axios.post(URL,formData)
 			.then(res => {
 				if(this.mainflg===3&&this.subflg===1){
-					if((this.reportdata_before.find(item => item.id === this.now_report.id && item.admin_flg === '3'))||(this.reportdata_after.find(item => item.id === this.now_report.id && item.admin_flg === '3'))){
-						if(this.reportdata_before.find(item => item.id === this.now_report.id)){
-							this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '3';
-						}else{
-							this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '3';
-						}
-					}else{
-						if(this.reportdata_before.find(item => item.id === this.now_report.id)){
-							this.reportdata_before.find(item => item.id === this.now_report.id).admin_flg = '2';
-						}else{
-							this.reportdata_after.find(item => item.id === this.now_report.id).admin_flg = '2';
-						}
-					}
+					this.reportall(this.report_flg,this.page)
 				}
 				this.closeModal();
 				Swal.fire({
@@ -1895,14 +2002,17 @@ export default {
 			});
 		},
 		// 전체건의 불러오기
-		requestall(){
+		requestall(flg,page){
 			this.$store.commit('setLoading',true);
-			const URL = '/admin/requestall'
+			this.request_flg =flg;
+			const URL = '/admin/requestall?flg='+flg+'&page='+page
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.requestdata_before = res.data.data_before;
-					this.requestdata_after = res.data.data_after;
+					this.requestdata = res.data.data.data;
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					this.paging();
 				}
 			})
 			.catch(err => {
@@ -1936,11 +2046,9 @@ export default {
 			axios.put(URL,formData)
 			.then(res => {
 				if(res.data.code === "0"){
-					// 이렇게 하면 안됨;;;;;;;
-					// input.setAttribute('readonly');
 					input.readOnly = true;
 					this.updateflg = false;
-					this.requestdata_after.find(item => item.id === id).replie = input.value;
+					this.requestdata.find(item => item.id === id).replie = input.value;
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -1962,7 +2070,7 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
-		// 좋아요통계가져오기
+		// 전체통계가져오기
 		statistics(){
 			this.$store.commit('setLoading',true);
 			const URL = '/admin/statistics'
@@ -2072,7 +2180,6 @@ export default {
 						this.h_chart5.data.labels[i] = this.hit_s[i].type;
 						this.h_chart5.data.datasets[0].data[i]=this.hit_s[i].cnt;
 					}
-
 					// 여기서부터 유저
 					// 유저 가입통계
 					this.u_gender1 = res.data.u_gender.filter(item => item.type === "F");
@@ -2123,7 +2230,7 @@ export default {
 			this.restraint_msg2= "";
 			this.restraint_date= "";
 			this.searchval= "";
-			this.searchtype= "유저번호";
+			this.searchtype= "0";
 			this.searchflg=false;
 			this.modalflg=false;
 			this.restraintinput=false;
@@ -2155,6 +2262,23 @@ export default {
 			this.admin_time="";
 			this.admin_holiday="";
 			this.admin_tel="";
+			this.admin_board_cate="0";
+			this.admin_sub_cate="0";
+			this.admin_sub_input="";
+			this.admin_board_cate1="0";
+			this.admin_sub_cate1="0";
+			this.admin_sub_input1="";
+			this.report_flg="0";
+			this.request_flg="0";
+			this.page=1;
+			this.lastpage=1;
+			this.first_num=1;
+			this.last_num=1;
+			this.prevnum=1;
+			this.nextnum=2;
+			this.numbox=[];
+			this.boards={};
+			this.replies={};
 		},
 		// 게시글 추가
 		insert_board(){
@@ -2337,26 +2461,10 @@ export default {
 		},
 		// 모든보드정보 조회
 		get_board(page){
+			console.log("현재페이지"+this.page)
 			this.$store.commit('setLoading',true);
-			let URL = '';
-			// if(num === '1'){
-			// 	if(this.admin_sub_input === ""){
-			// 		console.log("검색어 입력 x")
-			// 		Swal.fire({
-			// 			icon: 'warning',
-			// 			title: '주의',
-			// 			text: '검색 내용을 입력해 주세요.',
-			// 			confirmButtonText: '확인'
-			// 		})
-			// 		return;
-			// 	}
-			// 	console.log("검색조건있을때")
-			// 	URL = '/admin/board?flg='+this.admin_board_cate+"&sub_flg="+this.admin_sub_cate+"&val="+this.admin_sub_input+"&page="+page
-			// }else{
-			// 	console.log("검색조건업을때")
-			// }
-			URL = '/admin/board?flg='+this.admin_board_cate+"&page="+page
-			console.log("검색시작")
+			let URL = '/admin/board?flg='+this.admin_board_cate+"&page="+page+"&sub_flg="+this.admin_sub_cate+"&val="+this.admin_sub_input
+			console.log(URL)
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
@@ -2377,20 +2485,52 @@ export default {
 							res.data.data.data[i].flg = '관광게시판'
 							res.data.data.data[i].u_id = '관리자'
 						}
+						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
 					}
+					// 
+					console.log("조회된데이터")
+					console.log(res.data.data.data)
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
 					this.boards = res.data.data.data;
-					console.log(res.data.data);
-					if(res.data.data.prev_page_url===null){
-						document.querySelector("#prevbtn").classList.add("disabled");
-					}else if(res.data.data.next_page_url===null){
-						document.querySelector("#nextbtn").classList.add("disabled");
-					}else{
-						document.querySelector("#prevbtn").classList.remove("disabled");
-						document.querySelector("#nextbtn").classList.remove("disabled");		
+					this.paging();
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 모든댓글정보 조회
+		get_replie(page){
+			console.log("현재페이지"+this.page)
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/replie?flg='+this.admin_board_cate1+"&page="+page+"&sub_flg="+this.admin_sub_cate1+"&val="+this.admin_sub_input1
+			console.log(URL)
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					// 없으면
+					for(let i = 0; i < res.data.data.data.length; i++){
+						if(res.data.data.data[i].flg === '0'){
+							res.data.data.data[i].flg = '축제&관광'
+						}else if(res.data.data.data[i].flg === '1'){
+							res.data.data.data[i].flg = '커뮤니티'
+						}
+						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
 					}
-					this.paging()
+					console.log(res.data.data.data)
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					this.replies = res.data.data.data;
+					this.paging();
 				}
 			})
 			.catch(err => {
@@ -2428,11 +2568,13 @@ export default {
 			}
 			if(this.page === 1){
 				this.prevnum = 1
+				this.nextnum = 2
 			}else if(this.page === this.lastpage){
+				this.prevnum = this.lastpage-1
 				this.nextnum = this.lastpage
-			}else{
-				this.nextnum = this.page+1
+			}else{	
 				this.prevnum = this.page-1
+				this.nextnum = this.page+1
 			}
 		}
 	}

@@ -496,12 +496,14 @@ const store = createStore({
 			let delmsg = "";
 			let delreason = document.querySelector('#user_del_reason');
 			delmsg = delreason.value;
-			if(delmsg === "서비스 불만족"){
+			if(delmsg === "서비스가 마음에 안듬"){
 				delflg = "1";
 			}else if(delmsg === "원하는 정보가 없음"){
 				delflg = "2";
-			}else if(delmsg === "불건전한 내용"){
+			}else if(delmsg === "이용 빈도 및 필요성"){
 				delflg = "3";
+			}else if(delmsg === "개인적인 이유"){
+				delflg = "4";
 			}else if(delmsg === "기타"){
 				let msg = document.querySelector('#user_del_reason_input').value;
 				if(msg === ""){

@@ -12,7 +12,7 @@
     height: 100%;
     background-color: #00000040;
 	position: fixed;
-	z-index: 100;
+	z-index: 99999999;
 }
 .loader {
 	width: 12px;
@@ -2113,7 +2113,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_board_header2 select{
 	width: 150px;
 }
-.admin_board_header2 select{
+.admin_board_header2 button{
 	width: 80px;
 }
 .admin_table_th {
@@ -2139,6 +2139,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .admin_page {
 	display: flex;
     justify-content: center;
+}
+.admin_frame9{
+	width: 70%;
+}
+.admin_search_user_input_box {
+	width: 50%;
+}
+
+.admin_search_user_input_box button {
+	width: 80px;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
