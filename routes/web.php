@@ -102,6 +102,8 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::post('/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
+    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
+
 });
 
 // 커뮤니티 작성 라우터 생성
@@ -109,7 +111,10 @@ Route::middleware('myValidation')->prefix('write')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::post('/{id}', [InfoController::class, 'postwirte']); // 게시글 작성
+    
+    Route::post('/create', [InfoController::class, 'postwirte']); // 게시글 작성
+    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
+
 });
 
 // 관광&축제 디테일 라우터
