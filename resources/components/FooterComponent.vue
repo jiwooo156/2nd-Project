@@ -1,5 +1,5 @@
 <template>
-	<div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/admin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'">
+	<div class="footer"  v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/admin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/error'&&$route.fullPath != '/kakaologin'">
 		<div class="footer_main">
 			<div class="footer_team">
 				<h3>경상도의 다양한 모습을 이의이승에서 접해보세요:)</h3>

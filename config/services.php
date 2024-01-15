@@ -13,7 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'kakao' => [    
+        'client_id' => env('KAKAO_CLIENT_ID'),  
+        'client_secret' => env('KAKAO_CLIENT_SECRET'),  
+        'redirect' => env('KAKAO_REDIRECT_URI') 
+    ],
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

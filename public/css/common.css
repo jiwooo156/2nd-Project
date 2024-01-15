@@ -1988,8 +1988,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding-top: 1em;
 }
 .admin_content{
-	display: flex;
-    gap: 10px;
+	grid-template-columns: 1fr 1fr;
+	gap: 30px;
 }
 .admin_modal_bg{
 	background-color: #8686868f;
@@ -2149,6 +2149,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .admin_search_user_input_box button {
 	width: 80px;
+}
+.admin_img{
+	width: 150px;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {

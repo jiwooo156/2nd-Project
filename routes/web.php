@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log; //로그확인추가
 use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
 use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
 use App\Http\Controllers\AdminController; //어드민 컨트롤러 추가
-
+use Laravel\Socialite\Facades\Socialite;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -183,8 +183,32 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/board', [AdminController::class, 'boardget']);
     Route::post('/board', [AdminController::class, 'boardpost']);
     Route::get('/replie', [AdminController::class, 'replieget']);
+    Route::get('/boardmodal', [AdminController::class, 'boardmodalget']);
+    Route::post('/boardmodal', [AdminController::class, 'boardmodalpost']);
+    Route::delete('/boardmodal/{id}/{flg}', [AdminController::class, 'boardmodaldel']);
+    Route::put('/boardmodal/{id}/{flg}', [AdminController::class, 'boardmodalput']);
+    Route::get('/repliemodal', [AdminController::class, 'repliemodalget']);
+    Route::put('/repliemodal/{id}', [AdminController::class, 'repliemodalput']);
+    Route::delete('/repliemodal/{id}', [AdminController::class, 'repliemodaldel']);
 });
 
+
+Route::get('/kakao', function () {
+    return Socialite::driver('kakao')->redirect();
+});
+Route::get('/kakao/callback', [UserController::class, 'kakaologin']);
+Route::get('/kakaologin',  function () {
+    return view('welcome');
+});
+Route::post('/kakaologin',  function () {
+    return view('welcome');
+});
+Route::middleware('myValidation')->prefix('kakaologin')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/local', [UserController::class, 'kakaoauthlogin']);
+});
 // 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/', function () {
