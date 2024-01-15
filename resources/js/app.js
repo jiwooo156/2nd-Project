@@ -18,6 +18,7 @@
 		import { fas } from '@fortawesome/free-solid-svg-icons';
 		import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 		library.add(fas);
+		window.Kakao.init("65d6b7b6235f7ad25b6456ae67383066");
 		const app = createApp({
 			components: {
 				OpenComponent,

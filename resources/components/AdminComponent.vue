@@ -10,7 +10,7 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							등록
+							등록&조회
 						</a>
 						<ul class="dropdown-menu">
 							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">축제 등록</div></li>
@@ -50,10 +50,10 @@
 	<!-- 메인 -->
 	<div class="admin_frame" v-if="mainflg===0">
 		<div class="admin_container">
+			<h1>이의이승 관리자 페이지</h1>
 			<div>
 				<div class="admin_header">
-					<div>오늘 가입 탈퇴</div>
-					<div class="pointer">자세히보기</div>
+					<div>금일 가입&탈퇴</div>
 				</div>
 				<div class="admin_content">			
 					<div class="admin_box">
@@ -72,13 +72,10 @@
 				<div class="admin_header">
 					<div class="position-relative admin_header_num">
 						미 답변 질문
-					<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
-						{{ this.d_cnt }}
-					</span>
+						<div class="pointer">{{ this.d_cnt }}건</div>
 					</div>
-				<div class="pointer">자세히보기</div>
 				</div>
-				<div class="admin_content">
+				<!-- <div class="admin_content">
 					<div class="admin_box pointer"
 						:id='"admin_data"+data.id'
 						v-for="data in data" :key="data"
@@ -96,19 +93,16 @@
 					>
 						리스트가 없습니다.
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div>
 				<div class="admin_header">
 					<div class="position-relative">신고목록
-						<span class="position-absolute top-75 start-100 translate-middle badge rounded-pill bg-danger">
-							{{ this.r_cnt }}
-						</span>
+						<div class="pointer">{{ this.r_cnt }}건</div>
 					</div>
-				<div class="pointer">자세히보기</div>
 				</div>
 				<div class="admin_content">
-					<div class="admin_box pointer"
+					<!-- <div class="admin_box pointer"
 						:id='"admin_report"+data.id'
 						v-for="data in r_data" :key="data"
 						@click="reportget(data)"
@@ -119,13 +113,13 @@
 						<div>신고당한id : {{ data.b_id }}</div>
 						<div>신고사유 : {{ data.content }}</div>
 						<div>신고시간 : {{ data.created_at }}</div>
-					</div>
-					<div 
+					</div> -->
+					<!-- <div 
 						v-if="r_data.length === 0"
 						class="admin_nolist"
 					>
 						리스트가 없습니다.
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -514,7 +508,10 @@
 				</tr>			
 			</thead>
 			<tbody>
-				<tr v-for="data in boards" :key="data">
+				<tr v-for="data in boards" :key="data"
+					@click="modalboardget(data.id,data.flg)"
+					data-bs-toggle="modal" data-bs-target="#boardmodal"
+				>
 					<th scope="row" class="admin_table_th">{{ data.id }}</th>
 					<td class="admin_table_th">{{ data.u_id }}</td>
 					<td class="admin_table_td1">{{ data.title }}</td>
@@ -526,6 +523,161 @@
 				<div
 					v-if="boards.length < 1"
 				>조회된 게시물이 없습니다.</div>
+				<div class="modal fade" id="boardmodal" tabindex="-1" aria-labelledby="boardmodalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="boardmodalLabel">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="input-group mb-1">
+									<span class="input-group-text" id="basic-addon1">제목</span>
+									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_title" :readonly="modal_board_flg">
+								</div>
+								<div class="input-group mb-1">
+									<span class="input-group-text">내용</span>
+									<textarea class="form-control" aria-label="With textarea" v-model="modal_board_content" :readonly="modal_board_flg">{{ this.modalboard.content }}</textarea>
+								</div>
+								<div class="input-group mb-1" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
+									<span class="input-group-text" >주소</span>
+									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_place" :readonly="modal_board_flg">
+								</div>
+								<div class="input-group mb-3 align-items-center" v-if="!modal_board_flg">
+									<span class="input-group-text" >1번이미지</span>
+									<input id="modal_file_img1_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img1">
+									<button type="button" class="btn btn-secondary" @click="modalboard.img1 = ''">삭제</button>
+									<span class="input-group-text" >2번이미지</span>
+									<input id="modal_file_img2_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img2">
+									<button type="button" class="btn btn-secondary" @click="modalboard.img2 = ''">삭제</button>
+									<span class="input-group-text" >3번이미지</span>
+									<input id="modal_file_img3_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img3">
+									<button type="button" class="btn btn-secondary" @click="modalboard.img3 = ''">삭제</button>
+								</div>
+								<div class="input-group mb-3 align-items-center">
+									<span class="input-group-text"  v-if="!modal_board_flg">이미지변경</span>
+									<div v-if="modalboard.img1">
+										<img :src="modalboard.img1" alt="" v-if="modal_board_flg" class="admin_img">
+									</div>
+									<div v-if="modalboard.img2">
+										<img :src="modalboard.img2" alt="" v-if="modal_board_flg" class="admin_img">
+									</div>
+									<div v-if="modalboard.img3">
+										<img :src="modalboard.img3" alt="" v-if="modal_board_flg" class="admin_img">
+									</div>
+									<div v-if="!modalboard.img1&&!modalboard.img2&&!modalboard.img3&&modal_board_flg">
+										이미지없음
+									</div>
+									<input id="modal_file_img1" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
+									<input id="modal_file_img2" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
+									<input id="modal_file_img3" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
+								</div>
+								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
+									<span class="input-group-text">지역</span>
+									<input class="form-control" type="text" :value="modalboard.ns_flg" v-if="modal_board_flg" :readonly="modal_board_flg">
+									<select class="form-select" id="validationTooltip04" v-model="modal_board_ns" v-if="!modal_board_flg" :value="modalboard.ns_flg">
+										<option value="경상북도">경상북도</option>
+										<option value="경상남도">경상남도</option>
+									</select>
+									<span class="input-group-text">시.군</span>
+									<input class="form-control" type="text" :value="modalboard.states_name" v-if="modal_board_flg" :readonly="modal_board_flg">
+									<!-- 북도 -->
+									<select class="form-select pointer" id="validationTooltip04" required v-model="modal_board_state_n" v-if="modal_board_ns==='경상북도'&&!modal_board_flg">
+										<option>경산시</option>
+										<option>경주시</option>
+										<option>고령군</option>
+										<option>구미시</option>
+										<option>김천시</option>
+										<option>문경시</option>
+										<option>봉화군</option>
+										<option>상주시</option>
+										<option>성주군</option>
+										<option>안동시</option>
+										<option>영덕군</option>
+										<option>영양군</option>
+										<option>영주시</option>
+										<option>영천시</option>
+										<option>울릉군</option>
+										<option>울진군</option>
+										<option>의성군</option>
+										<option>예천군</option>
+										<option>청도군</option>
+										<option>청송군</option>
+										<option>칠곡군</option>
+										<option>포항시</option>
+									</select>
+									<!-- 남도 -->
+									<select class="form-select pointer" id="validationTooltip04" required v-model="modal_board_state_s" v-if="modal_board_ns==='경상남도'&&!modal_board_flg">			
+										<option>거제시</option>
+										<option>거창군</option>
+										<option>고성군</option>
+										<option>김해시</option>
+										<option>남해군</option>
+										<option>밀양시</option>
+										<option>사천시</option>
+										<option>산청군</option>
+										<option>양산시</option>
+										<option>의령군</option>
+										<option>진주시</option>
+										<option>창녕군</option>
+										<option>창원시</option>
+										<option>통영시</option>
+										<option>하동군</option>
+										<option>함안군</option>
+										<option>함양군</option>
+										<option>합천군</option>
+									</select>
+								</div>
+								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'">
+									<span class="input-group-text">축제기간</span>
+									<input type="text" class="form-control" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_start_f" :readonly="modal_board_flg">
+									<input type="text" class="form-control" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_end_f" :readonly="modal_board_flg">
+								</div>
+								<div class="input-group mb-3 d-flex justify-content-evenly" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
+									<div class="form-check form-switch">
+										<input class="form-check-input pointer" type="checkbox" id="admin_parking" v-model="modal_board_chk_flg1" :disabled ="modal_board_flg">
+										<label class="form-check-label pointer" for="admin_parking">주차가능 여부</label>
+									</div>
+									<div class="form-check form-switch">
+										<input class="form-check-input pointer" type="checkbox" id="admin_couple" v-model="modal_board_chk_flg2" :disabled ="modal_board_flg">
+										<label class="form-check-label pointer" for="admin_couple">커플 추천</label>
+									</div>
+									<div class="form-check form-switch">
+										<input class="form-check-input pointer" type="checkbox" id="admin_friend" v-model="modal_board_chk_flg3" :disabled ="modal_board_flg">
+										<label class="form-check-label pointer" for="admin_friend">친구 추천</label>
+									</div>
+									<div class="form-check form-switch">
+										<input class="form-check-input pointer" type="checkbox" id="admin_family" v-model="modal_board_chk_flg4" :disabled ="modal_board_flg">
+										<label class="form-check-label pointer" for="admin_family">가족 추천</label>
+									</div>
+								</div>
+								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
+									<span class="input-group-text">입장료</span>
+									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_fee" :readonly ="modal_board_flg">
+									<span class="input-group-text">이용시간</span>
+									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_time" :readonly ="modal_board_flg">
+								</div>
+								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
+									<span class="input-group-text">휴일</span>
+									<input type="text" class="form-control" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_holiday" :readonly ="modal_board_flg">
+									<span class="input-group-text">전화번호</span>
+									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_tel" :readonly ="modal_board_flg">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text" >삭제일자</span>
+									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="this.modalboard.deleted_at" readOnly>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" v-if="this.modalboard.deleted_at==='X'&&modal_board_flg" @click="modalboarddel(modalboard.id,modalboard.main_flg)">삭제</button>
+								<button type="button" class="btn btn-danger" v-if="this.modalboard.deleted_at!=='X'&&modal_board_flg" @click="modalboardrepair(modalboard.id,modalboard.main_flg)">복구</button>
+								<button type="button" class="btn btn-primary" v-if="modal_board_flg&&this.modalboard.deleted_at==='X'" @click="modal_board_flg=false">수정</button>
+								<button type="button" class="btn btn-primary" v-if="!modal_board_flg" @click="modalboardpost">수정완료</button>
+								<button type="button" id="modal_board_close_btn" class="btn btn-secondary" data-bs-dismiss="modal" @click="modal_board_flg=true">닫기</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</tbody>
 		</table>
 		<div class='admin_page'>
@@ -588,7 +740,7 @@
 				</tr>			
 			</thead>
 			<tbody>
-				<tr v-for="data in replies" :key="data">
+				<tr v-for="data in replies" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modalreplieget(data.id,data.flg)">
 					<th scope="row" class="admin_table_th">{{ data.id }}</th>
 					<td class="admin_table_th">{{ data.u_id }}</td>
 					<td class="admin_table_th">{{ data.b_id }}</td>
@@ -600,6 +752,45 @@
 				<div
 					v-if="replies.length < 1"
 				>조회된 댓글이 없습니다.</div>
+				<div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">댓글 상세정보</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="input-group mb-1">
+									<span class="input-group-text" id="basic-addon1">댓글번호</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.id }}</div>
+									<span class="input-group-text" id="basic-addon1">유저번호</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.u_id }}</div>
+								</div>
+								<div class="input-group mb-1">
+									<span class="input-group-text" id="basic-addon1">게시판번호</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.b_id }}</div>
+									<span class="input-group-text" id="basic-addon1">작성위치</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.type }}</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">댓글</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.replie }}</div>
+								</div>
+								<div class="input-group mb-1">
+									<span class="input-group-text">작성일</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.created_at }}</div>
+									<span class="input-group-text">삭제여부</span>
+									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.deleted_at }}</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at==='X'" @click="modalrepliedel(modalreplie.id)">삭제</button>
+								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at!=='X'" @click="modalreplierepair(modalreplie.id)">복구</button>
+								<button type="button" id="modal_replie_close_btn" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</tbody>
 		</table>
 		<div class='admin_page'>
@@ -753,25 +944,27 @@
 				</div>
 			</div>
 		</div>
-		<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-					<span class="page-link" @click="requestall(request_flg,1)">&lt;&lt;</span>
-				</li>
-				<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-					<span class="page-link" @click="requestall(request_flg,prevnum)">이전</span>
-				</li>
-				<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
-					<span class="page-link" @click="requestall(request_flg,num)">{{ num }}</span>
-				</li>
-				<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-					<span class="page-link" @click="requestall(request_flg,nextnum)">다음</span>
-				</li>
-				<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-					<span class="page-link" @click="requestall(request_flg,lastpage)">>></span>
-				</li>
-			</ul>
-		</nav>
+		<div class="admin_page mt-3">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="requestall(request_flg,1)">&lt;&lt;</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="requestall(request_flg,prevnum)">이전</span>
+					</li>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+						<span class="page-link" @click="requestall(request_flg,num)">{{ num }}</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="requestall(request_flg,nextnum)">다음</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="requestall(request_flg,lastpage)">>></span>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 	<!-- 신고페이지 -->
 	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
@@ -818,7 +1011,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='admin_page'>
+		<div class='admin_page  mt-3'>
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
@@ -1019,10 +1212,11 @@ export default {
 			sign_cnt: 0,
 			mainflg: 0,
 			searchflg: false,
+			modal_board_flg: true,
 			subflg: 0,
 			drop_cnt: 0,
 			data: [],
-			r_data: [],
+			r_data: [],	
 			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자제재",4:"신고자제재"},
 			requestarr: {0:"답변전",1:"답변완료"},
 			reportarr1: {0:"게시글",1:"댓글"},
@@ -1072,6 +1266,22 @@ export default {
 			admin_time:"",
 			admin_holiday:"",
 			admin_tel:"",
+			modal_board_title:"",
+			modal_board_content:"",
+			modal_board_place:"",
+			modal_board_ns:"",
+			modal_board_state_n:"",
+			modal_board_state_s:"",
+			modal_board_start_f:"",
+			modal_board_end_f:"",
+			modal_board_chk_flg1:false,
+			modal_board_chk_flg2:false,
+			modal_board_chk_flg3:false,
+			modal_board_chk_flg4:false,
+			modal_board_fee:"",
+			modal_board_time:"",
+			modal_board_holiday:"",
+			modal_board_tel:"",
 			admin_board_cate:"0",
 			admin_sub_cate:"0",
 			admin_sub_input:"",
@@ -1087,6 +1297,8 @@ export default {
 			numbox:[],
 			boards: {},
 			replies: {},
+			modalboard: {},
+			modalreplie: {},
 			// 차트1 좋아요성비
 			chart1:{
 				data: {
@@ -1478,9 +1690,9 @@ export default {
 				}else{
 					res.data.data.flg ="질문게시판"
 				}
-				res.data.data.deleted_at = res.data.data.deleted_at === null ? "X":res.data.data.deleted_at;
-				res.data.data.restraint_at = res.data.data.restraint_at === null ? "X":res.data.data.restraint_at;
 				this.modalReport = res.data.data;
+				this.modalReport.deleted_at = this.modalReport.deleted_at === null ? "X":this.modalReport.deleted_at;
+				this.modalReport.restraint_at = this.modalReport.restraint_at === null ? "X":this.modalReport.restraint_at;
 				this.modalflg = true;
 			})
 			.catch(err => {
@@ -2399,9 +2611,6 @@ export default {
 				formData.append('main_flg',this.admin_category);
 				formData.append('title',this.admin_title);
 				formData.append('content',this.admin_content);
-				console.log( img1.files[0])
-				console.log( img2.files[0])
-				console.log( img3.files[0])
 				formData.append('img1', img1.files[0]);
 				formData.append('img2', img2.files[0]);
 				formData.append('img3', img3.files[0]);
@@ -2510,10 +2719,8 @@ export default {
 		},
 		// 모든댓글정보 조회
 		get_replie(page){
-			console.log("현재페이지"+this.page)
 			this.$store.commit('setLoading',true);
 			let URL = '/admin/replie?flg='+this.admin_board_cate1+"&page="+page+"&sub_flg="+this.admin_sub_cate1+"&val="+this.admin_sub_input1
-			console.log(URL)
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
@@ -2531,6 +2738,293 @@ export default {
 					this.lastpage = res.data.data.last_page
 					this.replies = res.data.data.data;
 					this.paging();
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 보드 모달정보
+		modalboardget(id,type){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/boardmodal?id='+id+"&type="+type
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					if(res.data.data.parking_flg === "1"){
+						res.data.data.parking_flg=true
+					}else{
+						res.data.data.parking_flg=false
+					}
+					if(res.data.data.couple_flg === "1"){
+						res.data.data.couple_flg=true
+					}else{
+						res.data.data.couple_flg=false
+					}
+					if(res.data.data.friend_flg === "1"){
+						res.data.data.friend_flg=true
+					}else{
+						res.data.data.friend_flg=false
+					}
+					if(res.data.data.family_flg === "1"){
+						res.data.data.family_flg=true
+					}else{
+						res.data.data.family_flg=false
+					}
+					this.modal_board_title=res.data.data.title
+					this.modal_board_content=res.data.data.content
+					this.modal_board_place=res.data.data.place
+					this.modal_board_ns=res.data.data.ns_flg
+					if(res.data.data.ns_flg==="경상북도"){
+						this.modal_board_state_n=res.data.data.states_name
+					}else{
+						this.modal_board_state_s=res.data.data.states_name
+					}
+					this.modal_board_start_f=res.data.data.start_at
+					this.modal_board_end_f=res.data.data.end_at
+					this.modal_board_chk_flg1=res.data.data.parking_flg
+					this.modal_board_chk_flg2=res.data.data.couple_flg
+					this.modal_board_chk_flg3=res.data.data.friend_flg
+					this.modal_board_chk_flg4=res.data.data.family_flg
+					this.modal_board_fee=res.data.data.fee
+					this.modal_board_time=res.data.data.time
+					this.modal_board_holiday=res.data.data.holiday
+					this.modal_board_tel=res.data.data.tel
+					this.modalboard = res.data.data;
+					this.modalboard.deleted_at = this.modalboard.deleted_at === null ? "X":this.modalboard.deleted_at;
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 보드 모달수정
+		modalboardpost(){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/boardmodal'
+			let b_img1 = document.querySelector('#modal_file_img1_text');
+			let b_img2 = document.querySelector('#modal_file_img2_text');
+			let b_img3 = document.querySelector('#modal_file_img3_text');
+			let img1 = document.querySelector('#modal_file_img1');
+			let img2 = document.querySelector('#modal_file_img2');
+			let img3 = document.querySelector('#modal_file_img3');
+			const formData = new FormData();
+				formData.append('id',this.modalboard.id);
+				formData.append('title',this.modal_board_title);
+				formData.append('main_flg',this.modalboard.main_flg);
+				formData.append('content',this.modal_board_content);
+				formData.append('b_img1', b_img1.value);
+				formData.append('b_img2', b_img2.value);
+				formData.append('b_img3', b_img3.value);
+				formData.append('img1', img1.files[0]);
+				formData.append('img2', img2.files[0]);
+				formData.append('img3', img3.files[0]);
+			if(this.modalboard.main_flg==='축제'){
+				formData.append('start_at',this.modal_board_start_f);
+				formData.append('end_at',this.modal_board_end_f);
+			}
+			if(this.modalboard.main_flg==='축제'||this.modalboard.main_flg==='관광'){
+				if(this.modal_board_chk_flg1){
+					formData.append('parking_flg','1');
+				}else{
+					formData.append('parking_flg','0');
+				}
+				if(this.modal_board_chk_flg2){
+					formData.append('couple_flg','1');
+				}else{
+					formData.append('couple_flg','0');
+				}
+				if(this.modal_board_chk_flg3){
+					formData.append('friend_flg','1');
+				}else{
+					formData.append('friend_flg','0');
+				}
+				if(this.modal_board_chk_flg4){
+					formData.append('family_flg','1');
+				}else{
+					formData.append('family_flg','0');
+				}
+				formData.append('place',this.modal_board_place);
+				formData.append('ns_flg',this.modal_board_ns);
+				if(this.modal_board_ns==="경상북도"){
+					formData.append('states_name',this.modal_board_state_n);
+					console.log(this.modal_board_state_n);
+				}else{
+					formData.append('states_name',this.modal_board_state_s);
+				}
+				formData.append('fee',this.modal_board_fee);
+				formData.append('time',this.modal_board_time);
+				formData.append('holiday',this.modal_board_holiday);
+				formData.append('tel',this.modal_board_tel);
+			}
+			axios.post(URL,formData)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.get_board(this.page);
+					document.getElementById('modal_board_close_btn').click();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+              	  });
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 보드 모달삭제
+		modalboarddel(id,flg){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/boardmodal/'+id+'/'+flg
+			console.log(id)
+			console.log(flg)
+			axios.delete(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.get_board(this.page);
+					document.getElementById('modal_board_close_btn').click();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 보드 모달복구
+		modalboardrepair(id,flg){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/boardmodal/'+id+'/'+flg
+			axios.put(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.get_board(this.page);
+					document.getElementById('modal_board_close_btn').click();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 댓글 모달정보
+		modalreplieget(id,type){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/repliemodal?id='+id+"&type="+type
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.modalreplie = res.data.data
+					this.modalreplie.deleted_at = this.modalreplie.deleted_at === null ? "X":this.modalreplie.deleted_at;
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 댓글 모달삭제
+		modalrepliedel(id){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/repliemodal/'+id
+			axios.delete(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.get_replie(this.page);
+					document.querySelector('#modal_replie_close_btn').click();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 댓글 모달복구
+		modalreplierepair(id){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/repliemodal/'+id
+			axios.put(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.get_replie(this.page);
+					document.querySelector('#modal_replie_close_btn').click();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
 				}
 			})
 			.catch(err => {

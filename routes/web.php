@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log; //로그확인추가
 use App\Http\Controllers\UserController; //유저 컨틀롤러 추가
 use App\Http\Controllers\InfoController; //인포 컨트롤러 추가
 use App\Http\Controllers\AdminController; //어드민 컨트롤러 추가
-
+use Laravel\Socialite\Facades\Socialite;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,6 +102,8 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::post('/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
+    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
+
 });
 
 // 커뮤니티 작성 라우터 생성
@@ -109,7 +111,10 @@ Route::middleware('myValidation')->prefix('write')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::post('/{id}', [InfoController::class, 'postwirte']); // 게시글 작성
+    
+    Route::post('/create', [InfoController::class, 'postwirte']); // 게시글 작성
+    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
+
 });
 
 // 관광&축제 디테일 라우터
@@ -186,8 +191,32 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::get('/board', [AdminController::class, 'boardget']);
     Route::post('/board', [AdminController::class, 'boardpost']);
     Route::get('/replie', [AdminController::class, 'replieget']);
+    Route::get('/boardmodal', [AdminController::class, 'boardmodalget']);
+    Route::post('/boardmodal', [AdminController::class, 'boardmodalpost']);
+    Route::delete('/boardmodal/{id}/{flg}', [AdminController::class, 'boardmodaldel']);
+    Route::put('/boardmodal/{id}/{flg}', [AdminController::class, 'boardmodalput']);
+    Route::get('/repliemodal', [AdminController::class, 'repliemodalget']);
+    Route::put('/repliemodal/{id}', [AdminController::class, 'repliemodalput']);
+    Route::delete('/repliemodal/{id}', [AdminController::class, 'repliemodaldel']);
 });
 
+
+Route::get('/kakao', function () {
+    return Socialite::driver('kakao')->redirect();
+});
+Route::get('/kakao/callback', [UserController::class, 'kakaologin']);
+Route::get('/kakaologin',  function () {
+    return view('welcome');
+});
+Route::post('/kakaologin',  function () {
+    return view('welcome');
+});
+Route::middleware('myValidation')->prefix('kakaologin')->group(function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/local', [UserController::class, 'kakaoauthlogin']);
+});
 // 1213 정지우 지역페이지 라우터 생성
 Route::middleware('myValidation')->prefix('region')->group(function() {
     Route::get('/', function () {

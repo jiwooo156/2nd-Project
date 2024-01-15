@@ -199,7 +199,7 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write?flg=2" type="button" @click="checklocal2">질문하기</router-link>
+					<router-link to="/write" type="button" @click="checklocal2">질문하기</router-link>
 				</div>
 			</div>
 			<!-- 건의게시판 -->
@@ -334,38 +334,24 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write?flg=3" type="button" @click="checklocal3">건의하기</router-link>
+					<router-link to="/write" type="button" @click="checklocal3">건의하기</router-link>
 				</div>
 			</div>
 			<!-- 아래 공통영역 -->
 			<div class="page">
 				<nav aria-label="Page navigation">
 					<ul class="pagination justify-content-center qna_pagin">
-						<li class="page-item">
-							<a id="qna_font" class="page-link" aria-label="Previous">
+						<li class="page-item" :class="{ 'disabled': currentPage === 1 }">
+							<a @click.prevent="changePage(currentPage - 1)" id="qna_font" class="page-link" aria-label="Previous">
 								<span aria-hidden="true"><font-awesome-icon :icon="['fas', 'angle-left']"/></span>
 							</a>
 						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#">1</a>
+						<li v-for="page in totalPage" :key="page" class="page-item">
+							<a @click.prevent="changePage(page)" id="qna_font" class="page-link">{{ page }}</a>
 						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#">2</a>
-						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#">3</a>
-						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#">4</a>
-						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#">5</a>
-						</li>
-						<li class="page-item">
-							<a id="qna_font" class="page-link" href="#" aria-label="Next">
-								<span aria-hidden="true"
-									><font-awesome-icon :icon="['fas', 'angle-right']"
-								/></span>
+						<li class="page-item" :class="{ 'disabled': currentPage === totalPage }">
+							<a @click.prevent="changePage(currentPage + 1)" id="qna_font" class="page-link" href="#" aria-label="Next">
+								<span aria-hidden="true"><font-awesome-icon :icon="['fas', 'angle-right']"/></span>
 							</a>
 						</li>
 					</ul>
@@ -390,6 +376,7 @@ export default {
 			// 선택된 카테고리를 저장하는 초기값
 			selectedCategory: 'all',
 			selectedList: 'latest',
+			currentPage: 1, 
 		}
 	},
 	created() {
@@ -402,28 +389,32 @@ export default {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="2"? "3":"2";
-		this.getInfo(this.nowflg);
+		this.getInfo(this.nowflg, this.currentPage);
 		// 필터 'all' 항상 초기화
 		this.selectedCategory = 'all';
 	},
+	computed: {
+		totalPage() {
+			return Math.ceil(this.infolist.length / 9);  // 9는 페이지당 표시할 게시글 수
+		},
+	},
 	methods: {
 		// 질문&건의 게시글 데이터 출력
-		getInfo(flg) {
+		getInfo(flg, page) {
 			// 스피너 로딩바
 			this.$store.commit('setLoading',true);
 			// 해당url의 데이터 가져오기
-			const URL = '/qna/info?flg='+ flg;
-			console.log("getinfo 함수진입")
+			const URL = `/qna/info?flg=${flg}&page=${page}&perPage=9`;
+			// console.log("getinfo 함수진입")
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL)
 			.then(res => {
-				console.log("then 시작");
-				console.log("레스데이터"+res.data);
+				// console.log("then 시작");
+				// console.log("레스데이터"+res.data);
 				if(res.data.code === '0') {
 					this.infolist = res.data.information;
 				}
-				console.log('nowflg='+this.nowflg )
-				
+				// console.log('nowflg='+this.nowflg )
 			})
 			.catch(err => {
 				this.$router.push('/error');
@@ -431,6 +422,10 @@ export default {
 			.finally(() => {
                 this.$store.commit('setLoading', false);
             });
+		},
+		changePage(page) {
+			this.currentPage = page;
+			this.getInfo(this.nowflg, this.currentPage);
 		},
 		latest() {
 			this.infolist.sort(function(a, b) {
@@ -484,7 +479,7 @@ export default {
 					this.$router.push('/qna?flg=2');
 				}
 			} else {
-				this.$router.push('/write?flg=3');
+				this.$router.push('/write');
 			}
 		},
 		// 건의 로그인 확인
@@ -496,16 +491,8 @@ export default {
 					this.$router.push('/qna?flg=3');
 				}
 			} else {
-				this.$router.push('/write?flg=3');
+				this.$router.push('/write');
 			}
-		},
-		
-		// 작성 게시글 확인 할 때 작성자만 확인 가능
-		// 건의 로그인 확인
-
-		// 유저 본인 확인(삭제&수정 버튼 활성화를 위한)
-		checkUser(email) {
-			return email === localStorage.getItem('email');
 		},
 	},
 }

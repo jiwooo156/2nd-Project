@@ -409,47 +409,6 @@ class InfoController extends Controller
         ],200);
     }
 
-    // 정보게시판 페이지 정보조회(목록)
-    public function informationget(Request $req) {
-        $informresult = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            'community.admin_flg',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->orderBy('community.created_at', 'desc')
-        ->get();
-        $infocnt = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->orderBy('community.created_at', 'desc')
-        ->count();
-
-        return response()->json([
-            'code' => '0',
-            'information' => $informresult,
-            'infocnt' => $infocnt,
-        ], 200);          
-    }
-
     // 0112 정지우 정보게시판 페이지 정보조회 (목록) 완료
     public function commuinfoget(Request $req) {
         Log::debug("**** commuinfoget start ****");
@@ -671,14 +630,57 @@ class InfoController extends Controller
     }
 
     // ***********************************************
-    // 커뮤니티 디테일 페이지 조회
+    // 커뮤니티 질문&정보 게시판 리스트 조회
+    public function informationget(Request $req) {
+        $informresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            'users.email',
+            'community.admin_flg',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->orderBy('community.created_at', 'desc')
+        ->get();
+        $infocnt = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.deleted_at', null)
+        ->orderBy('community.created_at', 'desc')
+        ->count();
+
+        return response()->json([
+            'code' => '0',
+            'information' => $informresult,
+            'infocnt' => $infocnt,
+        ], 200);          
+    }
+
+    // 커뮤니티 질문&건의 디테일 페이지 조회
     public function detailComget(Request $req) {
         // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = community::
         join('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.id',$req->id)
-        ->select('community.*', 'users.nick', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
+        ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($com_result)===1){    
@@ -726,35 +728,49 @@ class InfoController extends Controller
             ], 200);
         }
     }
-    // // 게시글작성
-    // public function postwirte(Request $req) {
-    //     // 리퀘스트온 값중 댓글 보드아이디 data에 저장
-    //     $content = $req->only('u_id','title','content', 'category_flg');
-    //     // u_id라는 키값에 세션에 저장된 pk값 저장
-    //     $data["u_id"] = Auth::user()->id;
-    //     try { 
-    //         // 트랜잭션 시작
-    //         DB::beginTransaction();
-    //         // data정보를 댓글테이블에 인서트
-    //         $result = Community::create($data);
-    //         // 저장
-    //         DB::commit();    
-    //         // $result 안에 닉네임 추가
-    //         $result->nick = Auth::user()->nick;
-    //         return response()->json([
-    //             'code' => '0',
-    //             'comcontent' => $content,
-    //             'data' => $result,
-    //         ], 200);
-    //     // 실패시
-    //     } catch(Exception $e){
-    //         // 롤백
-    //         DB::rollback();
-    //         return response()->json([
-    //             'code' => 'E99',
-    //             'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
-    //         ], 200);
-    //     }  
-    //     // 정상처리시
-    // }
+    // 커뮤니티 질문&건의 작성
+    public function postwirte(Request $req) {
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 기본 데이터
+            $data = $req->only('title', 'content', 'flg', 'category_flg');
+            // community 테이블에 생성
+            community::create($data);
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '변경실패 실패.'
+            ], 400);
+        }
+    }
+    // 커뮤니티 질문&건의 삭제
+    public function postdelete(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            // 삭제처리
+            $result = Community::
+                where('id',$req->id)
+                ->delete();
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제 실패.'
+            ], 400);
+        }
+    }
 }
