@@ -603,6 +603,73 @@ class InfoController extends Controller
         }
     }
 
+    // 0115 정지우 커뮤니티 게시글 작성
+    public function communitywrite(Request $req) {
+        Log::debug("communitywrite 함수 시작");
+        Log::debug($req);
+        // 리퀘스트온 값 data에 저장
+        $data = $req->only('flg','category_flg','title','content');
+        // u_id라는 키값에 세션에 저장된 pk값 저장
+        $data["u_id"] = Auth::user()->id;
+        // Log::debug("작성데이터 : ".$data);
+        try { 
+            Log::debug("communitywrite try");
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // data정보를 커뮤니티 테이블에 인서트
+            $result = community::create($data);
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result,
+            ], 200);
+        // 실패시
+        } catch(Exception $e){
+            Log::debug("communitywrite catch");
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
+            ], 200);
+        }  
+        // 정상처리시
+    }
+    // 0115 정지우 좋아요 작성
+    public function plusheart(Request $req) {
+        Log::debug("plusheart 함수 시작");
+        Log::debug($req);
+        // 리퀘스트온 값 data에 저장
+        $data = $req->only('b_id','flg');
+        // u_id라는 키값에 세션에 저장된 pk값 저장
+        $data["u_id"] = Auth::user()->id;
+        // Log::debug("작성데이터 : ".$data);
+        try { 
+            Log::debug("plusheart try");
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // data정보를 커뮤니티 테이블에 인서트
+            $result = Like::create($data);
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result,
+            ], 200);
+        // 실패시
+        } catch(Exception $e){
+            Log::debug("plusheart catch");
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
+            ], 200);
+        }  
+        // 정상처리시
+    }
+
     // ***********************************************
     // 커뮤니티 디테일 페이지 조회
     public function detailComget(Request $req) {

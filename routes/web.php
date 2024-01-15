@@ -144,7 +144,10 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::get('/more', [InfoController::class, 'morereplie']);
     Route::post('/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
+    Route::post('/heartpost', [InfoController::class, 'plusheart']);
 });
+// 0115 정지우 임시 작성페이지 
+Route::post('/testwrite', [InfoController::class, 'communitywrite']);
 
 // 게시글 작성 라우터 생성
 Route::middleware('myValidation')->prefix('post')->group(function() {

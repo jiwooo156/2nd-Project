@@ -16,6 +16,7 @@ import QnaComponent from '../components/QnaComponent.vue';
 import PostDetailComponent from '../components/PostDetailComponent.vue';
 import PostWriteComponent from '../components/PostWriteComponent.vue';
 import CommunityComponent from '../components/CommunityComponent.vue';
+import TestComponent from '../components/TestComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -58,6 +59,10 @@ const routes = [
 	{
 		path: "/community",
 		component : CommunityComponent
+	},
+	{
+		path: "/testwrite",
+		component : TestComponent
 	},
 	{
 		path: "/login",
