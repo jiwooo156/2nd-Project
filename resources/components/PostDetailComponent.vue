@@ -29,19 +29,14 @@
 			<div class="detail_post_like d-flex justify-content-between">
 				<div>
 					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
-					<span class="detail_likes font_air bold">좋아요</span>
+					<span class="detail_likes font_air bold" @click="likePost">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
-				<!-- 작성자일 경우 -->
-				<div class="post_btn_bot">
-					<button type="button">수정</button>
+				<div class="post_btn_bot" >
+					<button type="button" v-if="checkUser(this.detaildata.email)" @click="uppost">수정</button>
 					<button type="button" @click="goBack">목록</button>
-					<button type="button">삭제</button>
+					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delpost">삭제</button>
 				</div>
-				<!-- 작성자 아닐 경우 -->
-				<!-- <div class="post_btn_bot">
-					<button type="button" @click="goBack">목록</button>
-				</div> -->
 			</div>
 		</div>
 		<div class="detail_post_replie_container">
@@ -116,6 +111,7 @@
 	</div>
 </template>
 <script>
+import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default {
@@ -158,17 +154,30 @@ export default {
 				console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
 					console.log("if 진입");
-					this.detaildata = res.data.data[0];
-					this.repliedata = res.data.replie;
-					// this.usernick = res.data.usersnick;
-					this.repliecount = res.data.repliecount;
-				}else if(res.data.code==="E99"){
+					if (res.data.data[0].flg === "3" && this.checkUser(res.data.data[0].email)) {
+						this.detaildata = res.data.data[0];
+						this.repliedata = res.data.replie;
+						this.repliecount = res.data.repliecount;
+					} else if (["0", "1", "2"].includes(res.data.data[0].flg)){
+						this.detaildata = res.data.data[0];
+						this.repliedata = res.data.replie;
+						this.repliecount = res.data.repliecount;
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: '권한 없음',
+							text: '해당 게시물에 접근할 권한이 없습니다.',
+							confirmButtonText: '확인'
+						});
+						this.goBack();
+					}
+				} else if (res.data.code==="E99"){
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
 						text: res.data.errmsg,
-						confirmButtonText: '확인'
-					})
+						confirmButtonText: '확인',
+					});
 				}
 				console.log("getinfo 함수 끝");
 			})
@@ -178,11 +187,59 @@ export default {
                     title: 'Error',
                     text: '에러가 발생했습니다',
                     confirmButtonText: '확인'
-                })
+                });
 			})
 			.finally(() => {
                 this.$store.commit('setLoading', false);
             });
+		},
+		// 게시물 삭제
+		delpost(){	
+			Swal.fire({
+			title: '삭제 확인',
+			text: '정말로 삭제하시겠습니까?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: '삭제',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// 사용자가 확인을 눌렀을 때의 처리
+				this.$store.commit('setLoading', true);
+				const URL = '/post/delete?id=' + this.b_id;
+				axios.delete(URL)
+					.then(res => {
+						if (res.data.code === "0") {
+							console.log("정상진입");
+							Swal.fire({
+								icon: 'success',
+								title: '완료',
+								text: '정상처리되었습니다.',
+								confirmButtonText: '확인'
+							});
+							this.goBack();
+						} 
+						
+					})
+					.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '에러발생.',
+							confirmButtonText: '확인'
+						});
+					})
+					.finally(() => {
+						this.$store.commit('setLoading', false);
+					});
+				}
+			});
+		},
+		// 게시글 수정
+		uppost() {
+			
 		},
 		// flg 데이터 출력 변환
 		getEventType(data) {
@@ -238,8 +295,7 @@ export default {
                     text: res.data.errorMsg,
                     confirmButtonText: '확인'
                 })
-
-					}
+			}
 				})
 				.catch(err => {
 					Swal.fire({
