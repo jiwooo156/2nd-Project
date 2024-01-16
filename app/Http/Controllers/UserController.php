@@ -126,16 +126,28 @@ class UserController extends Controller
     // 로그인
     public function login(Request $req)
     {
-        Log::debug(Auth::check());
         // 카카오로그인
         if(Auth::check()){
-            Log::debug("카카오로그인진입");
-            $email=Auth::user()->email;
-            $nick=Auth::user()->nick;
+            $result = Auth::user();
+            $admin_flg = Admin::where('u_id',Auth::user()->id)->first();
+            if($admin_flg){
+                if($admin_flg->flg === "0"){
+                    Log::debug("0진ㅇ비");
+                    return response()->json([
+                        'code' => '1'
+                        ,'data' => $result
+                    ], 200);
+                }else{
+                    Log::debug("1진입");
+                    return response()->json([
+                        'code' => '2'
+                        ,'data' => $result
+                    ], 200);
+                }
+            }
             return response()->json([
                 'code' => 'kakao'
-                ,'email' => $email
-                ,'nick' => $nick
+                ,'data' => $result
             ], 200);
         }
         // 리퀘스트 정보로 유저테이블 정보 조회
@@ -153,10 +165,17 @@ class UserController extends Controller
         if($result&&$admin_flg){
             Auth::login($result);
             Auth::user();
-            return response()->json([
-                'code' => '1'
-                ,'data' => $result
-            ], 200);
+            if($admin_flg->flg==="1"){
+                return response()->json([
+                    'code' => '2'
+                    ,'data' => $result
+                ], 200);
+            }else{
+                return response()->json([
+                    'code' => '1'
+                    ,'data' => $result
+                ], 200);
+            }
         // 값이 조회됬을때
         }else if($result){
             $data = Report::

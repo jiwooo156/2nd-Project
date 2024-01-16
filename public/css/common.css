@@ -1242,9 +1242,7 @@ margin-top:10px;
 }
 /* 유저확인 */
 .userChk_container{
-    width: 95%;
-    max-width: 550px;
-    margin: 40px auto;
+    margin: 78px auto;
     text-align: center;
 }
 .userChk_button{
@@ -1258,6 +1256,11 @@ margin-top:10px;
 	margin:5px;
 	text-decoration: none;
 	color: #000;
+}
+.userchk_header{
+    width: 100%;
+    max-width: 1000px;
+	margin: 15px auto;
 }
 #userchk_pw{
 	border-radius: 5px;
@@ -1290,7 +1293,44 @@ margin-top:10px;
 	border-bottom: 1px solid #B7B7B7;
 	margin-top: 113px;
 }
-
+.userchk_card{
+	width: 320px;
+    box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    position: relative;
+}
+.userchk_card img {
+    border-top-right-radius: 5px;
+    width: 100%;
+    height: 230px;
+    border-top-left-radius: 5px;
+}
+.userchk_card a {
+	height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    color: #000;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.userchk_card_gird{
+	display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-gap: 30px;
+    justify-content: center;
+}
+.userchk_body{
+	width: 95%;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+.userchk_body td{
+	vertical-align:middle;
+	white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
 /* 지역 페이지 */
 /* 지역 페이지 전체 */
 .region_frame {
@@ -2013,8 +2053,25 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .admin_box{
 	background-color: #fff;
-	border-radius: 10px;
-	padding: 1em;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 2em;
+    width: 350px;
+    line-height: 120px;
+    text-align: center;
+    height: 400px;
+}
+.admin_box:nth-child(1){
+	color: rgb(0, 21, 255);
+}
+.admin_box div:nth-child(1){
+	font-size: 2em;
+}
+.admin_box:nth-child(2){
+	color: red;
+}
+.admin_box:nth-child(2) div:nth-child(1){
+	font-size: 2em;
 }
 .admin_header{
     display: flex;
@@ -2026,8 +2083,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding-top: 1em;
 }
 .admin_content{
-	grid-template-columns: 1fr 1fr;
-	gap: 30px;
+	display: flex;
+    width: 70%;
+    margin: 0 auto;
+    justify-content: center;
+	gap: 150px;
 }
 .admin_modal_bg{
 	background-color: #8686868f;
@@ -2156,14 +2216,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .admin_table_th {
 	width: 6%;	
-	text-align: center;
 }
 .admin_table_td {
 	white-space: nowrap;   
 	overflow: hidden;   
 	text-overflow: ellipsis; 
 	max-width: 700px; 
-
 }
 .admin_table_td2 {
 	width: 11%;

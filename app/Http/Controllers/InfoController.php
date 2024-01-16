@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Info;
 use App\Models\Replie;
+use App\Models\Like;
 use App\Models\Community;
 use App\Models\Like;
 use Illuminate\Support\Facades\DB;
@@ -318,11 +319,6 @@ class InfoController extends Controller
     // 검색결과 조회
     public function searchkeyword(Request $req) {
         DB::connection()->enableQueryLog();
-        Log::debug("함수진입");
-        Log::debug("지역이름=".$req->states_name);
-        Log::debug("시작일자=".$req->start_at);
-        Log::debug("종료일자=".$req->end_at);
-        Log::debug("검색단어=".$req->searchkeyword);
         $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->where('main_flg','축제')
@@ -394,6 +390,60 @@ class InfoController extends Controller
             'festival' => $festival,
         ],200);
     }
+    // 유저 좋아요 누른 정보들 조회
+    public function userlikeget(Request $req) {
+        $auth = Auth::user();
+        // 축제
+        if($req->flg === "0"){
+            $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
+            ->join('infos','likes.b_id','infos.id')
+            ->where('infos.main_flg','축제')
+            ->where('likes.flg','0');
+        }else if($req->flg === "1"){
+            $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
+            ->join('infos','likes.b_id','infos.id')
+            ->where('infos.main_flg','관광')
+            ->where('likes.flg','0');
+        }else if($req->flg === "2"){
+            $data = Like::select('community.id','community.title','community.flg')
+            ->join('community','likes.b_id','community.id')
+            ->where('likes.flg','1');
+        }
+            $data = $data
+                ->where('likes.u_id',$auth->id)
+                ->paginate(3);
+            Log::debug($data);
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ],200);
+    }
+    // 유저 작성 정보들 조회
+    public function userwriteget(Request $req) {
+        $auth = Auth::user();
+        Log::debug("진입");
+        if($req->flg === "0"){
+            Log::debug("작성게시글");
+            $data = Community::where('u_id',$auth->id);
+        }else if($req->flg === "1"){
+            Log::debug("작성댓글");
+            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.replie', 'replies.created_at')
+            ->where('replies.u_id', $auth->id)
+            ->join('infos', 'replies.b_id', 'infos.id');
+    
+            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.replie', 'replies.created_at')
+                ->where('replies.u_id', $auth->id)
+                ->join('community', 'replies.b_id', 'community.id'));
+        }
+            $data = $data
+                ->orderby('created_at','desc')
+                ->paginate(8);
+            Log::debug($data);
+        return response()->json([
+            'code' => '0',
+            'data' => $data,
+        ],200);
+    }
     // 검색 관광 더보기
     public function moresearcht(Request $req) {
         $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
@@ -409,6 +459,7 @@ class InfoController extends Controller
             'tour' => $tour,
         ],200);
     }
+
 
     // 0112 정지우 정보게시판 페이지 정보조회 (목록) 완료
     public function commuinfoget(Request $req) {

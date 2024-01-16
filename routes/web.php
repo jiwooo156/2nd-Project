@@ -57,6 +57,8 @@ Route::middleware('myValidation')->prefix('userchk')->group(function() {
         return view('welcome');
     });
     Route::post('/', [UserController::class, 'userchk']);
+    Route::get('/like', [InfoController::class, 'userlikeget']);
+    Route::get('/write', [InfoController::class, 'userwriteget']);
 });
 
 Route::middleware('myValidation')->prefix('userinfo')->group(function() {
@@ -176,6 +178,8 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::post('/report/repair', [AdminController::class, 'repairpost']);
     Route::get('/userinfo', [AdminController::class, 'userget']);
     Route::post('/userinfo', [AdminController::class, 'restraintuser']);
+    Route::put('/userinfo/{id}/{val}', [AdminController::class, 'adminpost']);
+    Route::delete('/userinfo/{id}', [AdminController::class, 'admindel']);
     Route::post('/restraint', [AdminController::class, 'restraintreset']);
     Route::get('/board', [AdminController::class, 'boardget']);
     Route::post('/board', [AdminController::class, 'boardpost']);
