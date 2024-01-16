@@ -135,7 +135,7 @@
 				<div class="admin_modal_title">질문정보</div>
 				<div class="admin_modal_container">
 					<div class="input-group  mb-3">
-						<span class="input-group-text">유저번호</span>
+						<span class="input-group-text">작성자번호</span>
 						<div aria-label="First name" class="form-control">
 							{{ now_data.u_id }}
 						</div>
@@ -208,7 +208,7 @@
 				<div class="admin_modal_title">신고된 {{ reportarr1[this.now_report.flg] }}</div>
 				<div class="admin_modal_container">
 					<div class="input-group  mb-3">
-						<span class="input-group-text admin_report_span_to">유저번호</span>
+						<span class="input-group-text admin_report_span_to">작성자번호</span>
 						<div aria-label="First name" class="form-control">
 							{{ modalReport.u_id }}
 						</div>
@@ -252,7 +252,7 @@
 					<div class="input-group mb-3"
 						v-if="this.now_report.admin_flg === '3'"
 					>
-						<span class="input-group-text admin_report_span_to">제제일자</span>
+						<span class="input-group-text admin_report_span_to">재제일자</span>
 						<div class="form-control" aria-label="With textarea">{{ modalReport.restraint_at }}</div>
 					</div>
 				</div>
@@ -260,7 +260,7 @@
 				<div>
 					<div class="admin_modal_title">신고자</div>
 					<div class="input-group">
-						<span class="input-group-text admin_report_span_from">유저번호</span>
+						<span class="input-group-text admin_report_span_from">작성자번호</span>
 						<div aria-label="First name" class="form-control">
 							{{ this.now_report.u_id }}
 						</div>
@@ -280,7 +280,7 @@
 					<div class="input-group mb-4"
 						v-if="this.now_report.admin_flg === '4'"
 					>
-						<span class="input-group-text admin_report_span_from">제재일자</span>
+						<span class="input-group-text admin_report_span_from">재제일자</span>
 						<div class="form-control" aria-label="With textarea">{{ this.now_report.restraint_at }}</div>
 					</div>
 				</div>
@@ -301,12 +301,12 @@
 						v-if="this.now_report.admin_flg === '3'"
 						@click="clearestraint(null,this.now_report.id)"
 					>
-						작성자 제재해제
+						작성자 재제해제
 					</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
 						v-if="this.now_report.admin_flg !== '3'"
 					>
-						작성자 제재
+						작성자 재제
 					</button>	
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'0','0')">1일</a></li>
@@ -314,18 +314,18 @@
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'2','0')">7일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'3','0')">15일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'4','0')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'5','0')">영구제재</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'5','0')">영구재제</a></li>
 					</ul>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning"
 						v-if="this.now_report.admin_flg === '4'"
 						@click="clearestraint(null,this.now_report.id)"
 					>
-						신고자 제재해제
+						신고자 재제해제
 					</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
 						v-if="this.now_report.admin_flg !== '4'"
 					>
-						신고자 제재
+						신고자 재제
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'0','1')">1일</a></li>
@@ -333,7 +333,7 @@
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'2','1')">7일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'3','1')">15일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'4','1')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'5','1')">영구제재</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'5','1')">영구재제</a></li>
 					</ul>
 					<button type="button" class="btn btn-secondary" @click="closeModal">취소</button>
 				</div>
@@ -484,7 +484,7 @@
 			<div class="admin_board_header2">
 				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate">
 					<option value="0">게시글번호</option>
-					<option value="1">유저번호</option>
+					<option value="1">작성자번호</option>
 					<option value="2">제목</option>
 					<option value="3">내용</option>
 				</select>
@@ -716,7 +716,7 @@
 			<div class="admin_board_header2">
 				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate1">
 					<option value="0">댓글번호</option>
-					<option value="1">유저번호</option>
+					<option value="1">작성자번호</option>
 					<option value="2">게시글번호</option>
 					<option value="3">내용</option>
 				</select>
@@ -731,7 +731,7 @@
 			<thead>
 				<tr>
 					<th scope="col">댓글번호</th>
-					<th scope="col">유저번호</th>
+					<th scope="col">작성자번호</th>
 					<th scope="col">게시글번호</th>
 					<th scope="col">내용</th>
 					<th scope="col">작성위치</th>
@@ -763,7 +763,7 @@
 								<div class="input-group mb-1">
 									<span class="input-group-text" id="basic-addon1">댓글번호</span>
 									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.id }}</div>
-									<span class="input-group-text" id="basic-addon1">유저번호</span>
+									<span class="input-group-text" id="basic-addon1">작성자번호</span>
 									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.u_id }}</div>
 								</div>
 								<div class="input-group mb-1">
@@ -880,7 +880,7 @@
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>나이 떄</div>
+				<div>연령대</div>
 				<Doughnut :data="chart3.data" :options="chart3.options" />
 			</div>
 			<div>
@@ -937,7 +937,7 @@
 							<h5 class="card-title">건의내용</h5>
 							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.requestarr[data.admin_flg] }}</span>
 						</div>
-						<div class="card-text">유저번호 = {{ data.u_id }}</div>
+						<div class="card-text">작성자번호 = {{ data.u_id }}</div>
 						<div class="card-text">제목 = {{ data.title }}</div>
 						<div class="card-text">내용 = {{ data.content }}</div>
 					</div>
@@ -1000,7 +1000,7 @@
 							<h5 class="card-title">신고한 유저</h5>
 							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
 						</div>
-						<div class="card-text">유저번호 = {{ data.u_id }}</div>
+						<div class="card-text">작성자번호 = {{ data.u_id }}</div>
 						<div class="card-text">email = {{ data.email }}</div>
 						<div class="card-text">신고사유 = {{ data.content }}</div>
 						<hr>
@@ -1040,7 +1040,7 @@
 			<div class="input-group mb-3 admin_search_user_input_box">
 				<div class="admin_search_user_input_box_select">
 					<select v-model="searchtype" class="form-select admin_search_user_input_box_select" aria-label="Default select example">
-						<option class=" font_air bold" value="0">유저번호</option>
+						<option class=" font_air bold" value="0">작성자번호</option>
 						<option class=" font_air bold" value="1">email</option>
 					</select>
 				</div>
@@ -1051,7 +1051,7 @@
 				<div>
 					검색결과
 					<div class="input-group mb-3">
-						<span class="input-group-text">유저번호</span>
+						<span class="input-group-text">작성자번호</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.id }}
 						</div>
@@ -1091,15 +1091,15 @@
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<span class="input-group-text">제재당한횟수</span>
+						<span class="input-group-text">재제당한횟수</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.cnt }}
 						</div>
-						<span class="input-group-text">제재사유</span>
+						<span class="input-group-text">재제사유</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.restraint }}
 						</div>
-						<span class="input-group-text">제재종료일</span>
+						<span class="input-group-text">재제종료일</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.res_at }}
 						</div>
@@ -1109,23 +1109,23 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">유저제재</h5>
+								<h5 class="modal-title" id="exampleModalLabel">유저재제</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body" >
 								<div>
-									<span>제재기간</span>
+									<span>재제기간</span>
 									<select class="form-select" aria-label="Default select example" v-model="restraint_date">
 										<option class=" font_air bold" value="0">1일</option>
 										<option class=" font_air bold" value="1">3일</option>
 										<option class=" font_air bold" value="2">7일</option>
 										<option class=" font_air bold" value="3">15일</option>
 										<option class=" font_air bold" value="4">30일</option>
-										<option class=" font_air bold" value="5">영구제재</option>
+										<option class=" font_air bold" value="5">영구재제</option>
 									</select>
 								</div>
 								<div>
-									<span>제재사유</span>
+									<span>재제사유</span>
 									<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
 										<option class=" font_air bold">욕설 및 혐오 표현</option>
 										<option class=" font_air bold">불법 콘텐츠 게시</option>
@@ -1149,11 +1149,11 @@
 				</div>
 				<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
 					v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X'"
-				>유저제재</div>
+				>유저재제</div>
 				<div class="btn btn-danger btn-sm"
 					@click="clearestraint(this.selectUserData.id,null)"
 					v-if="this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X'"
-				>제제해제</div>
+				>재제해제</div>
 				<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
 			</div>
 		</div>
@@ -1217,7 +1217,7 @@ export default {
 			drop_cnt: 0,
 			data: [],
 			r_data: [],	
-			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자제재",4:"신고자제재"},
+			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자재제",4:"신고자재제"},
 			requestarr: {0:"답변전",1:"답변완료"},
 			reportarr1: {0:"게시글",1:"댓글"},
 			now_data: {},
@@ -1959,14 +1959,14 @@ export default {
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
-					text: '제재기간을 입력해 주세요.',
+					text: '재제기간을 입력해 주세요.',
 					confirmButtonText: '확인'
 				})
 			}else if(msg ===""||(msg === "기타"&&this.restraint_msg2 === "")){
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
-					text: '제재사유를 입력해 주세요.',
+					text: '재제사유를 입력해 주세요.',
 					confirmButtonText: '확인'
 				})
 			}else{
@@ -2105,11 +2105,11 @@ export default {
 		},
 		// 모달유저제재
 		modalRestraintuser(id,u_id,flg,user){
-			let to=['작성자 재제','신고자 제제']
-			let date=['1일','3일','7일','15일','30일','영구제제']
+			let to=['작성자 재제','신고자 재제']
+			let date=['1일','3일','7일','15일','30일','영구재제']
 			Swal.fire({
 				title: to[user],
-				text: '유저번호 : '+u_id+'\n'+'재제사유 : '+date[flg],
+				text: '작성자번호 : '+u_id+'\n'+'재제사유 : '+date[flg],
 				input: 'select',
 				inputOptions: {
 					'욕설 및 혐오 표현': '욕설 및 혐오 표현',
@@ -2138,7 +2138,7 @@ export default {
 					const val = result.value;	
 					if(val==="기타"){
 						Swal.fire({
-							title: '제재사유',
+							title: '재제사유',
 							input: 'text',
 							inputPlaceholder: '20자 이내로 작성해 주세요',
 							showCancelButton: true,
