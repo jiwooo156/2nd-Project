@@ -1903,6 +1903,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-size: 0.45rem;
 	padding-right: 0.5rem;
 }
+.modal-body select {
+	display: inline;
+}
 /* font-awesome 가운데 정렬 */
 .font_center {
 	vertical-align:middle;
@@ -2006,7 +2009,37 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-size: 1rem;
 	vertical-align:middle;
 }
-
+#titleInput {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+#contentInput {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.qna_modal_btn {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+.qna_color {
+	background-color: #7066e0;
+	border: transparent;
+}
+.qna_color:hover{
+	background-color: #574cd8;
+}
+.qna_select {
+    display: flex;
+    align-items: center;
+	gap: 3rem;
+	margin-top: 0.5rem;
+}
+.qna_tit {
+	margin-bottom: 1rem;
+}
+.qna_update {
+	font-size: 1.5rem;
+}
 /* 어드민 */
 .admin_frame{
     background-color: #f8f9fa;

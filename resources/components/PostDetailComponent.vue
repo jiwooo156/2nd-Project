@@ -32,10 +32,46 @@
 					<span class="detail_likes font_air bold" @click="likePost">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
+				<!-- 수정 모달 -->
+				<div class="modal" tabindex="-1">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title qna_update">게시글 수정</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="detail_type font_air bold qna_select">
+								<div>
+									<span>게시판?</span>
+									<select v-model="editedFlg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
+										<option v-for="flgOption in flgOptions" :key="flgOption.value" :value="flgOption.value" class="qna_drop_item font_air bold">{{ flgOption.label }}</option>
+									</select>
+								</div>
+								<div>
+									<span>카테고리?</span>
+									<select v-model="editedCategory" name="category_flg" class="form-select qna_drop" aria-label=".form-select-sm">
+										<option v-for="categoryOption in categoryOptions" :key="categoryOption.value" :value="categoryOption.value" class="qna_drop_item">{{ categoryOption.label }}</option>
+									</select>
+								</div>
+							</div>
+							<br>
+							<div class="qna_tit">
+								<span class="detail_type">제목:</span>
+								<input v-model="editedTitle" type="text" id="titleInput" class="form-control qna_tit">
+								<span class="detail_type">내용:</span>
+								<textarea v-model="editedContent" id="contentInput" class="form-control"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer d-flex justify-content-center">
+							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="updatePost">수정완료</button>
+						</div>
+						</div>
+					</div>
+				</div>
 				<div class="post_btn_bot" >
-					<router-link to="/write" v-if="checkUser(this.detaildata.email)">
-						<button type="button">수정</button>
-					</router-link>
+					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" @click="update">수정</button>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delpost">삭제</button>
 				</div>
@@ -131,9 +167,21 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			// 수정 모달 관련 데이터
-			showEditModal: false,
 			editedTitle: '',
 			editedContent: '',
+			editedFlg: '',
+			editedCategory: '',
+			flgOptions: [
+				{ label: '자유', value: '0' },
+				{ label: '정보', value: '1' },
+				{ label: '질문', value: '2' },
+				{ label: '건의', value: '3' }
+			],
+			categoryOptions: [
+				{ label: '축제', value: '0' },
+				{ label: '관광', value: '1' },
+				{ label: '기타', value: '2' }
+			],
 		}
 	},
 	watch: {
@@ -146,8 +194,12 @@ export default {
 		let boo = localStorage.getItem('nick') ?  true : false;
 		this.$store.commit('setLocalFlg', boo);
 		this.getinfo();
+		this.getCategoryFlg();
 	},
 	methods: {
+		getCategoryFlg() {
+			this.category_flg = this.detaildata.category_flg; 
+		},
 		getinfo(){
 			// 스피너 로딩바
 			this.$store.commit('setLoading',true);
@@ -214,6 +266,8 @@ export default {
 			if (result.isConfirmed) {
 				// 사용자가 확인을 눌렀을 때의 처리
 				this.$store.commit('setLoading', true);
+				let params = new URLSearchParams(window.location.search);
+				this.b_id = params.get('id');
 				const URL = '/post/delete?id=' + this.b_id;
 				axios.delete(URL)
 					.then(res => {
@@ -241,6 +295,46 @@ export default {
 						this.$store.commit('setLoading', false);
 					});
 				}
+			});
+		},
+		// 게시글 수정
+		update() {
+			this.editedTitle = this.detaildata.title;
+			this.editedContent = this.detaildata.content;
+			this.editedFlg = this.detaildata.flg;
+			this.editedCategory = this.detaildata.category_flg;
+			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
+			myModal.show();
+		},
+		updatePost() {
+			const URL = '/post/update?id=' + this.b_id;
+			const formData = {
+				title: this.editedTitle,
+				content: this.editedContent,
+				flg: this.editedFlg,
+				category_flg: this.editedCategory,
+			};
+			axios.put(URL, formData)
+			.then(res => {
+				if(res.data.code === "0") {
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '게시글이 수정되었습니다.',
+						confirmButtonText: '확인'
+					}).then(() => {
+						// 확인 버튼을 눌렀을 때 페이지를 리로드합니다.
+						location.reload();
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러가 발생했습니다',
+					confirmButtonText: '확인'
+				});
 			});
 		},
 		// flg 데이터 출력 변환
@@ -450,6 +544,7 @@ export default {
 		},	
 	},
 }
+
 </script>
 <style lang="">
 	
