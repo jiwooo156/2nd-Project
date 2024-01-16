@@ -86,8 +86,8 @@
 					<div>
 						<span>성별</span>
 						<select id="signin_gender" placeholder="지역">
-							<option>남자</option>
-							<option>여자</option>
+							<option class="signin_gen">남자</option>
+							<option class="signin_gen">여자</option>
 						</select>	
 					</div>
 					<div class="sign_footer_box center">
