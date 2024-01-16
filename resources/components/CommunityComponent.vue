@@ -2,10 +2,10 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<div v-if="this.detaildata.flg === 0" class="detail_type font_air bold center">
+				<div v-if="this.detaildata.flg === '0'" class="detail_type font_air bold center">
 					자유게시판
 				</div>
-				<div v-else="this.detaildata.flg === 1" class="detail_type font_air bold center">
+				<div v-else="this.detaildata.flg === '1'" class="detail_type font_air bold center">
 					정보게시판
 				</div>
 				<div class="detail_header font_air bold">
@@ -48,7 +48,7 @@
 					{{this.detaildata.content}}
 				</div>
 			</div>
-			<div class="detail_content font_air bold pointer" @click="plusheart()" >
+			<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
 				<!-- fas : 꽉 찬 하트 -->
 				<font-awesome-icon :icon="['fas', 'heart']" />
 				좋아요 {{this.detaildata.cnt}}
@@ -185,6 +185,7 @@ export default {
 					this.userauth = res.data.userauth;
 					console.log('zcdvc'+this.userauth);
 					console.log('zcdvc'+this.detaildata.u_id);
+					console.log('디테일 data : '+this.detaildata.flg);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -207,6 +208,7 @@ export default {
 		repliewrite(){
 			if(this.replie){
 				const URL = '/community/reply/'+this.b_id;
+				console.log("댓글작성함수 url은 : "+URL);
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
@@ -251,19 +253,17 @@ export default {
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
 				console.log("현재 url의 id는 : "+this.b_id);
-				const URL = '/community/heartpost?id='+this.b_id;
+				const URL = '/community/heartpost';
+				console.log("좋아요작성함수 url은 : "+URL);
 				axios.post(URL, {
-					params: {
-						"b_id": this.b_id,
-						"flg": "1"
-					}
+					"b_id": this.b_id,
+					"flg": "1"
 				})
 				.then(res=>{
 					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
-						console.log("좋아요갯수는 : "+this.detaildata.cnt);
+						this.$router.push('/community?id='+this.b_id);
 						this.detaildata.cnt++;
-						console.log("좋아요갯수는 : "+this.detaildata.cnt);
 					}
 				})
 				.catch(err => {

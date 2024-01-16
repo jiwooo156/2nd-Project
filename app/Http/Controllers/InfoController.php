@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Info;
 use App\Models\Replie;
 use App\Models\Community;
+use App\Models\Like;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -603,7 +604,7 @@ class InfoController extends Controller
         $data = $req->only('b_id','flg');
         // u_id라는 키값에 세션에 저장된 pk값 저장
         $data["u_id"] = Auth::user()->id;
-        // Log::debug("작성데이터 : ".$data);
+        Log::debug($data);
         try { 
             Log::debug("plusheart try");
             // 트랜잭션 시작

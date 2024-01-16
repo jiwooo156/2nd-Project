@@ -2295,6 +2295,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	border-color: #b5b5b5;
 }
 
+/* 커뮤니티 페이지 */
+.community_heart {
+	display: inline-block;
+}
+
 /* pc */
 @media only screen and (min-width: 991px) {
 	/* 에러 */
