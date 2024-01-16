@@ -179,8 +179,6 @@ export default {
 	},
 	created() {
 		// 로컬스토리지에 저장된 정보있는지 확인
-		let boo = localStorage.getItem('nick') ?  true : false;
-		this.$store.commit('setLocalFlg', boo);
 		this.email= "";
 		this.$store.commit('setErrMsg',[]);
 		this.$store.commit('setNickFlg',0);	
@@ -196,6 +194,7 @@ export default {
 			this.$store.commit('setErrMsg','');
 			if(res.data.code === "0"){
 				console.log('정상');
+				console.log(res.data.data);
 				this.email = res.data.data.email;
 			}else{
 				console.log('else');

@@ -70,33 +70,30 @@
 							<td class="col_hidden">401</td>
 							<td class="col_hidden">25</td>
 						</tr> -->
-						<tr class="pointer">
-							<td class="col_hidden">{{ infodata.id }}</td>
-							<td>{{ infodata.category_flg }}</td>
-							<td class="info_title">
-								<router-link :to="'/community?id='+infodata.id">
-									{{ infodata.title }}
-								</router-link>
-							</td>
-							<td>{{ infodata.nick }}</td>
-							<td>{{ infodata.created_at }}</td>
-							<td class="col_hidden">{{ infodata.hits }}</td>
-							<td class="col_hidden">{{ infodata.cnt }}</td>
-						</tr>
+						<!-- <router-link :to="'/community?id='+infodata.id" class="info_router"> -->
+							<tr class="pointer" @click="$router.push('/community?id='+infodata.id)">
+								<td class="col_hidden">{{ infodata.id }}</td>
+								<td>{{ infodata.category_flg }}</td>
+								<td class="info_title">{{ infodata.title }}</td>
+								<td>{{ infodata.nick }}</td>
+								<td>{{ infodata.created_at }}</td>
+								<td class="col_hidden">{{ infodata.hits }}</td>
+								<td class="col_hidden">{{ infodata.cnt }}</td>
+							</tr>
+						<!-- </router-link> -->
 					</tbody>
 				</table>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<button type="button">글 작성하기</button>
+				<router-link to="/testwrite">글 작성하기</router-link>
 			</div>
 				<div>
 					<nav aria-label="Page navigation">
 						<ul class="pagination justify-content-center qna_pagin">
 							<li v-for="(page, index) in pagination" :key="index">
-								
 								<a v-if="!(page.url === null)"
 									id="qna_font"
-									class="page-link"
+									class="page-link pointer"
 									@click="getInfo(page.label)"
 								>
 									<span>

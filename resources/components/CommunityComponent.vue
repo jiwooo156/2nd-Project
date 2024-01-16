@@ -47,13 +47,10 @@
 				<div class="detail_content font_air bold">
 					{{this.detaildata.content}}
 				</div>
-				
 			</div>
-			<div class="detail_content font_air bold">
+			<div class="detail_content font_air bold pointer" @click="plusheart()" >
 				<!-- fas : 꽉 찬 하트 -->
-				<font-awesome-icon :icon="['fas', 'heart']" @click="toggleHeart()" />
-				<!-- far : 빈 하트 -->
-				<font-awesome-icon :icon="['far', 'heart']" />
+				<font-awesome-icon :icon="['fas', 'heart']" />
 				좋아요 {{this.detaildata.cnt}}
 			</div>
 			<div class="post_btn_bot">
@@ -134,6 +131,7 @@
 	</div>
 </template>
 <script>
+import axios from 'axios';
 import Swal from 'sweetalert2';
 export default {
 	name: 'DetailComponent',
@@ -149,8 +147,8 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
-			isHearted: false,
-			userauth: ""
+			userauth: "",
+			
 		}
 	},
 	watch: {
@@ -174,8 +172,8 @@ export default {
 	methods: {
 		getinfo(){
 			// 현재url가져오기
-			let params = new URLSearchParams(window.location.search);
-			this.b_id = params.get('id');
+			// let params = new URLSearchParams(window.location.search);
+			// this.b_id = params.get('id');
 			
 			const URL = '/community/info?id='+this.b_id;
 			axios.get(URL)
@@ -244,6 +242,42 @@ export default {
 						confirmButtonText: '확인'
                 })
 			}		
+		},
+		// 좋아요 입력
+		plusheart() {
+			if(!(this.userauth === "")) {
+				console.log("plusheart 함수 진입");
+				// 현재url가져오기
+				let params = new URLSearchParams(window.location.search);
+				this.b_id = params.get('id');
+				console.log("현재 url의 id는 : "+this.b_id);
+				const URL = '/community/heartpost?id='+this.b_id;
+				axios.post(URL, {
+					params: {
+						"b_id": this.b_id,
+						"flg": "1"
+					}
+				})
+				.then(res=>{
+					console.log("plusheart 함수 then");
+					if(res.data.code==="0"){
+						console.log("좋아요갯수는 : "+this.detaildata.cnt);
+						this.detaildata.cnt++;
+						console.log("좋아요갯수는 : "+this.detaildata.cnt);
+					}
+				})
+				.catch(err => {
+					console.log("plusheart 함수 catch");
+					this.$router.push('/error');
+				})
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '주의',
+					text: '로그인 후 이용 해 주세요.',
+					confirmButtonText: '확인'
+                })
+			}
 		},
 		// 시간초기화
 		converttime(date){
@@ -371,10 +405,6 @@ export default {
 				return teststr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
 			}
 		},	
-		// 하트에 입력값 반영
-		toggleHeart() {
-			this.isHearted = !this.isHearted;
-		},
 		// 뒤로가기 동작 실행
 		goBack() {
 			this.$router.go(-1);

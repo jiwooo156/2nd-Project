@@ -26,6 +26,8 @@ import BoardComponent from './BoardComponent.vue'
 import PostDetailComponent from './PostDetailComponent.vue'
 import PostWriteComponent from './PostWriteComponent.vue'
 import CommunityComponent from './CommunityComponent.vue'
+import KakaoCallback from './KakaoCallback.vue'
+import TestComponent from './TestComponent.vue'
 
 export default {
 
@@ -48,6 +50,8 @@ export default {
         PostWriteComponent,
         AdminComponent,
         CommunityComponent,
+        KakaoCallback,
+        TestComponent,
     },
     methods: {
         localStoragechk(){

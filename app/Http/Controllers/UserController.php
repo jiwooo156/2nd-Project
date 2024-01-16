@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
-
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -126,9 +126,20 @@ class UserController extends Controller
     // 로그인
     public function login(Request $req)
     {
+        Log::debug(Auth::check());
+        // 카카오로그인
+        if(Auth::check()){
+            Log::debug("카카오로그인진입");
+            $email=Auth::user()->email;
+            $nick=Auth::user()->nick;
+            return response()->json([
+                'code' => 'kakao'
+                ,'email' => $email
+                ,'nick' => $nick
+            ], 200);
+        }
         // 리퀘스트 정보로 유저테이블 정보 조회
         $result = User::where('email',$req->email)->first();
-    
         // 조회된 값이 없을때
         if(!$result){
             $errorMsg = ['존재하지않는 이메일 입니다.'];
@@ -623,34 +634,34 @@ class UserController extends Controller
             ], 400);
         }
     }
-        // 인증메일 재발송
-    // public function resendemailauth(Request $req)
-    // {
-    //     $uuid = Str::uuid();
-    //     $mail_cnt = Authenticate::
-    //         where('email',$req->email)
-    //         ->where('auth_start','>',date("Y-m-d H:i:s", strtotime("-10 minutes")))
-    //         ->get();
-    //         // 두번째(유저테이블에 10분이내에 인증메일을 3회이상 보냈을때)
-    //     Log::debug(count($mail_cnt)<=3);
-    //     if(count($mail_cnt)<=3){
-    //         Log::debug("3개이하일때");
-    //         Authenticate::create($db_data);
-    //         $data['url'] = 'http://127.0.0.1:8000/signinchk?auth_token='.$uuid;
-    //         Mail::send('mail.mail_form', ['data' => $data], function($message) use ($data, $req){
-    //             $message->to($req->email)->subject('이의이승페이지 이메일인증');
-    //             $message->from('dldmldltmd@gmail.com');
-    //         });
-    //         return response()->json([
-    //             'code' => '0'
-    //         ], 200);
-    //     }else{
-    //         Log::debug("3개이상일때");
-    //         return response()->json([
-    //             'code' => 'E13',
-    //             'errorMsg' => '10분이내 최대 3번 이메일 인증이 가능합니다. 잠시 후 다시 시도해 주세요'
-    //         ], 200);
-    //     }
-    // }
-
+    // 카카오로그인
+    public function kakaologin(Request $req)
+    {   
+        $user = Socialite::driver('kakao')->stateless()->user();
+        $result = User::where('email',$user->email)->orderby('created_at','desc')->first();
+        // 계정없을경우
+        if(!$result){
+            $data['email']=$user->email;
+            $data['auth_token']='kakao';
+            $data['auth_flg']='1';
+            $total = Authenticate::create($data);
+            Log::debug($total);
+            return redirect('/signin')->cookie('auth_id', $total->id, 720, null, null, false, false);
+        // 계정있을경우 기존이메일로 로그인
+        }else{
+            Auth::login($result);
+            return redirect('/kakaologin');
+        }
+    }
+    // 카카오계정있을시 로그인기능
+    public function kakaoauthlogin(Request $req)
+    {   
+        $email = Auth::user()->email;
+        $nick = Auth::user()->nick;
+        return response()->json([
+            'code' => '0',
+            'email' => $email,
+            'nick' => $nick
+        ], 200);
+    }
 }

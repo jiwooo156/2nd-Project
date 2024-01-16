@@ -1,6 +1,6 @@
 <template>
     <!-- 헤더 영역 -->
-    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/admin'&&$route.fullPath != '/error'">
+    <div v-if="$route.fullPath != '/login'&&$route.fullPath != '/signin'&&$route.fullPath != '/authemail'&&$route.fullPath != '/admin'&&$route.fullPath != '/error'&&$route.fullPath != '/kakaologin'">
 		<header class="header">
 			<div class="header_left">
 				<router-link to="/main" class="logo">안냥</router-link>

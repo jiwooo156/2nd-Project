@@ -21,7 +21,7 @@
 							@click="login"
 						>로그인</button>
 						<div class="login_and login_font">또는</div>
-						<button class="login_kakao pointer login_font">kakao로 로그인</button>
+						<a href="/kakao" class="login_kakao pointer login_font" >kakao로 로그인</a>
 						<div class="login_sign">
 							<span>니 아직도 회원 아이가..?</span>
 							<router-link :to="'/authemail'" class="pointer login_font">회원가입</router-link>
@@ -50,7 +50,7 @@ export default {
 	methods: {
 		login(){	
 			this.$store.dispatch('actionLogin');
-		}
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		this.$store.state.beforeUrl = "";

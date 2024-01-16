@@ -842,6 +842,7 @@ input[type='date']:valid::before {
 	background-color: #FADA0A;
 	padding: 10px;
 	font-weight: 900;
+	display: inline-block;
 }
 .login_sign{
     text-align: right;
@@ -1915,8 +1916,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #656565;
 	font-size: 0.8rem;
 }
-/* .qna_btn_bot a를 .qna_btn_bot button로 변경함 */
-.qna_btn_bot button {    
+
+.qna_btn_bot a {    
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	border: none;
@@ -1988,8 +1989,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding-top: 1em;
 }
 .admin_content{
-	display: flex;
-    gap: 10px;
+	grid-template-columns: 1fr 1fr;
+	gap: 30px;
 }
 .admin_modal_bg{
 	background-color: #8686868f;
@@ -2149,6 +2150,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .admin_search_user_input_box button {
 	width: 80px;
+}
+.admin_img{
+	width: 150px;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
@@ -2860,6 +2864,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.col_hidden {
 		display: none;
+	}
+	.info_router {
+		width: 100%;
+		display: block;
 	}
 }
 

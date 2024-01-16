@@ -305,6 +305,13 @@ const store = createStore({
 							text: '해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint,
 							confirmButtonText: '확인'
 						})
+					}else if(res.data.code === "kakao"){
+						localStorage.setItem('nick', res.data.nick);
+						localStorage.setItem('email', res.data.email);
+						context.commit('setLocalFlg', true);
+						context.commit('setNowUser', localStorage.getItem('nick'));
+						context.commit('setNowEmail', localStorage.getItem('email'));
+						router.push('/main')
 					}else{
 						console.log('else');
 						Swal.fire({
@@ -549,6 +556,40 @@ const store = createStore({
                     confirmButtonText: '확인'
                 })
 			})
+		},
+		// 로그인
+		actionLoginKakao(context){
+			context.commit('setLoading',true);
+				const URL = '/login'
+				const HEADER = {
+					headers: {
+						// 'Authorization': 'Bearer team5',
+						// 1211 최정훈 수정 세션에서 로그인 auth로 관리하기에 베어러 토큰 필요 x
+						'Content-Type': 'multipart/form-data',
+					}
+				};
+				axios.post(URL,HEADER)
+				.then(res => {
+					if(res.data.code === "kakao"){
+						localStorage.setItem('nick', res.data.nick);
+						localStorage.setItem('email', res.data.email);
+						context.commit('setLocalFlg', true);
+						context.commit('setNowUser', localStorage.getItem('nick'));
+						context.commit('setNowEmail', localStorage.getItem('email'));
+						router.push('/main')
+					}
+				})
+				.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '에러발생',
+							confirmButtonText: '확인'
+						})
+				})
+				.finally(() => {
+					context.commit('setLoading',false);
+				});
 		},
 	},
 });

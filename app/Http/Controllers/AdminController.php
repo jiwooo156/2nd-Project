@@ -736,15 +736,18 @@ class AdminController extends Controller
                 // 이미지
                 if($req->img1==="undefined"&&$req->img2==="undefined"&&$req->img3==="undefined"){
                     $data['img1'] = '/img/default.png';
-                }else if($req->img1!=="undefined"){
+                }
+                if($req->img1!=="undefined"){
                     $imgName = Str::uuid().'.'.$req->img1->extension();
                     $req->img1->move(public_path('img'), $imgName);
                     $data['img1'] = '/img/'.$imgName;
-                }else if($req->img2!=="undefined"){
+                }
+                if($req->img2!=="undefined"){
                     $imgName = Str::uuid().'.'.$req->img2->extension();
                     $req->img2->move(public_path('img'), $imgName);
                     $data['img2'] = '/img/'.$imgName;
-                }else if($req->img3!=="undefined"){
+                }
+                if($req->img3!=="undefined"){
                     $imgName = Str::uuid().'.'.$req->img3->extension();
                     $req->img3->move(public_path('img'), $imgName);
                     $data['img3'] = '/img/'.$imgName;
@@ -793,11 +796,13 @@ class AdminController extends Controller
                     $imgName = Str::uuid().'.'.$req->img1->extension();
                     $req->img1->move(public_path('img'), $imgName);
                     $data['img1'] = '/img/'.$imgName;
-                }else if($req->img2!=="undefined"){
+                }
+                if($req->img2!=="undefined"){
                     $imgName = Str::uuid().'.'.$req->img2->extension();
                     $req->img2->move(public_path('img'), $imgName);
                     $data['img2'] = '/img/'.$imgName;
-                }else if($req->img3!=="undefined"){
+                }
+                if($req->img3!=="undefined"){
                     $imgName = Str::uuid().'.'.$req->img3->extension();
                     $req->img3->move(public_path('img'), $imgName);
                     $data['img3'] = '/img/'.$imgName;
@@ -896,6 +901,22 @@ class AdminController extends Controller
             'data' => $result
         ], 200);
     }
+    // 보드상세정보 조회
+    public function boardmodalget(Request $req){
+        Log::debug("진입");
+        if($req->type==="축제게시판"||$req->type==="관광게시판"){
+            $result =  Info::withTrashed()->where('id',$req->id)
+            ->first();
+        }else{
+            $result = Community::withTrashed()->where('id',$req->id)
+            ->first();
+        }
+        Log::debug($result);
+        return response()->json([
+            'code' => '0',
+            'data' => $result,
+        ], 200);
+    }
     // 전체댓글조회
     public function replieget(Request $req){
         $result = Replie::withTrashed()->select('id', 'u_id', 'b_id', 'replie', 'flg', 'deleted_at', 'created_at')
@@ -918,6 +939,231 @@ class AdminController extends Controller
             'code' => '0',
             'data' => $result
         ], 200);
+    }
+    // 보드상세정보 수정
+    public function boardmodalpost(Request $req){
+        Log::debug($req);
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            if($req->main_flg==="축제"||$req->main_flg==="관광"){
+                // id로 조회
+                $data = Info::where('id',$req->id)->first();
+                $data->title = $req->title;
+                $data->content = $req->content;
+                $data->place = $req->place;
+                $data->ns_flg = $req->ns_flg;
+                $data->states_name = $req->states_name;
+                // 이미지
+                if(empty($req->b_img1)&&empty($req->b_img2)&&empty($req->b_img3)){
+                    $data->img1 = '/img/default.png';
+                }
+                if($req->img1!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img1->extension();
+                    $req->img1->move(public_path('img'), $imgName);
+                    $data->img1 = '/img/'.$imgName;
+                }
+                if($req->img2!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img2->extension();
+                    $req->img2->move(public_path('img'), $imgName);
+                    $data->img2 = '/img/'.$imgName;
+                }
+                if($req->img3!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img3->extension();
+                    $req->img3->move(public_path('img'), $imgName);
+                    $data->img3 = '/img/'.$imgName;
+                }
+                // 플래그(커플친구가족주차)
+                if($req->couple_flg){
+                    $data->couple_flg="1";
+                }else{
+                    $data->couple_flg="0";
+                }
+                if($req->friend_flg){
+                    $data->friend_flg="1";
+                }else{
+                    $data->friend_flg="0";
+                }
+                if($req->family_flg){
+                    $data->family_flg="1";
+                }else{
+                    $data->family_flg="0";
+                }
+                if($req->parking_flg){
+                    $data->parking_flg="1";
+                }else{
+                    $data->parking_flg="0";
+                }
+                // 부가정보
+                if($req->fee!=="없음"&&!empty($req->fee)){
+                    $data->fee = $req->fee;
+                }else if(empty($req->fee)){
+                    $data->fee = "없음";
+                }
+                if($req->time!=="없음"&&!empty($req->time)){
+                    $data->time = $req->time;
+                }else if(empty($req->time)){
+                    $data->time = "없음";
+                }
+                if($req->holiday!=="연중무휴"&&!empty($req->holiday)){
+                    $data->holiday = $req->holiday;
+                }else if(empty($req->holiday)){
+                    $data->holiday = "연중무휴";
+                }
+                if($req->tel!=="없음"&&!empty($req->tel)){
+                    $data->tel = $req->tel;
+                }else if(empty($req->tel)){
+                    $data->tel = "없음";
+                }
+                if($req->main_flg==="축제"){
+                    $data->start_at = $req->start_at;
+                    $data->end_at = $req->end_at;
+                }
+            // 커뮤니티일때
+            }else{
+                $data = community::where('id',$req->id)->first();
+                $data->title = $req->title;
+                $data->content = $req->content;
+                if(empty($req->b_img1)){
+                    $data->img1 = null;
+                }
+                if(empty($req->b_img2)){
+                    $data->img2 = null;
+                }
+                if(empty($req->b_img3)){
+                    $data->img3 = null;
+                }
+                if($req->img1!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img1->extension();
+                    $req->img1->move(public_path('img'), $imgName);
+                    $data->img1 = '/img/'.$imgName;
+                }
+                if($req->img2!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img2->extension();
+                    $req->img2->move(public_path('img'), $imgName);
+                    $data->img2 = '/img/'.$imgName;
+                }
+                if($req->img3!=="undefined"){
+                    $imgName = Str::uuid().'.'.$req->img3->extension();
+                    $req->img3->move(public_path('img'), $imgName);
+                    $data->img3 = '/img/'.$imgName;
+                }
+            }
+            $data->save();
+            // 저장
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '변경실패 실패.'
+            ], 400);
+        }
+    }
+    // 보드모달정보 삭제
+    public function boardmodaldel(Request $req){
+        try {
+            DB::beginTransaction();
+            if($req->flg==="축제"||$req->flg==="관광"){
+                $result = Info::destroy($req->id);
+            }else{
+                $result = Community::destroy($req->id);
+            }
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 보드모달정보 복구
+    public function boardmodalput(Request $req){
+        try {
+            DB::beginTransaction();
+            if($req->flg==="축제"||$req->flg==="관광"){
+                $result = Info::withTrashed();
+            }else{
+                $result = Community::withTrashed();
+            }
+            $result = $result
+                ->where('id',$req->id)
+                ->first();
+            $result->deleted_at = null;
+            $result->save();
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 댓글상세정보 조회
+    public function repliemodalget(Request $req){
+        Log::debug("함수진입");
+        $result =  Replie::withTrashed()->where('id',$req->id)
+        ->first();
+        $result->type = $req->type;
+        Log::debug($result);
+        return response()->json([
+            'code' => '0',
+            'data' => $result,
+        ], 200);
+    }
+    // 댓글상세정보 삭제
+    public function repliemodaldel(Request $req){
+        try {
+            DB::beginTransaction();
+                $result = Replie::destroy($req->id);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 댓글상세정보 복구
+    public function repliemodalput(Request $req){
+        try {
+            DB::beginTransaction();
+                $result = Replie::withTrashed()
+                    ->where('id',$req->id)
+                    ->first();
+                $result->deleted_at = null;
+                $result->save();
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
     }
     // 특정시간에 동작
     public function test(Request $req){
