@@ -147,7 +147,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::get('/info', [InfoController::class, 'communityget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
     Route::get('/more', [InfoController::class, 'morereplie']);
-    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
     Route::post('/heartpost', [InfoController::class, 'plusheart']);
 });
