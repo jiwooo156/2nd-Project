@@ -7,7 +7,6 @@ use App\Models\Info;
 use App\Models\Replie;
 use App\Models\Like;
 use App\Models\Community;
-use App\Models\Like;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
