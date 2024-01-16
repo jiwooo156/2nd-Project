@@ -2,49 +2,45 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<form action="/community/testwrite" methods="post">
-					<div class="detail_type font_air bold center">					
-						<select v-model="flg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
-							<option value="0" class="qna_drop_item" selected>자유게시판</option>
-							<option value="1" class="qna_drop_item">정보게시판</option>
-							<option value="2" class="qna_drop_item">질문게시판</option>
-							<option value="3" class="qna_drop_item">건의게시판</option>
-						</select>
-						<select v-model="categoryflg" name="categoryflg" class="form-select qna_drop" aria-label=".form-select-sm">
-							<option value="3" class="qna_drop_item" selected>전체</option>
-							<option value="0" class="qna_drop_item">축제</option>
-							<option value="1" class="qna_drop_item">관광</option>
-							<option value="2" class="qna_drop_item">기타</option>
-						</select>
+				<form action="/write/update" methods="post">
+					<div class="detail_type font_air bold">
+						<!-- <select v-model="flg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
+							<option value="free" class="qna_drop_item" selected>자유</option>
+							<option value="info" class="qna_drop_item">정보</option>
+							<option value="question" class="qna_drop_item">질문</option>
+							<option value="tendinous" class="qna_drop_item">건의</option>
+						</select> -->
+						<span>{{ this.detaildata.flg }}게시판입니다.</span>
+						<span>{{ this.detaildata.category_flg }}</span>
+						<!-- <select v-model="category_flg" name="category_flg" class="form-select qna_drop" aria-label=".form-select-sm">
+							<option value="all" class="qna_drop_item" selected>전체</option>
+							<option value="festival" class="qna_drop_item">축제</option>
+							<option value="tourism" class="qna_drop_item">관광</option>
+							<option value="etc" class="qna_drop_item">기타</option>
+						</select> -->
 					</div>
 					<div class="detail_header font_air bold">
 						<div class="detail_title">
 							<textarea type="text" maxlength="50"
 							name="title"
-							@input="changeKeyword"
+							v-model="title"  
+							@input="changeKeywordT"
 							placeholder="제목을 입력하세요."
-							v-model="title"
 							></textarea>
 						</div>
 					</div>
-					<!-- <div class="community_inputgroup mb-3 align-items-center">
-						<input id="commu_file_img1" class="form-control" type="file" accept="image/*">
-						<input id="commu_file_img2" class="form-control" type="file" accept="image/*">
-						<input id="commu_file_img3" class="form-control" type="file" accept="image/*">
-					</div> -->
 					<div>
 						<p class="font_air bold">						
 							<textarea type="text" maxlength="3000"
-							name="content" 
-							@input="changeKeyword"
+							name="content"
+							v-model="content" 
+							@input="changeKeywordC"
 							placeholder="내용을 입력하세요."
-							v-model="content"
-							></textarea>
-						</p>
+							></textarea></p>
 					</div>
 					<div class="post_btn_bot">
-						<button type="button" @click="testWrite()">작성</button>
-						<button type="button" @click="goBack">취소</button>
+							<button type="button" @click="uppost">수정</button>
+							<button type="button" @click="goBack">취소</button>
 					</div>
 				</form>
 			</div>
@@ -53,69 +49,91 @@
 	</div>
 </template>
 <script>
-import axios from 'axios';
 import Swal from 'sweetalert2';
-
 
 export default {
 	name: "PostWriteComponent",
 	data() {
 		return {
-			nowflg: "",
-			flg: "0",
-			categoryflg: "3",
-			title: "",
-			content: "",
-			communityresult: ""
+			detaildata: {},
+			title:"",
+			content:"",
+			flg: "",
+			category_flg: "",
+			// flg: 'free',
+			// category_flg: 'all',
 		}
 	},
-	created() {
-	},
 	methods: {
-		// 로그인확인
-		// checklocal() {
-		// 	if(!(localStorage.getItem('nick'))){
-		// 		Swal.fire({
-        //             icon: 'error',
-        //             title: '주의',
-        //             text: '로그인 뒤 작성 해 주세요',
-        //             confirmButtonText: '확인'
-        //         })
-		// 		this.$router.push('/login');
-		// 	}
-		// },
-
-		// 게시글 작성
-		testWrite() {
-			const URL = '/testwrite';
+		// 게시글 수정
+		uppost() {
+			this.$store.commit('setLoading',true);
+			let URL = '/write/update';
 			const formData = new FormData();
-			formData.append('title', this.title);
-			formData.append('content', this.content);
-			formData.append('flg', this.flg);
-			formData.append('category_flg', this.categoryflg);
+			formData.append('id', this.detaildata.id);
+			formData.append('title', this.detaildata.title);
+			formData.append('content', this.detaildata.content);
+			formData.append('flg', this.detaildata.flg);
+			formData.append('category_flg', this.detaildata.category_flg);
 			axios.post(URL, formData)
 			.then(res => {
-				console.log(res);
-				this.communityresult = res.data.data;
-				console.log(this.communityresult);
-				this.$router.replace('/community?id='+this.communityresult.id);
+				if(res.data.code === "0") {
+					this.detaildata = res.data.data[0];
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
+				}
 			})
 			.catch(err => {
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: '에러가 발생했습니다',
+                    text: '에러 발생.',
                     confirmButtonText: '확인'
                 })
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		//*************************************************************************
+		// flg 데이터 출력 변환
+		getEventType(data) {
+			if(data === '0') {
+				return '자유';
+			}else if (data === '1') {
+				return '정보';
+			}else if (data === '2') {
+				return '질문';
+			}else {
+				return '건의';
+			}
+		},
+		// category_flg 데이터 출력 변환
+		getCategoryEventType(data) {
+			if(data === '0') {
+				return '축제';
+			}else if (data === '1') {
+				return '관광';
+			}else if (data === '2') {
+				return '기타';
+			}else {
+				return '기타';
+			}
 		},
 		// 뒤로가기 동작 실행
 		goBack() {
 			this.$router.go(-1);
 		},	
 		// 한글 바로입력
-		changeKeyword(e) {
-			this.replie = e.target.value;
+		changeKeywordT(e) {
+			this.post_title = e.target.value;
+		},
+		changeKeywordC(e) {
+			this.post_content = e.target.value;
 		},
 	}
 }
