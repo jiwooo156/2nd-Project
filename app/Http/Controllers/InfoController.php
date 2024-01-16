@@ -101,6 +101,80 @@ class InfoController extends Controller
             ], 200);
         }
     }
+
+    // // 디테일 페이지 정보조회 좋아요있는 버전
+    // public function detailget(Request $req) {
+    //     // 리퀘스트온 아이디값으로 인포테이블 조회
+    //     $info_result = DB::table('infos as inf')
+    //     ->select('inf.*', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
+    //     ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 AND deleted_at IS NULL GROUP BY b_id) lik'), 'inf.id', '=', 'lik.b_id')
+    //     ->where('inf.id', $req->id)
+    //     ->get();
+
+    //     Log::debug("커뮤니티결과 : ".$info_result);
+
+    //     $auth_id = "";
+    //     $result = "";
+
+    //     if(auth()->check()) {
+    //         Log::debug("로그인상태");
+    //         $auth = Auth::user();
+    //         $auth_id = $auth->id;
+    //         $result = Like::where('u_id',$auth_id)->where('b_id',$req->id)->first();
+    //         Log::debug("결과");
+    //         Log::debug($result);
+    //     }
+    //     // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
+    //     if(!($req->cookie('hits'.$req->id))&&count($info_result)===1){    
+    //         // 조회수 1증가  
+    //         try { 
+    //             // 트랜잭션 시작
+    //             DB::beginTransaction();
+    //             // 조회된 값의 조회수 1증가
+    //             $info_result[0]->timestamps = false;
+    //             $info_result[0]->hits++;
+    //             // 저장
+    //             $info_result[0]->save();
+    //             DB::commit();    
+    //         // 실패시
+    //         } catch(Exception $e){
+    //             DB::rollback();
+    //         }
+    //     // 쿠키값이있고 조회된값이 1개일때
+    //     }
+    //     if(count($info_result)===1){            
+    //         // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
+    //         $repliecnt = Replie::
+    //         where('b_id', $req->id)
+    //         ->count();
+    //         // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
+    //         $replieresult = Replie::
+    //         select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at', 'users.email')
+    //         ->join('users', 'replies.u_id', '=', 'users.id')
+    //         ->where('replies.b_id', $req->id)
+    //         ->where('replies.flg', '1')
+    //         ->orderBy('replies.created_at', 'desc')
+    //         ->limit(20)
+    //         ->get();
+    //         Log::debug("댓글 결과 : ".$replieresult);
+    //         Log::debug("댓글 갯수 : ".$repliecnt);
+            
+    //         return response()->json([
+    //             'code' => '0',
+    //             'data' => $info_result,
+    //             'replie' => $replieresult,
+    //             'repliecount' =>  $repliecnt,
+    //             'userauth' => $auth_id,
+    //             'likeresult' => $result
+    //         ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
+    //     // 조회된값이 없거나 실패일시
+    //     }else{
+    //         return response()->json([
+    //             'code' => 'E99',
+    //             'errorMsg' => '게시글 조회에 실패하였습니다',
+    //         ], 200);
+    //     }
+    // }
     // 댓글작성
     public function repliewirte(Request $req) {
         // 리퀘스트온 값중 댓글 보드아이디 data에 저장
@@ -506,13 +580,21 @@ class InfoController extends Controller
             ->get();
 
         Log::debug("커뮤니티결과 : ".$communityresult);
-
+        
+        // 유저정보 초기화
         $auth_id = "";
-        $auth = Auth::user();
-        if(!empty($auth)){
-            $auth_id = $auth->id;
-        }
+        $result = "";
 
+        // 로그인 시 해당유저 정보로 likes 테이블 조회
+        if(auth()->check()) {
+            Log::debug("로그인상태");
+            $auth = Auth::user();
+            $auth_id = $auth->id;
+            $result = Like::where('u_id',$auth_id)->where('b_id',$req->id)->first();
+            Log::debug("결과");
+            Log::debug($result);
+        }
+        
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($communityresult)===1){    
             // 조회수 1증가  
@@ -520,6 +602,7 @@ class InfoController extends Controller
                 // 트랜잭션 시작
                 DB::beginTransaction();
                 // 조회된 값의 조회수 1증가
+                $communityresult[0]->timestamps = false;
                 $communityresult[0]->hits++;
                 // 저장
                 $communityresult[0]->save();
@@ -552,7 +635,8 @@ class InfoController extends Controller
                 'data' => $communityresult,
                 'replie' => $replieresult,
                 'repliecount' =>  $repliecnt,
-                'userauth' => $auth_id
+                'userauth' => $auth_id,
+                'likeresult' => $result
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
@@ -596,39 +680,149 @@ class InfoController extends Controller
         }  
         // 정상처리시
     }
+
     // 0115 정지우 좋아요 작성
+    // public function plusheart(Request $req) {
+    //     Log::debug("plusheart 함수 시작");
+    //     Log::debug($req);
+    //     // 리퀘스트온 값 data에 저장
+    //     $data = $req->only('b_id','flg');
+    //     // u_id라는 키값에 세션에 저장된 pk값 저장
+    //     $data["u_id"] = Auth::user()->id;
+    //     Log::debug($data);
+
+    //     // 유저정보 초기화
+    //     // $auth_id = "";
+    //     // $result = "";
+
+    //     // 로그인 시 해당유저 정보로 likes 테이블 조회
+    //     if(auth()->check()) {
+    //         Log::debug("로그인상태");
+    //         $auth = Auth::user();
+    //         $auth_id = $auth->id;
+    //         $likehistory = Like::where('u_id',$auth_id)->where('b_id',$req->id)->first();
+    //         Log::debug("결과");
+    //         Log::debug($likehistory);
+    //     }
+    //     if(!$likehistory){
+    //         Log::debug("좋아요이력없음 : ".gettype($likehistory));
+    //         try { 
+    //             Log::debug("plusheart try");
+    //             // 트랜잭션 시작
+    //             DB::beginTransaction();
+    //             // data정보를 커뮤니티 테이블에 인서트
+    //             $result = Like::create($data);
+    //             // 저장
+    //             DB::commit();
+    //             return response()->json([
+    //                 'code' => '0',
+    //                 'data' => $result,
+    //             ], 200);
+    //         // 실패시
+    //         } catch(Exception $e){
+    //             Log::debug("plusheart catch");
+    //             // 롤백
+    //             DB::rollback();
+    //             return response()->json([
+    //                 'code' => 'E99',
+    //                 'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
+    //             ], 200);
+    //         }  
+    //     }else {
+    //         Log::debug("좋아요이력있음 : ".gettype($likehistory));
+    //         try { 
+    //             Log::debug("plusheart destroy try");
+    //             // 트랜잭션 시작
+    //             DB::beginTransaction();
+    //             // data정보를 커뮤니티 테이블에 인서트
+    //             $result = Like::destroy($data);
+    //             // 저장
+    //             DB::commit();
+    //             return response()->json([
+    //                 'code' => '0',
+    //                 'data' => $result,
+    //             ], 200);
+    //         // 실패시
+    //         } catch(Exception $e){
+    //             Log::debug("plusheart catch");
+    //             // 롤백
+    //             DB::rollback();
+    //             return response()->json([
+    //                 'code' => 'E99',
+    //                 'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
+    //             ], 200);
+    //         }  
+    //     }
+    // }
+
+    // 좋아요 작성***********************************************
     public function plusheart(Request $req) {
-        Log::debug("plusheart 함수 시작");
-        Log::debug($req);
-        // 리퀘스트온 값 data에 저장
-        $data = $req->only('b_id','flg');
-        // u_id라는 키값에 세션에 저장된 pk값 저장
-        $data["u_id"] = Auth::user()->id;
-        Log::debug($data);
-        try { 
+    Log::debug("plusheart 함수 시작");
+    Log::debug($req);
+
+    // 리퀘스트 온 값 data에 저장
+    $data = $req->only('b_id', 'flg');
+    $data["u_id"] = Auth::user()->id;
+    Log::debug($data);
+
+    // 로그인 여부 확인
+    if (auth()->check()) {
+        Log::debug("로그인 상태");
+        $auth_id = auth()->id();
+        Log::debug($auth_id);
+
+        // 해당 유저의 like 이력 조회 (있으면 true, 없으면 false)
+        $likehistory = Like::where('u_id', $auth_id)->where('b_id', $req->b_id)->exists();
+        Log::debug("결과");
+        Log::debug($likehistory);
+        Log::debug(gettype($likehistory));
+
+        try {
             Log::debug("plusheart try");
             // 트랜잭션 시작
             DB::beginTransaction();
-            // data정보를 커뮤니티 테이블에 인서트
-            $result = Like::create($data);
+
+            // 좋아요 이력이 없으면 생성, 있으면 삭제
+            if (!$likehistory) {
+                // data 정보를 커뮤니티 테이블에 인서트
+                $result = Like::create($data);
+                Log::debug('여기는 생성이야'. $result);
+            } else {
+                // data 정보를 커뮤니티 테이블에서 삭제 (소프트딜리트)
+                // $result = Like::where('u_id', $auth_id)->where('b_id', $req->b_id)->destroy();
+                $result = Like::where('u_id', $auth_id)
+                ->where('b_id', $req->b_id)
+                ->delete();
+                Log::debug('여기는 삭제야'. $result);
+            }
+
             // 저장
             DB::commit();
+
             return response()->json([
                 'code' => '0',
                 'data' => $result,
             ], 200);
-        // 실패시
-        } catch(Exception $e){
+        } catch (Exception $e) {
             Log::debug("plusheart catch");
             // 롤백
             DB::rollback();
+
             return response()->json([
                 'code' => 'E99',
                 'errorMsg' => '게시글 작성 중 오류가 발생했습니다',
             ], 200);
-        }  
-        // 정상처리시
+        }
+    } else {
+        Log::debug("로그인 상태 아님");
+        // 로그인되어 있지 않으면 에러 응답
+        return response()->json([
+            'code' => 'E99',
+            'errorMsg' => '로그인 후 이용해 주세요.',
+        ], 200);
     }
+}
+
 
     // ***********************************************
     // 커뮤니티 질문&정보 게시판 리스트 조회
@@ -690,6 +884,7 @@ class InfoController extends Controller
                 // 트랜잭션 시작
                 DB::beginTransaction();
                 // 조회된 값의 조회수 1증가
+                $com_result[0]->timestamps = false;
                 $com_result[0]->hits++;
                 // 저장
                 $com_result[0]->save();

@@ -11,8 +11,7 @@
 							<option value="3" class="qna_drop_item">건의게시판</option>
 						</select>
 						<select v-model="categoryflg" name="categoryflg" class="form-select qna_drop" @click="checklocal" aria-label=".form-select-sm">
-							<option value="3" class="qna_drop_item" selected>전체</option>
-							<option value="0" class="qna_drop_item">축제</option>
+							<option value="0" class="qna_drop_item" selected>축제</option>
 							<option value="1" class="qna_drop_item">관광</option>
 							<option value="2" class="qna_drop_item">기타</option>
 						</select>
@@ -28,11 +27,11 @@
 							></textarea>
 						</div>
 					</div>
-					<!-- <div class="community_inputgroup mb-3 align-items-center">
-						<input id="commu_file_img1" class="form-control" type="file" accept="image/*">
-						<input id="commu_file_img2" class="form-control" type="file" accept="image/*">
-						<input id="commu_file_img3" class="form-control" type="file" accept="image/*">
-					</div> -->
+					<div class="community_inputgroup mb-3 align-items-center">
+						<!-- <input id="commu_file_img1" class="form-control" type="file" accept="image/*"> -->
+						<!-- <input id="commu_file_img2" class="form-control" type="file" accept="image/*">
+						<input id="commu_file_img3" class="form-control" type="file" accept="image/*"> -->
+					</div>
 					<div>
 						<p class="font_air bold">						
 							<textarea type="text" maxlength="3000"
@@ -65,7 +64,7 @@ export default {
 		return {
 			nowflg: "",
 			flg: "0",
-			categoryflg: "3",
+			categoryflg: "0",
 			title: "",
 			content: "",
 			communityresult: ""
@@ -90,11 +89,13 @@ export default {
 		// 게시글 작성
 		testWrite() {
 			const URL = '/testwrite';
+			// const uploadFile = event.target.files[0]
 			const formData = new FormData();
 			formData.append('title', this.title);
 			formData.append('content', this.content);
 			formData.append('flg', this.flg);
 			formData.append('category_flg', this.categoryflg);
+			// formData.append('files',uploadFile);
 			console.log(formData);
 			console.log(this.title);
 			console.log(this.content);
@@ -104,6 +105,11 @@ export default {
 				console.log(res);
 				this.communityresult = res.data.data;
 				console.log(this.communityresult);
+				console.log(typeof this.communityresult.flg);
+				if((this.communityresult.flg==="2")||(this.communityresult.flg==="3")) {
+					this.$router.replace('/post?id='+this.communityresult.id);
+					return false;
+				}
 				this.$router.replace('/community?id='+this.communityresult.id);
 			})
 			.catch(err => {
