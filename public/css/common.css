@@ -842,6 +842,7 @@ input[type='date']:valid::before {
 	background-color: #FADA0A;
 	padding: 10px;
 	font-weight: 900;
+	display: inline-block;
 }
 .login_sign{
     text-align: right;
