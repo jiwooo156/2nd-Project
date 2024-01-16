@@ -729,35 +729,6 @@ class InfoController extends Controller
             ], 200);
         }
     }
-    // 커뮤니티 질문&건의 작성
-    public function postwrite(Request $req) {
-        // 기본 데이터
-        $data = $req->only('flg', 'category_flg', 'title', 'content');
-        // u_id라는 키값에 세션에 저장된 pk값 저장
-        $data["u_id"] = Auth::user()->id;
-        try {
-            // 트랜잭션시작
-            DB::beginTransaction();
-            // community 테이블에 생성
-            $result = community::create($data);
-            // 저장
-            DB::commit();
-            // $result 안에 이메일과 닉네임 추가
-            $result->email = Auth::user()->email;
-            $result->nick = Auth::user()->nick;
-            return response()->json([
-                'code' => '0',
-                'data' => $result,
-            ], 200);
-        } catch(Exception $e){
-            // 롤백
-            DB::rollback();
-            return response()->json([
-                'code' => 'E99',
-                'errorMsg' => '작성 실패'
-            ], 400);
-        }
-    }
     // 커뮤니티 질문&건의 삭제
     public function postdelete(Request $req){
         try {
@@ -782,13 +753,17 @@ class InfoController extends Controller
     }
     // 커뮤니티 질문&건의 수정
     public function postupdate(Request $req){
+        Log::debug("수정 함수 시작");
+        Log::debug($req);
+        Log::debug("제목 플래그 : ".$req->title);
+        Log::debug("내용 플래그 : ".$req->content);
+        Log::debug("게시판 플래그 : ".$req->flg);
+        Log::debug("카테고리 플래그 : ".$req->category_flg);
         try {
             // 트랜잭션시작
             DB::beginTransaction();
             // 조회
-            $data = Community::
-            where('id',$req->id)
-            ->first();
+            $data = Community::where('id',$req->id)->first();
             $data->title = $req->title;
             $data->content = $req->content;
             $data->flg = $req->flg;

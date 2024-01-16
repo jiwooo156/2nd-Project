@@ -199,7 +199,7 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write" type="button" @click="checklocal2">질문하기</router-link>
+					<router-link to="/testwrite" type="button" @click="checklocal2">질문하기</router-link>
 				</div>
 			</div>
 			<!-- 건의게시판 -->
@@ -334,7 +334,7 @@
 					</routerLink>
 				</div>
 				<div class="qna_btn_bot d-flex flex-row-reverse mt-4 mb-4">
-					<router-link to="/write" type="button" @click="checklocal3">건의하기</router-link>
+					<router-link to="/testwrite" type="button" @click="checklocal3">건의하기</router-link>
 				</div>
 			</div>
 			<!-- 아래 공통영역 -->
