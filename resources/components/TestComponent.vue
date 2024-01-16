@@ -56,8 +56,6 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
-
 export default {
 	name: "TestComponent",
 	data() {
@@ -119,20 +117,18 @@ export default {
                     text: '에러가 발생했습니다',
                     confirmButtonText: '확인'
                 })
-			})
-		},
-		// 뒤로가기 동작 실행
-		goBack() {
-			this.$router.go(-1);
-		},	
-		// 한글 바로입력
-		changeKeyword(e) {
-			this.replie = e.target.value;
-		},
-	}
+            })
+        },
+        // 뒤로가기 동작 실행
+        goBack() {
+            this.$router.go(-1);
+        },
+        // 한글 바로입력
+        changeKeyword(e) {
+            this.replie = e.target.value;
+        },
+    }
 }
-
 </script>
 <style lang="">
-	
 </style>

@@ -57,6 +57,8 @@ Route::middleware('myValidation')->prefix('userchk')->group(function() {
         return view('welcome');
     });
     Route::post('/', [UserController::class, 'userchk']);
+    Route::get('/like', [InfoController::class, 'userlikeget']);
+    Route::get('/write', [InfoController::class, 'userwriteget']);
 });
 
 Route::middleware('myValidation')->prefix('userinfo')->group(function() {
@@ -103,15 +105,7 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
-});
-
-// 커뮤니티 작성 라우터 생성
-Route::middleware('myValidation')->prefix('write')->group(function() {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::post('/create', [InfoController::class, 'postwrite']); // 게시글 작성
-    Route::post('/update', [InfoController::class, 'postupdate']); // 게시글 수정
+    Route::put('/update', [InfoController::class, 'postupdate']); // 게시글 수정
 });
 
 // 관광&축제 디테일 라우터
@@ -184,6 +178,8 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::post('/report/repair', [AdminController::class, 'repairpost']);
     Route::get('/userinfo', [AdminController::class, 'userget']);
     Route::post('/userinfo', [AdminController::class, 'restraintuser']);
+    Route::put('/userinfo/{id}/{val}', [AdminController::class, 'adminpost']);
+    Route::delete('/userinfo/{id}', [AdminController::class, 'admindel']);
     Route::post('/restraint', [AdminController::class, 'restraintreset']);
     Route::get('/board', [AdminController::class, 'boardget']);
     Route::post('/board', [AdminController::class, 'boardpost']);
