@@ -206,7 +206,7 @@ export default {
 		// 댓글작성
 		repliewrite(){
 			if(this.replie){
-				const URL = '/community/'+this.b_id;
+				const URL = '/community/reply/'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
