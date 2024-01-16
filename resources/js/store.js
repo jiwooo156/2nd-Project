@@ -284,7 +284,7 @@ const store = createStore({
 						}else{
 							router.push('/main')
 						}
-					}else if(res.data.code === "1"){
+					}else if(res.data.code === "1"||res.data.code === "2"){
 						Swal.fire({
 							icon: 'success',
 							title: '완료',
@@ -294,6 +294,11 @@ const store = createStore({
 						localStorage.setItem('nick', res.data.data.nick);
 						localStorage.setItem('email', email);
 						localStorage.setItem('admin', res.data.data.id);
+						if(res.data.code === "1"){
+							localStorage.setItem('flg',"0");
+						}else{
+							localStorage.setItem('flg',"1");
+						}
 						context.commit('setLocalFlg', true);
 						context.commit('setNowUser', localStorage.getItem('nick'));
 						context.commit('setNowEmail', localStorage.getItem('email'));
@@ -305,13 +310,6 @@ const store = createStore({
 							text: '해당계정은. '+res.data.data.restraint_at+" 까지 이용이 제한된 이메일 입니다.\n"+"제재사유 : "+res.data.data.restraint,
 							confirmButtonText: '확인'
 						})
-					}else if(res.data.code === "kakao"){
-						localStorage.setItem('nick', res.data.nick);
-						localStorage.setItem('email', res.data.email);
-						context.commit('setLocalFlg', true);
-						context.commit('setNowUser', localStorage.getItem('nick'));
-						context.commit('setNowEmail', localStorage.getItem('email'));
-						router.push('/main')
 					}else{
 						console.log('else');
 						Swal.fire({
@@ -571,12 +569,32 @@ const store = createStore({
 				axios.post(URL,HEADER)
 				.then(res => {
 					if(res.data.code === "kakao"){
-						localStorage.setItem('nick', res.data.nick);
-						localStorage.setItem('email', res.data.email);
+						localStorage.setItem('nick', res.data.data.nick);
+						localStorage.setItem('email', res.data.data.email);
 						context.commit('setLocalFlg', true);
 						context.commit('setNowUser', localStorage.getItem('nick'));
 						context.commit('setNowEmail', localStorage.getItem('email'));
 						router.push('/main')
+					}else if(res.data.code === "1"||res.data.code === "2"){
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '환영합니다. '+res.data.data.name+" 관리자님",
+							confirmButtonText: '확인'
+						})
+						localStorage.setItem('nick', res.data.data.nick);
+						localStorage.setItem('email', res.data.data.email);
+						localStorage.setItem('admin', res.data.data.id);
+						if(res.data.code === "1"){
+							localStorage.setItem('flg', "0");
+						}else{
+							localStorage.setItem('flg', "1");
+
+						}
+						context.commit('setLocalFlg', true);
+						context.commit('setNowUser', localStorage.getItem('nick'));
+						context.commit('setNowEmail', localStorage.getItem('email'));
+						router.push('/admin')
 					}
 				})
 				.catch(err => {

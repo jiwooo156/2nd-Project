@@ -252,7 +252,7 @@
 					<div class="input-group mb-3"
 						v-if="this.now_report.admin_flg === '3'"
 					>
-						<span class="input-group-text admin_report_span_to">제제일자</span>
+						<span class="input-group-text admin_report_span_to">제재기간</span>
 						<div class="form-control" aria-label="With textarea">{{ modalReport.restraint_at }}</div>
 					</div>
 				</div>
@@ -280,7 +280,7 @@
 					<div class="input-group mb-4"
 						v-if="this.now_report.admin_flg === '4'"
 					>
-						<span class="input-group-text admin_report_span_from">제재일자</span>
+						<span class="input-group-text admin_report_span_from">제재기간</span>
 						<div class="form-control" aria-label="With textarea">{{ this.now_report.restraint_at }}</div>
 					</div>
 				</div>
@@ -940,6 +940,7 @@
 						<div class="card-text">유저번호 = {{ data.u_id }}</div>
 						<div class="card-text">제목 = {{ data.title }}</div>
 						<div class="card-text">내용 = {{ data.content }}</div>
+						<div class="card-text">건의시간 = {{ data.created_at }}</div>
 					</div>
 				</div>
 			</div>
@@ -1073,21 +1074,27 @@
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<span class="input-group-text">전화번호</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.phone }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
 						<span class="input-group-text">생년월일</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.birthdate }}
 						</div>
-					</div>
-					<div class="input-group mb-3">
+						<span class="input-group-text">전화번호</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.phone }}
+						</div>
 						<span class="input-group-text">성별</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.gender }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">가입일자</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.created_at }}
+						</div>
+						<span class="input-group-text">탈퇴일자</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.deleted_at }}
 						</div>
 					</div>
 					<div class="input-group mb-3">
@@ -1102,6 +1109,12 @@
 						<span class="input-group-text">제재종료일</span>
 						<div type="text" class="form-control">
 							{{ this.selectUserData.res_at }}
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">관리자등급</span>
+						<div type="text" class="form-control">
+							{{ this.selectUserData.flg }}
 						</div>
 					</div>
 				</div>
@@ -1147,14 +1160,17 @@
 						</div>
 					</div>
 				</div>
-				<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
-					v-if="this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X'"
-				>유저제재</div>
-				<div class="btn btn-danger btn-sm"
+				<div v-if="selectUserData.deleted_at==='X'">
+					<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+					v-if="(this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X')&&selectUserData.flg==='X'"
+					>유저제재</div>
+					<div class="btn btn-danger btn-sm"
 					@click="clearestraint(this.selectUserData.id,null)"
-					v-if="this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X'"
-				>제제해제</div>
-				<div class="btn btn-primary btn-sm" @click="resetall">확인</div>
+					v-if="(this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X')&&selectUserData.flg==='X'"
+					>제제해제</div>
+					<div class="btn btn-primary btn-sm" @click="adminalret(selectUserData.id)" v-if="selectUserData.flg==='X'&&authority">관리자로임명</div>
+					<div class="btn btn-primary btn-sm" @click="admindel(selectUserData.id)" v-if="selectUserData.flg!=='X'&&authority">관리자권한해제</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -1200,6 +1216,7 @@ export default {
 
 	data() {
 		return {
+			authority: false,
 			today: "",
 			todaytime: "",
 			restraint_msg: "",
@@ -1602,6 +1619,9 @@ export default {
 		},
 	},
 	created() {
+		if(localStorage.getItem('flg') === '1'){
+			this.authority = true;
+		}
 		this.getToday();
 		this.adminchk();
 		this.statistics()
@@ -1920,10 +1940,20 @@ export default {
 				axios.get(URL)
 				.then(res => {
 					if(res.data.code === "0"){
-						res.data.data.res_at = res.data.data.res_at === null?"X":res.data.data.res_at;
+						console.log(res.data.data);
+						if(res.data.data.flg!==""){
+							res.data.data.flg = res.data.data.flg === "0"?"일반관리자":"메인관리자";		
+						}else{
+							res.data.data.flg="X"
+						}
+						res.data.data.deleted_at = res.data.data.deleted_at === null?"X":res.data.data.deleted_at;
+						res.data.data.res_at = (res.data.data.res_at === null)||(!res.data.data.res_at)?"X":res.data.data.res_at;
+						res.data.data.restraint = (res.data.data.restraint === null)||(!res.data.data.restraint)?"X":res.data.data.restraint;
 						this.selectUserData=res.data.data
 						this.searchflg=true;
 					}else if(res.data.code === "1"){
+						console.log(res.data.errorMsg);
+						console.log("엘스진입");
 						Swal.fire({
 							icon: 'error',
 							title: 'Error',
@@ -1933,6 +1963,8 @@ export default {
 					}
 				})
 				.catch(err => {
+					console.log(res.data.errorMsg);
+					console.log("캐치진입");
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
@@ -3039,6 +3071,84 @@ export default {
 				this.$store.commit('setLoading', false);
 			});
 		},
+		// 관리자권한해제
+		admindel(id){
+			this.$store.commit('setLoading',true);
+			let URL = '/admin/userinfo/'+id
+			axios.delete(URL)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.resetall();
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '에러 발생.',
+                    confirmButtonText: '확인'
+                })
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 관리자등록등급 설정
+		adminalret(id){
+			Swal.fire({
+				title: '관리자권한설정',
+				input: 'select',
+				inputOptions: {
+					'0': '관리자 임명(관리자페이지 기능만 가능)',
+					'1': '메인 관리자임명(관리자등록,관리자해제 가능)',
+				},
+				inputPlaceholder: '선택해주세요',
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+				preConfirm: (input) => {
+					// 공백입력시 예외사항
+					return new Promise((resolve) => {
+						if (input.trim() === '') {
+							Swal.showValidationMessage('답변을 입력해 주세요.');
+						}
+						resolve(input);
+					});
+				}
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					const val = result.value;
+					const URL = '/admin/userinfo/'+id+'/'+val
+					axios.put(URL)
+					.then(res => {
+						if(res.data.code === "0"){
+							Swal.fire({
+								icon: 'success',
+								title: '완료',
+								text: '정상처리되었습니다.',
+								confirmButtonText: '확인'
+							})
+							this.resetall();
+						}
+					})
+					.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '에러 발생.',
+							confirmButtonText: '확인'
+						})
+					})	
+				}					
+			})
+		},
 		// 페이징처리
 		paging(){
 			this.numbox = [];
@@ -3070,7 +3180,7 @@ export default {
 				this.prevnum = this.page-1
 				this.nextnum = this.page+1
 			}
-		}
+		},
 	}
 }
 </script>

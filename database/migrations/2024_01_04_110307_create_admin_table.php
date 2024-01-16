@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('admin', function (Blueprint $table) {
             $table->id();
             $table->integer('u_id');
+            $table->char('flg', 1)->default(0);
             $table->timestamps();
             $table->softDeletes();  
         });

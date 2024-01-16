@@ -231,6 +231,12 @@ class AdminController extends Controller
             ->where($case[$req->flg],$req->val)
             ->orderby('id','desc')
             ->first();
+        if(empty($data)){
+            return response()->json([
+                'code' => '1',
+                'errorMsg' => '조회된 회원이 없습니다'
+            ], 200);
+        }
         $result = Report::
             where('r_id',$data->id)
             ->orderby('restraint_at','desc')
@@ -241,12 +247,12 @@ class AdminController extends Controller
             $data->res_at= $result->first()->restraint_at;
             $data->restraint= $result->first()->restraint;
         }
-        if(empty($data)){
-            return response()->json([
-                'code' => '1',
-                'errorMsg' => '조회된 회원이 없습니다'
-            ], 200);
-        }else if(!empty($data)){
+        $admin = Admin::where('u_id', $data->id)->first();
+        $data->flg = "";
+        if ($admin) {
+            $data->flg = $admin->flg;
+        }
+        if(!empty($data)){
             return response()->json([
                 'code' => '0',
                 'data' =>  $data,
@@ -1152,6 +1158,46 @@ class AdminController extends Controller
                     ->first();
                 $result->deleted_at = null;
                 $result->save();
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 어드민 권한 부여
+    public function adminpost(Request $req){
+        try {
+            DB::beginTransaction();
+            Log::debug($req->val);
+                $data = [];
+                $data['u_id'] = $req->id;
+                $data['flg'] = $req->val==="1"?"1":"0";
+                Admin::create($data);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 어드민 권한 해제
+    public function admindel(Request $req){
+        try {
+            DB::beginTransaction();
+            Admin::where('u_id', $req->id)->delete();
             DB::commit();
             return response()->json([
                 'code' => '0'
