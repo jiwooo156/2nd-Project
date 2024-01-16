@@ -33,7 +33,9 @@
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
 				<div class="post_btn_bot" >
-					<button type="button" v-if="checkUser(this.detaildata.email)" @click="uppost">수정</button>
+					<router-link to="/write" v-if="checkUser(this.detaildata.email)">
+						<button type="button">수정</button>
+					</router-link>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delpost">삭제</button>
 				</div>
@@ -128,6 +130,10 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
+			// 수정 모달 관련 데이터
+			showEditModal: false,
+			editedTitle: '',
+			editedContent: '',
 		}
 	},
 	watch: {
@@ -212,7 +218,7 @@ export default {
 				axios.delete(URL)
 					.then(res => {
 						if (res.data.code === "0") {
-							console.log("정상진입");
+							// console.log("정상진입");
 							Swal.fire({
 								icon: 'success',
 								title: '완료',
@@ -236,10 +242,6 @@ export default {
 					});
 				}
 			});
-		},
-		// 게시글 수정
-		uppost() {
-			
 		},
 		// flg 데이터 출력 변환
 		getEventType(data) {

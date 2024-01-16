@@ -2,43 +2,47 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<div class="detail_type font_air bold">
-					<select v-model="post_community" class="form-select qna_drop" aria-label=".form-select-sm">
-						<option value="free" class="qna_drop_item" selected>자유</option>
-						<option value="info" class="qna_drop_item">정보</option>
-						<option value="question" class="qna_drop_item">질문</option>
-						<option value="tendinous" class="qna_drop_item">건의</option>
-					</select>게시판입니다.<br>
-					<select v-model="post_category" class="form-select qna_drop" aria-label=".form-select-sm">
-						<option value="all" class="qna_drop_item" selected>전체</option>
-						<option value="festival" class="qna_drop_item">축제</option>
-						<option value="tourism" class="qna_drop_item">관광</option>
-						<option value="etc" class="qna_drop_item">기타</option>
-					</select>
-				</div>
-				<div class="detail_header font_air bold">
-					<div class="detail_title">
-						<textarea type="text" maxlength="50"
-						v-model="post_title"  
-						@input="changeKeywordT"
-						@keyup.enter="title"
-						placeholder="제목을 입력하세요."
-						></textarea>
+				<form action="/write/update" methods="post">
+					<div class="detail_type font_air bold">
+						<!-- <select v-model="flg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
+							<option value="free" class="qna_drop_item" selected>자유</option>
+							<option value="info" class="qna_drop_item">정보</option>
+							<option value="question" class="qna_drop_item">질문</option>
+							<option value="tendinous" class="qna_drop_item">건의</option>
+						</select> -->
+						<span>{{ this.detaildata.flg }}게시판입니다.</span>
+						<span>{{ this.detaildata.category_flg }}</span>
+						<!-- <select v-model="category_flg" name="category_flg" class="form-select qna_drop" aria-label=".form-select-sm">
+							<option value="all" class="qna_drop_item" selected>전체</option>
+							<option value="festival" class="qna_drop_item">축제</option>
+							<option value="tourism" class="qna_drop_item">관광</option>
+							<option value="etc" class="qna_drop_item">기타</option>
+						</select> -->
 					</div>
-				</div>
-				<div>
-					<p class="font_air bold">						
-						<textarea type="text" maxlength="3000"
-						v-model="post_content"  
-						@input="changeKeywordC"
-						@keyup.enter="content"
-						placeholder="내용을 입력하세요."
-						></textarea></p>
-				</div>
-				<div class="post_btn_bot">
-						<button type="button" @click="writepost">작성</button>
-						<button type="button" @click="goBack">취소</button>
-				</div>
+					<div class="detail_header font_air bold">
+						<div class="detail_title">
+							<textarea type="text" maxlength="50"
+							name="title"
+							v-model="title"  
+							@input="changeKeywordT"
+							placeholder="제목을 입력하세요."
+							></textarea>
+						</div>
+					</div>
+					<div>
+						<p class="font_air bold">						
+							<textarea type="text" maxlength="3000"
+							name="content"
+							v-model="content" 
+							@input="changeKeywordC"
+							placeholder="내용을 입력하세요."
+							></textarea></p>
+					</div>
+					<div class="post_btn_bot">
+							<button type="button" @click="uppost">수정</button>
+							<button type="button" @click="goBack">취소</button>
+					</div>
+				</form>
 			</div>
 		</div>
 		<div class="goingTop" onclick="window.scrollTo(0,0);"><font-awesome-icon :icon="['fas', 'chevron-up']" /></div>
@@ -51,28 +55,30 @@ export default {
 	name: "PostWriteComponent",
 	data() {
 		return {
-			post_title:"",
-			post_content:"",
-			post_community: 'free',
-			post_category: 'all',
+			detaildata: {},
+			title:"",
+			content:"",
+			flg: "",
+			category_flg: "",
+			// flg: 'free',
+			// category_flg: 'all',
 		}
 	},
 	methods: {
-		writepost(){
-			const URL = '/write/create';
+		// 게시글 수정
+		uppost() {
+			this.$store.commit('setLoading',true);
+			let URL = '/write/update';
 			const formData = new FormData();
-				formData.append('title',this.post_title);
-				formData.append('content',this.post_content);
-				formData.append('flg',this.post_community);
-				formData.append('category_flg',this.post_category);
-			axios.post(URL,formData)
+			formData.append('id', this.detaildata.id);
+			formData.append('title', this.detaildata.title);
+			formData.append('content', this.detaildata.content);
+			formData.append('flg', this.detaildata.flg);
+			formData.append('category_flg', this.detaildata.category_flg);
+			axios.post(URL, formData)
 			.then(res => {
-				if(res.data.code==="0"){
-					this.post_title = "";
-					this.post_content = "";
-					this.post_community = "";
-					this.post_category = "";
-				} else {
+				if(res.data.code === "0") {
+					this.detaildata = res.data.data[0];
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -85,10 +91,13 @@ export default {
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: '에러가 발생했습니다',
+                    text: '에러 발생.',
                     confirmButtonText: '확인'
                 })
 			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		//*************************************************************************
 		// flg 데이터 출력 변환

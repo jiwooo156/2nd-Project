@@ -105,7 +105,6 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
-
 });
 
 // 커뮤니티 작성 라우터 생성
@@ -113,10 +112,8 @@ Route::middleware('myValidation')->prefix('write')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    
-    Route::post('/create', [InfoController::class, 'postwirte']); // 게시글 작성
-    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
-
+    Route::post('/create', [InfoController::class, 'postwrite']); // 게시글 작성
+    Route::post('/update', [InfoController::class, 'postupdate']); // 게시글 수정
 });
 
 // 관광&축제 디테일 라우터
@@ -149,7 +146,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::get('/info', [InfoController::class, 'communityget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
     Route::get('/more', [InfoController::class, 'morereplie']);
-    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
     Route::post('/heartpost', [InfoController::class, 'plusheart']);
 });

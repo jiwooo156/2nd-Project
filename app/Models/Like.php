@@ -12,6 +12,7 @@ class Like extends Model
     use HasFactory,SoftDeletes;
     protected $guarded = ['id']; 
     protected $table = 'likes';
+    public $timestamps = false;
     protected function serializeDate(DateTimeInterface $date){
         return $date->format('Y-m-d H:i:s');
     }
