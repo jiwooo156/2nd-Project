@@ -1911,6 +1911,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #979797;
 	padding: 0 1rem;
 }
+
+/* 정렬순 정지우 동적 클래스 */
+.qna_btn_button_on {
+	color: #00a678 !important;
+}
+
 .qna_btn div button span {
 	font-size: 0.45rem;
 	padding-right: 0.5rem;

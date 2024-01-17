@@ -16,13 +16,13 @@
 						<div class="qna_btn">
 							<!-- 정렬 button -->
 							<div class="btn-group" role="group">
-								<button type="button" class="btn" value="1" @click="buttonclick(1)">
+								<button type="button"  class="btn" value="1" @click="buttonclick(1)" :class="{'qna_btn_button_on': this.rangevalue == 1}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
 								</button>
-								<button type="button" class="btn" value="2" @click="buttonclick(2)">
+								<button type="button" class="btn" value="2" @click="buttonclick(2)" :class="{'qna_btn_button_on': this.rangevalue == 2}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
 								</button>
-								<button type="button" class="btn" value="3" @click="buttonclick(3)">
+								<button type="button" class="btn" value="3" @click="buttonclick(3)" :class="{'qna_btn_button_on': this.rangevalue == 3}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 								</button>
 							</div>
