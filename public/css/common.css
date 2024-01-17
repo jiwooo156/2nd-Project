@@ -865,6 +865,10 @@ input[type='date']:valid::before {
 }
 
 /* signin */
+.signin_gender option {
+	font-family: 'Cafe24SsurroundAir';
+    font-weight: bold;
+}
 .sign_bg{
     background-color: #F2F1F1;
     padding: 50px 0px;
