@@ -25,6 +25,9 @@
 				<div class="detail_content font_air bold">
 					{{this.detaildata.content}}<br>  
 				</div>
+				<figure class="figure">
+					<img :src="this.detaildata.img1" class="figure-img img-fluid rounded">
+				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
 				<div>
@@ -57,10 +60,12 @@
 							</div>
 							<br>
 							<div class="qna_tit">
-								<span class="detail_type">제목:</span>
+								<span class="detail_type">제목</span>
 								<input v-model="editedTitle" type="text" id="titleInput" class="form-control qna_tit">
-								<span class="detail_type">내용:</span>
+								<span class="detail_type">내용</span>
 								<textarea v-model="editedContent" id="contentInput" class="form-control"></textarea>
+								<!-- <label for="formFile" class="form-label detail_type detail_margin">사진 업로드</label>
+								<input class="form-control font_air bold" type="file" id="formFile"> -->
 							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
@@ -171,6 +176,7 @@ export default {
 			editedContent: '',
 			editedFlg: '',
 			editedCategory: '',
+			editedImg: '',
 			flgOptions: [
 				{ label: '자유', value: '0' },
 				{ label: '정보', value: '1' },
@@ -209,7 +215,7 @@ export default {
 			const URL = '/post/detail/'+this.b_id;
 			axios.get(URL)
 			.then(res => {
-				console.log("getinfo 함수 시작");
+				// console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
 					console.log("if 진입");
 					if (res.data.data[0].flg === "3" && this.checkUser(res.data.data[0].email)) {
@@ -237,7 +243,7 @@ export default {
 						confirmButtonText: '확인',
 					});
 				}
-				console.log("getinfo 함수 끝");
+				// console.log("getinfo 함수 끝");
 			})
 			.catch(err => {
 				Swal.fire({
@@ -303,6 +309,7 @@ export default {
 			this.editedContent = this.detaildata.content;
 			this.editedFlg = this.detaildata.flg;
 			this.editedCategory = this.detaildata.category_flg;
+			this.editedImg = this.detaildata.category_flg;
 			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
 			myModal.show();
 		},
