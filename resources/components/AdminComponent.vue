@@ -13,7 +13,8 @@
 							등록&조회
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">축제 등록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">게시글 등록</div></li>
+							<li><div class="dropdown-item pointer" @click="flgchg(3,2)">유저 조회</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(1,1)">게시물 조회</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(1,2)">댓글 조회</div></li>
 						</ul>
@@ -30,12 +31,11 @@
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							유저관리
+							신고&건의
 						</a>
 						<ul class="dropdown-menu">
 							<li><div class="dropdown-item pointer" @click="flgchg(3,0)">건의답변</div></li>
 							<li><div class="dropdown-item pointer" @click="flgchg(3,1)">신고목록</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(3,2)">유저관리</div></li>
 						</ul>
 					</li>
 				</ul>
@@ -49,80 +49,67 @@
 	</nav>
 	<!-- 메인 -->
 	<div class="admin_frame" v-if="mainflg===0">
+		<h1 class="center">이의이승관리자 페이지</h1>
 		<div class="admin_container">
-			<h1>이의이승 관리자 페이지</h1>
-			<div>
-				<div class="admin_header">
-					<div>금일 가입&탈퇴</div>
-				</div>
-				<div class="admin_content">			
-					<div class="admin_box">
-						<div>가입</div>
-						<br>
+			<div class="admin_container_box1">
+				<div class=" admin_container_box1_content admin_container1">
+					<div class="admin_container_box1_1">
+						<span class=" font_air bold">오늘의 가입수</span>
 						<div>{{ this.sign_cnt }} 명</div>
 					</div>	
-					<div class="admin_box">
-						<div>탈퇴</div>
-						<br>
+					<div class="admin_container_box1_2 font_air bold">
+						<span class=" font_air bold">오늘의 탈퇴수</span>
 						<div>{{ this.drop_cnt }} 명</div>
+					</div>	
+					<div class="admin_container_box1_3 font_air bold pointer"  @click="flgchg(3,1)">
+						<span class=" font_air bold">미 답변 건의</span>
+						<div>{{ this.d_cnt }}건</div>
+					</div>	
+					<div class="admin_container_box1_4 font_air bold pointer"  @click="flgchg(3,1)">
+						<span class=" font_air bold">신규 신고</span>
+						<div>{{ this.r_cnt }}건</div>
 					</div>
-				</div>
+				</div>	
 			</div>
-			<div>
-				<div class="admin_header">
-					<div class="position-relative admin_header_num">
-						미 답변 질문
-						<div class="pointer">{{ this.d_cnt }}건</div>
-					</div>
-				</div>
-				<!-- <div class="admin_content">
-					<div class="admin_box pointer"
-						:id='"admin_data"+data.id'
-						v-for="data in data" :key="data"
-						@click="dataget(data)"
-					>
-						<div>유저번호 : {{ data.u_id }}</div>
-						<div>Email : {{ data.email }}</div>
-						<div>제목 : {{ data.title }}</div>
-						<div>내용 : {{ data.content }}</div>
-						<div>질문시간 : {{ data.created_at }}</div>
-					</div>
-					<div 
-						v-if="data.length === 0"
-						class="admin_nolist"
-					>
-						리스트가 없습니다.
-					</div>
-				</div> -->
+			<div class="admin_container_box2">
+				<div class="font_air bold">테스트</div>
+				<Line :data="main_chart.data" :options="main_chart.options" />
 			</div>
-			<div>
-				<div class="admin_header">
-					<div class="position-relative">신고목록
-						<div class="pointer">{{ this.r_cnt }}건</div>
+			<div class="admin_container_box3">
+				<div class="font_air bold admin_main_chart2_flex">					
+					<div class="font_air bold">테스트</div>
+					<select class="form-select" id="validationTooltip04" required v-model="main_chart_type" @change="main_chart_type">
+						<option value="0">1주일</option>
+						<option value="1">1개월</option>
+						<option value="2">6개월</option>
+						<option value="3">1년</option>
+					</select>
+				</div>
+				<Bar :data="main_chart2.data" :options="main_chart2.options" />
+			</div>
+			<div class="admin_container_box4">
+				<div>
+					<div class="font_air bold">간편공지등록</div>
+					<select class="form-select" id="validationTooltip04" required v-model="main_input">
+						<option value="0">자유</option>
+						<option value="1">정보</option>
+						<option value="2">질문</option>
+						<option value="3">건의</option>
+					</select>
+				</div>		
+				<div>
+					<div class="input-group mb-1">
+						<span class="input-group-text" id="basic-addon1">제목</span>
+						<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="main_title">
+					</div>
+					<div class="input-group mb-3">
+						<span class="input-group-text">내용</span>
+						<textarea class="form-control" aria-label="With textarea" v-model="main_content"></textarea>
 					</div>
 				</div>
-				<div class="admin_content">
-					<!-- <div class="admin_box pointer"
-						:id='"admin_report"+data.id'
-						v-for="data in r_data" :key="data"
-						@click="reportget(data)"
-					>
-						<div>위치 : {{ data.flg }}</div>
-						<div>신고한 유저번호 : {{ data.u_id }}</div>
-						<div>Email : {{ data.email }}</div>
-						<div>신고당한id : {{ data.b_id }}</div>
-						<div>신고사유 : {{ data.content }}</div>
-						<div>신고시간 : {{ data.created_at }}</div>
-					</div> -->
-					<!-- <div 
-						v-if="r_data.length === 0"
-						class="admin_nolist"
-					>
-						리스트가 없습니다.
-					</div> -->
-				</div>
+				<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
 			</div>
-		</div>
+		</div>		
 	</div>
 	<!-- 모달 -->
 	<div class="admin_modal_bg"
@@ -524,7 +511,7 @@
 					v-if="boards.length < 1"
 				>조회된 게시물이 없습니다.</div>
 				<div class="modal fade" id="boardmodal" tabindex="-1" aria-labelledby="boardmodalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-lg">
+					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="boardmodalLabel">Modal title</h5>
@@ -753,7 +740,7 @@
 					v-if="replies.length < 1"
 				>조회된 댓글이 없습니다.</div>
 				<div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-lg">
+					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="exampleModalLabel">댓글 상세정보</h5>
@@ -812,25 +799,24 @@
 	<!-- 통계페이지 -->
 	<!-- 유저통계 -->
 	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
-		<div>조회수 통계</div>
-		<div>축제관광</div>
+		<div>유저 통계</div>
 		<div class="admin_chart_flex center">
 			<div class="admin_chart_line">
-				<div>유저통계(%)</div>
+				<div class="font_air bold">현재 회원 연령별 성비(%)</div>
 				<Bar :data="u_chart1.data" :options="u_chart1.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>한달간 유저 탈퇴 수</div>
+				<div class="font_air bold">한달간 유저 탈퇴 비율</div>
 				<Doughnut :data="u_chart2.data" :options="u_chart2.options" />
 			</div>
 			<div>
-				<div>회원 탈퇴 사유 비율</div>
+				<div class="font_air bold">회원 탈퇴 사유 비율</div>
 				<Doughnut :data="u_chart3.data" :options="u_chart3.options" />
 			</div>
 			<div>
-				<div>유저들 주 활동 시간대</div>
+				<div class="font_air bold">유저들 활동 시간별 비율</div>
 				<Doughnut :data="u_chart4.data" :options="u_chart4.options" />
 			</div>
 		</div>
@@ -838,28 +824,27 @@
 	<!-- 조회수통계 -->
 	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
 		<div>조회수 통계</div>
-		<div>축제관광</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>테마별 평균 조회수</div>
+				<div class="font_air bold">각 테마별 평균 조회수</div>
 				<Doughnut :data="h_chart1.data" :options="h_chart1.options" />
 			</div>
 			<div>
-				<div>축제 관광 평균 조회수</div>
+				<div class="font_air bold">축제&관광 평균 조회수</div>
 				<Doughnut :data="h_chart2.data" :options="h_chart2.options" />
 			</div>
 			<div>
-				<div>북도 남도 평균 조회수</div>
+				<div class="font_air bold">경북&경남 평균 조회수</div>
 				<Doughnut :data="h_chart3.data" :options="h_chart3.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>북도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
+				<div class="font_air bold">경북의 top5(시,군) 조회수 평균</div>
 				<Doughnut :data="h_chart4.data" :options="h_chart4.options" />
 			</div>
 			<div>
-				<div>남도에서 많이 조회된 5개의 (시,군)조회수 평균</div>
+				<div class="font_air bold">경남의 top5(시,군) 조회수 평균</div>
 				<Doughnut :data="h_chart5.data" :options="h_chart5.options" />
 			</div>
 		</div>
@@ -867,65 +852,71 @@
 	<!-- 좋아요통계 -->
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
 		<div>좋아요 통계</div>
-		<div>축제관광</div>
+		<div class="admin_comu_label">축제&관광</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>성비</div>
+				<div class="font_air bold">축제&관광의 성비에 따른 좋아요 이용 비율</div>
 				<Doughnut :data="chart1.data" :options="chart1.options" />
 			</div>
 			<div>
-				<div>축제 관광 비율</div>
+				<div class="font_air bold">축제&관광의 좋아요 비율</div>
 				<Doughnut :data="chart2.data" :options="chart2.options" />
 			</div>
 		</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>연령대</div>
+				<div class="font_air bold">연령대별 좋아요 이용 통계</div>
 				<Doughnut :data="chart3.data" :options="chart3.options" />
 			</div>
 			<div>
-				<div>좋아요가 많이눌린 플래그</div>
+				<div class="font_air bold">유저가 선호하는 테마</div>
 				<Doughnut :data="chart4.data" :options="chart4.options" />
 			</div>
 		</div>
 		<hr>
-		<div>커뮤니티</div>
+		<div class="admin_comu_label">커뮤니티</div>
 		<div class="admin_chart_flex center">
 			<div>
-				<div>성비</div>
+				<div class="font_air bold">커뮤니티의 성비에 따른 좋아요 이용 비율</div>
 				<Doughnut :data="chart5.data" :options="chart5.options" />
 			</div>
 			<div>
-				<div>커뮤 주제</div>
+				<div class="font_air bold">커뮤니티의 각 주제별 좋아요 비율</div>
 				<Doughnut :data="chart6.data" :options="chart6.options" />
 			</div>
 			<div>
-				<div>커뮤 카테고리</div>
+				<div  class="font_air bold">커뮤니티의 각 카테고리별 좋아요 비율</div>
 				<Doughnut :data="chart7.data" :options="chart7.options" />
 			</div>
 		</div>
 	</div>
 	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
+		
 		건의목록
-		<div
-			class="pointer"
-			@click="requestall('0',1)"
-		>
-			처리전
-		</div>
-		<div
-			class="pointer"
-			@click="requestall('1',1)"
-		>
-			처리후
-		</div>
-		<div class="row row-cols-1 row-cols-md-4 g-4">
-			<div		
-				v-if="Object.keys(this.requestdata).length === 0"
-			>
-				새로운 건의가 없습니다.
+		<div class="admin_category_flex">
+			<div
+				class="pointer"
+				:class="[{ 'admin_header_focus': this.request_flg === '0' }]"
+				@click="requestall('0',1)"
+				>
+				처리전
 			</div>
+			<div
+				class="pointer"
+				:class="[{ 'admin_header_focus': this.request_flg === '1' }]"
+				@click="requestall('1',1)"
+				>
+				처리후
+			</div>
+		</div>
+		<div		
+			v-if="Object.keys(this.requestdata).length === 0"
+				class="admin_no_result font-air bold"
+			>
+			새로운 건의가 없습니다.
+		</div>
+		<div class="row row-cols-1 row-cols-md-4 g-4 admin-grid">
 			<div class="col" 
 				v-for="data in requestdata" :key="data"
 			>
@@ -970,24 +961,29 @@
 	<!-- 신고페이지 -->
 	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
 		신고목록
-		<div
-			class="pointer"
-			@click="reportall('0',1)"
-		>
-			처리전
+		<div class="admin_category_flex">
+			<div
+				:class="[{ 'admin_header_focus': this.report_flg === '0' }]"
+				class="pointer"
+				@click="reportall('0',1)"
+			>
+				처리전
+			</div>
+			<div
+				:class="[{ 'admin_header_focus': this.report_flg === '1' }]"
+				class="pointer"
+				@click="reportall('1',1)"
+			>
+				처리후
+			</div>
 		</div>
-		<div
-			class="pointer"
-			@click="reportall('1',1)"
-		>
-			처리후
-		</div>
-		<div class="row row-cols-1 row-cols-md-4 g-4">
-			<div		
+		<div		
 				v-if="Object.keys(this.reportdata).length === 0"
+				class="admin_no_result font-air bold"
 			>
 				신고된 내용이 없습니다.
-			</div>
+		</div>
+		<div class="row row-cols-1 row-cols-md-4 g-4 admin-grid">
 			<div class="col" 
 				v-for="data in reportdata" :key="data"
 			>
@@ -996,8 +992,6 @@
 						@click="reportget(data)"
 					>
 						<div class="admin_report_card_header">
-							<h5 class="card-title"
-							>신고한 유저</h5>
 							<h5 class="card-title">신고한 유저</h5>
 							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
 						</div>
@@ -1012,7 +1006,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='admin_page  mt-3'>
+		<div class='admin_page  mt-3' v-if="Object.keys(this.reportdata).length !== 0">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
@@ -1039,8 +1033,8 @@
 		<div class="admin_frame9">
 			<div>유저검색</div>
 			<div class="input-group mb-3 admin_search_user_input_box">
-				<div class="admin_search_user_input_box_select">
-					<select v-model="searchtype" class="form-select admin_search_user_input_box_select" aria-label="Default select example">
+				<div>
+					<select v-model="searchtype" class="form-select" aria-label="Default select example">
 						<option class=" font_air bold" value="0">작성자번호</option>
 						<option class=" font_air bold" value="1">email</option>
 					</select>
@@ -1119,7 +1113,7 @@
 					</div>
 				</div>
 				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
+					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="exampleModalLabel">유저재제</h5>
@@ -1152,15 +1146,15 @@
 							
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary admin_boot_modal_close" data-bs-dismiss="modal">닫기</button>
-								<button type="button" class="btn btn-primary"
+								<button type="button" class="btn btn-secondary admin_boot_modal_close font_air bold" data-bs-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-primary qna_color font_air bold"
 									@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
 								>적용</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div v-if="selectUserData.deleted_at==='X'">
+				<div v-if="selectUserData.deleted_at==='X'" class="admin_frame9_btn_box">
 					<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
 					v-if="(this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X')&&selectUserData.flg==='X'"
 					>유저제재</div>
@@ -1218,6 +1212,10 @@ export default {
 		return {
 			authority: false,
 			today: "",
+			main_chart_type: "0",
+			main_input: "0",
+			main_title: "",
+			main_content: "",
 			todaytime: "",
 			restraint_msg: "",
 			restraint_msg2: "",
@@ -1412,7 +1410,7 @@ export default {
 					labels: [],
 					datasets: [
 						{
-							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff "],
+							backgroundColor: ['#ff6666',"#ffcc66 ","#66c2ff"],
 							data: []
 						}
 					]
@@ -1562,10 +1560,10 @@ export default {
 			},
 			u_chart2:{
 				data: {
-					labels: ['회원유지','탈퇴'],
+					labels: ['유지','탈퇴'],
 					datasets: [
 						{
-							backgroundColor: ['#ff6666',"#66c2ff "],
+							backgroundColor: ['#66c2ff',"#ff6666"],
 							data: []
 						}
 					]
@@ -1611,6 +1609,51 @@ export default {
 					height: 300, // 원하는 세로 크기
 				},
 			},
+			// 메인차트
+			main_chart:{
+				data: {
+					labels: ['6개월 전', '5개월 전', '4개월 전', '3개월 전', '2개월 전', '1개월 전', '이번달'],
+					datasets: [
+						{
+							label: '가입수',
+							backgroundColor: '#193f81',
+							data: [0,0,0,0,0,0,0]
+						},
+						{
+							label: '탈퇴수',
+							backgroundColor: '#f87979',
+							data: [0,0,0,0,0,0,0]
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+				},
+			},
+			// 메인차트
+			main_chart2:{
+				data: {
+					labels: ['축제', '관광'],
+					datasets: [
+						{
+							label: '좋아요',
+							backgroundColor: ['#f87979'],
+							data: [40, 20, 12],
+						},
+						{
+							label: '댓글',
+							backgroundColor: ['#000'],
+							data: [70, 50, 42],
+						},
+					],
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					indexAxis: 'y',
+				},
+			},
 		}
 	},
 	watch: {
@@ -1624,6 +1667,7 @@ export default {
 		}
 		this.getToday();
 		this.adminchk();
+		// this.mainchartget();
 		this.statistics()
 	},
 	updated() {
@@ -1645,13 +1689,20 @@ export default {
 			if(res.data.code === "0"){
 					this.sign_cnt = res.data.sign_cnt; 
 					this.drop_cnt = res.data.drop_cnt; 
-					this.data = res.data.data; 
 					this.d_cnt = res.data.d_cnt; 
-					this.r_data = res.data.r_data;
 					this.r_cnt = res.data.r_cnt;
 					this.r_data.forEach(item => {
 						item.flg = item.flg === '0' ? '커뮤' : '댓글';
 					});
+					console.log("여기"+this.main_chart.data.datasets[0].data)
+					console.log("저기"+this.main_chart.data.datasets[1].data)
+					for(let i = 0; i < res.data.chart.length; i++){
+						console.log("포문진입")
+						this.main_chart.data.datasets[0].data.splice(i, 1, res.data.chart[i].in_cnt);
+						this.main_chart.data.datasets[1].data.splice(i, 1, res.data.chart[i].out_cnt);
+					}
+					console.log("여기"+this.main_chart.data.datasets[0].data)
+					console.log("저기"+this.main_chart.data.datasets[1].data)
 				}
 			})
 			.catch(err => {
@@ -1663,6 +1714,30 @@ export default {
 						confirmButtonText: '확인'
 					})
 					this.logout();
+				}
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 메인차트
+		mainchartget(){
+			this.$store.commit('setLoading',true);
+			const URL = '/admin/main?flg='+this.main_chart_type
+			axios.get(URL)
+			.then(res => {
+			if(res.data.code === "0"){
+		
+				}
+			})
+			.catch(err => {
+				if(err.response.data.code === "E99"){
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: '에러발생.',
+						confirmButtonText: '확인'
+					})
 				}
 			})
 			.finally(() => {
@@ -2249,6 +2324,7 @@ export default {
 		requestall(flg,page){
 			this.$store.commit('setLoading',true);
 			this.request_flg =flg;
+			console.log(this.request_flg)
 			const URL = '/admin/requestall?flg='+flg+'&page='+page
 			axios.get(URL)
 			.then(res => {
@@ -2369,7 +2445,9 @@ export default {
 							this.likemain_c[i].type = "기타";
 						}
 						this.chart6.data.labels[i] = this.likemain_c[i].type;
+						console.log(this.chart6.data.labels[i])
 						this.chart6.data.datasets[0].data[i]=this.likemain_c[i].cnt;
+						console.log(this.chart6.data.datasets[0].data[i])
 					}
 					// 커뮤 게시판
 					this.likeflg = res.data.flg;	
