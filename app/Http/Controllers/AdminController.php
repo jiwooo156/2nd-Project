@@ -29,27 +29,21 @@ class AdminController extends Controller
     // 어드민페이지 시작
     public function adminchk(Request $req)
     {
-        Auth::user();
-        $chk = Admin::where('u_id',Auth::user()->id)->get();
+        Log::debug("함수진입");
+        $chk = Admin::where('u_id',Auth::user()->id)
+                ->get();
+        Log::debug("이걸봐요".$chk);
         if($req->id==Auth::user()->id && $req->nick === Auth::user()->nick && $req->email === Auth::user()->email && count($chk)>0){
             // 오늘 탈퇴자수
+            Log::debug("함수진입1");
             $out = User::withTrashed()
-                ->select('deleted_at')
                 ->where('deleted_at', '>=', $req->today)
-                ->count ();
-            // 오늘 가입자수
-            $in = User::
-                where('created_at','>=', $req->today)
                 ->count();
-            // 신규질문
-            $data = Community::
-                select('users.email','community.*')
-                ->where('community.flg', "3")
-                ->join('users', 'community.u_id', '=', 'users.id')
-                ->where('community.admin_flg', 0)
-                ->orderby('community.created_at','asc')
-                ->limit(5)
-                ->get();
+            // 오늘 가입자수
+            Log::debug("함수진입2");
+            $in = User::where('created_at','>=', $req->today)
+                ->count();
+                Log::debug("함수진입3");
             $datacnt = Community::
                 select('users.email','community.*')
                 ->where('community.flg', "3")
@@ -57,28 +51,41 @@ class AdminController extends Controller
                 ->where('community.admin_flg', 0)
                 ->orderby('community.created_at','asc')
                 ->count();
+                Log::debug("함수진입4");
             // 신고목록
-            $report = Report::
-                select('users.email','reports.*')
-                ->where('reports.admin_flg', 0)
-                ->join('users', 'reports.u_id', '=', 'users.id')
-                ->orderby('reports.created_at','asc')
-                ->limit(5)
-                ->get();
             $reportcnt = Report::
                 select('users.email','reports.*')
                 ->where('reports.admin_flg', 0)
                 ->join('users', 'reports.u_id', '=', 'users.id')
                 ->orderby('reports.created_at','asc')
                 ->count();
+            Log::debug("여기도착");
+            $result = DB::table('users')
+                ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') AS month")
+                ->selectRaw("COUNT(*) AS in_cnt")
+                ->selectSub(
+                    function ($query) {
+                        $query->from('users')
+                            ->selectRaw("COUNT(*)")
+                            ->whereRaw("DATE_FORMAT(deleted_at, '%Y-%m') = month")
+                            ->where('deleted_at', '>=', now()->subMonths(6));
+                    },
+                    'out_cnt'
+                )
+                ->where('created_at', '>=', now()->subMonths(6))
+                ->groupBy('month')
+                ->orderByDesc('month')
+                ->get();
+                Log::debug("함수종료");
+            Log::debug($result);
+        
             return response()->json([
                 'code' => '0',
                 'sign_cnt' => $in,
                 'drop_cnt' => $out,
-                'data' => $data,
                 'd_cnt' => $datacnt,
-                'r_data' => $report,
                 'r_cnt' => $reportcnt,
+                'chart' => $result,
             ], 200);
         }else{
             return response()->json([
@@ -86,6 +93,33 @@ class AdminController extends Controller
                 'errorMsg' => '인증과정중 문제가 발생했습니다. 다시 한번 로그인후 이용해 주세요'
             ], 400);
         }
+    }
+   // 어드민 최초 데이터 조회()
+    public function mainchartget(Request $req)
+    {
+        $like = Like::select(DB::raw('infos.main_flg'),DB::raw('count(infos.main_flg) as cnt'))
+            ->join('infos', 'likes.b_id', 'infos.id')
+            ->where('likes.flg', '0');
+        $replie = Replie::select(DB::raw('infos.main_flg'),DB::raw('count(infos.main_flg) as cnt'))
+            ->join('infos', 'replies.b_id', 'infos.id')
+            ->where('replies.flg', '0');
+        Log::debug("테스트");
+        if ($req->flg === "0") {
+            $like->where('likes.created_at', '>=', now()->subWeek());
+            $replie->where('replies.created_at', '>=', now()->subWeek());
+        } elseif ($req->flg === "1") {
+            $like->where('likes.created_at', '>=', now()->subMonth());
+            $replie->where('replies.created_at', '>=', now()->subMonth());
+        } elseif ($req->flg === "2") {
+            $like->where('likes.created_at', '>=', now()->subMonths(6));
+            $replie->where('replies.created_at', '>=', now()->subMonths(6));
+        } elseif ($req->flg === "3") {
+            $like->where('likes.created_at', '>=', now()->subYear());
+            $replie->where('replies.created_at', '>=', now()->subYear());
+        }
+
+        $result = $like->union($replie)->groupBy('infos.main_flg')->get();
+            Log::debug($result);
     }
     // modal용 report data획득
     public function reportget(Request $req){
