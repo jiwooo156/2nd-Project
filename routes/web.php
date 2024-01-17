@@ -171,6 +171,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
         return view('welcome');
     });
     Route::get('/user', [AdminController::class, 'adminchk']);
+    Route::get('/main', [AdminController::class, 'mainchartget']);
     Route::get('/data/{id}', [AdminController::class, 'dataget']);
     Route::post('/data', [AdminController::class, 'answerdata']);
     Route::put('/data', [AdminController::class, 'answerupdate']);

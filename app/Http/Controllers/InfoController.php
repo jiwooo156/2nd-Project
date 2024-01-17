@@ -863,28 +863,24 @@ class InfoController extends Controller
     }
 }
 
-
-    // ***********************************************
+    // 차민지 3차를 위한 컨트롤러
     // 커뮤니티 질문&정보 게시판 리스트 조회
     public function informationget(Request $req) {
         $informresult = Community::select(
             'community.id',
             'community.category_flg',
-            'community.flg',
             'community.title',
             'community.created_at',
             'community.hits',
             'users.nick',
-            'users.email',
             'community.admin_flg',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->orderBy('community.created_at', 'desc')
-        ->get();
+        ->whereNull('community.deleted_at');
+
         $infocnt = Community::select(
             'community.id',
             'community.category_flg',
@@ -894,16 +890,41 @@ class InfoController extends Controller
             'users.nick',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null)
-        ->orderBy('community.created_at', 'desc')
-        ->count();
+        ->whereNull('community.deleted_at');
 
+        Log::debug("category_flg 타입 : ".gettype($req->category));
+        if (!($req->category === "3")) {
+            Log::debug("category_flg 있음");
+            $informresult
+                ->where('community.category_flg', $req->category);
+        }
+
+        if ($req->orderby) {
+            Log::debug("orderby flg 있음");
+            Log::debug("orderby : ".$req->orderby);
+            if($req->orderby === '1') {
+                $informresult->orderBy('community.created_at', 'desc');
+            } else if ($req->orderby === '2') {
+                $informresult->orderBy('community.hits', 'desc');
+            } else if ($req->orderby === '3') {
+                $informresult->orderBy('lik.cnt', 'desc');
+            }
+        }
+
+        $informresult->get();
+        $infocnt = $informresult->count();
+
+        $informresult = $informresult->paginate(12);
+
+        Log::debug($informresult);
+        Log::debug($infocnt);
+        
         return response()->json([
             'code' => '0',
-            'information' => $informresult,
+            'data' => $informresult,
             'infocnt' => $infocnt,
         ], 200);          
     }
@@ -988,12 +1009,12 @@ class InfoController extends Controller
     }
     // 커뮤니티 질문&건의 수정
     public function postupdate(Request $req){
-        Log::debug("수정 함수 시작");
-        Log::debug($req);
-        Log::debug("제목 플래그 : ".$req->title);
-        Log::debug("내용 플래그 : ".$req->content);
-        Log::debug("게시판 플래그 : ".$req->flg);
-        Log::debug("카테고리 플래그 : ".$req->category_flg);
+        // Log::debug("수정 함수 시작");
+        // Log::debug($req);
+        // Log::debug("제목 플래그 : ".$req->title);
+        // Log::debug("내용 플래그 : ".$req->content);
+        // Log::debug("게시판 플래그 : ".$req->flg);
+        // Log::debug("카테고리 플래그 : ".$req->category_flg);
         try {
             // 트랜잭션시작
             DB::beginTransaction();
@@ -1003,8 +1024,26 @@ class InfoController extends Controller
             $data->content = $req->content;
             $data->flg = $req->flg;
             $data->category_flg = $req->category_flg;
+
+            if ($req->hasFile('img1')) {
+                $imgName = Str::uuid().'.'.$req->img1->extension();
+                $req->img1->move(public_path('img'), $imgName);
+                $data->img1 = '/img/'.$imgName;
+            }
+            if ($req->hasFile('img2')) {
+                $imgName = Str::uuid().'.'.$req->img1->extension();
+                $req->img1->move(public_path('img'), $imgName);
+                $data->img1 = '/img/'.$imgName;
+            }
+            if ($req->hasFile('img3')) {
+                $imgName = Str::uuid().'.'.$req->img1->extension();
+                $req->img1->move(public_path('img'), $imgName);
+                $data->img1 = '/img/'.$imgName;
+            }
+
             $data->save();
             DB::commit();
+            
             return response()->json([
                 'code' => '0'
             ], 200);
