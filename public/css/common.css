@@ -1266,6 +1266,14 @@ margin-top:10px;
     max-width: 1000px;
 	margin: 15px auto;
 }
+.userchk_header_focus{
+    color: #5290c4;
+    font-size: 1.2em;
+}
+.userchk_select {
+    font-size: 1em;
+    width: 8em;
+}
 #userchk_pw{
 	border-radius: 5px;
 	padding: 5px;
@@ -1319,9 +1327,9 @@ margin-top:10px;
     justify-content: space-between;
 }
 .userchk_card_gird{
-	display: grid;
+    display: grid;
     grid-template-columns: repeat(auto-fit, 300px);
-    grid-gap: 30px;
+    grid-gap: 50px;
     justify-content: center;
 }
 .userchk_body{

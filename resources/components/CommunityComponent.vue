@@ -50,7 +50,7 @@
 			</div>
 			<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
 				<!-- fas : 꽉 찬 하트 -->
-				<font-awesome-icon :icon="['fas', 'heart']" />
+				<font-awesome-icon :icon="['fas', 'heart']"/>
 				좋아요 {{this.detaildata.cnt}}
 			</div>
 			<div class="post_btn_bot">
@@ -148,7 +148,7 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			userauth: "",
-			
+			// likeresult: ""
 		}
 	},
 	watch: {
@@ -183,9 +183,11 @@ export default {
 					this.repliedata = res.data.replie;
 					this.repliecount = res.data.repliecount;
 					this.userauth = res.data.userauth;
+					this.likeresult = res.data.likeresult;
 					console.log('zcdvc'+this.userauth);
 					console.log('zcdvc'+this.detaildata.u_id);
 					console.log('디테일 data : '+this.detaildata.flg);
+					console.log('좋아요 누른 이력 : '+this.likeresult);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -208,7 +210,6 @@ export default {
 		repliewrite(){
 			if(this.replie){
 				const URL = '/community/reply/'+this.b_id;
-				console.log("댓글작성함수 url은 : "+URL);
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
@@ -247,18 +248,18 @@ export default {
 		},
 		// 좋아요 입력
 		plusheart() {
-			if(!(this.userauth === "")) {
+			if(!(this.userauth === "")) {				
 				console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
-				console.log("현재 url의 id는 : "+this.b_id);
 				const URL = '/community/heartpost';
-				console.log("좋아요작성함수 url은 : "+URL);
 				axios.post(URL, {
 					"b_id": this.b_id,
 					"flg": "1"
 				})
+
+				
 				.then(res=>{
 					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
@@ -270,6 +271,7 @@ export default {
 					console.log("plusheart 함수 catch");
 					this.$router.push('/error');
 				})
+				
 			} else {
 				Swal.fire({
 					icon: 'error',

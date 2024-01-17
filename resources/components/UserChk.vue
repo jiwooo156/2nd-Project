@@ -1,21 +1,22 @@
 <template>
 	<br>
 	<div class="userChk_container">
+		<h1 class="pt-4 pb-3">마이페이지</h1>
 		<div class="container">
 			<div class="row userchk_header pointer">
-				<div class="col font_air bold" @click="flgchange(0)">
+				<div class="col font_air bold" @click="flgchange(0)" :class="[{ 'userchk_header_focus': this.mainflg === 0 }]">
 					좋아요목록
 				</div>
-				<div class="col font_air bold" @click="flgchange(1)">
+				<div class="col font_air bold" @click="flgchange(1)" :class="[{ 'userchk_header_focus': this.mainflg === 1 }]">
 					작성목록
 				</div>
-				<div class="col font_air bold" @click="flgchange(2)">
+				<div class="col font_air bold" @click="flgchange(2)" :class="[{ 'userchk_header_focus': this.mainflg === 2 }]">
 					유저정보수정
 				</div>
 			</div>
 		</div>
 		<div v-if="mainflg===0" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
+			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
 				<option value="0">축제</option>
 				<option value="1">관광</option>
 				<option value="2">커뮤니티</option>
@@ -25,7 +26,7 @@
 					<router-link :to='"/detail?id="+data.id' v-if="data.flg==='축제'||data.flg==='관광'">
 						<img :src="data.img" v-if="data.flg === '축제'||data.flg === '관광'">
 						<div class="region_title ">{{ data.title }}</div>
-						<div class="region_content font_air bold">{{ this.nowdate }}기간 : {{ data.start_at }} ~ {{ data.end_at }}</div>
+						<div class="region_content font_air bold" v-if="data.flg==='축제'">기간 : {{ data.start_at }} ~ {{ data.end_at }}</div>
 					</router-link>
 					<router-link :to='"/community?id="+data.id' v-if="data.flg==='0'||data.flg==='1'">
 						<img :src="data.img" v-if="data.flg === '축제'||data.flg === '관광'">
@@ -44,6 +45,9 @@
 						<div v-else class="region_date_msg3 font_air bold">종료</div>
 					</div>
 				</div>
+				<div class="pb-3 pt-5"
+						v-if="likedata.length < 1"
+					>조회된 게시글이 없습니다.</div>
 			</div>
 			<div class='admin_page  mt-3'>
 				<nav aria-label="Page navigation example">
@@ -68,12 +72,12 @@
 			</div>
 		</div>
 		<div v-if="mainflg===1" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
+			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
 				<option value="0">게시글</option>
 				<option value="1">댓글</option>
 			</select>
 			<table class="table table-hover  table-border mb-3">
-				<thead>
+				<thead>	
 					<tr
 						v-if="writeflg==='0'"
 					>
@@ -81,7 +85,7 @@
 						<th scope="col">게시글제목</th>
 						<th scope="col">내용</th>
 						<th scope="col">작성시간</th>
-					</tr>			
+					</tr>					
 					<tr
 						v-if="writeflg==='1'"
 					>
@@ -144,7 +148,6 @@
 			<br>	
 			<br>	
 			<br>	
-			<br>	
 			<h4 class="font_air bold">본인확인을 위해 비밀번호를 입력해 주세요.</h4>	
 			<div>
 				<span
@@ -188,20 +191,12 @@ export default {
 			likedata:{},
 			writedata:{},
 			today: "",
+			mobile: "0",
 		}
 	},
 	created() {
 		this.getToday();
 		this.likeget('0',1)
-	},
-	mounted(){
-		// 화면 크기에 따라 item 업데이트
-		this.updateItem();
-		window.addEventListener("resize", this.updateItem);
-	},
-	beforeDestroy() {
-		// 컴포넌트가 파괴되기 전에 이벤트 리스너 제거
-		window.removeEventListener("resize", this.updateItem);
 	},
 	methods: {
 		// 유저정보변경페이지로
@@ -331,20 +326,6 @@ export default {
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
 			// console.log(this.today)
-		},
-		// 화면 크기에 따라 itemsToShow를 조절
-		updateItem() {
-			if (window.innerWidth <= 607) {
-				this.item = 3;
-			} else if (window.innerWidth <= 747) {
-				this.item = 4;
-			} else if (window.innerWidth <= 904) {
-				this.item = 5;
-			} else if (window.innerWidth <= 1024) {
-				this.item = 6;
-			} else{
-				this.item = 7;
-			}
 		},
 	},
 }
