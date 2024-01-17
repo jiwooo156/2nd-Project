@@ -49,114 +49,61 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th class="col_hidden">번호</th>
-							<th>카테고리</th>
-							<th>제목</th>
-							<th>작성자</th>
-							<th>작성일자</th>
-							<th class="col_hidden">조회수</th>
-							<th class="col_hidden">좋아요수</th>
+							<th class="col_hidden font_air bold">번호</th>
+							<th class="font_air bold">카테고리</th>
+							<th class="font_air bold">제목</th>
+							<th class="font_air bold">작성자</th>
+							<th class="font_air bold">작성일자</th>
+							<th class="col_hidden font_air bold">조회수</th>
+							<th class="col_hidden font_air bold">좋아요</th>
 						</tr>
 					</thead>
-					<tbody v-for="infodata in infolist" :key="infodata">
-						<!-- <tr class="info_notice pointer">
-							<td class="col_hidden">23</td>
+					<tbody>
+						<tr v-for="notice in noticedata" :key="notice" v-if="this.noticedata&&this.page === 1" class="info_notice pointer" @click="$router.push('/community?id='+notice.id)">
+							<td class="col_hidden">{{ notice.id }}</td>
 							<td>공지사항</td>
-							<router-link to="/community">
-								<td class="info_title">정보게시판 글 작성시 양식을 지켜주세요!</td>
-							</router-link>
-							<td>운영자</td>
-							<td>23-12-25</td>
-							<td class="col_hidden">401</td>
-							<td class="col_hidden">25</td>
-						</tr> -->
-						<!-- <router-link :to="'/community?id='+infodata.id" class="info_router"> -->
-							<tr class="pointer" @click="$router.push('/community?id='+infodata.id)">
-								<td class="col_hidden">{{ infodata.id }}</td>
-								<td>{{ infodata.category_flg }}</td>
-								<td class="info_title">{{ infodata.title }}</td>
-								<td>{{ infodata.nick }}</td>
-								<td>{{ infodata.created_at }}</td>
-								<td class="col_hidden">{{ infodata.hits }}</td>
-								<td class="col_hidden">{{ infodata.cnt }}</td>
-							</tr>
-						<!-- </router-link> -->
+							<td class="info_title">{{ notice.title }}</td>
+							<td>{{ notice.nick }}</td>
+							<td>{{ formatEventDate(notice.created_at) }}</td>
+							<td class="col_hidden">{{ notice.hits }}</td>
+							<td class="col_hidden">{{ notice.cnt }}</td>
+						</tr>
+						<tr v-for="infodata in infolist" :key="infodata" class="pointer font_air bold" @click="$router.push('/community?id='+infodata.id)">
+							<td class="col_hidden font_air bold">{{ infodata.id }}</td>
+							<td class="font_air bold">{{ infodata.category_flg==='0' ? '축제' : infodata.category_flg==='1' ? '관광' : '기타'}}</td>
+							<td class="info_title font_air bold">{{ infodata.title }}</td>
+							<td class="font_air bold">{{ infodata.nick }}</td>
+							<td class="font_air bold">{{ formatEventDate(infodata.created_at) }}</td>
+							<td class="col_hidden font_air bold">{{ infodata.hits }}</td>
+							<td class="col_hidden font_air bold">{{ infodata.cnt }}</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 				<router-link to="/testwrite">글 작성하기</router-link>
 			</div>
-				<div>
-					<nav aria-label="Page navigation">
-						<ul class="pagination justify-content-center qna_pagin">
-							<li v-for="(page, index) in pagination" :key="index">
-								<a v-if="!(page.url === null)"
-									id="qna_font"
-									class="page-link pointer"
-									@click="getInfo(page.label)"
-								>
-									<span>
-										{{ page.label }}
-									</span>
-								</a>
-							</li>
-							<!-- <li class="page-item">
-								<a
-									id="qna_font"
-									class="page-link"
-									href="#"
-									aria-label="Previous"
-								>
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angle-left']"
-									/></span>
-								</a>
-							</li> -->
-							<!-- <li class="page-item">
-								<a
-									id="qna_font"
-									class="page-link"
-									href="#"
-									aria-label="Previous"
-								>
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angles-left']"
-									/></span>
-								</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">2</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">3</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">4</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#">5</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angle-right']"
-									/></span>
-								</a>
-							</li>
-							<li class="page-item">
-								<a id="qna_font" class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true"
-										><font-awesome-icon :icon="['fas', 'angles-right']"
-									/></span>
-								</a>
-							</li> -->
-						</ul>
-					</nav>
-				</div>
+			<div class='admin_page  mt-3'>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" @click="getInfo(1)">&lt;&lt;</span>
+						</li>
+						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" @click="getInfo(prevnum)">이전</span>
+						</li>
+						<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+							<span class="page-link" @click="getInfo(num)">{{ num }}</span>
+						</li>
+						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" @click="getInfo(nextnum)">다음</span>
+						</li>
+						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" @click="getInfo(lastpage)">>></span>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 	</div>
 </template>
@@ -170,17 +117,22 @@ export default {
 			nowflg: "",
 			cntinfo: 0,
 			rangevalue: "1",
-			page: {},
-			pagination: {},
-			pageChk: {},
-      		option: "3"
+      		option: "3",
+			page:1,
+			lastpage:1,
+			first_num:1,
+			last_num:1,
+			prevnum:1,
+			nextnum:2,
+			numbox:[],
+			noticedata: ""
 		}
 	},
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
 		console.log( "created flg"+this.nowflg )
-		this.getInfo();
+		this.getInfo(1);
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
@@ -189,7 +141,7 @@ export default {
 		console.log("beforeupdated flg"+this.nowflg);
 		this.option = "3";
 		this.rangevalue = "1";
-		this.getInfo();
+		this.getInfo(1);
 	},
 	mounted() {
 	},
@@ -201,19 +153,8 @@ export default {
 			this.getInfo();
 			console.log("버튼함수끝"+value);
 		},
-		// 문자열 영문인 경우, 특정단어로 바꿔줌
-		// replaceString(data) {
-		// 	if(data.label.includes('pagination')) {
-		// 		if(data.url === null ) {
-		// 			return "이전"
-		// 		} else {
-		// 			return "다음"
-		// 		}
-		// 	}
-		// },
-
 		// 해당 게시판의 모든 게시글 조회
-		getInfo(page = 1) {
+		getInfo(page) {
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?page='+page;
 			
@@ -232,25 +173,78 @@ export default {
 				}
 			})
 			.then(res => {
-				console.log('여긴가',res.data.information);
-				console.log("then");
-				console.log('category='+this.option );
-				console.log('nowflg='+this.nowflg );
-				this.pagination = res.data.information.links;
-				console.log('pagination='+this.pagination );
-				this.page = res.data.information.current_page;
-				console.log('page는 ',this.page);
-				this.pageChk  = res.data.information.current_page;
+				console.log('정상처리')
 				this.infolist = res.data.information.data;
-				console.log('인포리스트='+this.infolist );
 				this.cntinfo = res.data.infocnt;
-				console.log('카운트인포=', res.data.infocnt);
-				console.log('카운트인포='+this.cntinfo );
-				console.log('정렬순='+this.rangevalue );
+				this.page = res.data.information.current_page
+				this.lastpage = res.data.information.last_page
+				this.noticedata = res.data.noticedata;
+				this.paging()
+				console.log("공지사항은 : "+this.noticedata);
+				console.log('페이지네이션종료')
 			})
 			.catch(err => {
-				this.$router.push('/error');
+				// this.$router.push('/error');
 			})
+		},
+		// 해당 게시판의 공지사항 조회
+		// getNotice(flg) {
+		// 	// 해당url의 데이터 가져오기
+		// 	const URL = '/board/notice?flg='+this.nowflg;
+			
+		// 	console.log("getNotice 함수진입")
+		// 	console.log("nowflg="+this.nowflg)
+		// 	// axios는 http status code가 200번대면 then으로, 그외에는 catch로
+		// 	axios.get(URL)
+		// 	.then(res => {
+		// 		console.log('정상처리')
+		// 		this.noticedata = res.data.data;
+		// 		console.log("공지사항은 : "+this.noticedata);
+		// 	})
+		// 	.catch(err => {
+		// 		// this.$router.push('/error');
+		// 	})
+		// },
+		// 페이징처리
+		paging(){
+			this.numbox = [];
+			if(this.lastpage < 5){
+				this.first_num = 1
+				this.last_num = this.lastpage
+			}else{
+				if(this.page <= 3){
+						this.first_num = 1
+						this.last_num = 5
+				}else if(this.page >= this.lastpage-2){
+					this.first_num = this.lastpage-4
+					this.last_num = this.lastpage
+				}else{
+					this.first_num = this.page-2
+					this.last_num = this.page+2
+				}
+			}
+			for(let i = this.first_num; i <= this.last_num; i++){
+				this.numbox.push(i);
+			}
+			if(this.page === 1){
+				this.prevnum = 1
+				this.nextnum = 2
+			}else if(this.page === this.lastpage){
+				this.prevnum = this.lastpage-1
+				this.nextnum = this.lastpage
+			}else{	
+				this.prevnum = this.page-1
+				this.nextnum = this.page+1
+			}
+		},
+		// created_at 데이터 출력 변환
+		formatEventDate(dateString) {
+			const dateObject = new Date(dateString);
+			const year = dateObject.getFullYear();
+			const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+			const day = String(dateObject.getDate()).padStart(2, "0");
+
+			return `${year}-${month}-${day}`;
 		},
 	}
 }

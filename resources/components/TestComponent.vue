@@ -27,11 +27,11 @@
 							></textarea>
 						</div>
 					</div>
-					<div class="community_inputgroup mb-3 align-items-center">
-						<!-- <input id="commu_file_img1" class="form-control" type="file" accept="image/*"> -->
-						<!-- <input id="commu_file_img2" class="form-control" type="file" accept="image/*">
-						<input id="commu_file_img3" class="form-control" type="file" accept="image/*"> -->
-					</div>
+					<!-- <div class="community_inputgroup mb-3 align-items-center">
+						<input id="commu_file_img1" class="form-control" type="file" accept="image/*">
+						<input id="commu_file_img2" class="form-control" type="file" accept="image/*">
+						<input id="commu_file_img3" class="form-control" type="file" accept="image/*">
+					</div> -->
 					<div>
 						<p class="font_air bold">						
 							<textarea type="text" maxlength="3000"

@@ -96,7 +96,7 @@
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 						<img :src="rfestival.img1">
 						<div class="region_title ">{{ rfestival.title }}</div>
-						<div class="region_content font_air bold">{{ this.nowdate }}기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+						<div class="region_content font_air bold">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
 					</router-link>
 					<div>
 						<div v-if="indate(today,rfestival.start_at,rfestival.end_at)" class="region_date_msg1 font_air bold">진행중</div>
@@ -141,7 +141,7 @@
 						<!-- <div class="region_heart pointer"><font-awesome-icon :icon="['fas', 'heart']" /></div> -->
 						<img :src="rfestival.img1">
 						<div class="region_title ">{{ rfestival.title }}</div>
-						<div class="region_content font_air bold">{{ this.nowdate }}기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
+						<div class="region_content font_air bold">기간 : {{ rfestival.start_at }} ~ {{ rfestival.end_at }}</div>
 					</router-link>
 					<div>
 						<div v-if="indate(today,rfestival.start_at,rfestival.end_at)" class="region_date_msg1 font_air bold">진행중</div>

@@ -101,6 +101,14 @@
 					</div>
 				</div>
 			</div>
+			<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
+				<!-- fas : 꽉 찬 하트 -->
+				<span :class="this.likeflg ? 'community_heart_red' : 'community_heart_black'">
+					<font-awesome-icon :icon="['fas', 'heart']"/>
+				</span>
+				좋아요
+				{{this.detaildata.cnt}}
+			</div>
 		</div>
 		<div class="detail_replie_container">
 			<div class="detail_replie_write_box font_air bold">
@@ -190,6 +198,8 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
+			userauth: "",
+			likeflg: false
 		}
 	},
 	watch: {
@@ -220,7 +230,10 @@ export default {
 					this.detaildata = res.data.data[0];
 					this.repliedata = res.data.replie;
 					this.repliecount = res.data.repliecount;
-					
+					this.userauth = res.data.userauth;
+					this.likeflg = res.data.likeresult;
+					console.log('userauth : '+this.userauth);
+					console.log('좋아요 누른 이력 : '+this.likeflg);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -242,33 +255,38 @@ export default {
 		// 댓글작성
 		repliewrite(){
 			if(this.replie){
-				const URL = '/detail/'+this.b_id;
+				console.log("디테일댓글작성if");
+				const URL = '/detail/reply/'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
 				formData.append('flg', '0');
+				console.log("replie : "+this.replie);
+				console.log("b_id : "+this.b_id);
+				console.log(formData);
 				axios.post(URL,formData)
 				.then(res =>{
+					console.log("디테일댓글작성then");
 					if(res.data.code==="0"){
 						this.replie = "";
 						this.repliecount++;
 						this.repliedata.unshift(res.data.data);
 					}else{
 						Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: res.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+                	})
 					}
 				})
 				.catch(err => {
+					console.log("디테일댓글작성catch");
 					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.response.data.errorMsg,
-                    confirmButtonText: '확인'
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
                 })
 
 				})
@@ -281,6 +299,45 @@ export default {
                 })
 			}
 		
+		},
+		// 좋아요 입력
+		plusheart() {
+			if(!(this.userauth === "")) {				
+				console.log("plusheart 함수 진입");
+				// 현재url가져오기
+				let params = new URLSearchParams(window.location.search);
+				this.b_id = params.get('id');
+				const URL = '/detail/heartpost';
+				axios.post(URL, {
+					"b_id": this.b_id,
+					"flg": "1"
+				})
+				.then(res=>{
+					console.log("plusheart 함수 then");
+					if(res.data.code==="0"){
+						console.log(res.data.likeflg);
+						this.likeflg = res.data.likeflg;
+						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
+							this.$router.push('/detail?id='+this.b_id);
+							this.detaildata.cnt--;
+						} else {
+							this.$router.push('/detail?id='+this.b_id);
+							this.detaildata.cnt++;
+						}
+					}
+				})
+				.catch(err => {
+					console.log("plusheart 함수 catch");
+					this.$router.push('/error');
+				})				
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '주의',
+					text: '로그인 후 이용해 주세요.',
+					confirmButtonText: '확인'
+                })
+			}
 		},
 		// 시간초기화
 		converttime(date){

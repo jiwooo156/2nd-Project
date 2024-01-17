@@ -15,14 +15,13 @@
 				</div>
 			</div>
 			<div class="detail_flex">
-				<div class="font_air bold detail_hits">
-					{{this.detaildata.nick}}
-				</div>
-				<div class="font_air bold detail_hits">
-					{{this.detaildata.created_at}}
-				</div>
-				<div class="font_air bold detail_hits" v-if="!(this.detaildata.created_at === this.detaildata.updated_at)">
-					(수정됨)
+				<div>
+					<span class="font_air bold detail_hits community_margin">{{this.detaildata.nick}}</span>
+					<span class="font_air bold detail_com_tofrom community_margin">|</span>
+					<span class="font_air bold detail_hits community_margin">{{formatEventDate(this.detaildata.created_at)}}</span>
+					<span class="font_air bold detail_hits community_margin" v-if="!(this.detaildata.created_at === this.detaildata.updated_at)">
+						(수정됨)
+					</span>
 				</div>
 				<div class="font_air bold detail_hits">
 					조회수 : {{this.detaildata.hits}}
@@ -48,15 +47,55 @@
 					{{this.detaildata.content}}
 				</div>
 			</div>
-			<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
-				<!-- fas : 꽉 찬 하트 -->
-				<font-awesome-icon :icon="['fas', 'heart']"/>
-				좋아요 {{this.detaildata.cnt}}
-			</div>
-			<div class="post_btn_bot">
-				<button type="button" v-if="this.detaildata.u_id === this.userauth">수정</button>
-				<button type="button" @click="goBack">목록</button>
-				<button type="button">삭제</button>
+			<div class="detail_post_like d-flex justify-content-between">
+				<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
+					<span class="community_like font_air bold" :class="this.likeflg ? 'community_heart_red' : 'community_heart_black'"><font-awesome-icon :icon="['fas', 'heart']"/></span>
+					<span class="community_like font_air bold">좋아요</span>
+					<span class="community_like font_air bold">{{this.detaildata.cnt}}</span>
+				</div>
+				<!-- 수정 모달 -->
+				<div class="modal" tabindex="-1">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title qna_update">게시글 수정</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="detail_type font_air bold qna_select">
+								<div>
+									<span>게시판?</span>
+									<select v-model="editedFlg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
+										<option v-for="flgOption in flgOptions" :key="flgOption.value" :value="flgOption.value" class="qna_drop_item font_air bold">{{ flgOption.label }}</option>
+									</select>
+								</div>
+								<div>
+									<span>카테고리?</span>
+									<select v-model="editedCategory" name="category_flg" class="form-select qna_drop" aria-label=".form-select-sm">
+										<option v-for="categoryOption in categoryOptions" :key="categoryOption.value" :value="categoryOption.value" class="qna_drop_item">{{ categoryOption.label }}</option>
+									</select>
+								</div>
+							</div>
+							<br>
+							<div class="qna_tit">
+								<span class="detail_type">제목:</span>
+								<input v-model="editedTitle" type="text" id="titleInput" class="form-control qna_tit">
+								<span class="detail_type">내용:</span>
+								<textarea v-model="editedContent" id="contentInput" class="form-control"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer d-flex justify-content-center">
+							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="detailedit()">수정완료</button>
+						</div>
+						</div>
+					</div>
+				</div>
+				<div class="post_btn_bot">
+					<button type="button" v-if="this.detaildata.u_id === this.userauth" @click="editbefore()">수정</button>
+					<button type="button" @click="goBack">목록</button>
+					<button type="button" v-if="this.detaildata.u_id === this.userauth" @click="delpost()">삭제</button>
+				</div>
 			</div>
 		</div>
 		<div class="detail_replie_container">
@@ -148,7 +187,22 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			userauth: "",
-			// likeresult: ""
+			likeflg: false,
+			editedTitle: '',
+			editedContent: '',
+			editedFlg: '',
+			editedCategory: '',
+			flgOptions: [
+				{ label: '자유', value: '0' },
+				{ label: '정보', value: '1' },
+				{ label: '질문', value: '2' },
+				{ label: '건의', value: '3' }
+			],
+			categoryOptions: [
+				{ label: '축제', value: '0' },
+				{ label: '관광', value: '1' },
+				{ label: '기타', value: '2' }
+			],
 		}
 	},
 	watch: {
@@ -183,11 +237,11 @@ export default {
 					this.repliedata = res.data.replie;
 					this.repliecount = res.data.repliecount;
 					this.userauth = res.data.userauth;
-					this.likeresult = res.data.likeresult;
+					this.likeflg = res.data.likeresult;
 					console.log('zcdvc'+this.userauth);
 					console.log('zcdvc'+this.detaildata.u_id);
 					console.log('디테일 data : '+this.detaildata.flg);
-					console.log('좋아요 누른 이력 : '+this.likeresult);
+					console.log('좋아요 누른 이력 : '+this.likeflg);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -258,28 +312,189 @@ export default {
 					"b_id": this.b_id,
 					"flg": "1"
 				})
-
-				
 				.then(res=>{
 					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
-						this.$router.push('/community?id='+this.b_id);
-						this.detaildata.cnt++;
+						console.log(res.data.likeflg);
+						this.likeflg = res.data.likeflg;
+						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
+							this.$router.push('/community?id='+this.b_id);
+							this.detaildata.cnt--;
+						} else {
+							this.$router.push('/community?id='+this.b_id);
+							this.detaildata.cnt++;
+						}
 					}
 				})
 				.catch(err => {
 					console.log("plusheart 함수 catch");
 					this.$router.push('/error');
-				})
-				
+				})				
 			} else {
 				Swal.fire({
 					icon: 'error',
 					title: '주의',
-					text: '로그인 후 이용 해 주세요.',
+					text: '로그인 후 이용해 주세요.',
 					confirmButtonText: '확인'
                 })
 			}
+		},
+		// 댓글삭제
+		del_replie(id){		
+			if (confirm("댓글을 삭제하시겠습니까?")) {
+				const URL = '/community/del/'+id;
+				const formData = new FormData();
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						document.querySelector('#detail_replie'+id).remove();
+						this.repliecount--;
+					}else{
+						Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+						})
+					}
+				})
+				.catch(err => {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+						})
+				})
+			} else {
+				return;
+			}
+			
+		},
+		// 댓글추가 불러오기
+		morereplie(){
+			const URL = '/community/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
+			axios.get(URL)
+			.then(res =>{
+				if(res.data.code==="0"){
+					this.repliedata = [ ...this.repliedata, ...res.data.data ];
+					this.replie_offset = this.replie_offset+20;			
+					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
+						this.moreflg = true;
+					}
+				}else{
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+				})
+				}
+			})
+			.catch(err => {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+				})
+			})		
+		},
+		// 게시물 삭제
+		delpost(){	
+			Swal.fire({
+			title: '삭제 확인',
+			text: '정말로 삭제하시겠습니까?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: '삭제',
+			cancelButtonText: '취소'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// 사용자가 확인을 눌렀을 때의 처리
+				this.$store.commit('setLoading', true);
+				let params = new URLSearchParams(window.location.search);
+				this.b_id = params.get('id');
+				const URL = '/community/delete?id=' + this.b_id;
+				axios.delete(URL)
+					.then(res => {
+						if (res.data.code === "0") {
+							// console.log("정상진입");
+							Swal.fire({
+								icon: 'success',
+								title: '완료',
+								text: '정상처리되었습니다.',
+								confirmButtonText: '확인'
+							});
+							this.goBack();
+						} 
+						
+					})
+					.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '에러발생.',
+							confirmButtonText: '확인'
+						});
+					})
+					.finally(() => {
+						this.$store.commit('setLoading', false);
+					});
+				}
+			});
+		},
+		// 게시글 수정요소 정의
+		editbefore() {
+			this.editedTitle = this.detaildata.title;
+			this.editedContent = this.detaildata.content;
+			this.editedFlg = this.detaildata.flg;
+			this.editedCategory = this.detaildata.category_flg;
+			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
+			myModal.show();
+		},
+		// 게시글 수정
+		detailedit() {
+			const URL = '/community/update?id=' + this.b_id;
+			const formData = {
+				title: this.editedTitle,
+				content: this.editedContent,
+				flg: this.editedFlg,
+				category_flg: this.editedCategory,
+			};
+			axios.put(URL, formData)
+			.then(res => {
+				if(res.data.code === "0") {
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '게시글이 수정되었습니다.',
+						confirmButtonText: '확인'
+					}).then(() => {
+						// 확인 버튼을 눌렀을 때 페이지를 리로드합니다.
+						location.reload();
+					});
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러가 발생했습니다',
+					confirmButtonText: '확인'
+				});
+			});
+		},
+		// created_at 데이터 출력 변환
+		formatEventDate(dateString) {
+			const dateObject = new Date(dateString);
+			const year = dateObject.getFullYear();
+			const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+			const day = String(dateObject.getDate()).padStart(2, "0");
+
+			return `${year}-${month}-${day}`;
 		},
 		// 시간초기화
 		converttime(date){
@@ -322,67 +537,6 @@ export default {
 		// 유저 본인인지 확인
 		checkUser(email) {
 			return email === localStorage.getItem('email');
-		},
-		// 댓글삭제
-		del_replie(id){		
-			if (confirm("댓글을 삭제하시겠습니까?")) {
-				const URL = '/community/del/'+id;
-				const formData = new FormData();
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						document.querySelector('#detail_replie'+id).remove();
-						this.repliecount--;
-					}else{
-						Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: res.data.errorMsg,
-						confirmButtonText: '확인'
-                		})
-					}
-				})
-				.catch(err => {
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: err.response.data.errorMsg,
-						confirmButtonText: '확인'
-                		})
-				})
-			} else {
-				return;
-			}
-			
-		},
-		// 댓글추가 불러오기
-		morereplie(){
-			const URL = '/community/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
-			axios.get(URL)
-			.then(res =>{
-				if(res.data.code==="0"){
-					this.repliedata = [ ...this.repliedata, ...res.data.data ];
-					this.replie_offset = this.replie_offset+20;			
-					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
-						this.moreflg = true;
-					}
-				}else{
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: res.data.errorMsg,
-						confirmButtonText: '확인'
-                })
-				}
-			})
-			.catch(err => {
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: err.response.data.errorMsg,
-						confirmButtonText: '확인'
-                })
-			})		
 		},
 		// 이메일 마스킹
 		masking(str) {

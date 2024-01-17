@@ -116,8 +116,9 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::get('/info/{id}', [InfoController::class, 'detailget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']);
     Route::get('/more', [InfoController::class, 'morereplie']);
-    Route::post('/{id}', [InfoController::class, 'repliewirte']);
+    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
+    Route::post('/heartpost', [InfoController::class, 'plusheart']);
 });
 
 // 자유&정보 게시판 라우터 생성
@@ -127,6 +128,7 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     });
     // 0108 정지우 정보게시판 목록 정보조회
     Route::get('/info', [InfoController::class, 'commuinfoget']);
+    Route::get('/notice', [InfoController::class, 'noticeget']);
 });
 
 
@@ -141,8 +143,11 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
     Route::post('/heartpost', [InfoController::class, 'plusheart']);
+    Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
+    Route::put('/update', [InfoController::class, 'postupdate']); // 게시글 수정
 });
-// 0115 정지우 작성페이지
+
+// 자유&정보 게시글 작성 라우터 생성
 Route::post('/testwrite', [InfoController::class, 'communitywrite']);
 
 // 게시글 작성 라우터 생성

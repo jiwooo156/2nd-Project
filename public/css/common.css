@@ -2265,7 +2265,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     flex-direction: column;
 }
 /* 정보게시판 헤더 */
-.info_header {
+/* .info_header {
 	width: 100%;
 	height: 30%;
 	margin-top: 100px;
@@ -2274,14 +2274,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .info_header_title {
 	font-size: 5rem;
     font-weight: 1000;
-}
+} */
 /* 정보게시판 목록 전체영역 */
-.info_container {
+/* .info_container {
 	width: 100%;
-}
+} */
 
 /* 목록 정렬 버튼 */
-.info_sortframe {
+/* .info_sortframe {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px auto;
@@ -2307,10 +2307,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .info_sortc:hover {
 	color: #868e96;
-}
+} */
 
 /* 글 작성 버튼 */
-.info_btnwrite {
+/* .info_btnwrite {
     border-radius: 0.8rem;
     padding: 0.6rem;
 	margin: 0 5%;
@@ -2320,7 +2320,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .info_btnwrite:hover {
     background-color: #E17878;
 	color: white;
-}
+} */
 /* 정보게시판 목록 */
 .info_list {
 	width: 100%;
@@ -2362,7 +2362,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	width: 45%;
 }
 .info_writer {
-	width: 10%;
+	width: 11%;
 }
 .info_create_at {
 	width: 10%;
@@ -2371,7 +2371,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	width: 5%;
 }
 .info_likes {
-	width: 10%;
+	width: 9%;
 }
 /* .col_hidden {
 	display: table-column
@@ -2399,8 +2399,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* 커뮤니티 페이지 */
+.community_like {
+	vertical-align: middle;
+	line-height: 1rem;
+	font-size: 1.1rem;
+	margin-right: 0.4rem;
+}
 .community_heart {
 	display: inline-block;
+}
+.community_heart_red {
+	color: #d14c6c;
+}
+.community_heart_black {
+	color: #000;
+}
+.community_margin {
+	margin: 0 10px;
 }
 
 /* pc */
