@@ -59,7 +59,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="notice in noticedata" :key="notice" v-if="this.noticedata&&this.page === 1" class="info_notice pointer" @click="$router.push('/community?id='+notice.id)">
+						<tr v-for="notice in noticedata" :key="notice" v-if="this.noticedata&&this.page === 1" class="info_notice pointer font_air bold" @click="$router.push('/community?id='+notice.id)">
 							<td class="col_hidden">{{ notice.id }}</td>
 							<td>공지사항</td>
 							<td class="info_title">{{ notice.title }}</td>
@@ -180,6 +180,7 @@ export default {
 				this.lastpage = res.data.information.last_page
 				this.noticedata = res.data.noticedata;
 				this.paging()
+				// console.log("공지사항은 : "+this.infolist.notice_flg);
 				console.log("공지사항은 : "+this.noticedata);
 				console.log('페이지네이션종료')
 			})
