@@ -1698,8 +1698,8 @@ export default {
 					console.log("저기"+this.main_chart.data.datasets[1].data)
 					for(let i = 0; i < res.data.chart.length; i++){
 						console.log("포문진입")
-						this.main_chart.data.datasets[0].data.splice(i, 1, res.data.chart[i].in_cnt);
-						this.main_chart.data.datasets[1].data.splice(i, 1, res.data.chart[i].out_cnt);
+						this.main_chart.data.datasets[0].data= res.data.chart[i].in_cnt;
+						this.main_chart.data.datasets[1].data= res.data.chart[i].out_cnt;
 					}
 					console.log("여기"+this.main_chart.data.datasets[0].data)
 					console.log("저기"+this.main_chart.data.datasets[1].data)
@@ -1710,11 +1710,12 @@ export default {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: '에러발생.',
+						text: '로그인에 실패하였습니다 다시한번 시도해주세요',
 						confirmButtonText: '확인'
 					})
 					this.logout();
 				}
+
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
