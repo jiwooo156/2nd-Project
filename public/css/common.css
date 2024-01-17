@@ -1866,7 +1866,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 1000px;
 }
 .qna_container {
-    padding: 30px 10px 10px 10px;
+    padding: 30px 10px 0px 10px;
 }
 .qna_header_bot {
 	padding-bottom: 1rem;
@@ -2063,6 +2063,30 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	margin-top: 1rem;
 	margin-bottom: 0;
 }
+.page-item span {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+}
+#qna_paging {
+	color: #28284d;
+	border: none;
+	font-size: 1.2rem;
+	border-radius: 46%;
+	line-height: 1.2rem;
+	margin: 0 4px;
+}
+#qna_page #qna_item.pointer:hover #qna_paging {
+	text-decoration: underline;
+	background-color: transparent;
+	border: none;
+}
+#qna_page #qna_item.active #qna_paging {
+	background-color: #28284d;
+	color: #Fff;
+	border: none;
+}
+
+
 /* 어드민 */
 .admin_frame{
     background-color: #f8f9fa;

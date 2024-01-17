@@ -129,23 +129,23 @@
 			</div>
 		</div>
 		<!-- 페이징 -->
-		<div class='admin_page  mt-3'>
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
-					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-						<span class="page-link" @click="scrollToTopAndInfo(1)">&lt;&lt;</span>
+		<div class="d-flex justify-content-center">
+			<nav aria-label="Page navigation">
+				<ul class="pagination" id="qna_page">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']" id="qna_item">
+						<span class="page-link" id="qna_paging" @click="scrollToTopAndInfo(1)">&lt;&lt;</span>
 					</li>
-					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-						<span class="page-link" @click="scrollToTopAndInfo(prevnum)">&lt;</span>
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']" id="qna_item">
+						<span class="page-link" id="qna_paging" @click="scrollToTopAndInfo(prevnum)">&lt;</span>
 					</li>
-					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
-						<span class="page-link" @click="scrollToTopAndInfo(num)">{{ num }}</span>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']" id="qna_item">
+						<span class="page-link" id="qna_paging" @click="scrollToTopAndInfo(num)">{{ num }}</span>
 					</li>
-					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-						<span class="page-link" @click="scrollToTopAndInfo(nextnum)">&gt;</span>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']" id="qna_item">
+						<span class="page-link" id="qna_paging" @click="scrollToTopAndInfo(nextnum)">&gt;</span>
 					</li>
-					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-						<span class="page-link" @click="scrollToTopAndInfo(lastpage)">&gt;&gt;</span>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']" id="qna_item">
+						<span class="page-link" id="qna_paging" @click="scrollToTopAndInfo(lastpage)">&gt;&gt;</span>
 					</li>
 				</ul>
 			</nav>
