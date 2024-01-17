@@ -1934,6 +1934,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_content {
 	padding-top: 1.5rem;
+	margin: 0 auto;
 }
 .card:hover {
 	border: 1px solid #D14C6C;
@@ -1954,9 +1955,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .card-body span {
 	font-family: 'Cafe24SsurroundAir';
-	font-weight: bold;
-	vertical-align: middle;
-    line-height: 1rem;
+    font-weight: bold;
+    vertical-align: middle;
+    line-height: 1.1rem;
+    text-align: center;
 }
 .qna_card_tit {
 	font-size: 1.15rem;
@@ -1975,7 +1977,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #656565;
 	font-size: 0.8rem;
 }
-
 .qna_btn_bot a {    
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
@@ -2007,15 +2008,19 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	border-radius: 15px;
 	background-color: #4A63AD;
 	color: #fff;
-	padding: 6px 9px;
-	font-size: 0.85rem;
+    padding: 8px 10px;
+    font-size: 1rem;
+}
+.qna_content {
+	display: flex;
+	gap: 1.5rem;
 }
 .qna_answer {
 	border-radius: 15px;
-	background-color: #D27E12;
-	color: #fff;
-	padding: 6px 9px;
-	font-size: 0.85rem;
+    background-color: #D27E12;
+    color: #fff;
+    padding: 8px 10px;
+    font-size: 1rem;
 }
 .qna_lock {
 	font-size: 1rem;
@@ -2035,10 +2040,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_color {
 	background-color: #7066e0;
-	border: transparent;
+	border: none;
+	color: #fff;
 }
 .qna_color:hover{
 	background-color: #574cd8;
+	color: #fff;
 }
 .qna_select {
     display: flex;
@@ -2051,6 +2058,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_update {
 	font-size: 1.5rem;
+}
+.detail_margin {
+	margin-top: 1rem;
+	margin-bottom: 0;
 }
 /* 어드민 */
 .admin_frame{
@@ -2980,6 +2991,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.info_router {
 		width: 100%;
 		display: block;
+	}
+	/* 게시판용 */
+	.qna_header_r {
+		display: none;
+	}
+	.qna_def {
+		display: none;
+	}
+	.qna_card {
+		border: none;
+		padding-bottom: 0;
+	}
+	.qna_wait {
+		display: none;
+	}
+	.qna_answer {
+		display: none;
 	}
 }
 
