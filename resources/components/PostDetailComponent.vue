@@ -27,6 +27,8 @@
 				</div>
 				<figure class="figure">
 					<img :src="this.detaildata.img1" class="figure-img img-fluid rounded">
+					<img :src="this.detaildata.img2" class="figure-img img-fluid rounded">
+					<img :src="this.detaildata.img3" class="figure-img img-fluid rounded">
 				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
@@ -67,6 +69,27 @@
 								<!-- <label for="formFile" class="form-label detail_type detail_margin">사진 업로드</label>
 								<input class="form-control font_air bold" type="file" id="formFile"> -->
 							</div>
+							<!-- 테스트용 -->
+							<div class="input-group mb-3 align-items-center">
+									<span class="input-group-text" >1번이미지</span>
+									<input id="modal_file_img1_text" class="form-control" type="text" readOnly :value="this.detaildata.img1">
+									<button type="button" class="btn btn-secondary" @click="this.detaildata.img1 = ''">삭제</button>
+									<span class="input-group-text" >2번이미지</span>
+									<input id="modal_file_img2_text" class="form-control" type="text" readOnly :value="this.detaildata.img2">
+									<button type="button" class="btn btn-secondary" @click="this.detaildata.img2 = ''">삭제</button>
+									<span class="input-group-text" >3번이미지</span>
+									<input id="modal_file_img3_text" class="form-control" type="text" readOnly :value="this.detaildata.img3">
+									<button type="button" class="btn btn-secondary" @click="this.detaildata.img3 = ''">삭제</button>
+								</div>
+								<div class="input-group mb-3 align-items-center">
+									<span class="input-group-text">이미지변경</span>
+									<div v-if="!this.detaildata.img1&&!this.detaildata.img2&&!this.detaildata.img3">
+										이미지없음
+									</div>
+									<input id="modal_file_img1" class="form-control" type="file" accept="image/*">
+									<input id="modal_file_img2" class="form-control" type="file" accept="image/*">
+									<input id="modal_file_img3" class="form-control" type="file" accept="image/*">
+								</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
 							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
@@ -78,7 +101,7 @@
 				<div class="post_btn_bot" >
 					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" @click="update">수정</button>
 					<button type="button" @click="goBack">목록</button>
-					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delpost">삭제</button>
+					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delPost">삭제</button>
 				</div>
 			</div>
 		</div>
@@ -264,7 +287,7 @@ export default {
             });
 		},
 		// 게시물 삭제
-		delpost(){	
+		delPost(){	
 			Swal.fire({
 			title: '삭제 확인',
 			text: '정말로 삭제하시겠습니까?',
@@ -315,18 +338,32 @@ export default {
 			this.editedContent = this.detaildata.content;
 			this.editedFlg = this.detaildata.flg;
 			this.editedCategory = this.detaildata.category_flg;
-			this.editedImg = this.detaildata.category_flg;
 			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
 			myModal.show();
 		},
 		updatePost() {
 			const URL = '/post/update?id=' + this.b_id;
-			const formData = {
-				title: this.editedTitle,
-				content: this.editedContent,
-				flg: this.editedFlg,
-				category_flg: this.editedCategory,
-			};
+			let img1 = document.querySelector('#modal_file_img1');
+			let img2 = document.querySelector('#modal_file_img2');
+			let img3 = document.querySelector('#modal_file_img3');
+			let b_img1 = document.querySelector('#modal_file_img1_text');
+			let b_img2 = document.querySelector('#modal_file_img2_text');
+			let b_img3 = document.querySelector('#modal_file_img3_text');
+			const formData = new FormData();
+			formData.append('title', this.editedTitle);
+			formData.append('content', this.editedContent);
+			formData.append('flg', this.editedFlg);
+			formData.append('category_flg', this.editedCategory);
+			formData.append('img1', img1.files[0]);
+			formData.append('img2', img2.files[0]);
+			formData.append('img3', img3.files[0]);
+			formData.append('b_img1', b_img1.value);
+			formData.append('b_img2', b_img2.value);
+			formData.append('b_img3', b_img3.value);
+
+			console.log(formData.get('img1'));
+			console.log(formData.get('b_img1'));
+
 			axios.put(URL, formData)
 			.then(res => {
 				if(res.data.code === "0") {

@@ -1039,8 +1039,8 @@ class InfoController extends Controller
     }
     // 커뮤니티 질문&건의 수정
     public function postupdate(Request $req){
-        // Log::debug("수정 함수 시작");
-        // Log::debug($req);
+        Log::debug("수정 함수 시작");
+        Log::debug($req);
         // Log::debug("제목 플래그 : ".$req->title);
         // Log::debug("내용 플래그 : ".$req->content);
         // Log::debug("게시판 플래그 : ".$req->flg);
@@ -1055,20 +1055,29 @@ class InfoController extends Controller
             $data->flg = $req->flg;
             $data->category_flg = $req->category_flg;
 
-            if ($req->hasFile('img1')) {
+            if(empty($req->b_img1)){
+                $data->img1 = null;
+            }
+            if(empty($req->b_img2)){
+                $data->img2 = null;
+            }
+            if(empty($req->b_img3)){
+                $data->img3 = null;
+            }
+            if($req->img1!=="undefined"){
                 $imgName = Str::uuid().'.'.$req->img1->extension();
                 $req->img1->move(public_path('img'), $imgName);
                 $data->img1 = '/img/'.$imgName;
             }
-            if ($req->hasFile('img2')) {
-                $imgName = Str::uuid().'.'.$req->img1->extension();
-                $req->img1->move(public_path('img'), $imgName);
-                $data->img1 = '/img/'.$imgName;
+            if($req->img2!=="undefined"){
+                $imgName = Str::uuid().'.'.$req->img2->extension();
+                $req->img2->move(public_path('img'), $imgName);
+                $data->img2 = '/img/'.$imgName;
             }
-            if ($req->hasFile('img3')) {
-                $imgName = Str::uuid().'.'.$req->img1->extension();
-                $req->img1->move(public_path('img'), $imgName);
-                $data->img1 = '/img/'.$imgName;
+            if($req->img3!=="undefined"){
+                $imgName = Str::uuid().'.'.$req->img3->extension();
+                $req->img3->move(public_path('img'), $imgName);
+                $data->img3 = '/img/'.$imgName;
             }
 
             $data->save();

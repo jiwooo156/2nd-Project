@@ -1284,6 +1284,29 @@ class AdminController extends Controller
             ], 400);
         }
     }
+    // 공지등록
+    public function noticepost(Request $req){
+        try {
+            DB::beginTransaction();
+            $user = Auth::user()->id;
+            $data = $req->only('title','content','flg');
+            $data['u_id']=$user;
+            $data['notice_flg']='1';
+            $data['category_flg']='2';
+            Community::create($data);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
     // 특정시간에 동작
     public function test(Request $req){
         $schedule->call(function () {
