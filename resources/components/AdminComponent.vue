@@ -61,7 +61,7 @@
 						<span class=" font_air bold">오늘의 탈퇴수</span>
 						<div>{{ this.drop_cnt }} 명</div>
 					</div>	
-					<div class="admin_container_box1_3 font_air bold pointer"  @click="flgchg(3,1)">
+					<div class="admin_container_box1_3 font_air bold pointer"  @click="flgchg(3,0)">
 						<span class=" font_air bold">미 답변 건의</span>
 						<div>{{ this.d_cnt }}건</div>
 					</div>	
@@ -79,14 +79,15 @@
 			<div class="admin_container_box3">
 				<div class="font_air bold admin_main_chart2_flex">					
 					<div class="font_air bold">테스트</div>
-					<select class="form-select" id="validationTooltip04" required v-model="main_chart_type" @change="main_chart_type">
+					<select class="form-select" id="validationTooltip04" required v-model="main_chart_type" @change="mainchartget">
 						<option value="0">1주일</option>
 						<option value="1">1개월</option>
 						<option value="2">6개월</option>
 						<option value="3">1년</option>
 					</select>
 				</div>
-				<Bar :data="main_chart2.data" :options="main_chart2.options" />
+				<Bar v-if="chart_flg1" :data="main_chart1.data" :options="main_chart1.options" />
+				<Bar v-if="!chart_flg1" :data="main_chart1_b.data" :options="main_chart1.options" />
 			</div>
 			<div class="admin_container_box4">
 				<div>
@@ -108,7 +109,7 @@
 						<textarea class="form-control" aria-label="With textarea" v-model="main_content"></textarea>
 					</div>
 				</div>
-				<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
+				<button type="button" class="btn btn-secondary" @click="addnotice">등록</button>
 			</div>
 		</div>		
 	</div>
@@ -781,9 +782,12 @@
 				</div>
 			</tbody>
 		</table>
-		<div class='admin_page'>
+		<div class='admin_page  mt-3'>
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="get_replie(1)">&lt;&lt;</span>
+					</li>
 					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
 						<span class="page-link" @click="get_replie(prevnum)">이전</span>
 					</li>
@@ -792,6 +796,9 @@
 					</li>
 					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
 						<span class="page-link" @click="get_replie(nextnum)">다음</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="get_replie(lastpage)">>></span>
 					</li>
 				</ul>
 			</nav>
@@ -1214,6 +1221,7 @@ export default {
 	data() {
 		return {	
 			chart_flg: false,
+			chart_flg1: false,
 			authority: false,
 			today: "",
 			main_chart_type: "0",
@@ -1633,25 +1641,52 @@ export default {
 					maintainAspectRatio: false,
 				},
 			},
-			// 메인차트
-			main_chart2:{
+			// 메인차트1
+			main_chart1:{
 				data: {
-					labels: ['좋아요', '댓글', '게시글'],
+					labels: ['새벽','오전', '오후', '저녁'],
+					datasets: [
+						{
+							label: '좋아요',
+							backgroundColor: ['#ff5454'],
+							data: [0, 0, 0,0],
+						},
+						{
+							label: '댓글',
+							backgroundColor: ['#4b7bcc'],
+							data: [0, 0, 0,0],
+						},
+						{
+							label: '게시글',
+							backgroundColor: ['#4fb283'],
+							data: [0, 0, 0,0],
+						},
+					],
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					indexAxis: 'y',
+				},
+			},
+			main_chart1_b:{
+				data: {
+					labels: ['새벽','오전', '오후', '저녁'],
 					datasets: [
 						{
 							label: '좋아요',
 							backgroundColor: ['#f87979'],
-							data: [40, 20, 12],
+							data: [0, 0, 0,0],
 						},
 						{
 							label: '댓글',
-							backgroundColor: ['#000'],
-							data: [70, 50, 42],
+							backgroundColor: ['#4997ff'],
+							data: [0, 0, 0,0],
 						},
 						{
-							label: '',
+							label: '게시글',
 							backgroundColor: ['#000'],
-							data: [70, 50, 42],
+							data: [0, 0, 0,0],
 						},
 					],
 				},
@@ -1674,7 +1709,7 @@ export default {
 		}
 		this.getToday();
 		this.adminchk();
-		// this.mainchartget();
+		this.mainchartget();
 		this.statistics();
 	},
 	updated() {
@@ -1687,6 +1722,7 @@ export default {
 	methods: {
 		// 어드민체크
 		adminchk(){
+			this.chart_flg = false;
 			this.$store.commit('setLoading',true);
 			let id = localStorage.getItem('admin')
 			let nick = localStorage.getItem('nick')
@@ -1702,8 +1738,6 @@ export default {
 					this.r_data.forEach(item => {
 						item.flg = item.flg === '0' ? '커뮤' : '댓글';
 					});
-					console.log("여기"+this.main_chart.data.datasets[0].data)
-					console.log("저기"+this.main_chart.data.datasets[1].data)
 					for(let i = 0; i < res.data.chart.length; i++){
 						this.main_chart.data.labels[i] = res.data.chart[i].month;
 						this.main_chart.data.datasets[0].data[i] = res.data.chart[i].in_cnt;
@@ -1711,7 +1745,7 @@ export default {
 					}
 					this.main_chart.data.labels =	this.main_chart.data.labels.reverse();
 					this.main_chart.data.datasets[0].data = this.main_chart.data.datasets[0].data.reverse();
-  					this.main_chart.data.datasets[1].data = this.main_chart.data.datasets[1].data.reverse()
+					this.main_chart.data.datasets[1].data = this.main_chart.data.datasets[1].data.reverse()
 					this.chart_flg = true;
 				}
 			})
@@ -1733,12 +1767,21 @@ export default {
 		},
 		// 메인차트
 		mainchartget(){
+			this.chart_flg1 = false;
 			this.$store.commit('setLoading',true);
 			const URL = '/admin/main?flg='+this.main_chart_type
 			axios.get(URL)
 			.then(res => {
-			if(res.data.code === "0"){
-		
+				if(res.data.code === "0"){			
+					let arr1 = res.data.data.filter(item => item.num === 0)
+					let arr2 = res.data.data.filter(item => item.num === 1)
+					let arr3 = res.data.data.filter(item => item.num === 2)
+					for(let i = 0; i < arr1.length; i++){
+						this.main_chart1.data.datasets[0].data[i] = arr1[i].cnt;
+						this.main_chart1.data.datasets[1].data[i] = arr2[i].cnt;
+						this.main_chart1.data.datasets[2].data[i] = arr3[i].cnt;
+					}
+					this.chart_flg1 = true;
 				}
 			})
 			.catch(err => {
@@ -2558,7 +2601,8 @@ export default {
 		},
 		// 초기화용함수
 		resetall(){
-			console.log("초기화함수")
+			this.main_input= "0";
+			this.main_chart_type= "0";
 			this.restraint_msg= "";
 			this.restraint_msg2= "";
 			this.restraint_date= "";
@@ -3237,6 +3281,36 @@ export default {
 					})	
 				}					
 			})
+		},
+		// 공지등록
+		addnotice(){
+			const URL = '/admin/notice'
+			const formData = new FormData();
+			formData.append('flg',this.main_input);
+			formData.append('title',this.main_title);
+			formData.append('content',this.main_content);
+			axios.post(URL,formData)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.main_title = "";
+					this.main_content = "";
+					this.main_input = '0';
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					})
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
+					confirmButtonText: '확인'
+				})
+			})					
 		},
 		// 페이징처리
 		paging(){

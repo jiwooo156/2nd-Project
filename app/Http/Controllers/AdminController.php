@@ -97,29 +97,60 @@ class AdminController extends Controller
     // 메인페이지 차트데이터
     public function mainchartget(Request $req)
     {
-        $like = Like::select(DB::raw('infos.main_flg'),DB::raw('count(infos.main_flg) as cnt'))
-            ->join('infos', 'likes.b_id', 'infos.id')
-            ->where('likes.flg', '0');
-        $replie = Replie::select(DB::raw('infos.main_flg'),DB::raw('count(infos.main_flg) as cnt'))
-            ->join('infos', 'replies.b_id', 'infos.id')
-            ->where('replies.flg', '0');
-        Log::debug("테스트");
+        $like = Like::
+            select(
+                DB::raw('CASE 
+                        WHEN HOUR(created_at) >= 0 AND HOUR(created_at) < 6 THEN "새벽"
+                        WHEN HOUR(created_at) >= 6 AND HOUR(created_at) < 12 THEN "오전"
+                        WHEN HOUR(created_at) >= 12 AND HOUR(created_at) < 18 THEN "오후"
+                        ELSE "저녁" 
+                    END as time'),
+                DB::raw('COUNT(*) as cnt,0 as num')
+            )->groupBy('time');
+        $replie = Replie::withTrashed()
+            ->select(
+                DB::raw('CASE 
+                        WHEN HOUR(created_at) >= 0 AND HOUR(created_at) < 6 THEN "새벽"
+                        WHEN HOUR(created_at) >= 6 AND HOUR(created_at) < 12 THEN "오전"
+                        WHEN HOUR(created_at) >= 12 AND HOUR(created_at) < 18 THEN "오후"
+                        ELSE "저녁" 
+                    END as time'),
+                DB::raw('COUNT(*) as cnt,1 as num')
+            )->groupBy('time');
+        $board = Community::withTrashed()
+            ->select(
+                DB::raw('CASE 
+                        WHEN HOUR(created_at) >= 0 AND HOUR(created_at) < 6 THEN "새벽"
+                        WHEN HOUR(created_at) >= 6 AND HOUR(created_at) < 12 THEN "오전"
+                        WHEN HOUR(created_at) >= 12 AND HOUR(created_at) < 18 THEN "오후"
+                        ELSE "저녁" 
+                    END as time'),
+                DB::raw('COUNT(*) as cnt,2 as num')
+            )->groupBy('time');
         if ($req->flg === "0") {
-            $like->where('likes.created_at', '>=', now()->subWeek());
-            $replie->where('replies.created_at', '>=', now()->subWeek());
+            Log::debug("진입");
+            $like->where('created_at', '>=', now()->subWeek());
+            $replie->where('created_at', '>=', now()->subWeek());
+            $board->where('created_at', '>=', now()->subWeek());
         } elseif ($req->flg === "1") {
-            $like->where('likes.created_at', '>=', now()->subMonth());
-            $replie->where('replies.created_at', '>=', now()->subMonth());
+            $like->where('created_at', '>=', now()->subMonth());
+            $replie->where('created_at', '>=', now()->subMonth());
+            $board->where('created_at', '>=', now()->subMonth());
         } elseif ($req->flg === "2") {
-            $like->where('likes.created_at', '>=', now()->subMonths(6));
-            $replie->where('replies.created_at', '>=', now()->subMonths(6));
+            $like->where('created_at', '>=', now()->subMonths(6));
+            $replie->where('created_at', '>=', now()->subMonths(6));
+            $board->where('created_at', '>=', now()->subMonths(6));
         } elseif ($req->flg === "3") {
-            $like->where('likes.created_at', '>=', now()->subYear());
-            $replie->where('replies.created_at', '>=', now()->subYear());
+            $like->where('created_at', '>=', now()->subYear());
+            $replie->where('created_at', '>=', now()->subYear());
+            $board->where('created_at', '>=', now()->subYear());
         }
-
-        $result = $like->union($replie)->groupBy('infos.main_flg')->get();
-            Log::debug($result);
+        $result = $like->union($replie)->union($board)->get();
+        Log::debug($result);
+        return response()->json([
+            'code' => '0',
+            'data' => $result,
+        ], 200);
     }
     // modal용 report data획득
     public function reportget(Request $req){
@@ -1240,6 +1271,29 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             Admin::where('u_id', $req->id)->delete();
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
+            // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '삭제실패.'
+            ], 400);
+        }
+    }
+    // 공지등록
+    public function noticepost(Request $req){
+        try {
+            DB::beginTransaction();
+            $user = Auth::user()->id;
+            $data = $req->only('title','content','flg');
+            $data['u_id']=$user;
+            $data['notice_flg']='1';
+            $data['category_flg']='2';
+            Community::create($data);
             DB::commit();
             return response()->json([
                 'code' => '0'

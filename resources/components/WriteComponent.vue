@@ -34,6 +34,12 @@
 					></textarea>
 				</div>
 
+				
+				<div class="input-group mb-3 align-items-center">
+					<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
+					<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
+					<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
+				</div>
 
 
 
@@ -97,11 +103,17 @@ export default {
 			this.$store.commit('setLoading',true);
 			const URL = '/commuwrite';
 			// const uploadFile = event.target.files[0]
+			let img1 = document.querySelector('#admin_file_img1');
+			let img2 = document.querySelector('#admin_file_img2');
+			let img3 = document.querySelector('#admin_file_img3');
 			const formData = new FormData();
 			formData.append('title', this.title);
 			formData.append('content', this.content);
 			formData.append('flg', this.flg);
 			formData.append('category_flg', this.categoryflg);
+			formData.append('img1', img1.files[0]);
+			formData.append('img2', img2.files[0]);
+			formData.append('img3', img3.files[0]);
 			// formData.append('files',uploadFile);
 			// console.log(formData);
 			// console.log(this.title);

@@ -1710,9 +1710,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	margin: 20px 0;
     word-break: break-all;
 	white-space: pre-line;
+<<<<<<< HEAD
 }
 .detail_inline {
 	display: inline;
+=======
+>>>>>>> bd480fbc7380eee795ec7eef8eba0c1a48f66b62
 }
 .detail_hits{
 	text-align: right;
