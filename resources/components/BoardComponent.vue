@@ -155,6 +155,9 @@ export default {
 		},
 		// 해당 게시판의 모든 게시글 조회
 		getInfo(page) {
+			// 스피너 로딩바
+			this.$store.commit('setLoading',true);
+
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?page='+page;
 			
@@ -187,6 +190,9 @@ export default {
 			.catch(err => {
 				// this.$router.push('/error');
 			})
+			.finally(() => {
+                this.$store.commit('setLoading', false);
+            });
 		},
 		// 해당 게시판의 공지사항 조회
 		// getNotice(flg) {

@@ -93,6 +93,8 @@ export default {
 
 		// 게시글 작성
 		commuWrite() {
+			// 스피너 로딩바
+			this.$store.commit('setLoading',true);
 			const URL = '/commuwrite';
 			// const uploadFile = event.target.files[0]
 			const formData = new FormData();
@@ -125,6 +127,9 @@ export default {
                     confirmButtonText: '확인'
                 })
             })
+			.finally(() => {
+                this.$store.commit('setLoading', false);
+            });
         },
         // 뒤로가기 동작 실행
         goBack() {

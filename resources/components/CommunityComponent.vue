@@ -226,10 +226,8 @@ export default {
 	},
 	methods: {
 		getinfo(){
-			// 현재url가져오기
-			// let params = new URLSearchParams(window.location.search);
-			// this.b_id = params.get('id');
-			
+			// 스피너 로딩바
+			this.$store.commit('setLoading',true);
 			const URL = '/community/info?id='+this.b_id;
 			axios.get(URL)
 			.then(res => {
@@ -260,6 +258,9 @@ export default {
                     confirmButtonText: '확인'
                 })
 			})
+			.finally(() => {
+                this.$store.commit('setLoading', false);
+            });
 		},
 		// 댓글작성
 		repliewrite(){
