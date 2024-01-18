@@ -39,12 +39,12 @@
 				<div class="carousel-inner">
 					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
 						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
-							<div class="card-body qna_card_body">
+							<div class="card-body qna_card_body qna_mobile">
 								<h6 class="card-subtitle mb-2 qna_pink" id="qna_notice_icon"><font-awesome-icon :icon="['fas', 'volume-off']" /> {{ isNotice(notice.category_flg) }}</h6>
 								<h5 class="card-title mb-3 qna_card_tit">
 									{{ notice.title }}
 								</h5>
-								<div class="d-flex justify-content-between qna_card_notce">
+								<div class="d-flex justify-content-between">
 									<span class="card-text"
 										><span class="qna_card_span font_center"
 											><font-awesome-icon :icon="['fas', 'user']" />
@@ -144,12 +144,12 @@
 				<div class="carousel-inner">
 					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
 						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
-							<div class="card-body qna_card_body">
+							<div class="card-body qna_card_body qna_mobile">
 								<h6 class="card-subtitle mb-2 qna_pink" id="qna_notice_icon"><font-awesome-icon :icon="['fas', 'volume-off']" /> {{ isNotice(notice.category_flg) }}</h6>
 								<h5 class="card-title qna_card_tit">
 									{{ notice.title }}
 								</h5>
-								<div class="d-flex justify-content-between qna_card_notce">
+								<div class="d-flex justify-content-between">
 									<span class="card-text"
 										><span class="qna_card_span font_center"><font-awesome-icon :icon="['fas', 'user']" />
 										</span>{{ isAdmin(notice.nick) }}</span>
