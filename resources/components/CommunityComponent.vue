@@ -16,7 +16,8 @@
 			</div>
 			<div class="detail_flex">
 				<div>
-					<span class="font_air bold detail_hits community_margin">{{this.detaildata.nick}}</span>
+					<span class="font_air bold detail_hits community_margin" v-if="detaildata.notice_flg === '0'">{{this.detaildata.nick}}</span>
+					<span class="font_air bold detail_hits community_margin" v-if="detaildata.notice_flg === '1'">관리자</span>
 					<span class="font_air bold detail_com_tofrom community_margin">|</span>
 					<span class="font_air bold detail_hits community_margin">{{formatEventDate(this.detaildata.created_at)}}</span>
 					<span class="font_air bold detail_hits community_margin" v-if="!(this.detaildata.created_at === this.detaildata.updated_at)">

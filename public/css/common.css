@@ -1360,7 +1360,7 @@ margin-top:10px;
     align-items: center;
     flex-direction: column;
     gap: 50px;
-    margin: 78px auto;
+    margin: 0 auto;
     width: 95%;
     max-width: 1000px;
     padding: 10px;
@@ -1380,6 +1380,7 @@ margin-top:10px;
 }
 .region_ns{
 	font-size: 3rem;
+	margin-top: 78px;
 }
 .region_ns_span{
 	font-size: 1.3rem;
@@ -1870,7 +1871,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-size: 3rem;
 }
 .qna_frame {
-    margin: 100px auto;
+    margin: 0 auto;
     width: 95%;
     max-width: 1000px;
 }
@@ -1923,7 +1924,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 정렬순 정지우 동적 클래스 */
 .qna_btn_button_on {
-	color: #00a678 !important;
+	color: #28284d !important;
 }
 
 .qna_btn div button span {
@@ -1937,6 +1938,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .font_center {
 	vertical-align:middle;
 }
+.qna_header {
+	margin-top: 100px;
+}
 .qna_header_r div {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
@@ -1948,7 +1952,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-weight: bold;
 }
 .qna_content {
-	padding-top: 1.5rem;
+	padding: 1.5rem 1rem 1rem 0;
 	margin: 0 auto;
 }
 .card:hover {
@@ -2037,6 +2041,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding: 8px 10px;
     font-size: 1rem;
 }
+.qna_notice {
+	border-radius: 15px;
+    background-color: #c0244b;
+    color: #fff;
+    padding: 8px 10px;
+    font-size: 1rem;
+}
 .qna_lock {
 	font-size: 1rem;
 	vertical-align:middle;
@@ -2100,7 +2111,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #Fff;
 	border: none;
 }
-
+.qna_created {
+	margin-top: 3px;
+}
 
 /* 어드민 */
 .admin_category_flex {
@@ -2796,9 +2809,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		padding-bottom: 1rem;
 	}
 	/* 정보 */
-	/* .info_list table {
-		font-size: 0.7rem;
-	} */
 	.col_hidden {
 		display: none;
 	}
@@ -3143,6 +3153,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.qna_answer {
 		display: none;
 	}
+	.qna_notice {
+		display: none;
+	}
 }
 
 /* 미디어쿼리 재설정 */
@@ -3250,5 +3263,35 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		margin: 0.5rem auto;
 		padding: 0 0 0.8rem 0;
 		border-bottom: 1px solid #00000025;
+	}
+}
+/* 3차 때 사용한 미디어 쿼리 */
+/* 태블릿 */
+@media only screen and (min-width: 740px) and (max-width: 1085px) { 
+	.qna_frame {
+		max-width: 668px;
+	}
+	.qna_card_tit {
+		white-space: nowrap;
+		overflow:hidden;
+		text-overflow: ellipsis;
+	}
+}
+/* 모바일 */
+@media only screen and (min-width: 330px) and (max-width: 741px) { 
+	.qna_frame {
+		max-width: 330px;
+	}
+	.qna_card_body {
+		padding-bottom: 0;
+	}
+	.qna_card_tit {
+		white-space: nowrap;
+		overflow:hidden;
+		text-overflow: ellipsis;
+	}
+	#qna_paging {
+		font-size: 1rem;
+		margin: 0;
 	}
 }

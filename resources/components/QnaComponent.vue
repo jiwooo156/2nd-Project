@@ -34,21 +34,50 @@
 				</div>
 			</div>	
 			<div class="qna_content d-flex gap-4 row g-3 px-2">
-				<routerLink :to="'/post?id='+info.id" v-for="info in infolist" :key="info" class="card" style="width: 19rem">
-					<div class="card-body d-flex flex-column justify-content-around">
+				<!-- 공지 -->
+				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
+					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
+						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
+						<h5 class="card-title mb-3 qna_card_tit">
+							{{ notice.title }}
+						</h5>
+						<div class="pb-3 d-flex justify-content-between qna_card">
+							<span class="card-text"
+								><span class="qna_card_span font_center"
+									><font-awesome-icon :icon="['fas', 'user']" /></span
+								>{{ isAdmin(notice.nick) }}</span
+							>
+							<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
+						</div>
+						<div class="qna_def pt-3">
+							<span class="card-text qna_card_etc qna_gray"
+								><span class="qna_card_span"
+									><font-awesome-icon :icon="['fas', 'heart']" /></span
+								>{{ notice.cnt ?? 0 }}</span
+							>
+							<span class="card-text qna_gray"
+								><span class="qna_card_span"
+									><font-awesome-icon :icon="['fas', 'eye']" /></span
+								>{{ notice.hits }}</span
+							>
+						</div>
+					</div>
+				</div>
+				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
+					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 						<h5 class="card-title mb-3 qna_card_tit">
 							{{ info.title }}
 						</h5>
-						<div class="pb-sm-3 d-flex justify-content-between qna_card">
+						<div class="pb-3 d-flex justify-content-between qna_card">
 							<span class="card-text"
 								><span class="qna_card_span font_center"
 									><font-awesome-icon :icon="['fas', 'user']" /></span
 								>{{ info.nick }}</span
 							>
-							<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							<span class="card-text qna_created">{{ formatEventDate(info.created_at) }}</span>
 						</div>
-						<div class="qna_def pt-sm-3">
+						<div class="qna_def pt-3">
 							<span class="card-text qna_card_etc qna_gray"
 								><span class="qna_card_span"
 									><font-awesome-icon :icon="['fas', 'heart']" /></span
@@ -61,7 +90,7 @@
 							>
 						</div>
 					</div>
-				</routerLink>
+				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 				<router-link to="/testwrite" type="button" @click="checklocal2">질문하기</router-link>
@@ -81,13 +110,13 @@
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
 							<div class="btn-group" role="group">
-								<button type="button" class="btn" value="1" @click="buttonclick(1)">
+								<button type="button"  class="btn" value="1" @click="buttonclick(1)" :class="{'qna_btn_button_on': this.rangevalue == 1}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
 								</button>
-								<button type="button" class="btn" value="2" @click="buttonclick(2)">
+								<button type="button" class="btn" value="2" @click="buttonclick(2)" :class="{'qna_btn_button_on': this.rangevalue == 2}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
 								</button>
-								<button type="button" class="btn" value="3" @click="buttonclick(3)">
+								<button type="button" class="btn" value="3" @click="buttonclick(3)" :class="{'qna_btn_button_on': this.rangevalue == 3}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 								</button>
 							</div>
@@ -101,28 +130,48 @@
 				</div>
 			</div>	
 			<div class="qna_content d-flex gap-4 row g-3 px-2">
-				<routerLink :to="'/post?id='+info.id" v-for="info in infolist" :key="info" class="card" style="width: 19rem">
-					<div class="card-body d-flex flex-column justify-content-around">
+				<!-- 공지 -->
+				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
+					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
+						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
+						<h5 class="card-title mb-3 qna_card_tit">
+							{{ notice.title }}
+						</h5>
+						<div class="pb-3 d-flex justify-content-between qna_card">
+							<span class="card-text"
+								><span class="qna_card_span font_center"><font-awesome-icon :icon="['fas', 'user']" />
+								</span>{{ isAdmin(notice.nick) }}</span>
+							<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
+						</div>
+						<div class="qna_def pt-3">
+							<span class="card-text" :class="{ 'qna_notice': notice.notice_flg === '1' }">
+								{{ notice.notice_flg === '0' ? '공지아님' : '공지사항' }}
+							</span>
+						</div>
+					</div>
+				</div>
+				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
+					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
 						<h5 class="card-title mb-3 qna_card_tit">
 							{{ info.title }}
 							<span class="qna_lock font_center"><font-awesome-icon :icon="['fas', 'lock']"/></span>
 						</h5>
-						<div class="pb-sm-3 d-flex justify-content-between qna_card">
+						<div class="pb-3 d-flex justify-content-between qna_card">
 							<span class="card-text"
 								><span class="qna_card_span font_center"
 									><font-awesome-icon :icon="['fas', 'user']" /></span
 								>{{ info.nick }}</span
 							>
-							<span class="card-text">{{ formatEventDate(info.created_at) }}</span>
+							<span class="card-text qna_created">{{ formatEventDate(info.created_at) }}</span>
 						</div>
-						<div class="qna_def pt-sm-3 d-flex flex-row-reverse">
+						<div class="qna_def pt-3">
 							<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
 								{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
 							</span>
 						</div>
 					</div>
-				</routerLink>
+				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 				<router-link to="/testwrite" type="button" @click="checklocal3">건의하기</router-link>
@@ -172,6 +221,7 @@ export default {
             prevnum:1,
             nextnum:2,
             numbox:[],
+			noticedata: "",
 		}
 	},
 	created() {
@@ -209,6 +259,7 @@ export default {
 				this.cntinfo = res.data.infocnt;
 				this.page = res.data.data.current_page;
                 this.lastpage = res.data.data.last_page;
+				this.noticedata = res.data.noticedata;
 				this.paging();
 			})
 			.catch(err => {
@@ -249,6 +300,14 @@ export default {
 			const day = String(dateObject.getDate()).padStart(2, "0");
 
 			return `${year}-${month}-${day}`;
+		},
+		// 닉네임 관리자 출력 변환
+		isAdmin(noticedata) {
+			return '관리자';
+		},
+		// 공지 출력 변환
+		isNotice(noticedata) {
+			return '공지';
 		},
 		// 질문 로그인 확인
 		checklocal2() {

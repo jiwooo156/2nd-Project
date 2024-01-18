@@ -63,7 +63,7 @@
 							<td class="col_hidden">{{ notice.id }}</td>
 							<td>공지사항</td>
 							<td class="info_title">{{ notice.title }}</td>
-							<td>{{ notice.nick }}</td>
+							<td>관리자</td>
 							<td>{{ formatEventDate(notice.created_at) }}</td>
 							<td class="col_hidden">{{ notice.hits }}</td>
 							<td class="col_hidden">{{ notice.cnt }}</td>
@@ -81,25 +81,25 @@
 				</table>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/testwrite">글 작성하기</router-link>
+				<router-link to="/commuwrite" @click="checklocal()">글 작성하기</router-link>
 			</div>
 			<div class='admin_page  mt-3'>
 				<nav aria-label="Page navigation example">
-					<ul class="pagination">
-						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(1)">&lt;&lt;</span>
+					<ul class="pagination" id="qna_page">
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(1)">&lt;&lt;</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(prevnum)">이전</span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(prevnum)">&lt;</span>
 						</li>
-						<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(num)">{{ num }}</span>
+						<li class="page-item" id="qna_item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(num)">{{ num }}</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(nextnum)">다음</span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(nextnum)">&gt;</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(lastpage)">>></span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(lastpage)">&gt;&gt;</span>
 						</li>
 					</ul>
 				</nav>
@@ -246,6 +246,16 @@ export default {
 			const day = String(dateObject.getDate()).padStart(2, "0");
 
 			return `${year}-${month}-${day}`;
+		},
+		// 로그인확인
+		checklocal() {
+			if(!(localStorage.getItem('nick'))){
+				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
+					this.$router.push('/login');
+				} else {
+					return
+				}
+			}
 		},
 	}
 }

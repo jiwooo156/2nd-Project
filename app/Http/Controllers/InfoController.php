@@ -558,7 +558,7 @@ class InfoController extends Controller
             'users.nick',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftjoin('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
@@ -573,7 +573,7 @@ class InfoController extends Controller
             'users.nick',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->join('users', 'community.u_id', '=', 'users.id')
+        ->leftjoin('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.deleted_at', null);
@@ -678,6 +678,7 @@ class InfoController extends Controller
                 'community.updated_at',
                 'community.deleted_at',
                 'community.hits',
+                'community.notice_flg',
                 'users.nick',
                 DB::raw('COALESCE(lik.cnt, 0) as cnt')
             )
@@ -880,6 +881,7 @@ class InfoController extends Controller
         ->leftJoin('users', 'community.u_id', '=', 'users.id')
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
+        ->where('community.notice_flg', "0")
         ->whereNull('community.deleted_at');
 
         $infocnt = Community::select(
@@ -895,6 +897,24 @@ class InfoController extends Controller
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->whereNull('community.deleted_at');
+
+        $noticeresult = Community::select(
+            'community.id',
+            'community.category_flg',
+            'community.title',
+            'community.created_at',
+            'community.hits',
+            'community.notice_flg',
+            'community.admin_flg',
+            'users.nick',
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
+        )
+        ->leftjoin('users', 'community.u_id', '=', 'users.id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND deleted_at IS NULL GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->where('community.flg', $req->flg)
+        ->where('community.notice_flg', "1")
+        ->where('community.deleted_at', null)
+        ->get();
 
         Log::debug("category_flg 타입 : ".gettype($req->category));
         if (!($req->category === "3")) {
@@ -922,11 +942,13 @@ class InfoController extends Controller
 
         Log::debug($informresult);
         Log::debug($infocnt);
-        
+        Log::debug($noticeresult);
+
         return response()->json([
             'code' => '0',
             'data' => $informresult,
             'infocnt' => $infocnt,
+            'noticedata' => $noticeresult,
         ], 200);          
     }
 
