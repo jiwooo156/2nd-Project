@@ -32,9 +32,9 @@
 				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
-				<div>
+				<div @click="plusheart()">
 					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
-					<span class="detail_likes font_air bold" @click="likePost">좋아요</span>
+					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
 				<!-- 수정 모달 -->
@@ -194,6 +194,8 @@ export default {
 			new_replie: "",
 			replie_offset: 20,
 			moreflg: false,
+			userauth: "",
+			likeflg: false,
 			// 수정 모달 관련 데이터
 			editedTitle: '',
 			editedContent: '',
@@ -387,6 +389,45 @@ export default {
 				});
 			});
 		},
+		// 좋아요 입력
+		plusheart() {
+			if(!(this.userauth === "")) {				
+				// console.log("plusheart 함수 진입");
+				// 현재url가져오기
+				let params = new URLSearchParams(window.location.search);
+				this.b_id = params.get('id');
+				const URL = '/post/heartpost';
+				axios.post(URL, {
+					"b_id": this.b_id,
+					"flg": "1"
+				})
+				.then(res=>{
+					// console.log("plusheart 함수 then");
+					if(res.data.code==="0"){
+						console.log(res.data.likeflg);
+						this.likeflg = res.data.likeflg;
+						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
+							this.$router.push('/post?id='+this.b_id);
+							this.detaildata.cnt--;
+						} else {
+							this.$router.push('/post?id='+this.b_id);
+							this.detaildata.cnt++;
+						}
+					}
+				})
+				.catch(err => {
+					console.log("plusheart 함수 catch");
+					this.$router.push('/error');
+				})				
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '주의',
+					text: '로그인 후 이용해 주세요.',
+					confirmButtonText: '확인'
+                })
+			}
+		},
 		// flg 데이터 출력 변환
 		getEventType(data) {
 			if(data === '0') {
@@ -420,48 +461,7 @@ export default {
 
 			return `${year}-${month}-${day}`;
 		},
-		// 댓글작성
-		repliewrite(){
-			if(this.replie){
-				const URL = '/post/'+this.b_id;
-				const formData = new FormData();
-				formData.append('replie', this.replie);
-				formData.append('b_id', this.b_id);
-				formData.append('flg', '1');
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						this.replie = "";
-						this.repliecount++;
-						this.repliedata.unshift(res.data.data);
-					}else{
-						Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: res.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-			}
-				})
-				.catch(err => {
-					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.response.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-
-				})
-			}else{
-				Swal.fire({
-                    icon: 'warning',
-                    title: '주의',
-                    text: '댓글을 작성해 주세요.',
-                    confirmButtonText: '확인'
-                })
-			}
 		
-		},
 		// 시간초기화
 		converttime(date){
 			const start = new Date(date);
@@ -507,6 +507,48 @@ export default {
 		// 유저 본인인지 확인
 		checkUser(email) {
 			return email === localStorage.getItem('email');
+		},
+		// 댓글작성
+		repliewrite(){
+			if(this.replie){
+				const URL = '/post/'+this.b_id;
+				const formData = new FormData();
+				formData.append('replie', this.replie);
+				formData.append('b_id', this.b_id);
+				formData.append('flg', '1');
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						this.replie = "";
+						this.repliecount++;
+						this.repliedata.unshift(res.data.data);
+					}else{
+						Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
+			}
+				})
+				.catch(err => {
+					Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.response.data.errorMsg,
+                    confirmButtonText: '확인'
+                })
+
+				})
+			}else{
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '댓글을 작성해 주세요.',
+                    confirmButtonText: '확인'
+                })
+			}
+		
 		},
 		// 댓글삭제
 		del_replie(id){		
