@@ -1709,6 +1709,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_content{
 	margin: 20px 0;
     word-break: break-all;
+	white-space: pre-line;
 }
 .detail_hits{
 	text-align: right;
