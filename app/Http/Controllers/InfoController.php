@@ -802,47 +802,44 @@ class InfoController extends Controller
 
         // 로그인 여부 확인
         if (auth()->check()) {
-            Log::debug("로그인 상태");
             $auth_id = auth()->id();
-            Log::debug($auth_id);
 
-            
             try {
-                Log::debug("plusheart try");
                 // 트랜잭션 시작
                 DB::beginTransaction();
                 // 해당 유저의 like 이력 조회 (있으면 true, 없으면 false)
                 
                 $likehistory = Like::where('u_id', $auth_id)
                 ->where('b_id', $req->b_id)
-                ->where('l_flg','1')
-                ->exists();
+                ->first();
                 Log::debug("결과");
                 Log::debug($likehistory);
-                Log::debug(gettype($likehistory));
 
                 // 좋아요 이력이 없으면 생성, 있으면 삭제
                 if (!$likehistory) {
+                    Log::debug("없을때");
                     // data 정보를 커뮤니티 테이블에 인서트
                     $result = Like::create($data);
                     Log::debug('여기는 생성이야'. $result);
                     $likehistory = true;
-                } else if ($likehistory) {
+                } else if ($likehistory->l_flg === '0') {
+                    Log::debug("0일때");
                     // data 정보를 커뮤니티 테이블에서 삭제 (소프트딜리트)
                     // $result = Like::where('u_id', $auth_id)
                     // ->where('b_id', $req->b_id)
                     // ->delete();
                     $result = Like::where('u_id', $auth_id)
                     ->where('b_id', $req->b_id)
-                    ->update(['l_flg'=>'0']);
-                    Log::debug('여기는 삭제야'. $result);
-                    $likehistory = false;
-                } else if($likehistory) {
-                    $result = Like::where('u_id', $auth_id)
-                    ->where('b_id', $req->b_id)
                     ->update(['l_flg'=>'1']);
                     Log::debug('여기는 업데이트야'. $result);
                     $likehistory = true;
+                } else {
+                    Log::debug('여기는 삭제야');
+                    $result = Like::where('u_id', $auth_id)
+                    ->where('b_id', $req->b_id)
+                    ->update(['l_flg'=>'0']);
+                    Log::debug('여기는 삭제야'. $result);
+                    $likehistory = false;
                 }
 
                 // 저장
