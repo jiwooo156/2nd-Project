@@ -1332,12 +1332,21 @@ margin-top:10px;
     grid-gap: 50px;
     justify-content: center;
 }
-.userchk_body{
-	width: 95%;
-	max-width: 1000px;
-	margin: 0 auto;
+.userchk_body {
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto;
 }
-.userchk_body td{
+.userchk_body_td1{
+	width: 10%;
+}
+.userchk_body_td2{
+	width: 70%;
+}
+.userchk_body_td3{
+	width: 20%;
+}
+.userchk_body td,.userchk_body th{
 	vertical-align:middle;
 	white-space: nowrap;
     overflow:hidden;
