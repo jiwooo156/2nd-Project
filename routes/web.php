@@ -128,7 +128,6 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     });
     // 0108 정지우 정보게시판 목록 정보조회
     Route::get('/info', [InfoController::class, 'commuinfoget']);
-    Route::get('/notice', [InfoController::class, 'noticeget']);
 });
 
 
@@ -148,7 +147,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
 });
 
 // 자유&정보 게시글 작성 라우터 생성
-Route::post('/testwrite', [InfoController::class, 'communitywrite']);
+Route::post('/commuwrite', [InfoController::class, 'communitywrite']);
 
 // 게시글 작성 라우터 생성
 Route::middleware('myValidation')->prefix('post')->group(function() {

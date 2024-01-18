@@ -52,7 +52,7 @@
 
 
 				<div class="post_btn_bot">
-						<button type="button" @click="testWrite()">작성</button>
+						<button type="button" @click="commuWrite()">작성</button>
 						<button type="button" @click="goBack">취소</button>
 					</div>
 				</form>
@@ -64,7 +64,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 export default {
-	name: "TestComponent",
+	name: "WriteComponent",
 	data() {
 		return {
 			nowflg: "",
@@ -92,8 +92,8 @@ export default {
 		},
 
 		// 게시글 작성
-		testWrite() {
-			const URL = '/testwrite';
+		commuWrite() {
+			const URL = '/commuwrite';
 			// const uploadFile = event.target.files[0]
 			const formData = new FormData();
 			formData.append('title', this.title);

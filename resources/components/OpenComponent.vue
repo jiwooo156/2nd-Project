@@ -27,7 +27,7 @@ import PostDetailComponent from './PostDetailComponent.vue'
 import PostWriteComponent from './PostWriteComponent.vue'
 import CommunityComponent from './CommunityComponent.vue'
 import KakaoCallback from './KakaoCallback.vue'
-import TestComponent from './TestComponent.vue'
+import WriteComponent from './WriteComponent.vue'
 
 export default {
 
@@ -51,7 +51,7 @@ export default {
         AdminComponent,
         CommunityComponent,
         KakaoCallback,
-        TestComponent,
+        WriteComponent,
     },
     methods: {
         localStoragechk(){
