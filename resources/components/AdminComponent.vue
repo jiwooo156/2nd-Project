@@ -72,8 +72,9 @@
 				</div>	
 			</div>
 			<div class="admin_container_box2">
-				<div class="font_air bold">테스트</div>
-				<Line :data="main_chart.data" :options="main_chart.options" />
+				<div class="font_air bold">유저동향</div>
+				<Line v-if="chart_flg" :data="main_chart.data" :options="main_chart.options" />
+				<Line v-if="!chart_flg" :data="main_chart.data" :options="main_chart.options" />
 			</div>
 			<div class="admin_container_box3">
 				<div class="font_air bold admin_main_chart2_flex">					
@@ -1184,7 +1185,9 @@ import {
 	Tooltip,
 	Legend
 } from 'chart.js'
-import { Doughnut,Line,Bar  } from 'vue-chartjs'
+import { Bar,Line,Doughnut } from 'vue-chartjs'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 ChartJS.register(
 	ArcElement,
@@ -1209,7 +1212,8 @@ export default {
 	},
 
 	data() {
-		return {
+		return {	
+			chart_flg: false,
 			authority: false,
 			today: "",
 			main_chart_type: "0",
@@ -1554,8 +1558,6 @@ export default {
 				options: {
 					responsive: true,
 					maintainAspectRatio: false,
-					// width: 1000, // 원하는 가로 크기
-					// height: 400, // 원하는 세로 크기
 				},
 			},
 			u_chart2:{
@@ -1612,7 +1614,7 @@ export default {
 			// 메인차트
 			main_chart:{
 				data: {
-					labels: ['6개월 전', '5개월 전', '4개월 전', '3개월 전', '2개월 전', '1개월 전', '이번달'],
+					labels: [],
 					datasets: [
 						{
 							label: '가입수',
@@ -1634,7 +1636,7 @@ export default {
 			// 메인차트
 			main_chart2:{
 				data: {
-					labels: ['축제', '관광'],
+					labels: ['좋아요', '댓글', '게시글'],
 					datasets: [
 						{
 							label: '좋아요',
@@ -1643,6 +1645,11 @@ export default {
 						},
 						{
 							label: '댓글',
+							backgroundColor: ['#000'],
+							data: [70, 50, 42],
+						},
+						{
+							label: '',
 							backgroundColor: ['#000'],
 							data: [70, 50, 42],
 						},
@@ -1668,12 +1675,13 @@ export default {
 		this.getToday();
 		this.adminchk();
 		// this.mainchartget();
-		this.statistics()
+		this.statistics();
 	},
 	updated() {
 		this.getToDayTime();
 	},
 	mounted() {
+
 	},
 
 	methods: {
@@ -1697,12 +1705,14 @@ export default {
 					console.log("여기"+this.main_chart.data.datasets[0].data)
 					console.log("저기"+this.main_chart.data.datasets[1].data)
 					for(let i = 0; i < res.data.chart.length; i++){
-						console.log("포문진입")
-						this.main_chart.data.datasets[0].data= res.data.chart[i].in_cnt;
-						this.main_chart.data.datasets[1].data= res.data.chart[i].out_cnt;
+						this.main_chart.data.labels[i] = res.data.chart[i].month;
+						this.main_chart.data.datasets[0].data[i] = res.data.chart[i].in_cnt;
+						this.main_chart.data.datasets[1].data[i] = res.data.chart[i].out_cnt;
 					}
-					console.log("여기"+this.main_chart.data.datasets[0].data)
-					console.log("저기"+this.main_chart.data.datasets[1].data)
+					this.main_chart.data.labels =	this.main_chart.data.labels.reverse();
+					this.main_chart.data.datasets[0].data = this.main_chart.data.datasets[0].data.reverse();
+  					this.main_chart.data.datasets[1].data = this.main_chart.data.datasets[1].data.reverse()
+					this.chart_flg = true;
 				}
 			})
 			.catch(err => {
