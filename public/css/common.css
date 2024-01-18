@@ -1709,6 +1709,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_content{
 	margin: 20px 0;
     word-break: break-all;
+	white-space: pre-line;
+}
+.detail_inline {
+	display: inline;
 }
 .detail_hits{
 	text-align: right;
@@ -1976,9 +1980,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_card_tit {
 	font-size: 1.15rem;
+	margin-bottom: 0;
 }
 .qna_card {
 	border-bottom: 1px solid #d2d2d2;
+	font-size: 0.95rem;
+}
+.qna_card_notice {
+	/* border-bottom: 1px solid #d2d2d2; */
 	font-size: 0.95rem;
 }
 .qna_card_span {
@@ -2111,6 +2120,19 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_notice_card {
 	padding-bottom: 0;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #28284d; /* Change to your desired color */
+}
+.qna_card_width {
+	width: 60rem;
+}
+#qna_prev, #qna_next {
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	color: #000;
+	font-size: 2rem;
 }
 /* 정렬순 정지우 동적 클래스 */
 .qna_btn_button_on {
@@ -2815,6 +2837,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.col_hidden {
 		display: none;
 	}
+
 }
 
 
@@ -3268,7 +3291,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		border-bottom: 1px solid #00000025;
 	}
 }
-/* 3차 때 사용한 미디어 쿼리 */
+/* 3차용 미디어 쿼리 */
 /* 태블릿 */
 @media only screen and (min-width: 740px) and (max-width: 1085px) { 
 	.qna_frame {
@@ -3279,14 +3302,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		overflow:hidden;
 		text-overflow: ellipsis;
 	}
+	.qna_card_width {
+		width: 39.5rem;
+	}
 }
 /* 모바일 */
 @media only screen and (min-width: 330px) and (max-width: 741px) { 
 	.qna_frame {
 		max-width: 330px;
-	}
-	#qna_notice_card_border {
-		border: 2px solid rgba(0,0,0,0.125);
 	}
 	.qna_card_body {
 		padding-bottom: 0;
@@ -3299,5 +3322,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	#qna_paging {
 		font-size: 1rem;
 		margin: 0;
+	}
+	.qna_card_width {
+		width: 18.25rem;
 	}
 }

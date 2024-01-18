@@ -1,5 +1,6 @@
 <template>
 	<div class="qna_frame">
+		<!-- 질문게시판 -->
 		<div v-if="this.nowflg==='2'" class="qna_container">
 			<div class="qna_header">
 				<h1 >질문게시판</h1>
@@ -14,13 +15,13 @@
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
 						<div class="qna_btn">
 							<div class="btn-group" role="group">
-								<button type="button" class="btn" value="1" @click="buttonclick(1)">
+								<button type="button"  class="btn" value="1" @click="buttonclick(1)" :class="{'qna_btn_button_on': this.rangevalue == 1}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
 								</button>
-								<button type="button" class="btn" value="2" @click="buttonclick(2)">
+								<button type="button" class="btn" value="2" @click="buttonclick(2)" :class="{'qna_btn_button_on': this.rangevalue == 2}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>조회순
 								</button>
-								<button type="button" class="btn" value="3" @click="buttonclick(3)">
+								<button type="button" class="btn" value="3" @click="buttonclick(3)" :class="{'qna_btn_button_on': this.rangevalue == 3}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 								</button>
 							</div>
@@ -34,36 +35,42 @@
 				</div>
 			</div>	
 			<!-- 공지 -->
-			<div class="qna_content px-2 row qna_notice_card">
-				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" id="qna_notice_card_border" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
-					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
-						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
-						<h5 class="card-title mb-3 qna_card_tit">
-							{{ notice.title }}
-						</h5>
-						<div class="pb-3 d-flex justify-content-between qna_card">
-							<span class="card-text"
-								><span class="qna_card_span font_center"
-									><font-awesome-icon :icon="['fas', 'user']" /></span
-								>{{ isAdmin(notice.nick) }}</span
-							>
-							<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
-						</div>
-						<div class="qna_def pt-3">
-							<span class="card-text qna_card_etc qna_gray"
-								><span class="qna_card_span"
-									><font-awesome-icon :icon="['fas', 'heart']" /></span
-								>{{ notice.cnt ?? 0 }}</span
-							>
-							<span class="card-text qna_gray"
-								><span class="qna_card_span"
-									><font-awesome-icon :icon="['fas', 'eye']" /></span
-								>{{ notice.hits }}</span
-							>
+			<div class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
+						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
+							<div class="card-body qna_card_body">
+								<h6 class="card-subtitle mb-2 qna_pink" id="qna_notice_icon"><font-awesome-icon :icon="['fas', 'volume-off']" /> {{ isNotice(notice.category_flg) }}</h6>
+								<h5 class="card-title mb-3 qna_card_tit">
+									{{ notice.title }}
+								</h5>
+								<div class="d-flex justify-content-between qna_card_notce">
+									<span class="card-text"
+										><span class="qna_card_span font_center"
+											><font-awesome-icon :icon="['fas', 'user']" />
+										</span>{{ isAdmin(notice.nick) }}</span>
+									<!-- <span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span> -->
+									<div class="qna_def ">
+										<span class="card-text qna_card_etc qna_gray"
+											><span class="qna_card_span"
+												><font-awesome-icon :icon="['fas', 'heart']" /></span
+											>{{ notice.cnt ?? 0 }}</span
+										>
+										<span class="card-text qna_gray"
+											><span class="qna_card_span"
+												><font-awesome-icon :icon="['fas', 'eye']" /></span
+											>{{ notice.hits }}</span
+										>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<button class="carousel-control-prev" id="qna_prev" type="button" @click="prevSlide">&lt;</button>
+				<button class="carousel-control-next" id="qna_next" type="button" @click="nextSlide">&gt;</button>
 			</div>
+			<!-- 게시글 -->
 			<div class="qna_content d-flex gap-4 row g-3 px-2">
 				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
@@ -98,6 +105,7 @@
 				<router-link to="/commuwrite" type="button" @click="checklocal2">질문하기</router-link>
 			</div>
 		</div>
+		<!-- 건의게시판 -->
 		<div v-else="this.nowflg==='3'" class="qna_container">
 			<div class="qna_header">
 				<h1>건의게시판</h1>
@@ -132,27 +140,29 @@
 				</div>
 			</div>	
 			<!-- 공지 -->
-			<div class="qna_content px-2 row qna_notice_card">
-				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" id="qna_notice_card_border" style="width: 60rem" @click="$router.push('/post?id='+notice.id)">
-					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
-						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
-						<h5 class="card-title mb-3 qna_card_tit">
-							{{ notice.title }}
-						</h5>
-						<div class="pb-3 d-flex justify-content-between qna_card">
-							<span class="card-text"
-								><span class="qna_card_span font_center"><font-awesome-icon :icon="['fas', 'user']" />
-								</span>{{ isAdmin(notice.nick) }}</span>
-							<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
-						</div>
-						<div class="qna_def pt-3 d-flex flex-row-reverse">
-							<span class="card-text" :class="{ 'qna_notice': notice.notice_flg === '1' }">
-								{{ notice.notice_flg === '0' ? '공지아님' : '공지사항' }}
-							</span>
+			<div class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
+						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
+							<div class="card-body qna_card_body">
+								<h6 class="card-subtitle mb-2 qna_pink" id="qna_notice_icon"><font-awesome-icon :icon="['fas', 'volume-off']" /> {{ isNotice(notice.category_flg) }}</h6>
+								<h5 class="card-title qna_card_tit">
+									{{ notice.title }}
+								</h5>
+								<div class="d-flex justify-content-between qna_card_notce">
+									<span class="card-text"
+										><span class="qna_card_span font_center"><font-awesome-icon :icon="['fas', 'user']" />
+										</span>{{ isAdmin(notice.nick) }}</span>
+									<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<button class="carousel-control-prev" id="qna_prev" type="button" @click="prevSlide">&lt;</button>
+				<button class="carousel-control-next" id="qna_next" type="button" @click="nextSlide">&gt;</button>
 			</div>
+			<!-- 게시글 -->
 			<div class="qna_content d-flex gap-4 row g-3 px-2">
 				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
@@ -169,8 +179,8 @@
 							>
 							<span class="card-text qna_created">{{ formatEventDate(info.created_at) }}</span>
 						</div>
-						<div class="qna_def pt-3 d-flex flex-row-reverse">
-							<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
+						<div class="qna_def d-flex flex-row-reverse">
+							<span class="card-text" :class="{ 'qna_wait mt-3': info.admin_flg === '0', 'qna_answer mt-3': info.admin_flg === '1' }">
 								{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
 							</span>
 						</div>
@@ -182,7 +192,7 @@
 			</div>
 		</div>
 		<!-- 페이징 -->
-		<div class="d-flex justify-content-center">
+		<div class="d-flex justify-content-center mb-5">
 			<nav aria-label="Page navigation">
 				<ul class="pagination" id="qna_page">
 					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']" id="qna_item">
@@ -225,7 +235,10 @@ export default {
             prevnum:1,
             nextnum:2,
             numbox:[],
+			// 공지
 			noticedata: "",
+			// 캐러셀
+			currentIndex: 0,
 		}
 	},
 	created() {
@@ -369,9 +382,17 @@ export default {
                 this.nextnum = this.page+1
             }
         },
+		// 페이징 이동시 
 		scrollToTopAndInfo(page) {
 			this.getInfo(page);
 			window.scrollTo(0, 0);
+		},
+		// 캐러셀 이동
+		prevSlide() {
+			this.currentIndex = (this.currentIndex - 1 + this.noticedata.length) % this.noticedata.length;
+		},
+		nextSlide() {
+			this.currentIndex = (this.currentIndex + 1) % this.noticedata.length;
 		},
 	}
 }
