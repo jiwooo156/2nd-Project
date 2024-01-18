@@ -947,6 +947,7 @@ class InfoController extends Controller
         $informresult->get();
         $infocnt = $informresult->count();
 
+        // 공지때문에 paginate 11로 변경
         $informresult = $informresult->paginate(12);
 
         Log::debug($informresult);

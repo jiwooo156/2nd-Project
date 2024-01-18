@@ -33,9 +33,9 @@
 					</div>
 				</div>
 			</div>	
-			<div class="qna_content d-flex gap-4 row g-3 px-2">
-				<!-- 공지 -->
-				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
+			<!-- 공지 -->
+			<div class="qna_content px-2 row qna_notice_card">
+				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" id="qna_notice_card_border" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
 						<h5 class="card-title mb-3 qna_card_tit">
@@ -63,6 +63,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="qna_content d-flex gap-4 row g-3 px-2">
 				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -93,7 +95,7 @@
 				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/testwrite" type="button" @click="checklocal2">질문하기</router-link>
+				<router-link to="/commuwrite" type="button" @click="checklocal2">질문하기</router-link>
 			</div>
 		</div>
 		<div v-else="this.nowflg==='3'" class="qna_container">
@@ -129,9 +131,9 @@
 					</div>
 				</div>
 			</div>	
-			<div class="qna_content d-flex gap-4 row g-3 px-2">
-				<!-- 공지 -->
-				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+notice.id)">
+			<!-- 공지 -->
+			<div class="qna_content px-2 row qna_notice_card">
+				<div v-for="notice in noticedata" v-if="this.noticedata&&this.page === 1" :key="notice" class="card pointer" id="qna_notice_card_border" style="width: 60rem" @click="$router.push('/post?id='+notice.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ isNotice(notice.category_flg) }}</h6>
 						<h5 class="card-title mb-3 qna_card_tit">
@@ -143,13 +145,15 @@
 								</span>{{ isAdmin(notice.nick) }}</span>
 							<span class="card-text qna_created">{{ formatEventDate(notice.created_at) }}</span>
 						</div>
-						<div class="qna_def pt-3">
+						<div class="qna_def pt-3 d-flex flex-row-reverse">
 							<span class="card-text" :class="{ 'qna_notice': notice.notice_flg === '1' }">
 								{{ notice.notice_flg === '0' ? '공지아님' : '공지사항' }}
 							</span>
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="qna_content d-flex gap-4 row g-3 px-2">
 				<div v-for="info in infolist" :key="info" class="card pointer" style="width: 19rem" @click="$router.push('/post?id='+info.id)">
 					<div class="card-body qna_card_body d-flex flex-column justify-content-around">
 						<h6 class="card-subtitle mb-2 qna_pink">{{ getEventType(info.category_flg) }}</h6>
@@ -165,7 +169,7 @@
 							>
 							<span class="card-text qna_created">{{ formatEventDate(info.created_at) }}</span>
 						</div>
-						<div class="qna_def pt-3">
+						<div class="qna_def pt-3 d-flex flex-row-reverse">
 							<span class="card-text" :class="{ 'qna_wait': info.admin_flg === '0', 'qna_answer': info.admin_flg === '1' }">
 								{{ info.admin_flg === '0' ? '접수대기' : '답변완료' }}
 							</span>
@@ -174,7 +178,7 @@
 				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/testwrite" type="button" @click="checklocal3">건의하기</router-link>
+				<router-link to="/commuwrite" type="button" @click="checklocal3">건의하기</router-link>
 			</div>
 		</div>
 		<!-- 페이징 -->
@@ -228,7 +232,7 @@ export default {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
 		// console.log( "created flg"+this.nowflg );
-		this.getInfo();
+		this.getInfo(1);
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
@@ -318,7 +322,7 @@ export default {
 					this.$router.push('/qna?flg=2');
 				}
 			} else {
-				this.$router.push('/testwrite');
+				this.$router.push('/commuwrite');
 			}
 		},
 		// 건의 로그인 확인
@@ -330,7 +334,7 @@ export default {
 					this.$router.push('/qna?flg=3');
 				}
 			} else {
-				this.$router.push('/testwrite');
+				this.$router.push('/commuwrite');
 			}
 		},
 		// 페이징처리
