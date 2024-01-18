@@ -109,7 +109,7 @@
 						<textarea class="form-control" aria-label="With textarea" v-model="main_content"></textarea>
 					</div>
 				</div>
-				<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
+				<button type="button" class="btn btn-secondary" @click="addnotice">등록</button>
 			</div>
 		</div>		
 	</div>
@@ -3281,6 +3281,36 @@ export default {
 					})	
 				}					
 			})
+		},
+		// 공지등록
+		addnotice(){
+			const URL = '/admin/notice'
+			const formData = new FormData();
+			formData.append('flg',this.main_input);
+			formData.append('title',this.main_title);
+			formData.append('content',this.main_content);
+			axios.post(URL,formData)
+			.then(res => {
+				if(res.data.code === "0"){
+					this.main_title = "";
+					this.main_content = "";
+					this.main_input = '0';
+					Swal.fire({
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					})
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
+					confirmButtonText: '확인'
+				})
+			})					
 		},
 		// 페이징처리
 		paging(){
