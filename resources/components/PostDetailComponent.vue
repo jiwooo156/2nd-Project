@@ -166,7 +166,7 @@
 		<div class="center detail_more_btn">
 			<span class="center pointer font_air bold"
 				@click="morereplie"
-				v-if="!(moreflg)&& this.repliecount > 20"
+				v-if="!(repliedata.moreflg)&& this.repliecount > 20"
 			>
 				더보기
 				<br>
@@ -249,14 +249,27 @@ export default {
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
+						this.userauth = res.data.userauth;
+						this.likeflg = res.data.likeresult;
+						console.log('좋아요 누른 이력 : '+this.likeflg);
+						console.log('좋아요 누른 이력 : '+this.likeresult);
 					} else if (res.data.data[0].flg === "3" && res.data.data[0].notice_flg === "1") {
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
+						this.userauth = res.data.userauth;
+						this.likeflg = res.data.likeresult;
+						console.log('디테일 data : '+this.detaildata.flg);
+					console.log('좋아요 누른 이력 : '+this.likeflg);
 					} else if (["0", "1", "2"].includes(res.data.data[0].flg)){
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
+						this.userauth = res.data.userauth;
+						this.likeflg = res.data.likeresult;
+						console.log('디테일 data : '+this.detaildata.flg);
+					console.log('좋아요 누른 이력 : '+this.likeflg);
+						
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -392,7 +405,7 @@ export default {
 		// 좋아요 입력
 		plusheart() {
 			if(!(this.userauth === "")) {				
-				// console.log("plusheart 함수 진입");
+				console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
@@ -402,7 +415,7 @@ export default {
 					"flg": "1"
 				})
 				.then(res=>{
-					// console.log("plusheart 함수 then");
+					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
 						console.log(res.data.likeflg);
 						this.likeflg = res.data.likeflg;
@@ -601,6 +614,8 @@ export default {
                     confirmButtonText: '확인'
                 })
 				}
+				console.log(this.repliedata);
+				console.log(this.replie_offse);
 			})
 			.catch(err => {
 				Swal.fire({

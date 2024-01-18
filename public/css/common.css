@@ -1528,7 +1528,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .region_date_msg1{
 	border-radius: 41px;
     padding: 6px 15px;
-    height: 28px;
+    height: 33px;
 	background: #FF9500;
     color: white;
     position: absolute;
@@ -1538,7 +1538,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .region_date_msg2{
     border-radius: 41px;
     padding: 6px 15px;
-    height: 28px;
+    height: 33px;
 	background: #34C759;
     color: white;
     position: absolute;
@@ -1548,7 +1548,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .region_date_msg3{
     border-radius: 41px;
     padding: 6px 15px;
-    height: 28px;
+    height: 33px;
     background: #858585;
     color: white;
     position: absolute;

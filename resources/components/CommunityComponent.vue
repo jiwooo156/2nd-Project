@@ -318,7 +318,6 @@ export default {
 					"b_id": this.b_id,
 					"flg": "1"
 				})
-				// const URL = '/community/info?id='+this.b_id;
 				.then(res=>{
 					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){

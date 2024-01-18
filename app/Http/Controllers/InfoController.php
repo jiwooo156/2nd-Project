@@ -262,6 +262,37 @@ class InfoController extends Controller
             ], 200);
         }
     }
+    // 댓글 추가조회    
+    public function morereplie(Request $req) {
+        Log::debug("***** 댓글 시작 *****");
+        Log::debug("댓글 b_id : ".$req->b_id);
+        // 리퀘스트온 값을토대로 20개의 데이터 조회
+        $replie_result = Replie::
+            select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
+            ->leftjoin('users', 'replies.u_id', '=', 'users.id')
+            ->where('replies.b_id', $req->b_id)
+            ->orderBy('replies.created_at', 'desc')
+            ->limit(20)
+            ->offset($req->offset)
+            ->get();
+            Log::debug("결과 : ".$replie_result);
+        // 조회결과 있을시
+        if($replie_result){
+            Log::debug("여기는 if");
+            return response()->json([
+                'code' => '0',
+                'data' => $replie_result,
+            ], 200);
+            Log::debug($replie_result);
+        // 조회결과 없거나 실패일 시
+        }else{
+            Log::debug("엘스");
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '댓글 조회에 실패하였습니다',
+            ], 200);
+        }
+    }
 
     // 시군명 조회
     public function stateget(Request $req) {
@@ -540,7 +571,6 @@ class InfoController extends Controller
             'tour' => $tour,
         ],200);
     }
-
 
     // 0112 정지우 정보게시판 페이지 정보조회 (목록)
     public function commuinfoget(Request $req) {
@@ -944,7 +974,6 @@ class InfoController extends Controller
         $informresult->get();
         $infocnt = $informresult->count();
 
-        // 공지때문에 paginate 11로 변경
         $informresult = $informresult->paginate(12);
 
         Log::debug($informresult);
@@ -968,6 +997,26 @@ class InfoController extends Controller
         ->where('community.id',$req->id)
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
+
+        Log::debug("커뮤니티결과 : ".$com_result);
+
+        // 유저정보 초기화
+        $auth_id = "";
+        $result = "";
+
+        // 로그인 시 해당유저 정보로 likes 테이블 조회
+        if(auth()->check()) {
+            Log::debug("로그인상태");
+            $auth = Auth::user();
+            $auth_id = $auth->id;
+            $result = Like::where('u_id',$auth_id)
+            ->where('b_id',$req->id)
+            ->exists();
+            Log::debug("결과");
+            Log::debug($result);
+            Log::debug("결과 타입 : ".gettype($result));
+        }
+
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($com_result)===1){    
             // 조회수 1증가  
