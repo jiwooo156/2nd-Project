@@ -17,7 +17,7 @@ import PostDetailComponent from '../components/PostDetailComponent.vue';
 import PostWriteComponent from '../components/PostWriteComponent.vue';
 import CommunityComponent from '../components/CommunityComponent.vue';
 import KakaoCallback from '../components/KakaoCallback.vue';
-import TestComponent from '../components/TestComponent.vue';
+import WriteComponent from '../components/WriteComponent.vue';
 import store from './store.js'
 import VueCookies from "vue-cookies";
 const routes = [
@@ -66,8 +66,8 @@ const routes = [
 		component : KakaoCallback
 	},
 	{
-		path: "/testwrite",
-		component : TestComponent
+		path: "/commuwrite",
+		component : WriteComponent
 	},
 	{
 		path: "/login",
