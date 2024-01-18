@@ -85,21 +85,21 @@
 			</div>
 			<div class='admin_page  mt-3'>
 				<nav aria-label="Page navigation example">
-					<ul class="pagination">
-						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(1)">&lt;&lt;</span>
+					<ul class="pagination" id="qna_page">
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(1)">&lt;&lt;</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(prevnum)">이전</span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(prevnum)">&lt;</span>
 						</li>
-						<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(num)">{{ num }}</span>
+						<li class="page-item" id="qna_item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(num)">{{ num }}</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(nextnum)">다음</span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(nextnum)">&gt;</span>
 						</li>
-						<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
-							<span class="page-link" @click="getInfo(lastpage)">>></span>
+						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+							<span class="page-link" id="qna_paging" @click="getInfo(lastpage)">&gt;&gt;</span>
 						</li>
 					</ul>
 				</nav>

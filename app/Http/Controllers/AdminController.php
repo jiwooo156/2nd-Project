@@ -94,7 +94,7 @@ class AdminController extends Controller
             ], 400);
         }
     }
-   // 어드민 최초 데이터 조회()
+    // 메인페이지 차트데이터
     public function mainchartget(Request $req)
     {
         $like = Like::select(DB::raw('infos.main_flg'),DB::raw('count(infos.main_flg) as cnt'))
@@ -507,6 +507,7 @@ class AdminController extends Controller
             select('users.gender', DB::raw('ROUND((COUNT(users.gender) / (SELECT COUNT(*) FROM likes WHERE flg = 0)) * 100, 2) as cnt'))
             ->join('users', 'likes.u_id', '=', 'users.id')
             ->where('likes.flg', '0')
+            ->where('likes.l_flg','1')
             ->groupBy('users.gender')
             ->get();
             // 총 퍼센트 계산
@@ -524,6 +525,7 @@ class AdminController extends Controller
             )
             ->join('infos', 'likes.b_id', '=', 'infos.id')
             ->where('likes.flg', '0')
+            ->where('likes.l_flg','1')
             ->groupBy('type')
             ->union(
                 Like::
@@ -533,6 +535,7 @@ class AdminController extends Controller
                 )
                 ->join('infos', 'likes.b_id', '=', 'infos.id')
                 ->where('likes.flg', '0')
+                ->where('likes.l_flg','1')
                 ->groupBy('type')
             )
             ->union(
@@ -562,6 +565,7 @@ class AdminController extends Controller
                 DB::raw('ROUND((COUNT(infos.main_flg) / (SELECT COUNT(*) FROM likes WHERE flg = 0)) * 100, 2) as cnt')
             )
             ->join('infos', 'likes.b_id', '=', 'infos.id')
+            ->where('likes.l_flg','1')
             ->groupBy('infos.main_flg')
             ->where('likes.flg', '0')
             ->get();
@@ -585,6 +589,7 @@ class AdminController extends Controller
             END as age"))
             ->join('users', 'likes.u_id', '=', 'users.id')
             ->where('likes.flg', '0')
+            ->where('likes.l_flg','1')
             ->groupBy('age')
             ->get();
         
@@ -602,6 +607,7 @@ class AdminController extends Controller
             select('users.gender', DB::raw('COUNT(users.gender) as cnt'))
             ->join('users', 'likes.u_id', '=', 'users.id')
             ->where('likes.flg','1')
+            ->where('likes.l_flg','1')
             ->groupBy('users.gender')
             ->get();
             $total = $gender1->sum('cnt');
@@ -616,6 +622,7 @@ class AdminController extends Controller
             ->join('community', 'likes.b_id', '=', 'community.id')
             ->groupBy('community.category_flg')
             ->where('likes.flg','1')
+            ->where('likes.l_flg','1')
             ->where('community.notice_flg','0')
             ->get();
             $total = $main1->sum('cnt');
@@ -630,6 +637,7 @@ class AdminController extends Controller
             ->join('community', 'likes.b_id', '=', 'community.id')
             ->groupBy('community.flg')
             ->where('likes.flg','1')
+            ->where('likes.l_flg','1')
             ->where('community.flg',"!=",'3')
             ->where('community.notice_flg','0')
             ->get();

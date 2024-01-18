@@ -218,7 +218,13 @@ export default {
 				// console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
 					console.log("if 진입");
-					if (res.data.data[0].flg === "3" && this.checkUser(res.data.data[0].email)) {
+					if (res.data.data[0].flg === "3" && 
+						res.data.data[0].notice_flg === "0" &&
+						this.checkUser(res.data.data[0].email)) {
+						this.detaildata = res.data.data[0];
+						this.repliedata = res.data.replie;
+						this.repliecount = res.data.repliecount;
+					} else if (res.data.data[0].flg === "3" && res.data.data[0].notice_flg === "1") {
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;

@@ -79,39 +79,35 @@
 			<table class="table table-hover  table-border mb-3">
 				<thead>	
 					<tr
-						v-if="writeflg==='0'"
+					v-if="writeflg==='0'"
 					>
 						<th scope="col">작성위치</th>
 						<th scope="col">게시글제목</th>
-						<th scope="col">내용</th>
 						<th scope="col">작성시간</th>
 					</tr>					
+
 					<tr
 						v-if="writeflg==='1'"
 					>
-						<th scope="col">작성위치</th>
 						<th scope="col">게시글제목</th>
 						<th scope="col">댓글내용</th>
 						<th scope="col">작성시간</th>
 					</tr>			
 				</thead>
 				<tbody>
-					<tr v-for="data in writedata" :key="data"
-						v-if="writeflg==='0'"
-					>
-						<td class="admin_table_td2">{{ community[data.flg] }}</td>
-						<td class="admin_table_td2">{{ data.title }}</td>
-						<td class="admin_table_td">{{ data.content }}</td>
-						<td class="admin_table_td2">{{ data.created_at }}</td>
+					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
+						<td class="userchk_body_td1">{{ community[data.flg] }}</td>
+						<td class="userchk_body_td2">{{ data.title }}</td>
+						<td class="userchk_body_td3">{{ data.created_at }}</td>
 					</tr>
 					<tr v-for="data in writedata" :key="data"
-						v-if="writeflg==='1'"
+					v-if="writeflg==='1'"
 					>
-						<td class="admin_table_td2" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
-						<td class="admin_table_td2" v-if="!(data.flg === '축제'||data.flg === '관광')">{{ community1[data.flg] }}</td>
-						<td class="admin_table_td2">{{ data.title }}</td>
-						<td class="admin_table_td">{{ data.replie }}</td>
-						<td class="admin_table_td2">{{ data.created_at }}</td>
+						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
+						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
+						<td class="userchk_body_td1">{{ data.title }}</td>
+						<td class="userchk_body_td2" >{{ data.replie }}</td>
+						<td class="userchk_body_td3">{{ data.created_at }}</td>
 					</tr>
 					<td colspan="4" class="pb-3 pt-5" 
 						v-if="writedata.length < 1&&writeflg==='0'"
@@ -184,8 +180,7 @@ export default {
 			prevnum:1,
 			nextnum:2,
 			numbox:[],
-			community:["자유게시판","질문게시판","정보게시판","건의게시판"],
-			community1:["자유","질문","정보","건의"],
+			community:["자유","질문","정보","건의"],
 			likeflg:'0',
 			writeflg:'0',
 			likedata:{},
@@ -326,6 +321,16 @@ export default {
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
 			// console.log(this.today)
+		},
+		// tr이라 클릭이벤트로
+		writedetail(data) {
+			console.log("이벤트진입")
+			console.log(data)
+			if (data.flg === '0' || data.flg === '1') {
+				this.$router.push('/community?id='+data.id);
+			} else if (data.flg === '2' || data.flg === '3') {
+				this.$router.push('/post?id=' + data.id);
+			}
 		},
 	},
 }

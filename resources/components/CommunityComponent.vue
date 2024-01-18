@@ -218,6 +218,7 @@ export default {
 
 		// 현재url가져오기
 		let params = new URLSearchParams(window.location.search);
+		console.log(params);
 		this.b_id = params.get('id');
 		this.getinfo(this.b_id);
 	},
