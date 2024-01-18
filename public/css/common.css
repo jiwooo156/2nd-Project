@@ -170,6 +170,7 @@ input[type='date']:valid::before {
 	align-items: flex-start;
 	background-color: #fff;
 	padding: 0 20px; 
+	/* border-bottom: 1px solid #000; */
   }
   .header_left,.header_right,.header_mid,.logo,.logo a,.lnb,.nav,.gnb,.nav li,.nav li a {
 	height: 100%;
@@ -1708,6 +1709,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_content{
 	margin: 20px 0;
     word-break: break-all;
+	white-space: pre-line;
 }
 .detail_hits{
 	text-align: right;
@@ -1921,12 +1923,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #979797;
 	padding: 0 1rem;
 }
-
-/* 정렬순 정지우 동적 클래스 */
-.qna_btn_button_on {
-	color: #28284d !important;
-}
-
 .qna_btn div button span {
 	font-size: 0.45rem;
 	padding-right: 0.5rem;
@@ -2065,16 +2061,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-weight: bold;
 }
 .qna_color {
-    background-color: #7066E0;
+	background-color: #7066E0;
     border: none;
     color: #fff;
 }
 .qna_color:hover{
-    background-color: #574CD8;
+	background-color: #574CD8;
     color: #fff;
 }
 .qna_select {
-    display: flex;
+	display: flex;
     align-items: center;
 	gap: 3rem;
 	margin-top: 0.5rem;
@@ -2114,16 +2110,24 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .qna_created {
 	margin-top: 3px;
 }
+.qna_notice_card {
+	padding-bottom: 0;
+}
+/* 정렬순 정지우 동적 클래스 */
+.qna_btn_button_on {
+	color: #28284d !important;
+	border-radius: 10px !important;
+}
 
 /* 어드민 */
 .admin_category_flex {
-    display: flex;
+	display: flex;
     gap: 15px;
     font-size: 20px;
     margin: 10px 0px 16px 0px;
 }
 .admin_frame{
-    background-color: #f8f9fa;
+	background-color: #f8f9fa;
     padding: 100px 1em 1em 1em;
 	min-height: 100vh;
 }
@@ -3281,6 +3285,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 @media only screen and (min-width: 330px) and (max-width: 741px) { 
 	.qna_frame {
 		max-width: 330px;
+	}
+	#qna_notice_card_border {
+		border: 2px solid rgba(0,0,0,0.125);
 	}
 	.qna_card_body {
 		padding-bottom: 0;

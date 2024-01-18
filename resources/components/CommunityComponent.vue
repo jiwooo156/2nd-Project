@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="detail_body">
-				<!-- <div class="detail_img"
+				<div class="detail_img"
 					v-if="this.detaildata.img1||this.detaildata.img2||this.detaildata.img3"
 				>
 					<img :src="this.detaildata.img1"
@@ -43,9 +43,9 @@
 					<img :src="this.detaildata.img3"
 						v-if="this.detaildata.img3"
 					>
-				</div> -->
+				</div>
 				<div class="detail_content font_air bold">
-					{{this.detaildata.content}}
+					<span v-text="this.content"></span>
 				</div>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
@@ -179,6 +179,7 @@ export default {
 	data() {
 		return {
 			detaildata: [],
+			content: "",
 			repliedata: [],
 			replie: "",
 			replie_length: 0,
@@ -226,11 +227,10 @@ export default {
 	updated() {
 	},
 	methods: {
+		// 게시글 정보 조회
 		getinfo(){
-			// 현재url가져오기
-			// let params = new URLSearchParams(window.location.search);
-			// this.b_id = params.get('id');
-			
+			// 스피너 로딩바
+			this.$store.commit('setLoading',true);
 			const URL = '/community/info?id='+this.b_id;
 			axios.get(URL)
 			.then(res => {
@@ -240,6 +240,7 @@ export default {
 					this.repliecount = res.data.repliecount;
 					this.userauth = res.data.userauth;
 					this.likeflg = res.data.likeresult;
+					this.content = res.data.data[0].content;
 					console.log('zcdvc'+this.userauth);
 					console.log('zcdvc'+this.detaildata.u_id);
 					console.log('디테일 data : '+this.detaildata.flg);
@@ -261,6 +262,9 @@ export default {
                     confirmButtonText: '확인'
                 })
 			})
+			.finally(() => {
+                this.$store.commit('setLoading', false);
+            });
 		},
 		// 댓글작성
 		repliewrite(){
