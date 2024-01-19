@@ -1346,6 +1346,9 @@ margin-top:10px;
 .userchk_body_td2{
 	width: 70%;
 }
+.userchk_content_report{
+	display: none;
+}
 .userchk_body_td3 {
     width: 20%;
     min-width: 180px;
@@ -3254,6 +3257,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.userchk_body_td2 {
 		text-align: left;
+	}
+	.userchk_content_report{
+		display: block;
+	}
+	.userchk_consol{
+		display: flex;
+		justify-content: space-between;
 	}
 }
 

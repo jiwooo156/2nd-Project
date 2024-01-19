@@ -97,8 +97,8 @@
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
 						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
-						<td class="userchk_body_td1 none" v-esle>{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">
+						<td class="userchk_body_td1 none" v-else>{{ community[data.flg] }}</td>
+						<td class="userchk_body_td2">					
 							{{ data.title }}
 							<div class="userchk_mobile_box">
 								<div>
@@ -119,7 +119,15 @@
 						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
 						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
 						<td class="userchk_body_td1 none">{{ data.title }}</td>
-						<td class="userchk_body_td2" >{{ data.replie }}
+						<td class="userchk_body_td2">
+							<div class="userchk_consol">
+								<div>
+									{{ data.replie }}
+								</div>
+								<span class="pointer userchk_content_report" 	@click="repliemodal(data)">
+									<font-awesome-icon :icon="['fas', 'trash']" />	
+								</span>
+							</div>
 							<div class="userchk_mobile_box">
 								<div>
 									작성위치 : {{ community[data.flg] }}
@@ -261,6 +269,7 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
+					console.log(this.writedata);
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
 					this.writedata=res.data.data.data
