@@ -681,6 +681,7 @@ class InfoController extends Controller
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
             $repliecnt = Replie::
             where('b_id', $req->id)
+            ->where('replies.flg', '1')
             ->count();
             // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
             $replieresult = Replie::
@@ -691,7 +692,8 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            
+            Log::debug("댓글갯수 : ".$repliecnt);
+            Log::debug("댓글 : ".$replieresult);
             return response()->json([
                 'code' => '0',
                 'data' => $communityresult,
