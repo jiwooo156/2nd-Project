@@ -1086,24 +1086,19 @@ class InfoController extends Controller
             ], 400);
         }
     }
-    // 커뮤니티 질문&건의 수정
-    public function postupdate(Request $req){
-        Log::debug("수정 함수 시작");
-        Log::debug($req);
-        // Log::debug("제목 플래그 : ".$req->title);
-        // Log::debug("내용 플래그 : ".$req->content);
-        // Log::debug("게시판 플래그 : ".$req->flg);
-        // Log::debug("카테고리 플래그 : ".$req->category_flg);
+     // 커뮤니티 질문&건의 수정
+        public function postupdate(Request $req){
         try {
             // 트랜잭션시작
             DB::beginTransaction();
             // 조회
-            $data = Community::where('id',$req->id)->first();
+            $data = Community::
+            where('id',$req->id)
+            ->first();
             $data->title = $req->title;
             $data->content = $req->content;
             $data->flg = $req->flg;
             $data->category_flg = $req->category_flg;
-
             if(empty($req->b_img1)){
                 $data->img1 = null;
             }
@@ -1128,10 +1123,8 @@ class InfoController extends Controller
                 $req->img3->move(public_path('img'), $imgName);
                 $data->img3 = '/img/'.$imgName;
             }
-
             $data->save();
             DB::commit();
-            
             return response()->json([
                 'code' => '0'
             ], 200);

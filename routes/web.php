@@ -101,11 +101,11 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     });
     Route::get('/detail/{id}', [InfoController::class, 'detailComget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 댓글 조회
-    Route::post('/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
+    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
-    Route::put('/update', [InfoController::class, 'postupdate']); // 게시글 수정
+    Route::post('/update', [InfoController::class, 'postupdate']); // 게시글 수정
     Route::post('/heartpost', [InfoController::class, 'plusheart']); // 좋아요
 });
 
