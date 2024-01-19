@@ -310,7 +310,7 @@ export default {
 				const URL = '/detail/heartpost';
 				axios.post(URL, {
 					"b_id": this.b_id,
-					"flg": "1"
+					"flg": "0"
 				})
 				.then(res=>{
 					console.log("plusheart 함수 then");
@@ -415,15 +415,23 @@ export default {
 		},
 		// 댓글추가 불러오기
 		morereplie(){
+			console.log(this.replie_offset)
 			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
+					console.log('댓글테스트')
+					console.log(this.repliedata)
 					this.repliedata = [ ...this.repliedata, ...res.data.data ];
+					console.log(this.repliedata)
+					console.log('replie_offset')
 					this.replie_offset = this.replie_offset+20;			
+					console.log('여기진입')
 					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
+						console.log('여기서')
 						this.moreflg = true;
 					}
+					console.log('여기종료')
 				}else{
 					Swal.fire({
                     icon: 'error',

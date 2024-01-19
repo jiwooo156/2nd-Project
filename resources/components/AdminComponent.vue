@@ -1832,17 +1832,26 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				console.log("댄진입")
+				console.log(res.data.data)
 				if(res.data.data.flg ==="0"){
+					console.log('0일때')
 					res.data.data.flg = "자유게시판"
 				}else if(res.data.data.flg ==="1"){
+					console.log('1일때')
 					res.data.data.flg ="정보게시판"
 				}else{
+					console.log('2일때')
 					res.data.data.flg ="질문게시판"
 				}
+				console.log('1')
 				this.modalReport = res.data.data;
+				console.log('데이터성공')
 				this.modalReport.deleted_at = this.modalReport.deleted_at === null ? "X":this.modalReport.deleted_at;
+				console.log('삭제일자')
 				this.modalReport.restraint_at = this.modalReport.restraint_at === null ? "X":this.modalReport.restraint_at;
+				console.log('제제일자')
 				this.modalflg = true;
+				console.log('트루')
 			})
 			.catch(err => {
 				Swal.fire({

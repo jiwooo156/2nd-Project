@@ -154,21 +154,28 @@ class AdminController extends Controller
     }
     // modal용 report data획득
     public function reportget(Request $req){
+        Log::debug($req);
+        Log::debug($req->flg);
         if($req->flg==="0"){
+            Log::debug('이프진입');
             $data = Community::withTrashed()
             ->select('users.email','community.*','reports.restraint_at')
             ->where('community.id',$req->b_id)
             ->join('users', 'community.u_id', '=', 'users.id')
             ->leftjoin('reports', 'community.u_id', '=', 'reports.r_id')
             ->first();
+            Log::debug($data);
         }else{
+            Log::debug('엘스진입');
             $data = Replie::withTrashed()
             ->select('users.email','replies.*','reports.restraint_at')
             ->where('replies.id',$req->b_id)
-            ->join('users', 'replies.u_id', '=', 'users.id')
-            ->leftjoin('reports', 'replies.u_id', '=', 'reports.r_id')
+            ->join('users', 'replies.u_id', 'users.id')
+            ->leftjoin('reports', 'replies.u_id', 'reports.r_id')
             ->first();
+            Log::debug($data);
         }
+        Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
