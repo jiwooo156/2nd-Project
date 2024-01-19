@@ -1300,6 +1300,11 @@ margin-top:10px;
 	margin-top: 113px;
     border-radius: 5px 5px 0 0;
 }
+.user_chk_btn{
+	background: none;
+	border: none;
+	color: #6a55cd;
+}
 .userchk_vacant_box{
 	width:90%;
 	height:50px;

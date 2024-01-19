@@ -296,34 +296,23 @@ class AdminController extends Controller
             ], 400);
         }
     }
-    // 유저조회
+    // 전체유저조회
     public function userget(Request $req){
-        $case = ['id','email'];
+        $case = ['id', 'email'];
+        $case1 = ['created_at', 'deleted_at'];
         $data = User::withTrashed()
-            ->where($case[$req->flg],$req->val)
-            ->orderby('id','desc')
-            ->first();
-        if(empty($data)){
-            return response()->json([
-                'code' => '1',
-                'errorMsg' => '조회된 회원이 없습니다'
-            ], 200);
+            ->select('users.id', 'users.email','users.name','users.nick','users.phone','users.gender','users.birthdate','users.created_at','users.deleted_at','reports.restraint_at',DB::raw('count(distinct reports.restraint_at) as cnt'))
+            ->leftjoin('reports', 'users.id', 'reports.r_id');
+        if ($req->order !== "2") {
+            $data = $data->orderBy('users.'.$case1[$req->order], 'desc');
         }
-        $result = Report::
-            where('r_id',$data->id)
-            ->orderby('restraint_at','desc')
-            ->get();
-        Log::debug($result);
-        $data->cnt= $result->count();
-        if($result->count() > 0){
-            $data->res_at= $result->first()->restraint_at;
-            $data->restraint= $result->first()->restraint;
+        if (!empty($req->val)) {
+            $data = $data->where('users.'.$case[$req->flg], $req->val);
         }
-        $admin = Admin::where('u_id', $data->id)->first();
-        $data->flg = "";
-        if ($admin) {
-            $data->flg = $admin->flg;
-        }
+        $data = $data
+            ->groupBy('users.id', 'users.email','users.name','users.nick','users.phone','users.gender','users.birthdate','users.created_at','users.deleted_at', 'reports.restraint_at')
+            ->paginate(10);
+        Log::debug($data);
         if(!empty($data)){
             return response()->json([
                 'code' => '0',
@@ -335,6 +324,21 @@ class AdminController extends Controller
                 'errorMsg' => '회원조회에 실패했습니다'
             ], 400);
         }
+               // $result = Report::
+            //     where('r_id',$data->id)
+            //     ->orderby('restraint_at','desc')
+            //     ->get();
+            // Log::debug($result);
+            // $data->cnt= $result->count();
+            // if($result->count() > 0){
+            //     $data->res_at= $result->first()->restraint_at;
+            //     $data->restraint= $result->first()->restraint;
+            // }
+            // $admin = Admin::where('u_id', $data->id)->first();
+            // $data->flg = "";
+            // if ($admin) {
+            //     $data->flg = $admin->flg;
+            // }
     }
     // 유저제재
     public function restraintuser(Request $req){
