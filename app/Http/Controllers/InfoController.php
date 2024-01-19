@@ -24,19 +24,16 @@ class InfoController extends Controller
 
     // info 게시글 조회
     public function getMainInfo(Request $req) {
-        Log::debug("함수진입");
         // 모든 게시글을 조회
         $hits = Info::where('main_flg', '=', '축제')
         ->where('end_at','>',$req->today)
         ->orderby('hits','desc')
         ->limit(4)
         ->get();
-        Log::debug("게시글 조회수 4개 조회값 = ".$hits);
         $fixed = Info::where('id', 10)
             ->orWhere('id', 30)
             ->orWhere('id', 50)
             ->get();  
-        Log::debug("게시글 조회 결과: " . $fixed);
         // 날씨 불러오기 위해서 DB에서 가져왔지만 미사용으로 인한 주석
         // $states = Info::select('states_name')
         // ->where('states_name', '<>', '거창군')
@@ -108,7 +105,6 @@ class InfoController extends Controller
 
     // // 디테일 페이지 정보조회 좋아요있는 버전
     public function detailget(Request $req) {
-        // Log::debug("디테일 리퀘스트는 : ".$req);
         // 리퀘스트온 아이디값으로 인포테이블 조회
         $info_result = Info::select(
             'infos.*',
@@ -118,19 +114,13 @@ class InfoController extends Controller
         ->where('infos.id', $req->id)
         ->get();
 
-        // Log::debug("디테일 좋아요 갯수 : ".$info_result->cnt);
-        Log::debug("디테일 결과 : ".$info_result);
-
         $auth_id = "";
         $result = "";
 
         if(auth()->check()) {
-            Log::debug("로그인상태");
             $auth = Auth::user();
             $auth_id = $auth->id;
             $result = Like::where('u_id',$auth_id)->where('b_id',$req->id)->exists();
-            Log::debug("결과");
-            Log::debug("좋아요 이력 결과 : ".$result);
         }
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($info_result)===1){    
@@ -164,8 +154,6 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug("댓글 결과 : ".$replieresult);
-            Log::debug("댓글 갯수 : ".$repliecnt);
             
             return response()->json([
                 'code' => '0',
@@ -256,7 +244,6 @@ class InfoController extends Controller
             ], 200);
         // 다를시
         }else{
-            Log::debug("엘스");
             return response()->json([
                 'code' => '1',
             ], 200);
@@ -296,8 +283,6 @@ class InfoController extends Controller
 
     // 시군명 조회
     public function stateget(Request $req) {
-        Log::debug("***** stateget start *****");
-        Log::debug("request ns : ".$req->ns);
 
         // response data 초기화 (정상 처리 아닐시, 에러로 세팅)
         $responseData = [
@@ -322,15 +307,11 @@ class InfoController extends Controller
             // 정상처리시 http status code 200번으로 세팅
             $httpCode = 200;
         }
-        Log::debug("responseData : ", $responseData);
-        Log::debug("***** stateget end *****");
 
         return response()->json($responseData, $httpCode);
     }
     // 추천축제,관광지 조회
     public function recommendfestivalget(Request $req) {
-        Log::debug("**** recommendfestivalget start ****");
-        Log::debug("**** recommendtourget start ****");
 
         $recommend_festival = Info::
             select('id','title', 'content', 'img1', 'start_at', 'end_at', 'hits', 'ns_flg')
@@ -348,10 +329,6 @@ class InfoController extends Controller
             ->limit(3)
             ->get();
 
-        Log::debug("데이터 획득 : ".$recommend_festival.$recommend_tour);
-
-        Log::debug("**** recommendfestivalget end ****");
-        Log::debug("**** recommendtourget end ****");
         return response()->json([
             'code' => '0',
             'rfestival' => $recommend_festival,
@@ -360,8 +337,6 @@ class InfoController extends Controller
     }
     // 지역축제,관광지 조회 (유저가 선택 한 지역의)
     public function festivalget(Request $req) {
-        Log::debug("**** festivalget start ****");
-        Log::debug("지역이름 : ".$req->states_name);
         $state_festival = Info::
             select('id','states_name','img1','title','content','start_at','end_at','hits')
             ->where('main_flg','축제')
@@ -388,9 +363,6 @@ class InfoController extends Controller
             ->where('states_name',$req->states_name)
             ->orderBy('id','desc')
             ->count();
-        Log::debug("**** festivalget end ****");
-        Log::debug("축제 : ". $state_festival);
-        Log::debug("관광 : ". $state_tour);
         return response()->json([
             'code' => '0',
             'sfestival' => $state_festival,
@@ -401,8 +373,6 @@ class InfoController extends Controller
     }
     // 더보기 조회 (지역축제,관광지)
     public function morefestivalget(Request $req) {
-        Log::debug("**** morefestivalget start ****");
-        Log::debug("request states_name : ".$req->states_name);
         $more_festival = Info::
             select('id','states_name','img1','title','content','start_at','end_at','hits')
             ->where('main_flg','축제')
@@ -419,9 +389,6 @@ class InfoController extends Controller
             ->limit(3)
             ->offset($req->offset)
             ->get();
-        Log::debug("**** morefestivalget end ****");
-        Log::debug($more_festival);
-        Log::debug($more_tour);
         return response()->json([
             'code' => '0',
             'mfestival' => $more_festival,
@@ -474,8 +441,6 @@ class InfoController extends Controller
                 't_cnt' => $tourcount,
             ],200);
         }
-        Log::debug(\DB::getQueryLog());
-        Log::debug("***** search end *******");
         return response()->json([
             'code' => '0',
             'festival' => $festival,
@@ -524,7 +489,6 @@ class InfoController extends Controller
             $data = $data
                 ->where('likes.u_id',$auth->id)
                 ->paginate(3);
-            Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -533,12 +497,9 @@ class InfoController extends Controller
     // 유저 작성 정보들 조회
     public function userwriteget(Request $req) {
         $auth = Auth::user();
-        Log::debug("진입");
         if($req->flg === "0"){
-            Log::debug("작성게시글");
             $data = Community::where('u_id',$auth->id);
         }else if($req->flg === "1"){
-            Log::debug("작성댓글");
             $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.replie', 'replies.created_at')
             ->where('replies.u_id', $auth->id)
             ->join('infos', 'replies.b_id', 'infos.id');
@@ -550,7 +511,6 @@ class InfoController extends Controller
             $data = $data
                 ->orderby('created_at','desc')
                 ->paginate(8);
-            Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -574,12 +534,6 @@ class InfoController extends Controller
 
     // 0112 정지우 정보게시판 페이지 정보조회 (목록)
     public function commuinfoget(Request $req) {
-        Log::debug("**** commuinfoget start ****");
-        Log::debug("게시판 플래그 : ".$req->flg);
-        Log::debug("카테고리 플래그 : ".$req->category);
-        Log::debug("정렬순 플래그 : ".$req->orderby);
-        Log::debug("정렬순 플래그 타입 : ".gettype($req->orderby));
-        Log::debug("인포함수진입");
 
         $informresult = Community::select(
             'community.id',
@@ -591,7 +545,7 @@ class InfoController extends Controller
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftjoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
         ->where('community.deleted_at', null);
@@ -627,16 +581,12 @@ class InfoController extends Controller
         ->where('community.deleted_at', null)
         ->get();
 
-        Log::debug("category_flg 타입 : ".gettype($req->category));
         if (!($req->category === "3")) {
-            Log::debug("category_flg 있음");
             $informresult
                 ->where('community.category_flg', $req->category);
         }
 
         if ($req->orderby) {
-            Log::debug("orderby flg 있음");
-            Log::debug("orderby : ".$req->orderby);
             if($req->orderby === '1') {
                 $informresult->orderBy('community.created_at', 'desc');
             } else if ($req->orderby === '2') {
@@ -650,12 +600,6 @@ class InfoController extends Controller
         $infocnt = $informresult->count();
 
         $informresult = $informresult->paginate(10);
-
-        Log::debug($informresult);
-        Log::debug($infocnt);
-        Log::debug("공지".$noticeresult);
-        Log::debug("게시글 타입은 : ".gettype($informresult));
-        Log::debug("공지사항 타입은 : ".gettype($noticeresult));
         
         return response()->json([
             'code' => '0',
@@ -667,8 +611,6 @@ class InfoController extends Controller
     
     // 0112 정지우 커뮤니티 디테일 페이지 정보조회 
     public function communityget(Request $req) {
-        Log::debug("**** communityget start ****");
-        Log::debug("커뮤디테일 함수진입");
         // 리퀘스트온 아이디값으로 커뮤니티 테이블 조회
         $communityresult = Community::select(
                 'community.id',
@@ -689,11 +631,9 @@ class InfoController extends Controller
                 DB::raw('COALESCE(lik.cnt, 0) as cnt')
             )
             ->join('users', 'community.u_id', '=', 'users.id')
-            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+            ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
             ->where('community.id',$req->id)
             ->get();
-
-        Log::debug("커뮤니티결과 : ".$communityresult);
         
         // 유저정보 초기화
         $auth_id = "";
@@ -701,15 +641,11 @@ class InfoController extends Controller
 
         // 로그인 시 해당유저 정보로 likes 테이블 조회
         if(auth()->check()) {
-            Log::debug("로그인상태");
             $auth = Auth::user();
             $auth_id = $auth->id;
             $result = Like::where('u_id',$auth_id)
             ->where('b_id',$req->id)
             ->exists();
-            Log::debug("결과");
-            Log::debug($result);
-            Log::debug("결과 타입 : ".gettype($result));
         }
         
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
@@ -744,8 +680,6 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug("댓글 결과 : ".$replieresult);
-            Log::debug("댓글 갯수 : ".$repliecnt);
             
             return response()->json([
                 'code' => '0',
@@ -766,11 +700,7 @@ class InfoController extends Controller
 
     // 0115 정지우 커뮤니티 게시글 작성
     public function communitywrite(Request $req) {
-        Log::debug("communitywrite 함수 시작");
-        Log::debug($req);
-        // Log::debug("작성데이터 : ".$data);
         try { 
-            Log::debug("communitywrite try");
             // 트랜잭션 시작
             DB::beginTransaction();
             
@@ -808,7 +738,6 @@ class InfoController extends Controller
             ], 200);
         // 실패시
         } catch(Exception $e){
-            Log::debug("communitywrite catch");
             // 롤백
             DB::rollback();
             return response()->json([
@@ -854,10 +783,6 @@ class InfoController extends Controller
                     $likehistory = true;
                 } else if ($likehistory->l_flg === '0') {
                     Log::debug("0일때");
-                    // data 정보를 커뮤니티 테이블에서 삭제 (소프트딜리트)
-                    // $result = Like::where('u_id', $auth_id)
-                    // ->where('b_id', $req->b_id)
-                    // ->delete();
                     $result = Like::where('u_id', $auth_id)
                     ->where('b_id', $req->b_id)
                     ->update(['l_flg'=>'1']);
@@ -952,16 +877,12 @@ class InfoController extends Controller
         ->where('community.deleted_at', null)
         ->get();
 
-        Log::debug("category_flg 타입 : ".gettype($req->category));
         if (!($req->category === "3")) {
-            Log::debug("category_flg 있음");
             $informresult
                 ->where('community.category_flg', $req->category);
         }
 
         if ($req->orderby) {
-            Log::debug("orderby flg 있음");
-            Log::debug("orderby : ".$req->orderby);
             if($req->orderby === '1') {
                 $informresult->orderBy('community.created_at', 'desc');
             } else if ($req->orderby === '2') {
@@ -975,10 +896,6 @@ class InfoController extends Controller
         $infocnt = $informresult->count();
 
         $informresult = $informresult->paginate(12);
-
-        Log::debug($informresult);
-        Log::debug($infocnt);
-        Log::debug($noticeresult);
 
         return response()->json([
             'code' => '0',
@@ -998,23 +915,17 @@ class InfoController extends Controller
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
 
-        Log::debug("커뮤니티결과 : ".$com_result);
-
         // 유저정보 초기화
         $auth_id = "";
         $result = "";
 
         // 로그인 시 해당유저 정보로 likes 테이블 조회
         if(auth()->check()) {
-            Log::debug("로그인상태");
             $auth = Auth::user();
             $auth_id = $auth->id;
             $result = Like::where('u_id',$auth_id)
             ->where('b_id',$req->id)
             ->exists();
-            Log::debug("결과");
-            Log::debug($result);
-            Log::debug("결과 타입 : ".gettype($result));
         }
 
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
@@ -1049,7 +960,6 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug($replie_result);
             return response()->json([
                 'code' => '0',
                 'data' => $com_result,
@@ -1088,12 +998,6 @@ class InfoController extends Controller
     }
     // 커뮤니티 질문&건의 수정
     public function postupdate(Request $req){
-        Log::debug("수정 함수 시작");
-        Log::debug($req);
-        // Log::debug("제목 플래그 : ".$req->title);
-        // Log::debug("내용 플래그 : ".$req->content);
-        // Log::debug("게시판 플래그 : ".$req->flg);
-        // Log::debug("카테고리 플래그 : ".$req->category_flg);
         try {
             // 트랜잭션시작
             DB::beginTransaction();

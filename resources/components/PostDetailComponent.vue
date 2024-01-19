@@ -32,8 +32,8 @@
 				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
-				<div @click="plusheart()">
-					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
+				<div>
+					<span class="detail_like font_air bold"  @click="plusheart"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
@@ -430,7 +430,7 @@ export default {
 				})
 				.catch(err => {
 					console.log("plusheart 함수 catch");
-					this.$router.push('/error');
+					// this.$router.push('/error');
 				})				
 			} else {
 				Swal.fire({
@@ -524,7 +524,7 @@ export default {
 		// 댓글작성
 		repliewrite(){
 			if(this.replie){
-				const URL = '/post/'+this.b_id;
+				const URL = '/post/reply'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
