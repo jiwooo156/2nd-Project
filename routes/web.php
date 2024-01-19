@@ -59,6 +59,7 @@ Route::middleware('myValidation')->prefix('userchk')->group(function() {
     Route::post('/', [UserController::class, 'userchk']);
     Route::get('/like', [InfoController::class, 'userlikeget']);
     Route::get('/write', [InfoController::class, 'userwriteget']);
+    Route::delete('/replie', [InfoController::class, 'repliedel']);
 });
 
 Route::middleware('myValidation')->prefix('userinfo')->group(function() {

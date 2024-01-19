@@ -108,7 +108,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 인포테이블 조회
         $info_result = Info::select(
             'infos.*',
-             DB::raw('COALESCE(lik.cnt, 0) as cnt')
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
         ->where('infos.id', $req->id)
@@ -256,7 +256,7 @@ class InfoController extends Controller
         Log::debug("오프셋 : ".$req->offset);
         // 리퀘스트온 값을토대로 20개의 데이터 조회
         $replie_result = Replie::
-            select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
+            select('users.email','replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
             ->leftjoin('users', 'replies.u_id', '=', 'users.id')
             ->where('replies.b_id', $req->b_id)
             ->orderBy('replies.created_at', 'desc')
@@ -490,10 +490,11 @@ class InfoController extends Controller
             ->where('likes.l_flg','1');
         }else if($req->flg === "2"){
             Log::debug("진입3");
-            $data = Like::select('community.id','community.title','community.flg')
-            ->join('community','likes.b_id','community.id')
-            ->where('likes.flg','1')
-            ->where('likes.l_flg','1');
+            $data = Like::select('community.id', 'community.title', 'community.flg')
+                ->join('community', 'likes.b_id', 'community.id')
+                ->where('likes.flg', '1')
+                ->where('likes.l_flg', '1')
+                ->whereNull('community.deleted_at');
         }
         Log::debug($auth->id);
             $data = $data
@@ -510,11 +511,11 @@ class InfoController extends Controller
         if($req->flg === "0"){
             $data = Community::where('u_id',$auth->id);
         }else if($req->flg === "1"){
-            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.replie', 'replies.created_at')
+            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.id', 'replies.replie', 'replies.created_at')
             ->where('replies.u_id', $auth->id)
             ->join('infos', 'replies.b_id', 'infos.id');
     
-            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.replie', 'replies.created_at')
+            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.id', 'replies.replie', 'replies.created_at')
                 ->where('replies.u_id', $auth->id)
                 ->join('community', 'replies.b_id', 'community.id'));
         }

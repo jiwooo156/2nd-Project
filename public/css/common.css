@@ -1347,6 +1347,11 @@ margin-top:10px;
 .userchk_body_td3{
 	width: 20%;
 }
+.userchk_mobile_box{
+	display: none;
+	font-size: 10px;
+	justify-content: space-between;
+}
 .userchk_body td,.userchk_body th{
 	vertical-align:middle;
 	white-space: nowrap;
@@ -2855,6 +2860,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* 없애기 */
+	.none{
+		display: none;
+	}
 	/* 헤더 */
 	.hidden-on-mobile {
 		display: block;
@@ -3064,6 +3073,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.detail_title {
 		font-size: 2rem;
 	}
+	.detail_parking_flg {
+		text-align: center;
+		font-size: 11px;
+		padding: 7px;
+		margin: 3px;
+	}
 	/* 지역 */
 	.carousel__item {
 		width: 80px;
@@ -3193,6 +3208,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.qna_notice {
 		display: none;
+	}
+	/* 유저체크 */
+	.userchk_card {
+		box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+		position: relative;
+		margin: 0 auto;
+		max-width: 300px;
+		width: 95%;
+	}
+	.userchk_mobile_box{
+		display: flex;
 	}
 }
 
