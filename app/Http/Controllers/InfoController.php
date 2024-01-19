@@ -110,7 +110,7 @@ class InfoController extends Controller
             'infos.*',
              DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 AND l_flg = 1 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
         ->where('infos.id', $req->id)
         ->get();
 

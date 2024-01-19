@@ -537,20 +537,21 @@ export default {
 		},
 		// 로그인확인
 		checklocal() {
-			if (!(localStorage.getItem('nick'))) {
-				Swal.fire({
-					icon: 'error',
-					title: '주의',
-					text: '로그인 후 이용해 주세요.',
-					confirmButtonText: '확인'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						this.$router.push('/login');
-					}
-				});
-			} else {
-				return
-			}
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }
+                })
+            }
 		},
 		// 유저 본인인지 확인
 		checkUser(email) {
