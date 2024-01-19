@@ -1676,7 +1676,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* detail */
 .detail_frame{
-	margin: 100px auto;
+	margin: 0 auto;
     width: 95%;
     max-width: 1000px;
 }
@@ -1684,6 +1684,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding: 30px 10px 10px 10px;
 }
 .detail_header{
+	margin-top:50px;
+	margin-bottom: 15px;
     padding: 10px;
     font-size: 2.3rem;
     background: #d14c6c1f;
@@ -1696,6 +1698,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .detail_type{
 	font-size: 1.3rem;
+	margin-bottom: 0;
 }
 .detail_tofrom{
     padding: 0;
@@ -1800,6 +1803,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .detail_more_btn{
 	padding-top: 10px;
+	margin-bottom: 10rem;
 }
 .detail_more_btn span{
 	font-size: 1rem;
@@ -1837,16 +1841,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_post_like {
 	margin-top: 1rem;
 }
+.detail_like_basic {
+	vertical-align: middle;
+	line-height: 1rem;
+	font-size: 1.1rem;
+	margin-right: 0.2rem;
+}
 .detail_like {
 	vertical-align: middle;
 	line-height: 1rem;
 	font-size: 1.1rem;
 	color: #d14c6c;
-	margin-right: 0.3rem;
+	margin-right: 0.2rem;
 }
 .detail_likes {
 	font-size: 0.95rem;
-	margin-right: 0.3rem;
+	line-height: 1rem;
+	margin-right: 0.2rem;
 }
 .detail_report {
 	vertical-align: middle;
@@ -1879,6 +1890,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #eeeeee;
 	padding: 0.5rem 0.8rem;
 	border-radius: 18px 18px 18px 18px;
+}
+.detail_margin_txt {
+	margin-bottom: 0.5rem;
 }
 
 /* qna페이지 */
@@ -1945,6 +1959,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .modal-body select {
 	display: inline;
 }
+.qna_page_bot {
+	margin-bottom: 10rem;
+}
 /* font-awesome 가운데 정렬 */
 .font_center {
 	vertical-align:middle;
@@ -1992,6 +2009,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_card_tit {
 	font-size: 1.15rem;
+	margin-top: 0.8rem;
 	margin-bottom: 0;
 }
 .qna_card {
@@ -2093,7 +2111,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	display: flex;
     align-items: center;
 	gap: 3rem;
-	margin-top: 0.5rem;
 }
 .qna_tit {
 	margin-bottom: 1rem;
