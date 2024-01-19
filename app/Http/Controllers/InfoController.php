@@ -480,7 +480,8 @@ class InfoController extends Controller
                 ->join('infos','likes.b_id','infos.id')
                 ->where('infos.main_flg','축제')
                 ->where('likes.flg','0')
-                ->where('likes.l_flg','1');
+                ->where('likes.l_flg','1')
+                ->orderby('infos.start_at','desc');
         }else if($req->flg === "1"){
             Log::debug("진입2");
             $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
@@ -499,6 +500,7 @@ class InfoController extends Controller
         Log::debug($auth->id);
             $data = $data
                 ->where('likes.u_id',$auth->id)
+                ->orderby('likes.created_at','desc')
                 ->paginate(3);
         return response()->json([
             'code' => '0',
@@ -1053,6 +1055,30 @@ class InfoController extends Controller
             ], 200);
         } catch(Exception $e){
             // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '수정 실패.'
+            ], 400);
+        }
+    }
+    // 커뮤니티 질문&건의 수정
+    public function reportpost(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            $auth_id = Auth::user()->id;
+            $data = [];
+            $data['u_id'] = $auth_id;
+            $data['b_id'] = $req->b_id;
+            $data['flg'] = $req->flg;
+            $data['content'] = $req->msg;
+            Report::create($data);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E99',

@@ -76,7 +76,7 @@
 				<option value="0">게시글</option>
 				<option value="1">댓글</option>
 			</select>
-			<table class="table table-hover  table-border mb-3">
+			<table class="table table-hover  table-border mb-3 table-bordered">
 				<thead>	
 					<tr
 					v-if="writeflg==='0'"
@@ -96,7 +96,8 @@
 				</thead>
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
-						<td class="userchk_body_td1 none" >{{ community[data.flg] }}</td>
+						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
+						<td class="userchk_body_td1 none" v-esle>{{ community[data.flg] }}</td>
 						<td class="userchk_body_td2">
 							{{ data.title }}
 							<div class="userchk_mobile_box">
@@ -108,11 +109,12 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td3 none">{{ data.created_at }}</td>
+						<td class="userchk_body_td3 none">
+							{{ data.created_at }}
+						</td>
 					</tr>
 					<tr v-for="data in writedata" :key="data"
 						v-if="writeflg==='1'"
-						@click="repliemodal(data)"
 					>
 						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
 						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
@@ -127,7 +129,11 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td3 none">{{ data.created_at }}</td>
+						<td class="userchk_body_td4 none">{{ data.created_at }}
+							<span class="pointer" 	@click="repliemodal(data)">
+								<font-awesome-icon :icon="['fas', 'trash']" />	
+							</span>
+						</td>
 					</tr>
 					<td colspan="4" class="pb-3 pt-5" 
 						v-if="writedata.length < 1&&writeflg==='0'"
