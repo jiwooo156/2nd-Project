@@ -178,6 +178,14 @@
 						삭제
 					</div>
 				</div>
+				<div class="detail_replie_change"
+					v-else
+				>
+					<div class="font_air bold pointer"
+					>
+						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
+					</div>
+				</div>
 			</div>
 			<div class="detail_replie_read" 
 				v-if="repliedata.length === 0">
@@ -430,35 +438,42 @@ export default {
 		},
 		// 댓글삭제
 		del_replie(id){		
-			if (confirm("댓글을 삭제하시겠습니까?")) {
-				const URL = '/detail/del/'+id;
-				const formData = new FormData();
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						document.querySelector('#detail_replie'+id).remove();
-						this.repliecount--;
-					}else{
+			Swal.fire({
+				icon: 'warning',
+				title: '주의',
+				text: '댓글을 삭제하시겠습니까?.',
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					const URL = '/detail/del/'+id;
+					const formData = new FormData();
+					axios.post(URL,formData)
+					.then(res =>{
+						if(res.data.code==="0"){
+							document.querySelector('#detail_replie'+id).remove();
+							this.repliecount--;
+						}else{
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: res.data.errorMsg,
+								confirmButtonText: '확인'
+							})
+						}
+					})
+					.catch(err => {
 						Swal.fire({
 							icon: 'error',
 							title: 'Error',
-							text: res.data.errorMsg,
+							text: err.response.data.errorMsg,
 							confirmButtonText: '확인'
-                })
-					}
-				})
-				.catch(err => {
-					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.response.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-				})
-			} else {
-				return;
-			}
-			
+						})
+					})			
+				}
+			})
 		},
 		// 댓글추가 불러오기
 		morereplie(){
