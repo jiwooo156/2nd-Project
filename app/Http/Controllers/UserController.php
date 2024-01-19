@@ -178,10 +178,13 @@ class UserController extends Controller
             }
         // 값이 조회됬을때
         }else if($result){
+            Log::debug("여기진입");
             $data = Report::
                 where('r_id',$result->id)
                 ->orderby('restraint_at','desc')
                 ->first();
+            Log::debug($data);
+            Log::debug("여기통과");
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
                 return response()->json([
@@ -189,11 +192,13 @@ class UserController extends Controller
                     ,'errorMsg' => $errorMsg
                 ], 400);
             }
-            if($data->restraint_at > now()){
-                return response()->json([
-                    'code' => 'E07',
-                    'data' => $data
-                ], 200);
+            if(!empty($data)){
+                if($data->restraint_at > now()){
+                    return response()->json([
+                        'code' => 'E07',
+                        'data' => $data
+                    ], 200);
+                }
             }
             Auth::login($result);
             Auth::user();
