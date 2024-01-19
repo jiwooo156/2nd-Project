@@ -110,7 +110,7 @@ class InfoController extends Controller
             'infos.*',
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 AND l_flg = 1 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
         ->where('infos.id', $req->id)
         ->get();
 
@@ -683,6 +683,7 @@ class InfoController extends Controller
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
             $repliecnt = Replie::
             where('b_id', $req->id)
+            ->where('replies.flg', '1')
             ->count();
             // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
             $replieresult = Replie::
@@ -693,7 +694,8 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            
+            Log::debug("댓글갯수 : ".$repliecnt);
+            Log::debug("댓글 : ".$replieresult);
             return response()->json([
                 'code' => '0',
                 'data' => $communityresult,
