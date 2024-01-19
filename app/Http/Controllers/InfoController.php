@@ -1002,12 +1002,13 @@ class InfoController extends Controller
             // 트랜잭션시작
             DB::beginTransaction();
             // 조회
-            $data = Community::where('id',$req->id)->first();
+            $data = Community::
+            where('id',$req->id)
+            ->first();
             $data->title = $req->title;
             $data->content = $req->content;
             $data->flg = $req->flg;
             $data->category_flg = $req->category_flg;
-
             if(empty($req->b_img1)){
                 $data->img1 = null;
             }
@@ -1032,10 +1033,8 @@ class InfoController extends Controller
                 $req->img3->move(public_path('img'), $imgName);
                 $data->img3 = '/img/'.$imgName;
             }
-
             $data->save();
             DB::commit();
-            
             return response()->json([
                 'code' => '0'
             ], 200);

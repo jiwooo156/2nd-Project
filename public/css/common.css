@@ -1842,11 +1842,23 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	line-height: 1rem;
 	font-size: 1.1rem;
 	color: #d14c6c;
-	margin-right: 0.4rem;
+	margin-right: 0.3rem;
 }
 .detail_likes {
 	font-size: 0.95rem;
-	margin-right: 0.4rem;
+	margin-right: 0.3rem;
+}
+.detail_report {
+	vertical-align: middle;
+	line-height: 1rem;
+	font-size: 1.1rem;
+	margin-right: 0.3rem;
+	color: #505050;
+}
+.detail_reports {
+	font-size: 0.95rem;
+	margin-right: 0.3rem;
+	color: #505050;
 }
 .detail_list {
 	color: #000;

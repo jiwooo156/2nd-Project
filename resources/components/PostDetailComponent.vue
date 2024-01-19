@@ -379,7 +379,7 @@ export default {
 			console.log(formData.get('img1'));
 			console.log(formData.get('b_img1'));
 
-			axios.put(URL, formData)
+			axios.post(URL, formData)
 			.then(res => {
 				if(res.data.code === "0") {
 					Swal.fire({
