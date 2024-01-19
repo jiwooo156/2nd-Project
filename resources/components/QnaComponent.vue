@@ -251,7 +251,7 @@ export default {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg')==="2"? "3":"2";
-		console.log("beforeupdated flg"+this.nowflg);
+		// console.log("beforeupdated flg"+this.nowflg);
 		this.option = "3";
 		this.rangevalue = "1";
 		this.getInfo(1);

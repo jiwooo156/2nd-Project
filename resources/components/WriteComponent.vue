@@ -3,35 +3,41 @@
 		<div class="detail_container">
 			<div class="detail_header_flex">
 				<form action="/community/testwrite" methods="post">
-					<div class="d-flex detail_type center">
-						<h2>게시글 작성</h2>
-						<h3>게시판?</h3>					
-						<select v-model="flg" name="flg" class="form-select qna_drop" @click="checklocal" aria-label=".form-select-sm">
-							<option value="0" class="qna_drop_item" selected>자유</option>
-							<option value="1" class="qna_drop_item">정보</option>
-							<option value="2" class="qna_drop_item">질문</option>
-							<option value="3" class="qna_drop_item">건의</option>
-						</select>
-						<h3>카테고리?</h3>			
-						<select v-model="categoryflg" name="categoryflg" class="form-select qna_drop" @click="checklocal" aria-label=".form-select-sm">
-							<option value="0" class="qna_drop_item" selected>축제</option>
-							<option value="1" class="qna_drop_item">관광</option>
-							<option value="2" class="qna_drop_item">기타</option>
-						</select>
+					<div class=" detail_type center">
+						<div><h2 class="detail_header_title">게시글 작성</h2></div>
+						<br>
+						<div class="detail_sort">
+							<h3>게시판?</h3>					
+							<select v-model="flg" name="flg" class="form-select qna_drop detail_select" @click="checklocal" aria-label=".form-select-sm">
+								<option value="0" class="qna_drop_item" selected>자유게시판</option>
+								<option value="1" class="qna_drop_item">정보게시판</option>
+								<option value="2" class="qna_drop_item">질문게시판</option>
+								<option value="3" class="qna_drop_item">건의게시판</option>
+							</select>
+							<h3>카테고리?</h3>			
+							<select v-model="categoryflg" name="categoryflg" class="form-select qna_drop" @click="checklocal" aria-label=".form-select-sm">
+								<option value="0" class="qna_drop_item" selected>축제</option>
+								<option value="1" class="qna_drop_item">관광</option>
+								<option value="2" class="qna_drop_item">기타</option>
+							</select>
+						</div>
 					</div>
 
 
 
 
 				<div class="detail_header font_air bold">
-					<div>제목 작성</div>
-					<textarea type="text" maxlength="50"
-					name="title"
-					@click="checklocal"
-					@input="changeKeyword"
-					placeholder="제목을 입력하세요."
-					v-model="title"
-					></textarea>
+					<div class="detail_title detail_box1">
+						<span class="write_title">제목 작성</span>
+						<textarea type="text" maxlength="50"
+						name="title"
+						@click="checklocal"
+						@input="changeKeyword"
+						placeholder="제목을 입력하세요."
+						v-model="title"
+						></textarea>
+					</div>
+					
 				</div>
 
 				
@@ -45,22 +51,24 @@
 
 
 			<div class="detail_body">
-				<div>내용 작성</div>					
-				<textarea type="text" maxlength="3000"
-				name="content" 
-				@click="checklocal"
-				@input="changeKeyword"
-				placeholder="내용을 입력하세요."
-				v-model="content"
-				class="detail_content font_air bold"
-				></textarea>
+				<div class="detail_box1">
+					<span class="write_title">내용 작성</span>
+					<textarea type="text" maxlength="3000"
+					name="content" 
+					@click="checklocal"
+					@input="changeKeyword"
+					placeholder="내용을 입력하세요."
+					v-model="content"
+					class="detail_content font_air bold"
+					></textarea>
+				</div>					
 			</div>
 
 
 				<div class="post_btn_bot">
-						<button type="button" @click="commuWrite()">작성</button>
-						<button type="button" @click="goBack">취소</button>
-					</div>
+					<button type="button" @click="commuWrite()">작성</button>
+					<button type="button" @click="goBack">취소</button>
+				</div>
 				</form>
 			</div>
 		</div>

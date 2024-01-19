@@ -15,7 +15,7 @@
 				<div>
 					<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
 					<span class="font_air bold detail_com_tofrom">|</span>
-					<span class="font_air bold detail_com_tofrom">{{ formatEventDate(this.detaildata.created_at) }}</span>
+					<span class="font_air bold detail_com_tofrom">{{ this.detaildata.created_at }}</span>
 				</div>
 				<div class="font_air bold detail_com_hits">
 					조회수 : {{this.detaildata.hits}}
@@ -32,8 +32,8 @@
 				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
-				<div @click="plusheart(), checklocal()">
-					<span class="detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
+				<div @click="plusheart()">
+					<span class="detail_likes detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
@@ -231,9 +231,6 @@ export default {
 		this.getCategoryFlg();
 	},
 	methods: {
-		getCategoryFlg() {
-			this.category_flg = this.detaildata.category_flg; 
-		},
 		getinfo(){
 			// 스피너 로딩바
 			this.$store.commit('setLoading',true);
@@ -254,25 +251,24 @@ export default {
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log('좋아요 누른 이력 : '+this.likeflg);
-						console.log('좋아요 누른 이력 : '+this.likeresult);
+						// console.log('좋아요 누른 이력 : '+this.likeflg);
+						// console.log('좋아요 누른 이력 : '+this.likeresult);
 					} else if (res.data.data[0].flg === "3" && res.data.data[0].notice_flg === "1") {
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log('디테일 data : '+this.detaildata.flg);
-					console.log('좋아요 누른 이력 : '+this.likeflg);
+						// console.log('디테일 data : '+this.detaildata.flg);
+						// console.log('좋아요 누른 이력 : '+this.likeflg);
 					} else if (["0", "1", "2"].includes(res.data.data[0].flg)){
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log('디테일 data : '+this.detaildata.flg);
-					console.log('좋아요 누른 이력 : '+this.likeflg);
-						
+						// console.log('디테일 data : '+this.detaildata.flg);
+						// console.log('좋아요 누른 이력 : '+this.likeflg);	
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -440,7 +436,15 @@ export default {
 					text: '로그인 후 이용해 주세요.',
 					confirmButtonText: '확인'
                 })
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login');
+					}
+				});
 			}
+		},
+		getCategoryFlg() {
+			this.category_flg = this.detaildata.category_flg; 
 		},
 		// flg 데이터 출력 변환
 		getEventType(data) {
@@ -467,15 +471,14 @@ export default {
 			}
 		},
 		// created_at 데이터 출력 변환
-		formatEventDate(dateString) {
-			const dateObject = new Date(dateString);
-			const year = dateObject.getFullYear();
-			const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-			const day = String(dateObject.getDate()).padStart(2, "0");
+		// formatEventDate(dateString) {
+		// 	const dateObject = new Date(dateString);
+		// 	const year = dateObject.getFullYear();
+		// 	const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+		// 	const day = String(dateObject.getDate()).padStart(2, "0");
 
-			return `${year}-${month}-${day}`;
-		},
-		
+		// 	return `${year}-${month}-${day}`;
+		// },
 		// 시간초기화
 		converttime(date){
 			const start = new Date(date);

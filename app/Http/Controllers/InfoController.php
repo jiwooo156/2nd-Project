@@ -855,7 +855,7 @@ class InfoController extends Controller
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftJoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
         ->whereNull('community.deleted_at');
@@ -925,7 +925,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = community::
         join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.id',$req->id)
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
