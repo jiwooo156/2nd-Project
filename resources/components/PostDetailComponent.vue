@@ -32,8 +32,8 @@
 				</figure>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
-				<div @click="plusheart()">
-					<span class="detail_like font_air bold"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
+				<div @click="plusheart(), checklocal()">
+					<span class="detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
@@ -47,7 +47,7 @@
 						</div>
 						<div class="modal-body">
 							<div class="detail_type font_air bold qna_select">
-								<div>
+								<div class="detail_margin_txt">
 									<span>게시판?</span>
 									<select v-model="editedFlg" name="flg" class="form-select qna_drop" aria-label=".form-select-sm">
 										<option v-for="flgOption in flgOptions" :key="flgOption.value" :value="flgOption.value" class="qna_drop_item font_air bold">{{ flgOption.label }}</option>
@@ -60,40 +60,43 @@
 									</select>
 								</div>
 							</div>
-							<br>
 							<div class="qna_tit">
 								<span class="detail_type">제목</span>
 								<input v-model="editedTitle" type="text" id="titleInput" class="form-control qna_tit">
 								<span class="detail_type">내용</span>
-								<textarea v-model="editedContent" id="contentInput" class="form-control"></textarea>
-								<!-- <label for="formFile" class="form-label detail_type detail_margin">사진 업로드</label>
-								<input class="form-control font_air bold" type="file" id="formFile"> -->
+								<textarea v-model="editedContent" id="contentInput" style="height: 10rem" class="form-control"></textarea>
 							</div>
-							<!-- 테스트용 -->
-							<div class="input-group mb-3 align-items-center">
-									<span class="input-group-text" >1번이미지</span>
-									<input id="modal_file_img1_text" class="form-control" type="text" readOnly :value="this.detaildata.img1">
-									<button type="button" class="btn btn-secondary" @click="this.detaildata.img1 = ''">삭제</button>
-									<span class="input-group-text" >2번이미지</span>
-									<input id="modal_file_img2_text" class="form-control" type="text" readOnly :value="this.detaildata.img2">
-									<button type="button" class="btn btn-secondary" @click="this.detaildata.img2 = ''">삭제</button>
-									<span class="input-group-text" >3번이미지</span>
-									<input id="modal_file_img3_text" class="form-control" type="text" readOnly :value="this.detaildata.img3">
-									<button type="button" class="btn btn-secondary" @click="this.detaildata.img3 = ''">삭제</button>
-								</div>
-								<div class="input-group mb-3 align-items-center">
-									<span class="input-group-text">이미지변경</span>
-									<div v-if="!this.detaildata.img1&&!this.detaildata.img2&&!this.detaildata.img3">
-										이미지없음
-									</div>
-									<input id="modal_file_img1" class="form-control" type="file" accept="image/*">
-									<input id="modal_file_img2" class="form-control" type="file" accept="image/*">
-									<input id="modal_file_img3" class="form-control" type="file" accept="image/*">
-								</div>
+							<!-- 사진 업로드 -->
+							<label for="formFile" class="form-label detail_type">사진 확인</label>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img1_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img1">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img1 = ''">삭제</button>
+							</div>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img2_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img2">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img2 = ''">삭제</button>
+							</div>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img3_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img3">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img3 = ''">삭제</button>
+							</div>
+							<label for="formFile" class="form-label detail_type detail_margin">사진 변경</label>
+							<div class="input-group">
+								<input id="modal_file_img1" class="form-control font_air bold" type="file" accept="image/*">
+							</div>
+							<div class="input-group">
+								<input id="modal_file_img2" class="form-control font_air bold" type="file" accept="image/*">
+							</div>
+							<div class="input-group">
+								<input id="modal_file_img3" class="form-control font_air bold" type="file" accept="image/*">
+							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
-							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="updatePost">수정완료</button>
+							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
 						</div>
 						</div>
 					</div>
@@ -331,7 +334,6 @@ export default {
 							});
 							this.goBack();
 						} 
-						
 					})
 					.catch(err => {
 						Swal.fire({
@@ -430,7 +432,6 @@ export default {
 				})
 				.catch(err => {
 					console.log("plusheart 함수 catch");
-					this.$router.push('/error');
 				})				
 			} else {
 				Swal.fire({

@@ -83,7 +83,7 @@
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
 				<router-link to="/commuwrite" @click="checklocal()">글 작성하기</router-link>
 			</div>
-			<div class="d-flex justify-content-center mb-5">
+			<div class="d-flex justify-content-center qna_page_bot">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination" id="qna_page">
 						<li class="page-item" id="qna_item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">

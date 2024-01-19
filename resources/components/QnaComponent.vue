@@ -192,7 +192,7 @@
 			</div>
 		</div>
 		<!-- 페이징 -->
-		<div class="d-flex justify-content-center mb-5">
+		<div class="d-flex justify-content-center qna_page_bot">
 			<nav aria-label="Page navigation">
 				<ul class="pagination" id="qna_page">
 					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']" id="qna_item">
