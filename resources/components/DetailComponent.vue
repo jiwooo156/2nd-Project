@@ -74,16 +74,34 @@
 								#장소{{detaildata.place}}
 							</div> -->
 							<div class = "detail_parking_flg
-							detail_content font_air bold">
-								#주차{{detaildata.parking_flg}}   
+							detail_content font_air bold"
+								v-if="detaildata.parking_flg==='1'"
+							>
+								#주차가능   
+							</div>
+							<div class = "detail_parking_flg
+							detail_content font_air bold"
+								v-if="detaildata.parking_flg==='0'"
+							>
+								#주차불가
 							</div>
 							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#커플{{detaildata.couple_flg}}
+							detail_content font_air bold"
+								v-if="detaildata.couple_flg==='1'"
+							>
+								#커플추천
 							</div>
 							<div class="detail_parking_flg
-							detail_content font_air bold">
-								#친구{{detaildata.friend_flg}}
+							detail_content font_air bold"
+								v-if="detaildata.friend_flg==='1'"
+							>
+								#친구끼리
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold"
+								v-if="detaildata.family_flg==='1'"
+							>
+								#가족들과
 							</div>
 							<div class="detail_parking_flg
 							detail_content font_air bold">
@@ -158,6 +176,14 @@
 						@click="del_replie(data.id)"
 					>
 						삭제
+					</div>
+				</div>
+				<div class="detail_replie_change"
+					v-else
+				>
+					<div class="font_air bold pointer"
+					>
+						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
 					</div>
 				</div>
 			</div>
@@ -254,7 +280,21 @@ export default {
 		},
 		// 댓글작성
 		repliewrite(){
-			if(this.replie){
+			if(!(localStorage.getItem('nick'))){
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
+			}else if(this.replie){
 				console.log("디테일댓글작성if");
 				const URL = '/detail/reply/'+this.b_id;
 				const formData = new FormData();
@@ -332,11 +372,18 @@ export default {
 				})				
 			} else {
 				Swal.fire({
-					icon: 'error',
-					title: '주의',
-					text: '로그인 후 이용해 주세요.',
-					confirmButtonText: '확인'
-                })
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
 			}
 		},
 		// 시간초기화
@@ -370,11 +417,19 @@ export default {
 		// 로그인확인
 		checklocal() {
 			if(!(localStorage.getItem('nick'))){
-				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
-					this.$router.push('/login');
-				} else {
-					return
-				}
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
 			}
 		},
 		// 유저 본인인지 확인
@@ -383,35 +438,42 @@ export default {
 		},
 		// 댓글삭제
 		del_replie(id){		
-			if (confirm("댓글을 삭제하시겠습니까?")) {
-				const URL = '/detail/del/'+id;
-				const formData = new FormData();
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						document.querySelector('#detail_replie'+id).remove();
-						this.repliecount--;
-					}else{
+			Swal.fire({
+				icon: 'warning',
+				title: '주의',
+				text: '댓글을 삭제하시겠습니까?.',
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					const URL = '/detail/del/'+id;
+					const formData = new FormData();
+					axios.post(URL,formData)
+					.then(res =>{
+						if(res.data.code==="0"){
+							document.querySelector('#detail_replie'+id).remove();
+							this.repliecount--;
+						}else{
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: res.data.errorMsg,
+								confirmButtonText: '확인'
+							})
+						}
+					})
+					.catch(err => {
 						Swal.fire({
 							icon: 'error',
 							title: 'Error',
-							text: res.data.errorMsg,
+							text: err.response.data.errorMsg,
 							confirmButtonText: '확인'
-                })
-					}
-				})
-				.catch(err => {
-					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.response.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-				})
-			} else {
-				return;
-			}
-			
+						})
+					})			
+				}
+			})
 		},
 		// 댓글추가 불러오기
 		morereplie(){
@@ -477,12 +539,5 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		next();
 	},
-	getEventFlg(data) {
-			if(data === '0') {
-				return '따봉';
-			}else if (data === '1') {
-				return '우우';
-			}
-		},
 }
 </script>

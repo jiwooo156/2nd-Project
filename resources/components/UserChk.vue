@@ -76,38 +76,64 @@
 				<option value="0">게시글</option>
 				<option value="1">댓글</option>
 			</select>
-			<table class="table table-hover  table-border mb-3">
+			<table class="table table-hover  table-border mb-3 table-bordered">
 				<thead>	
 					<tr
 					v-if="writeflg==='0'"
 					>
-						<th scope="col">작성위치</th>
+						<th scope="col" class="none">작성위치</th>
 						<th scope="col">게시글제목</th>
-						<th scope="col">작성시간</th>
+						<th scope="col" class="none">작성시간</th>
 					</tr>					
 
 					<tr
 						v-if="writeflg==='1'"
 					>
-						<th scope="col">게시글제목</th>
+						<th scope="col" class="none">게시글제목</th>
 						<th scope="col">댓글내용</th>
-						<th scope="col">작성시간</th>
+						<th scope="col" class="none">작성시간</th>
 					</tr>			
 				</thead>
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
-						<td class="userchk_body_td1">{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">{{ data.title }}</td>
-						<td class="userchk_body_td3">{{ data.created_at }}</td>
+						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
+						<td class="userchk_body_td1 none" v-esle>{{ community[data.flg] }}</td>
+						<td class="userchk_body_td2">
+							{{ data.title }}
+							<div class="userchk_mobile_box">
+								<div>
+									작성위치 : {{ community[data.flg] }}
+								</div>
+								<div>
+									작성일자 : {{ data.created_at }}
+								</div>
+							</div>
+						</td>
+						<td class="userchk_body_td3 none">
+							{{ data.created_at }}
+						</td>
 					</tr>
 					<tr v-for="data in writedata" :key="data"
-					v-if="writeflg==='1'"
+						v-if="writeflg==='1'"
 					>
 						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
 						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
-						<td class="userchk_body_td1">{{ data.title }}</td>
-						<td class="userchk_body_td2" >{{ data.replie }}</td>
-						<td class="userchk_body_td3">{{ data.created_at }}</td>
+						<td class="userchk_body_td1 none">{{ data.title }}</td>
+						<td class="userchk_body_td2" >{{ data.replie }}
+							<div class="userchk_mobile_box">
+								<div>
+									작성위치 : {{ community[data.flg] }}
+								</div>
+								<div>
+									작성일자 : {{ data.created_at }}
+								</div>
+							</div>
+						</td>
+						<td class="userchk_body_td4 none">{{ data.created_at }}
+							<span class="pointer" 	@click="repliemodal(data)">
+								<font-awesome-icon :icon="['fas', 'trash']" />	
+							</span>
+						</td>
 					</tr>
 					<td colspan="4" class="pb-3 pt-5" 
 						v-if="writedata.length < 1&&writeflg==='0'"
@@ -164,6 +190,7 @@
 	</div>
 </template>
 <script>
+import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default {
@@ -331,6 +358,48 @@ export default {
 			} else if (data.flg === '2' || data.flg === '3') {
 				this.$router.push('/post?id=' + data.id);
 			}
+		},
+		// tr이라 클릭이벤트로
+		repliemodal(data) {
+			Swal.fire({
+				title: '댓글',
+				html: `
+					<p>작성위치: ${this.community[data.flg]}</p>
+					<p>게시글 제목: ${data.title}</p>
+					<p>작성내용: ${data.replie}</p>
+					<p>작성일자: ${data.created_at}</p>
+				`,
+				showCancelButton: true,
+				confirmButtonText: '삭제',
+				cancelButtonText: '취소',
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+					const URL = 'userchk/replie?id='+data.id
+					axios.delete(URL)
+					.then(res => {
+						if(res.data.code === "0"){
+							this.writeget(this.writeflg,this.page)
+							Swal.fire({
+								icon: 'success',
+								title: '완료',
+								text: '정상처리되었습니다.',
+								confirmButtonText: '확인'
+							})
+						}
+					})
+					.catch(err => {
+						if(err.response.data.code === "E99"){
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: '에러발생.',
+								confirmButtonText: '확인'
+							})
+						}
+					})
+				}
+			})
 		},
 	},
 }

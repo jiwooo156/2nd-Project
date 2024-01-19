@@ -59,6 +59,7 @@ Route::middleware('myValidation')->prefix('userchk')->group(function() {
     Route::post('/', [UserController::class, 'userchk']);
     Route::get('/like', [InfoController::class, 'userlikeget']);
     Route::get('/write', [InfoController::class, 'userwriteget']);
+    Route::delete('/replie', [InfoController::class, 'repliedel']);
 });
 
 Route::middleware('myValidation')->prefix('userinfo')->group(function() {
@@ -120,6 +121,7 @@ Route::middleware('myValidation')->prefix('detail')->group(function() {
     Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
     Route::post('/del/{id}', [InfoController::class, 'repliedel']);
     Route::post('/heartpost', [InfoController::class, 'plusheart']);
+    Route::post('/report', [InfoController::class, 'reportpost']);
 });
 
 // 자유&정보 게시판 라우터 생성

@@ -514,12 +514,20 @@ export default {
 		// 로그인확인
 		checklocal() {
 			if(!(localStorage.getItem('nick'))){
-				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
-					this.$router.push('/login');
-				} else {
-					return;
-				}
-			}
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }
+                })
+            }
 		},
 		// 유저 본인인지 확인
 		checkUser(email) {

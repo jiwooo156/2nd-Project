@@ -818,6 +818,8 @@ class AdminController extends Controller
             if($req->main_flg==="0"||$req->main_flg==="1"){
                 // 기본 데이터
                 $data = $req->only('title','content','ns_flg','states_name','place');
+                $auth_id = Auth::user()->id;
+                $data['u_id'] = $auth_id;
                 // 변동데이터
                 // 이미지
                 if($req->img1==="undefined"&&$req->img2==="undefined"&&$req->img3==="undefined"){

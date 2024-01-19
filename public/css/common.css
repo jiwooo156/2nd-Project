@@ -1340,12 +1340,30 @@ margin-top:10px;
 }
 .userchk_body_td1{
 	width: 10%;
+    max-width: 200px;
+    font-size: 14px;
 }
 .userchk_body_td2{
 	width: 70%;
 }
-.userchk_body_td3{
-	width: 20%;
+.userchk_body_td3 {
+    width: 20%;
+    min-width: 180px;
+	font-size: 14px;
+}
+.userchk_body_td4 {
+    width: 20%;
+    min-width: 180px;
+    font-size: 12px;
+	text-align: left;
+}
+.userchk_body_td4 span{
+	float: right;
+}
+.userchk_mobile_box{
+	display: none;
+	font-size: 10px;
+	justify-content: space-between;
 }
 .userchk_body td,.userchk_body th{
 	vertical-align:middle;
@@ -1682,6 +1700,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .detail_container{
 	padding: 30px 10px 10px 10px;
+	margin-top: 100px;
 }
 .detail_header{
 	margin-top:50px;
@@ -1696,9 +1715,31 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     gap: 10px;
     margin-bottom: 0.9rem;
 }
+.detail_header_title {
+	display: block;
+}
 .detail_type{
 	font-size: 1.3rem;
 	margin-bottom: 0;
+}
+.detail_sort {
+	display: flex;
+    justify-content: space-around;
+}
+.detail_select {
+	width: 30%;
+}
+.write_title {
+	font-size: 1.5rem;
+}
+.detail_title textarea{
+	width: 60%;
+	height: 3rem;
+	font-size: 1rem;
+}
+.detail_box1 {
+	display: flex;
+    align-items: center;
 }
 .detail_tofrom{
     padding: 0;
@@ -1708,6 +1749,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	padding: 20px;
     border-top: 1px solid #7b7b7b;
     border-bottom: 1px solid #7b7b7b;;
+}
+.detail_body textarea {
+	width: 70%;
+    height: 3rem;
+    font-size: 1rem;
 }
 .detail_content{
 	margin: 20px 0;
@@ -1881,6 +1927,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .post_btn_bot {
 	display: flex;
 	gap: 3px;
+	justify-content: flex-end;
 }
 .post_btn_bot button {
 	color: #3d3d3d;
@@ -1922,7 +1969,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	background-color: #fff;
 	color: #000;
 	border: none;
-	width: 6rem;
+	width: 9rem;
 }
 .qna_drop a {
 	background-color: #fff;
@@ -2872,6 +2919,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 /* 모바일 */
 @media only screen and (max-width: 767px) {
+	/* 없애기 */
+	.none{
+		display: none;
+	}
 	/* 헤더 */
 	.hidden-on-mobile {
 		display: block;
@@ -3081,6 +3132,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.detail_title {
 		font-size: 2rem;
 	}
+	.detail_parking_flg {
+		text-align: center;
+		font-size: 11px;
+		padding: 7px;
+		margin: 3px;
+	}
 	/* 지역 */
 	.carousel__item {
 		width: 80px;
@@ -3210,6 +3267,22 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	}
 	.qna_notice {
 		display: none;
+	}
+	/* 유저체크 */
+	.userchk_card {
+		box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+		position: relative;
+		margin: 0 auto;
+		max-width: 300px;
+		width: 95%;
+	}
+	.userchk_mobile_box{
+		display: flex;
+		color: #b2b2b2;
+	}
+	.userchk_body_td2 {
+		text-align: left;
 	}
 }
 

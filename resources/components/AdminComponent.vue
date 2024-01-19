@@ -1854,7 +1854,7 @@ export default {
 				console.log('트루')
 			})
 			.catch(err => {
-				Swal.fire({
+				Swal({
 					icon: 'error',
 					title: 'Error',
 					text: '에러발생.',

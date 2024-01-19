@@ -108,9 +108,9 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 인포테이블 조회
         $info_result = Info::select(
             'infos.*',
-             DB::raw('COALESCE(lik.cnt, 0) as cnt')
+            DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 0 AND l_flg = 1 GROUP BY b_id) lik'), 'infos.id', '=', 'lik.b_id')
         ->where('infos.id', $req->id)
         ->get();
 
@@ -256,7 +256,7 @@ class InfoController extends Controller
         Log::debug("오프셋 : ".$req->offset);
         // 리퀘스트온 값을토대로 20개의 데이터 조회
         $replie_result = Replie::
-            select('replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
+            select('users.email','replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
             ->leftjoin('users', 'replies.u_id', '=', 'users.id')
             ->where('replies.b_id', $req->b_id)
             ->orderBy('replies.created_at', 'desc')
@@ -480,7 +480,8 @@ class InfoController extends Controller
                 ->join('infos','likes.b_id','infos.id')
                 ->where('infos.main_flg','축제')
                 ->where('likes.flg','0')
-                ->where('likes.l_flg','1');
+                ->where('likes.l_flg','1')
+                ->orderby('infos.start_at','desc');
         }else if($req->flg === "1"){
             Log::debug("진입2");
             $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
@@ -490,14 +491,16 @@ class InfoController extends Controller
             ->where('likes.l_flg','1');
         }else if($req->flg === "2"){
             Log::debug("진입3");
-            $data = Like::select('community.id','community.title','community.flg')
-            ->join('community','likes.b_id','community.id')
-            ->where('likes.flg','1')
-            ->where('likes.l_flg','1');
+            $data = Like::select('community.id', 'community.title', 'community.flg')
+                ->join('community', 'likes.b_id', 'community.id')
+                ->where('likes.flg', '1')
+                ->where('likes.l_flg', '1')
+                ->whereNull('community.deleted_at');
         }
         Log::debug($auth->id);
             $data = $data
                 ->where('likes.u_id',$auth->id)
+                ->orderby('likes.created_at','desc')
                 ->paginate(3);
         return response()->json([
             'code' => '0',
@@ -510,11 +513,11 @@ class InfoController extends Controller
         if($req->flg === "0"){
             $data = Community::where('u_id',$auth->id);
         }else if($req->flg === "1"){
-            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.replie', 'replies.created_at')
+            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.id', 'replies.replie', 'replies.created_at')
             ->where('replies.u_id', $auth->id)
             ->join('infos', 'replies.b_id', 'infos.id');
     
-            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.replie', 'replies.created_at')
+            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.id', 'replies.replie', 'replies.created_at')
                 ->where('replies.u_id', $auth->id)
                 ->join('community', 'replies.b_id', 'community.id'));
         }
@@ -680,6 +683,7 @@ class InfoController extends Controller
             // 리퀘스트온 아이디값으로 댓글테이블의 조회된 값 카운트
             $repliecnt = Replie::
             where('b_id', $req->id)
+            ->where('replies.flg', '1')
             ->count();
             // 리퀘스트온 아이디값으로 댓글테이블에 댓글들 조회(20개 최신순 내림차순)
             $replieresult = Replie::
@@ -690,7 +694,8 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            
+            Log::debug("댓글갯수 : ".$repliecnt);
+            Log::debug("댓글 : ".$replieresult);
             return response()->json([
                 'code' => '0',
                 'data' => $communityresult,
@@ -1050,6 +1055,30 @@ class InfoController extends Controller
             ], 200);
         } catch(Exception $e){
             // 롤백
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '수정 실패.'
+            ], 400);
+        }
+    }
+    // 커뮤니티 질문&건의 수정
+    public function reportpost(Request $req){
+        try {
+            // 트랜잭션시작
+            DB::beginTransaction();
+            $auth_id = Auth::user()->id;
+            $data = [];
+            $data['u_id'] = $auth_id;
+            $data['b_id'] = $req->b_id;
+            $data['flg'] = $req->flg;
+            $data['content'] = $req->msg;
+            Report::create($data);
+            DB::commit();
+            return response()->json([
+                'code' => '0'
+            ], 200);
+        } catch(Exception $e){
             DB::rollback();
             return response()->json([
                 'code' => 'E99',
