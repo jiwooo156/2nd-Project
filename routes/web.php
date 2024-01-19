@@ -101,7 +101,7 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     });
     Route::get('/detail/{id}', [InfoController::class, 'detailComget']);
     Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 댓글 조회
-    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
+    Route::post('/reply{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
@@ -150,12 +150,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
 // 자유&정보 게시글 작성 라우터 생성
 Route::post('/commuwrite', [InfoController::class, 'communitywrite']);
 
-// 게시글 작성 라우터 생성
-Route::middleware('myValidation')->prefix('post')->group(function() {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-});
+
 
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻

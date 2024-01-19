@@ -310,7 +310,7 @@ export default {
 				const URL = '/detail/heartpost';
 				axios.post(URL, {
 					"b_id": this.b_id,
-					"flg": "1"
+					"flg": "0"
 				})
 				.then(res=>{
 					console.log("plusheart 함수 then");
