@@ -2,20 +2,20 @@
 	<div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<form action="/community/testwrite" methods="post">
+				<!-- <form action="/community/testwrite" methods="post"> -->
 					<div class=" detail_type center">
-						<div><h2 class="detail_header_title">게시글 작성</h2></div>
+						<div><h2 class="write_header_title">게시글 작성</h2></div>
 						<br>
-						<div class="detail_sort">
+						<div class="write_sort">
 							<h3>게시판?</h3>					
-							<select v-model="flg" name="flg" class="form-select qna_drop detail_select" @click="checklocal" aria-label=".form-select-sm">
+							<select v-model="flg" name="flg" class="form-select write_drop" @click="checklocal" aria-label=".form-select-sm">
 								<option value="0" class="qna_drop_item" selected>자유게시판</option>
 								<option value="1" class="qna_drop_item">정보게시판</option>
 								<option value="2" class="qna_drop_item">질문게시판</option>
 								<option value="3" class="qna_drop_item">건의게시판</option>
 							</select>
 							<h3>카테고리?</h3>			
-							<select v-model="categoryflg" name="categoryflg" class="form-select qna_drop" @click="checklocal" aria-label=".form-select-sm">
+							<select v-model="categoryflg" name="categoryflg" class="form-select write_drop" @click="checklocal" aria-label=".form-select-sm">
 								<option value="0" class="qna_drop_item" selected>축제</option>
 								<option value="1" class="qna_drop_item">관광</option>
 								<option value="2" class="qna_drop_item">기타</option>
@@ -27,7 +27,7 @@
 
 
 				<div class="detail_header font_air bold">
-					<div class="detail_title detail_box1">
+					<div class="write_title write_box1">
 						<span class="write_title">제목 작성</span>
 						<textarea type="text" maxlength="50"
 						name="title"
@@ -51,7 +51,7 @@
 
 
 			<div class="detail_body">
-				<div class="detail_box1">
+				<div class="write_box1">
 					<span class="write_title">내용 작성</span>
 					<textarea type="text" maxlength="3000"
 					name="content" 
@@ -69,7 +69,7 @@
 					<button type="button" @click="commuWrite()">작성</button>
 					<button type="button" @click="goBack">취소</button>
 				</div>
-				</form>
+				<!-- </form> -->
 			</div>
 		</div>
 	</div>
@@ -122,17 +122,9 @@ export default {
 			formData.append('img1', img1.files[0]);
 			formData.append('img2', img2.files[0]);
 			formData.append('img3', img3.files[0]);
-			// formData.append('files',uploadFile);
-			// console.log(formData);
-			// console.log(this.title);
-			// console.log(this.content);
-			// console.log(this.flg);
 			axios.post(URL, formData)
 			.then(res => {
-				console.log(res);
 				this.communityresult = res.data.data;
-				console.log(this.communityresult);
-				console.log(typeof this.communityresult.flg);
 				if((this.communityresult.flg==="2")||(this.communityresult.flg==="3")) {
 					this.$router.replace('/post?id='+this.communityresult.id);
 					return false;

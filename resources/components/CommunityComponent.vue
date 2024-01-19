@@ -271,7 +271,7 @@ export default {
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
-				formData.append('flg', '0');
+				formData.append('flg', '1');
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){
@@ -293,15 +293,15 @@ export default {
 						title: 'Error',
 						text: err.response.data.errorMsg,
 						confirmButtonText: '확인'
-                })
+					})
 				})
 			}else{
 				Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: '댓글을 작성해 주세요.',
-						confirmButtonText: '확인'
-                })
+					icon: 'error',
+					title: 'Error',
+					text: '댓글을 작성해 주세요.',
+					confirmButtonText: '확인'
+				})
 			}		
 		},
 		// 좋아요 입력
