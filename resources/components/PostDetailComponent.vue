@@ -619,7 +619,7 @@ export default {
 			const formData = new FormData();
 			formData.append('b_id', this.b_id);
 			formData.append('u_id', this.u_id);
-			formData.append('report', this.report);
+			formData.append('flg', this.flg);
 			formData.append('content', this.content);
 			console.log('b_id', this.b_id);
 			console.log('u_id', this.u_id);
