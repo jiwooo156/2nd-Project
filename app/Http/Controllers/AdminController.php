@@ -298,20 +298,50 @@ class AdminController extends Controller
     }
     // 전체유저조회
     public function userget(Request $req){
-        $case = ['id', 'email'];
-        $case1 = ['created_at', 'deleted_at'];
+        Log::debug($req);
+        $case = ['id', 'email','name'];
+        $case1 = ['created_at', 'deleted_at','cnt', 'restraint_at'];
+        
         $data = User::withTrashed()
-            ->select('users.id', 'users.email','users.name','users.nick','users.phone','users.gender','users.birthdate','users.created_at','users.deleted_at','reports.restraint_at',DB::raw('count(distinct reports.restraint_at) as cnt'))
-            ->leftjoin('reports', 'users.id', 'reports.r_id');
-        if ($req->order !== "2") {
-            $data = $data->orderBy('users.'.$case1[$req->order], 'desc');
-        }
+            ->select(
+                'users.id',
+                'users.email',
+                'users.name',
+                'users.nick',
+                'users.phone',
+                'users.gender',
+                'users.birthdate',
+                'users.created_at',
+                'users.deleted_at',
+                DB::raw('(SELECT MAX(restraint_at) FROM reports WHERE reports.r_id = users.id) AS restraint_at'),
+                DB::raw('(SELECT COUNT(restraint_at) FROM reports WHERE reports.r_id = users.id) AS cnt')
+            )
+            ->when($req->order !== "2"&&$req->order !== "3", function ($query) use ($case1, $req) {
+                $query->orderBy('users.'.$case1[$req->order], 'desc');
+            })
+            ->when($req->order === "2", function ($query) use ($case1, $req) {
+                $query->whereNotNull('reports.restraint_at')->orderBy('cnt', 'desc');
+            })
+            ->when($req->order === "3", function ($query) use ($case1, $req) {
+                $query->whereNotNull('reports.restraint_at')->orderBy('restraint_at', 'desc');
+            })
+            ->when($req->order === "1", function ($query) use ($case1, $req) {
+                $query->whereNotNull('users.deleted_at');
+            })
+            ->leftJoin('reports', 'users.id', 'reports.r_id');
+        
         if (!empty($req->val)) {
-            $data = $data->where('users.'.$case[$req->flg], $req->val);
+            if($req->flg === "0"){
+                $data = $data->where('users.'.$case[$req->flg], $req->val);
+            }else{
+                $data = $data->where('users.'.$case[$req->flg], 'like', '%' . $req->val . '%');
+            }
         }
+        
         $data = $data
-            ->groupBy('users.id', 'users.email','users.name','users.nick','users.phone','users.gender','users.birthdate','users.created_at','users.deleted_at', 'reports.restraint_at')
+            ->groupBy('users.id', 'users.email', 'users.name', 'users.nick', 'users.phone', 'users.gender', 'users.birthdate', 'users.created_at', 'users.deleted_at')
             ->paginate(10);
+        
         Log::debug($data);
         if(!empty($data)){
             return response()->json([
@@ -324,21 +354,34 @@ class AdminController extends Controller
                 'errorMsg' => '회원조회에 실패했습니다'
             ], 400);
         }
-               // $result = Report::
-            //     where('r_id',$data->id)
-            //     ->orderby('restraint_at','desc')
-            //     ->get();
-            // Log::debug($result);
-            // $data->cnt= $result->count();
-            // if($result->count() > 0){
-            //     $data->res_at= $result->first()->restraint_at;
-            //     $data->restraint= $result->first()->restraint;
-            // }
-            // $admin = Admin::where('u_id', $data->id)->first();
-            // $data->flg = "";
-            // if ($admin) {
-            //     $data->flg = $admin->flg;
-            // }
+    }
+    // 모달유저정보조회
+    public function modaluserget(Request $req){
+        Log::debug('함수호출');
+        $data = Report::select('restraint')
+            ->where('r_id', $data->id)
+            ->orderBy('restraint_at', 'desc')
+            ->first();
+        Log::debug('통과');
+        if (empty($data)) {
+            Log::debug('비엇을때');
+            $data = new stdClass();
+            $data->restraint = "";
+        }
+        Log::debug('중간');
+        $admin = Admin::select('flg')
+            ->where('u_id', $data->id)
+            ->first();
+        if (empty($admin)) {
+            Log::debug('어드민비엇을때');
+            $data->flg = "";
+        }
+        Log::debug('중간');
+        Log::debug($data);
+        return response()->json([
+            'code' => '0',
+            'data' =>  $data,
+        ], 200);
     }
     // 유저제재
     public function restraintuser(Request $req){

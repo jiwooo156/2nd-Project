@@ -40,6 +40,13 @@
 					>
 					<button @click="searchFestival()" class="region_form_btn pointer font_air bold" >검색</button>
 				</div>
+				<div class="region_span_box">
+					<span class="font_air bold pointer" :class="{ 'region_span': span_flg1 === '1' }" @click="spanflg(0)">#커플추천</span>
+					<span class="font_air bold pointer" :class="{ 'region_span': span_flg2 === '1' }" @click="spanflg(1)">#친구끼리</span>
+					<span class="font_air bold pointer" :class="{ 'region_span': span_flg3 === '1' }" @click="spanflg(2)">#가족들과</span>
+					<span class="font_air bold pointer" :class="{ 'region_span': span_flg4 === '1' }" @click="spanflg(3)">#주차가능</span>
+					<span class="font_air bold pointer" :class="{ 'region_span': span_flg5 === '1' }" @click="spanflg(4)">#무료</span>
+				</div>
 			</div>	
 		</div>
 		<div class="region_container" v-if="!regionnameflg&&!(searchflg)">
@@ -233,8 +240,11 @@ export default {
 			search_f_cnt: 0, 
 			// 검색용 관광 총갯수 
 			search_t_cnt: 0, 
-			// searchfilter: "",
-			// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
+			span_flg1: "0", 
+			span_flg2: "0", 
+			span_flg3: "0", 
+			span_flg4: "0", 
+			span_flg5: "0", 
 		}
 	},
 	components: {
@@ -454,7 +464,7 @@ export default {
 		// 검색 결과 가져오기
 		searchFestival() {
 			// 조건 1 검색조건 아무것도 없이 클릭시
-			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword==="") {
+			if (this.searchstate === "지역"&&this.startdate===""&&this.enddate===""&&this.searchkeyword===""&&this.span_flg1==='0'&&this.span_flg2==='0'&&this.span_flg3==='0'&&this.span_flg4==='0'&&this.span_flg5==='0') {
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -489,7 +499,7 @@ export default {
 								// 	this.searchfilter=this.searchfilter+" 검색어 = "+this.searchkeyword
 								// }
 								// 1227 수정 최정훈 검색결과 남기기만들었는대 생각보다 못생김
-				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&ns='+this.nowns
+				const URL = '/region/searchkeyword?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&ns='+this.nowns+'&couple_flg='+this.span_flg1+'&friend_flg='+this.span_flg2+'&family_flg='+this.span_flg3+'&parking_flg='+this.span_flg4+'&fee='+this.span_flg5
 				axios.get(URL)
 				.then(res => {
 					// 검색된 축제정보 저장
@@ -532,7 +542,7 @@ export default {
 		MoreSearchFestival() {	
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f+'&ns='+this.nowns
+			const URL =  '/region/moresearchf?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_f+'&ns='+this.nowns+'&couple_flg='+this.span_flg1+'&friend_flg='+this.span_flg2+'&family_flg='+this.span_flg3+'&parking_flg='+this.span_flg4+'&fee='+this.span_flg5
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
@@ -557,7 +567,7 @@ export default {
 		MoreSearchTour() {			
 			// 로딩시작
 			this.$store.commit('setLoading',true);		
-			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t+'&ns='+this.nowns
+			const URL =  '/region/moresearcht?states_name='+this.searchstate+'&start_at='+this.startdate+'&end_at='+this.enddate+'&searchkeyword='+this.searchkeyword+'&offset='+this.searchoffset_t+'&ns='+this.nowns+'&couple_flg='+this.span_flg1+'&friend_flg='+this.span_flg2+'&family_flg='+this.span_flg3+'&parking_flg='+this.span_flg4+'&fee='+this.span_flg5
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code==="0"){	
@@ -627,6 +637,14 @@ export default {
 		koreachk(e) {
 			this.searchkeyword = e.target.value;
 		},
+		spanflg(flg) {
+			let arr = ['span_flg1', 'span_flg2', 'span_flg3', 'span_flg4', 'span_flg5'];
+			if(this[arr[flg]]==="0"){
+				this[arr[flg]]="1";
+			}else{
+				this[arr[flg]]="0";
+			}
+		}
 	}
 }
 </script>

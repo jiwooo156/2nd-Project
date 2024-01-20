@@ -1044,13 +1044,15 @@
 				<select class="form-select" id="validationTooltip1" required v-model="admin_user_cate" @change="searchuser(1)">
 					<option value="0">가입일순</option>
 					<option value="1">탈퇴일순</option>
-					<option value="2">제제일순</option>
+					<option value="2">제제횟수순</option>
+					<option value="3">제제기간순</option>
 				</select>
 			</div>
 			<div class="admin_board_header2">
 				<select class="form-select" id="" aria-label="Example select with button addon" v-model="searchtype">
-					<option value="0">작성자번호</option>
+					<option value="0">유저번호</option>
 					<option value="1">email</option>
+					<option value="2">이름</option>
 				</select>
 				<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
 					v-model="searchval"
@@ -1071,10 +1073,12 @@
 					<th scope="col">생년월일</th>
 					<th scope="col">가입일자</th>
 					<th scope="col">삭제일자</th>
+					<th scope="col">제재횟수</th>
+					<th scope="col">제재기간</th>
 				</tr>			
 			</thead>
 			<tbody>
-				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modaluserget(data.id,data.flg)">
+				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modaluserget(data)">
 					<th scope="row" class="admin_table_th">{{ data.id }}</th>
 					<td class="admin_table_th">{{ data.email }}</td>
 					<td class="admin_table_th">{{ data.name }}</td>
@@ -1084,13 +1088,13 @@
 					<td class="admin_table_th">{{ data.birthdate }}</td>
 					<td class="admin_table_td2">{{ data.created_at }}</td>
 					<td class="admin_table_td2">{{ data.deleted_at }}</td>
-					<td class="admin_table_td2">{{ data.cnt }}</td>
+					<td class="admin_table_th">{{ data.cnt }}</td>
 					<td class="admin_table_td2">{{ data.restraint_at }}</td>
 				</tr>
 				<div
 					v-if="replies.length < 1"
 				>조회된 유저가 없습니다</div>
-				<!-- <div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -1098,71 +1102,70 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<div v-if="searchflg">
 									<div class="input-group mb-3">
 										<span class="input-group-text">작성자번호</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.id }}
+											{{ this.modaluser.id }}
 										</div>
 										<span class="input-group-text">이메일</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.email }}
+											{{ this.modaluser.email }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">이름</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.name }}
+											{{ this.modaluser.name }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">닉네임</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.nick }}
+											{{ this.modaluser.nick }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">생년월일</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.birthdate }}
+											{{ this.modaluser.birthdate }}
 										</div>
 										<span class="input-group-text">전화번호</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.phone }}
+											{{ this.modaluser.phone }}
 										</div>
 										<span class="input-group-text">성별</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.gender }}
+											{{ this.modaluser.gender }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">가입일자</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.created_at }}
+											{{ this.modaluser.created_at }}
 										</div>
 										<span class="input-group-text">탈퇴일자</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.deleted_at }}
+											{{ this.modaluser.deleted_at }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">재제당한횟수</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.cnt }}
+											{{ this.modaluser.cnt }}
 										</div>
 										<span class="input-group-text">재제사유</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.restraint }}
+											{{ this.modaluser.restraint }}
 										</div>
 										<span class="input-group-text">재제종료일</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.res_at }}
+											{{ this.modaluser.res_at }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">관리자등급</span>
 										<div type="text" class="form-control">
-											{{ this.selectUserData.flg }}
+											{{ this.modaluser.flg }}
 										</div>
 									</div>
 									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1227,7 +1230,6 @@
 							</div>
 						</div>
 					</div>
-				</div> -->
 			</tbody>
 		</table>
 		<div class='admin_page  mt-3'>
@@ -1296,6 +1298,7 @@ export default {
 
 	data() {
 		return {	
+			modaluser: {},
 			userdata: {},
 			chart_flg: false,
 			chart_flg1: false,
@@ -2141,7 +2144,44 @@ export default {
 			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype+"&page="+page+"&order="+this.admin_user_cate
 			axios.get(URL)
 			.then(res => {
-				if(res.data.code === "0"){				
+				if(res.data.code === "0"){			
+					for(let i = 0; i < res.data.data.data.length; i++){
+						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
+						res.data.data.data[i].restraint_at = res.data.data.data[i].restraint_at === null ? "X":res.data.data.data[i].restraint_at;
+					}	
+					this.userdata = res.data.data.data
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					console.log(this.userdata);
+					this.paging();
+				}
+			})
+			.catch(err => {
+				console.log(res.data.errorMsg);
+				console.log("캐치진입");
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
+					confirmButtonText: '확인'
+				})
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
+		},
+		// 모달용 유저정보 가져오기
+		modaluserget(data){
+			this.$store.commit('setLoading',true);
+			this.modaluser = data;
+			const URL = '/admin/modaluser?id='+data.id
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){			
+					for(let i = 0; i < res.data.data.data.length; i++){
+						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
+						res.data.data.data[i].restraint_at = res.data.data.data[i].restraint_at === null ? "X":res.data.data.data[i].restraint_at;
+					}	
 					this.userdata = res.data.data.data
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page

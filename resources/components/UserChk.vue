@@ -98,8 +98,12 @@
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
 						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
 						<td class="userchk_body_td1 none" v-else>{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">					
-							{{ data.title }}
+						<td class="userchk_body_td2">	
+							<div>
+								<div class="userchk_title">
+									{{ data.title }}
+								</div>
+							</div>				
 							<div class="userchk_mobile_box">
 								<div>
 									작성위치 : {{ community[data.flg] }}
@@ -117,8 +121,6 @@
 						v-if="writeflg==='1'"
 						@click="repliemodal(data)"
 					>
-						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
-						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
 						<td class="userchk_body_td1 none">{{ data.title }}</td>
 						<td class="userchk_body_td2">
 							<div class="userchk_consol">
@@ -153,7 +155,7 @@
 				</tbody>
 			</table>
 			<div class='admin_page  mt-3'>
-				<nav aria-label="Page navigation example">
+				<nav aria-label="Page navigation example userchk_page">
 					<ul class="pagination">
 						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
 							<span class="page-link" @click="writeget(writeflg,1)">&lt;&lt;</span>

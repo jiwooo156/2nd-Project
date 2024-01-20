@@ -192,6 +192,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::put('/repliemodal/{id}', [AdminController::class, 'repliemodalput']);
     Route::delete('/repliemodal/{id}', [AdminController::class, 'repliemodaldel']);
     Route::post('/notice', [AdminController::class, 'noticepost']);
+    Route::get('/modaluser', [AdminController::class, 'modaluserget']);
 });
 
 
