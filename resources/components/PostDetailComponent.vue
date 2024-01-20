@@ -37,8 +37,40 @@
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
+				<!-- 신고 모달 -->
+				<div class="modal reportModal" tabindex="-1">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title qna_update">게시글 신고</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="qna_report">
+								<div>신고할 게시글 확인</div>
+								<span>제목 : </span>
+								<span class="font_air bold detail_com_tofrom">{{ this.detaildata.title }}</span>
+								<br>
+								<span>작성자 : </span>
+								<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
+								<div class="input-group">
+									<span>신고사유 :</span>
+									<input type="text" id="titleInput" class="form-control qna_tit">
+
+								</div>
+								<div>신고하시겠습니까?</div>
+							</div>
+						</div>
+						<div class="modal-footer d-flex justify-content-center">
+							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost">신고완료</button>
+							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+						</div>
+						</div>
+					</div>
+				</div>
+				<button type="button" id="openModalBtn" @click="reporting">신고하기</button>
 				<!-- 수정 모달 -->
-				<div class="modal" tabindex="-1">
+				<div class="modal updateModal" tabindex="-1">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -189,6 +221,7 @@ export default {
 		return {
 			infolist: [],
 			detaildata: [],
+			// 댓글 기능
 			repliedata: [],
 			replie: "",
 			replie_length: 0,
@@ -198,13 +231,17 @@ export default {
 			replie_offset: 20,
 			moreflg: false,
 			userauth: "",
+			// 좋아요 기능
 			likeflg: false,
 			// 수정 모달 관련 데이터
 			editedTitle: '',
 			editedContent: '',
 			editedFlg: '',
 			editedCategory: '',
-			editedImg: '',
+			// 신고 기능
+			report: '',
+			reportdata: '',
+			// 정렬 및 필터 기능
 			flgOptions: [
 				{ label: '자유', value: '0' },
 				{ label: '정보', value: '1' },
@@ -351,7 +388,7 @@ export default {
 			this.editedContent = this.detaildata.content;
 			this.editedFlg = this.detaildata.flg;
 			this.editedCategory = this.detaildata.category_flg;
-			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
+			var myModal = new bootstrap.Modal(document.querySelector('.updateModal'));
 			myModal.show();
 		},
 		updatePost() {
@@ -403,7 +440,7 @@ export default {
 		// 좋아요 입력
 		plusheart() {
 			if(!(this.userauth === "")) {				
-				console.log("plusheart 함수 진입");
+				// console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
@@ -415,7 +452,6 @@ export default {
 				.then(res=>{
 					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
-						console.log(res.data.likeflg);
 						this.likeflg = res.data.likeflg;
 						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
 							this.$router.push('/post?id='+this.b_id);
@@ -549,21 +585,20 @@ export default {
 						this.repliedata.unshift(res.data.data);
 					}else{
 						Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: res.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-			}
+						icon: 'error',
+						title: 'Error',
+						text: res.data.errorMsg,
+						confirmButtonText: '확인'
+						})
+					}
 				})
 				.catch(err => {
 					Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.response.data.errorMsg,
-                    confirmButtonText: '확인'
-                })
-
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})
 				})
 			}else{
 				Swal.fire({
@@ -573,7 +608,43 @@ export default {
                     confirmButtonText: '확인'
                 })
 			}
-		
+		},
+		// 신고 기능
+		reporting() {
+			var myModal = new bootstrap.Modal(document.querySelector('.reportModal'));
+			myModal.show();
+		},
+		reportPost() {
+			const URL = '/post/re'+this.b_id;
+			const formData = new FormData();
+			formData.append('b_id', this.b_id);
+			formData.append('u_id', this.u_id);
+			formData.append('flg', this.flg);
+			formData.append('content', this.content);
+			console.log('b_id', this.b_id);
+			console.log('u_id', this.u_id);
+			axios.post(URL,formData)
+			.then(res =>{
+				if(res.data.code==="0"){
+					this.report = "";
+					this.reportdata.unshift(res.data.data);
+				}else{
+					Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: res.data.errorMsg,
+					confirmButtonText: '확인'
+					})
+				}
+			})
+			.catch(err => {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: err.response.data.errorMsg,
+					confirmButtonText: '확인'
+				})
+			})
 		},
 		// 댓글삭제
 		del_replie(id){		

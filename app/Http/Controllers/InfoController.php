@@ -797,7 +797,6 @@ class InfoController extends Controller
         // 정상처리시
     }
 
-
     // 0116 정지우 좋아요 작성
     public function plusheart(Request $req) {
         Log::debug("plusheart 함수 시작");
@@ -1119,5 +1118,28 @@ class InfoController extends Controller
                 'errorMsg' => '수정 실패.'
             ], 400);
         }
+    }
+    // 커뮤니티 신고 기능
+    public function reportingPost(Request $req) {
+        try {
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // 리퀘스트 온 값 data에 저장
+            $data = $req->only('flg','content', 'b_id', 'u_id');
+            // data정보를 리폿 테이블에 인서트
+            $result = Report::create($data);
+            //저장
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result,
+            ], 200);
+        } catch(Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '신고 실패.'
+            ], 400);
+        } 
     }
 }
