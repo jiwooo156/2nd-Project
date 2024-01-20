@@ -513,17 +513,22 @@ class InfoController extends Controller
         if($req->flg === "0"){
             $data = Community::where('u_id',$auth->id);
         }else if($req->flg === "1"){
-            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.id', 'replies.replie', 'replies.created_at')
+            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'infos.id as b_id','replies.id', 'replies.replie', 'replies.created_at')
             ->where('replies.u_id', $auth->id)
-            ->join('infos', 'replies.b_id', 'infos.id');
-    
-            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.id', 'replies.replie', 'replies.created_at')
+            ->where('replies.flg', '0')
+            ->join('infos', 'replies.b_id', 'infos.id')
+            ->whereNull('infos.deleted_at');
+            
+            $data = $data->union(Replie::select('community.title', 'community.flg', 'community.id as b_id','replies.id', 'replies.replie', 'replies.created_at')
                 ->where('replies.u_id', $auth->id)
-                ->join('community', 'replies.b_id', 'community.id'));
+                ->where('replies.flg', '1')
+                ->join('community', 'replies.b_id', 'community.id')
+                ->whereNull('community.deleted_at'));
         }
             $data = $data
                 ->orderby('created_at','desc')
                 ->paginate(8);
+                Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -854,7 +859,7 @@ class InfoController extends Controller
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftJoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
         ->whereNull('community.deleted_at');
@@ -924,7 +929,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = community::
         join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.id',$req->id)
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();

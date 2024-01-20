@@ -134,26 +134,23 @@ Route::middleware('myValidation')->prefix('board')->group(function() {
     Route::get('/info', [InfoController::class, 'commuinfoget']);
 });
 
-
 // 커뮤니티 디테일 라우터 생성
 Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/info', [InfoController::class, 'communityget']);
-    Route::get('/replie/{id}', [InfoController::class, 'replieget']);
-    Route::get('/more', [InfoController::class, 'morereplie']);
-    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']);
-    Route::post('/del/{id}', [InfoController::class, 'repliedel']);
-    Route::post('/heartpost', [InfoController::class, 'plusheart']);
+    Route::get('/info', [InfoController::class, 'communityget']); // 커뮤니티 게시글 조회
+    Route::get('/replie/{id}', [InfoController::class, 'replieget']); // 댓글 조회
+    Route::get('/more', [InfoController::class, 'morereplie']); // 댓글 더보기
+    Route::post('/reply/{id}', [InfoController::class, 'repliewirte']); // 댓글 작성
+    Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
+    Route::post('/heartpost', [InfoController::class, 'plusheart']); // 좋아요 입력
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
     Route::put('/update', [InfoController::class, 'postupdate']); // 게시글 수정
 });
 
-// 자유&정보 게시글 작성 라우터 생성
-Route::post('/commuwrite', [InfoController::class, 'communitywrite']);
-
-
+// 커뮤니티 게시글 작성 라우터 생성
+Route::post('/commuwrite', [InfoController::class, 'communitywrite']); // 게시글 작성
 
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻

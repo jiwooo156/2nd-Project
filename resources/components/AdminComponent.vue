@@ -1038,142 +1038,218 @@
 	</div>
 	<!-- 유저관리페이지 -->
 	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
-		<div class="admin_frame9">
-			<div>유저검색</div>
-			<div class="input-group mb-3 admin_search_user_input_box">
-				<div>
-					<select v-model="searchtype" class="form-select" aria-label="Default select example">
-						<option class=" font_air bold" value="0">작성자번호</option>
-						<option class=" font_air bold" value="1">email</option>
-					</select>
-				</div>
-				<input type="text"  v-model="searchval" @keyup.enter="searchuser" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
-				<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="searchuser">검색</button>
+		<div class="admin_board_header">
+			<div class="col-md-3 position-relative mb-4 admin_board_header1">
+				<label for="validationTooltip1" class="form-label">유저정렬</label>
+				<select class="form-select" id="validationTooltip1" required v-model="admin_user_cate" @change="searchuser(1)">
+					<option value="0">가입일순</option>
+					<option value="1">탈퇴일순</option>
+					<option value="2">제제일순</option>
+				</select>
 			</div>
-			<div v-if="searchflg">
-				<div>
-					검색결과
-					<div class="input-group mb-3">
-						<span class="input-group-text">작성자번호</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.id }}
-						</div>
-						<span class="input-group-text">이메일</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.email }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">이름</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.name }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">닉네임</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.nick }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">생년월일</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.birthdate }}
-						</div>
-						<span class="input-group-text">전화번호</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.phone }}
-						</div>
-						<span class="input-group-text">성별</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.gender }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">가입일자</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.created_at }}
-						</div>
-						<span class="input-group-text">탈퇴일자</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.deleted_at }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">재제당한횟수</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.cnt }}
-						</div>
-						<span class="input-group-text">재제사유</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.restraint }}
-						</div>
-						<span class="input-group-text">재제종료일</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.res_at }}
-						</div>
-					</div>
-					<div class="input-group mb-3">
-						<span class="input-group-text">관리자등급</span>
-						<div type="text" class="form-control">
-							{{ this.selectUserData.flg }}
-						</div>
-					</div>
-				</div>
-				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
+			<div class="admin_board_header2">
+				<select class="form-select" id="" aria-label="Example select with button addon" v-model="searchtype">
+					<option value="0">작성자번호</option>
+					<option value="1">email</option>
+				</select>
+				<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
+					v-model="searchval"
+					@keyup.enter="searchuser(1)"
+				>
+				<button class="btn btn-outline-secondary" type="button" @click="searchuser(1)">검색</button>
+			</div>
+		</div>	
+		<table class="table table-hover  table-border mb-3">
+			<thead>
+				<tr>
+					<th scope="col">유저번호</th>
+					<th scope="col">email</th>
+					<th scope="col">이름</th>
+					<th scope="col">닉네임</th>
+					<th scope="col">휴대폰번호</th>
+					<th scope="col">성별</th>
+					<th scope="col">생년월일</th>
+					<th scope="col">가입일자</th>
+					<th scope="col">삭제일자</th>
+				</tr>			
+			</thead>
+			<tbody>
+				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modaluserget(data.id,data.flg)">
+					<th scope="row" class="admin_table_th">{{ data.id }}</th>
+					<td class="admin_table_th">{{ data.email }}</td>
+					<td class="admin_table_th">{{ data.name }}</td>
+					<td class="admin_table_th">{{ data.nick }}</td>
+					<td class="admin_table_th">{{ data.phone }}</td>
+					<td class="admin_table_th">{{ data.gender }}</td>
+					<td class="admin_table_th">{{ data.birthdate }}</td>
+					<td class="admin_table_td2">{{ data.created_at }}</td>
+					<td class="admin_table_td2">{{ data.deleted_at }}</td>
+					<td class="admin_table_td2">{{ data.cnt }}</td>
+					<td class="admin_table_td2">{{ data.restraint_at }}</td>
+				</tr>
+				<div
+					v-if="replies.length < 1"
+				>조회된 유저가 없습니다</div>
+				<!-- <div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">유저재제</h5>
+								<h5 class="modal-title" id="exampleModalLabel">유저상세</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<div class="modal-body" >
-								<div>
-									<span>재제기간</span>
-									<select class="form-select" aria-label="Default select example" v-model="restraint_date">
-										<option class=" font_air bold" value="0">1일</option>
-										<option class=" font_air bold" value="1">3일</option>
-										<option class=" font_air bold" value="2">7일</option>
-										<option class=" font_air bold" value="3">15일</option>
-										<option class=" font_air bold" value="4">30일</option>
-										<option class=" font_air bold" value="5">영구재제</option>
-									</select>
+							<div class="modal-body">
+								<div v-if="searchflg">
+									<div class="input-group mb-3">
+										<span class="input-group-text">작성자번호</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.id }}
+										</div>
+										<span class="input-group-text">이메일</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.email }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">이름</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.name }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">닉네임</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.nick }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">생년월일</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.birthdate }}
+										</div>
+										<span class="input-group-text">전화번호</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.phone }}
+										</div>
+										<span class="input-group-text">성별</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.gender }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">가입일자</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.created_at }}
+										</div>
+										<span class="input-group-text">탈퇴일자</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.deleted_at }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">재제당한횟수</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.cnt }}
+										</div>
+										<span class="input-group-text">재제사유</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.restraint }}
+										</div>
+										<span class="input-group-text">재제종료일</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.res_at }}
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text">관리자등급</span>
+										<div type="text" class="form-control">
+											{{ this.selectUserData.flg }}
+										</div>
+									</div>
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">유저재제</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body" >
+													<div>
+														<span>재제기간</span>
+														<select class="form-select" aria-label="Default select example" v-model="restraint_date">
+															<option class=" font_air bold" value="0">1일</option>
+															<option class=" font_air bold" value="1">3일</option>
+															<option class=" font_air bold" value="2">7일</option>
+															<option class=" font_air bold" value="3">15일</option>
+															<option class=" font_air bold" value="4">30일</option>
+															<option class=" font_air bold" value="5">영구재제</option>
+														</select>
+													</div>
+													<div>
+														<span>재제사유</span>
+														<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
+															<option class=" font_air bold">욕설 및 혐오 표현</option>
+															<option class=" font_air bold">불법 콘텐츠 게시</option>
+															<option class=" font_air bold">스팸 활동</option>
+															<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
+															<option class=" font_air bold">기타</option>
+														</select>
+														<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
+															maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
+													</div>
+												
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary admin_boot_modal_close font_air bold" data-bs-dismiss="modal">닫기</button>
+													<button type="button" class="btn btn-primary qna_color font_air bold"
+														@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
+													>적용</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div v-if="selectUserData.deleted_at==='X'" class="admin_frame9_btn_box">
+										<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+										v-if="(this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X')&&selectUserData.flg==='X'"
+										>유저제재</div>
+										<div class="btn btn-danger btn-sm"
+										@click="clearestraint(this.selectUserData.id,null)"
+										v-if="(this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X')&&selectUserData.flg==='X'"
+										>제재해제</div>
+										<div class="btn btn-primary btn-sm" @click="adminalret(selectUserData.id)" v-if="selectUserData.flg==='X'&&authority">관리자로임명</div>
+										<div class="btn btn-primary btn-sm" @click="admindel(selectUserData.id)" v-if="selectUserData.flg!=='X'&&authority">관리자권한해제</div>
+									</div>
 								</div>
-								<div>
-									<span>재제사유</span>
-									<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
-										<option class=" font_air bold">욕설 및 혐오 표현</option>
-										<option class=" font_air bold">불법 콘텐츠 게시</option>
-										<option class=" font_air bold">스팸 활동</option>
-										<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
-										<option class=" font_air bold">기타</option>
-									</select>
-									<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
-										maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
-								</div>
-							
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary admin_boot_modal_close font_air bold" data-bs-dismiss="modal">닫기</button>
-								<button type="button" class="btn btn-primary qna_color font_air bold"
-									@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
-								>적용</button>
+								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at==='X'" @click="modalrepliedel(modalreplie.id)">삭제</button>
+								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at!=='X'" @click="modalreplierepair(modalreplie.id)">복구</button>
+								<button type="button" id="modal_replie_close_btn" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div v-if="selectUserData.deleted_at==='X'" class="admin_frame9_btn_box">
-					<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
-					v-if="(this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X')&&selectUserData.flg==='X'"
-					>유저제재</div>
-					<div class="btn btn-danger btn-sm"
-					@click="clearestraint(this.selectUserData.id,null)"
-					v-if="(this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X')&&selectUserData.flg==='X'"
-					>제재해제</div>
-					<div class="btn btn-primary btn-sm" @click="adminalret(selectUserData.id)" v-if="selectUserData.flg==='X'&&authority">관리자로임명</div>
-					<div class="btn btn-primary btn-sm" @click="admindel(selectUserData.id)" v-if="selectUserData.flg!=='X'&&authority">관리자권한해제</div>
-				</div>
-			</div>
+				</div> -->
+			</tbody>
+		</table>
+		<div class='admin_page  mt-3'>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="searchuser(1)">&lt;&lt;</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
+						<span class="page-link" @click="searchuser(prevnum)">이전</span>
+					</li>
+					<li class="page-item" v-for="num in numbox" :key="num" :class="[{ 'active': num === this.page }, (num !== this.page) ? 'pointer' : '']">
+						<span class="page-link" @click="searchuser(num)">{{ num }}</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="searchuser(nextnum)">다음</span>
+					</li>
+					<li class="page-item" :class="[{ 'disabled': this.page === this.lastpage }, (this.page !== this.lastpage) ? 'pointer' : '']">
+						<span class="page-link" @click="searchuser(lastpage)">>></span>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 </template>
@@ -1220,6 +1296,7 @@ export default {
 
 	data() {
 		return {	
+			userdata: {},
 			chart_flg: false,
 			chart_flg1: false,
 			authority: false,
@@ -1315,6 +1392,7 @@ export default {
 			admin_board_cate1:"0",
 			admin_sub_cate1:"0",
 			admin_sub_input1:"",
+			admin_user_cate:"0",
 			page:1,
 			lastpage:1,
 			first_num:1,
@@ -2047,9 +2125,10 @@ export default {
 				this.get_replie(1)
 			}
 			if(main===3&&sub===1){
-				console.log(main)
-				console.log(sub)
 				this.reportall(this.report_flg,1)
+			}
+			if(main===3&&sub===2){
+				this.searchuser(1)
 			}
 			if(main===3&&sub===0){
 				this.requestall("0",1)
@@ -2057,63 +2136,32 @@ export default {
 			this.resetall()
 		},
 		// 유저검색
-		searchuser(){
-			if(this.searchval ===""){
+		searchuser(page){
+			this.$store.commit('setLoading',true);
+			const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype+"&page="+page+"&order="+this.admin_user_cate
+			axios.get(URL)
+			.then(res => {
+				if(res.data.code === "0"){				
+					this.userdata = res.data.data.data
+					this.page = res.data.data.current_page
+					this.lastpage = res.data.data.last_page
+					console.log(this.userdata);
+					this.paging();
+				}
+			})
+			.catch(err => {
+				console.log(res.data.errorMsg);
+				console.log("캐치진입");
 				Swal.fire({
-					icon: 'warning',
-					title: '주의',
-					text: '값을 입력해 주세요.',
+					icon: 'error',
+					title: 'Error',
+					text: '에러 발생.',
 					confirmButtonText: '확인'
 				})
-			}else if(this.searchtype ===""){
-				Swal.fire({
-					icon: 'warning',
-					title: '주의',
-					text: '값을 입력해 주세요.',
-					confirmButtonText: '확인'
-				})
-			}else{
-				this.$store.commit('setLoading',true);
-				const URL = '/admin/userinfo?val='+this.searchval+"&flg="+this.searchtype
-				axios.get(URL)
-				.then(res => {
-					if(res.data.code === "0"){
-						console.log(res.data.data);
-						if(res.data.data.flg!==""){
-							res.data.data.flg = res.data.data.flg === "0"?"일반관리자":"메인관리자";		
-						}else{
-							res.data.data.flg="X"
-						}
-						res.data.data.deleted_at = res.data.data.deleted_at === null?"X":res.data.data.deleted_at;
-						res.data.data.res_at = (res.data.data.res_at === null)||(!res.data.data.res_at)?"X":res.data.data.res_at;
-						res.data.data.restraint = (res.data.data.restraint === null)||(!res.data.data.restraint)?"X":res.data.data.restraint;
-						this.selectUserData=res.data.data
-						this.searchflg=true;
-					}else if(res.data.code === "1"){
-						console.log(res.data.errorMsg);
-						console.log("엘스진입");
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: res.data.errorMsg,
-							confirmButtonText: '확인'
-						})
-					}
-				})
-				.catch(err => {
-					console.log(res.data.errorMsg);
-					console.log("캐치진입");
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: '에러 발생.',
-						confirmButtonText: '확인'
-					})
-				})
-				.finally(() => {
-					this.$store.commit('setLoading', false);
-				});
-			}
+			})
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});
 		},
 		// 기타일시 작성인풋 소환
 		restraint_msg_chk(){

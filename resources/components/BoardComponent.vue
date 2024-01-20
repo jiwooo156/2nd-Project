@@ -80,8 +80,8 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/commuwrite" @click="checklocal()">글 작성하기</router-link>
+			<div class="d-flex flex-row-reverse mt-5 mb-5">
+				<div @click="checklocal()" class="qna_btn_bot1 pointer">글 작성하기</div>
 			</div>
 			<div class="d-flex justify-content-center qna_page_bot">
 				<nav aria-label="Page navigation example">
@@ -108,6 +108,8 @@
 	</div>
 </template>
 <script>
+import Swal from 'sweetalert2';
+
 export default {
 	name: "BoardComponent",
 
@@ -131,14 +133,13 @@ export default {
 	created() {
 		const objUrlParam = new URLSearchParams(window.location.search);
 		this.nowflg = objUrlParam.get('flg');
-		console.log( "created flg"+this.nowflg )
 		this.getInfo(1);
 	},
 	beforeRouteUpdate() {
 		// url의 파라미터를 가져옴
 		const objUrlParam = new URLSearchParams(window.location.search);
+		// before라서 flg 반전해줌
 		this.nowflg = objUrlParam.get('flg')==="0"? "1":"0";
-		console.log("beforeupdated flg"+this.nowflg);
 		this.option = "3";
 		this.rangevalue = "1";
 		this.getInfo(1);
@@ -149,9 +150,7 @@ export default {
 		// button 클릭시 value 데이터바인딩
 		buttonclick(value) {
 			this.rangevalue = value;
-			console.log("버튼밸류:"+value);
 			this.getInfo();
-			console.log("버튼함수끝"+value);
 		},
 		// 해당 게시판의 모든 게시글 조회
 		getInfo(page) {
@@ -161,11 +160,6 @@ export default {
 			// 해당url의 데이터 가져오기
 			const URL = '/board/info?page='+page;
 			
-			console.log("getinfo 함수진입")
-			console.log("nowflg="+this.nowflg)
-			console.log("option="+this.option)
-			console.log("rangevalue="+this.rangevalue)
-			console.log("page="+page)
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			axios.get(URL, {
 				params: {
@@ -183,35 +177,15 @@ export default {
 				this.lastpage = res.data.information.last_page
 				this.noticedata = res.data.noticedata;
 				this.paging()
-				// console.log("공지사항은 : "+this.infolist.notice_flg);
-				console.log("공지사항은 : "+this.noticedata);
-				console.log('페이지네이션종료')
 			})
 			.catch(err => {
 				// this.$router.push('/error');
+				console.log('에러');
 			})
 			.finally(() => {
                 this.$store.commit('setLoading', false);
             });
 		},
-		// 해당 게시판의 공지사항 조회
-		// getNotice(flg) {
-		// 	// 해당url의 데이터 가져오기
-		// 	const URL = '/board/notice?flg='+this.nowflg;
-			
-		// 	console.log("getNotice 함수진입")
-		// 	console.log("nowflg="+this.nowflg)
-		// 	// axios는 http status code가 200번대면 then으로, 그외에는 catch로
-		// 	axios.get(URL)
-		// 	.then(res => {
-		// 		console.log('정상처리')
-		// 		this.noticedata = res.data.data;
-		// 		console.log("공지사항은 : "+this.noticedata);
-		// 	})
-		// 	.catch(err => {
-		// 		// this.$router.push('/error');
-		// 	})
-		// },
 		// 페이징처리
 		paging(){
 			this.numbox = [];
@@ -256,11 +230,21 @@ export default {
 		// 로그인확인
 		checklocal() {
 			if(!(localStorage.getItem('nick'))){
-				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
-					this.$router.push('/login');
-				} else {
-					return
-				}
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login');
+                    }
+                })
+            } else {
+				this.$router.push('/commuwrite');
 			}
 		},
 	}
