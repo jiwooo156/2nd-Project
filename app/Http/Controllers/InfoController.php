@@ -399,7 +399,6 @@ class InfoController extends Controller
     }
     // 검색결과 조회
     public function searchkeyword(Request $req) {
-        DB::connection()->enableQueryLog();
         $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->where('main_flg','축제')
@@ -407,6 +406,11 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
             ->orderBy('end_at', 'desc')
             ->limit(6)
@@ -418,13 +422,23 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
             ->orderBy('end_at', 'desc')
             ->count();
-        if($req->searchkeyword !== null||$req->states_name !== "지역"){
+        if($req->searchkeyword !== null||$req->states_name !== "지역"||$req->couple_flg === "1"||$req->friend_flg === "1"||$req->family_flg === "1"||$req->parking_flg === "1"||$req->fee === "1"){
             $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
             ->where('main_flg','관광')
             ->limit(6)
@@ -432,6 +446,11 @@ class InfoController extends Controller
             $tourcount = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
             ->where('main_flg','관광')
             ->count();
@@ -460,6 +479,11 @@ class InfoController extends Controller
             ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
             ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
             ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
             ->limit(6)
             ->offset($req->offset)
@@ -513,17 +537,22 @@ class InfoController extends Controller
         if($req->flg === "0"){
             $data = Community::where('u_id',$auth->id);
         }else if($req->flg === "1"){
-            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'replies.id', 'replies.replie', 'replies.created_at')
+            $data = Replie::select('infos.title', 'infos.main_flg as flg', 'infos.id as b_id','replies.id', 'replies.replie', 'replies.created_at')
             ->where('replies.u_id', $auth->id)
-            ->join('infos', 'replies.b_id', 'infos.id');
-    
-            $data = $data->union(Replie::select('community.title', 'community.flg', 'replies.id', 'replies.replie', 'replies.created_at')
+            ->where('replies.flg', '0')
+            ->join('infos', 'replies.b_id', 'infos.id')
+            ->whereNull('infos.deleted_at');
+            
+            $data = $data->union(Replie::select('community.title', 'community.flg', 'community.id as b_id','replies.id', 'replies.replie', 'replies.created_at')
                 ->where('replies.u_id', $auth->id)
-                ->join('community', 'replies.b_id', 'community.id'));
+                ->where('replies.flg', '1')
+                ->join('community', 'replies.b_id', 'community.id')
+                ->whereNull('community.deleted_at'));
         }
             $data = $data
                 ->orderby('created_at','desc')
                 ->paginate(8);
+                Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -534,6 +563,11 @@ class InfoController extends Controller
         $tour = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
+            ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
+            ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
+            ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
+            ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
+            ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('main_flg','관광')
             ->where('ns_flg',$req->ns)
             ->limit(6)
@@ -763,7 +797,6 @@ class InfoController extends Controller
         // 정상처리시
     }
 
-
     // 0116 정지우 좋아요 작성
     public function plusheart(Request $req) {
         Log::debug("plusheart 함수 시작");
@@ -855,7 +888,7 @@ class InfoController extends Controller
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftJoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
         ->whereNull('community.deleted_at');
@@ -925,7 +958,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = community::
         join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.id',$req->id)
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
@@ -1085,5 +1118,28 @@ class InfoController extends Controller
                 'errorMsg' => '수정 실패.'
             ], 400);
         }
+    }
+    // 커뮤니티 신고 기능
+    public function reportingPost(Request $req) {
+        try {
+            // 트랜잭션 시작
+            DB::beginTransaction();
+            // 리퀘스트 온 값 data에 저장
+            $data = $req->only('flg','content', 'b_id', 'u_id');
+            // data정보를 리폿 테이블에 인서트
+            $result = Report::create($data);
+            //저장
+            DB::commit();
+            return response()->json([
+                'code' => '0',
+                'data' => $result,
+            ], 200);
+        } catch(Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'code' => 'E99',
+                'errorMsg' => '신고 실패.'
+            ], 400);
+        } 
     }
 }

@@ -98,8 +98,12 @@
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
 						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
 						<td class="userchk_body_td1 none" v-else>{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">					
-							{{ data.title }}
+						<td class="userchk_body_td2">	
+							<div>
+								<div class="userchk_title">
+									{{ data.title }}
+								</div>
+							</div>				
 							<div class="userchk_mobile_box">
 								<div>
 									작성위치 : {{ community[data.flg] }}
@@ -115,16 +119,15 @@
 					</tr>
 					<tr v-for="data in writedata" :key="data"
 						v-if="writeflg==='1'"
+						@click="repliemodal(data)"
 					>
-						<!-- <td v-if="data.flg === '축제'||data.flg === '관광'" class="userchk_body_td1">{{ data.flg }}</td>
-						<td v-if="!(data.flg === '축제'||data.flg === '관광')" class="userchk_body_td1">{{ community[data.flg] }}</td> -->
 						<td class="userchk_body_td1 none">{{ data.title }}</td>
 						<td class="userchk_body_td2">
 							<div class="userchk_consol">
 								<div>
 									{{ data.replie }}
 								</div>
-								<span class="pointer userchk_content_report" 	@click="repliemodal(data)">
+								<span class="pointer userchk_content_report">
 									<font-awesome-icon :icon="['fas', 'trash']" />	
 								</span>
 							</div>
@@ -152,7 +155,7 @@
 				</tbody>
 			</table>
 			<div class='admin_page  mt-3'>
-				<nav aria-label="Page navigation example">
+				<nav aria-label="Page navigation example userchk_page">
 					<ul class="pagination">
 						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
 							<span class="page-link" @click="writeget(writeflg,1)">&lt;&lt;</span>
@@ -215,7 +218,14 @@ export default {
 			prevnum:1,
 			nextnum:2,
 			numbox:[],
-			community:["자유","질문","정보","건의"],
+			community: {
+				"0": "자유",
+				"1": "질문",
+				"2": "정보",
+				"3": "건의",
+				"축제": "축제",
+				"관광": "관광"
+			},
 			likeflg:'0',
 			writeflg:'0',
 			likedata:{},
@@ -268,11 +278,11 @@ export default {
 			const URL = 'userchk/write?page='+page+'&flg='+flg
 			axios.get(URL)
 			.then(res => {
-				if(res.data.code === "0"){
-					console.log(this.writedata);
+				if(res.data.code === "0"){	
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
 					this.writedata=res.data.data.data
+					console.log(this.writedata);
 					this.paging()
 				}
 			})
@@ -368,6 +378,17 @@ export default {
 				this.$router.push('/post?id=' + data.id);
 			}
 		},
+		writedetail2(data) {
+			console.log("이벤트진입")
+			console.log(data)
+			if (data.flg === '0' || data.flg === '1') {
+				this.$router.push('/community?id='+data.b_id);
+			} else if (data.flg === '2' || data.flg === '3') {
+				this.$router.push('/post?id=' + data.b_id);
+			} else if (data.flg === '축제' || data.flg === '관광') {
+				this.$router.push('/detail?id=' + data.b_id);
+			}
+		},
 		// tr이라 클릭이벤트로
 		repliemodal(data) {
 			Swal.fire({
@@ -377,9 +398,11 @@ export default {
 					<p>게시글 제목: ${data.title}</p>
 					<p>작성내용: ${data.replie}</p>
 					<p>작성일자: ${data.created_at}</p>
+					<p><button class="user_chk_btn" id="goToPost">-게시글로 이동-</button></p>
 				`,
-				showCancelButton: true,
+				showConfirmButton: true,
 				confirmButtonText: '삭제',
+				showCancelButton: true,
 				cancelButtonText: '취소',
             })
             .then((result) => {
@@ -409,6 +432,10 @@ export default {
 					})
 				}
 			})
+			document.getElementById('goToPost').addEventListener('click', () => {
+				this.writedetail2(data);
+				Swal.close();
+			});
 		},
 	},
 }

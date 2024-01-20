@@ -1300,6 +1300,11 @@ margin-top:10px;
 	margin-top: 113px;
     border-radius: 5px 5px 0 0;
 }
+.user_chk_btn{
+	background: none;
+	border: none;
+	color: #6a55cd;
+}
 .userchk_vacant_box{
 	width:90%;
 	height:50px;
@@ -1335,7 +1340,7 @@ margin-top:10px;
 }
 .userchk_body {
     width: 95%;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 .userchk_body_td1{
@@ -1345,6 +1350,7 @@ margin-top:10px;
 }
 .userchk_body_td2{
 	width: 70%;
+	max-width: 500px;
 }
 .userchk_content_report{
 	display: none;
@@ -1367,6 +1373,22 @@ margin-top:10px;
 	display: none;
 	font-size: 10px;
 	justify-content: space-between;
+}
+.userchk_consol {
+    width: 100%;
+    max-width: 910px;
+}
+.userchk_consol div{
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.userchk_title{
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .userchk_body td,.userchk_body th{
 	vertical-align:middle;
@@ -1403,6 +1425,14 @@ margin-top:10px;
 .region_ns{
 	font-size: 3rem;
 	margin-top: 78px;
+}
+.region_span_box{
+	display: flex;
+	justify-content: space-between;
+}
+
+.region_span{
+	color: red;
 }
 .region_ns_span{
 	font-size: 1.3rem;
@@ -1844,6 +1874,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .detail_replie_content{
     padding-top: 20px;
     font-size: 1rem;
+	word-break: break-all;
 }
 .detail_replie_change{
 	display: flex;
@@ -2930,7 +2961,27 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.col_hidden {
 		display: none;
 	}
-
+	/* 유저체크 */
+	.userchk_mobile_box{
+		display: flex;
+		color: #b2b2b2;
+	}
+	.userchk_body_td2 {
+		width: 50%;
+		max-width: 300px;
+		text-align: left;
+	}
+	.userchk_content_report{
+		display: block;
+	}
+	.userchk_consol{
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.none{
+		display: none;
+	}
 }
 
 
@@ -3169,6 +3220,21 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		width: 35%;
 		font-size: 0.7rem;
 	}
+	.region_span_box span{
+		font-size: 12px;
+	}
+	.region_search_frame {
+			width: 100%;
+			max-width: 370px;
+	}
+	.region_search_flex {
+		justify-content: space-between;
+		width: 100%;
+	}
+	.region_select_list {
+		width: 60px;
+		font-size: 12px;
+	}
 	/* 로그인 */
 	.login_logo {
 		width: 180px;
@@ -3299,6 +3365,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		color: #b2b2b2;
 	}
 	.userchk_body_td2 {
+		width: 50%;
+		max-width: 300px;
 		text-align: left;
 	}
 	.userchk_content_report{
@@ -3307,6 +3375,22 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.userchk_consol{
 		display: flex;
 		justify-content: space-between;
+		width: 100%;
+	}
+	.admin_page {
+		display: flex;
+		justify-content: center;
+		font-size: 10px;
+	}
+	.userchk_header {
+		width: 100%;
+		max-width: 1000px;
+		margin: 15px auto;
+		font-size: 14px;
+	}
+	.userchk_select {
+		font-size: 14px;
+		width: 110px;
 	}
 }
 

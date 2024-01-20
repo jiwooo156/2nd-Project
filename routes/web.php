@@ -108,6 +108,7 @@ Route::middleware('myValidation')->prefix('post')->group(function() {
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
     Route::post('/update', [InfoController::class, 'postupdate']); // 게시글 수정
     Route::post('/heartpost', [InfoController::class, 'plusheart']); // 좋아요
+    Route::post('/re', [InfoController::class, 'reportingPost']); // 신고
 });
 
 // 관광&축제 디테일 라우터
@@ -194,6 +195,7 @@ Route::middleware('myValidation')->prefix('admin')->group(function() {
     Route::put('/repliemodal/{id}', [AdminController::class, 'repliemodalput']);
     Route::delete('/repliemodal/{id}', [AdminController::class, 'repliemodaldel']);
     Route::post('/notice', [AdminController::class, 'noticepost']);
+    Route::get('/modaluser', [AdminController::class, 'modaluserget']);
 });
 
 
