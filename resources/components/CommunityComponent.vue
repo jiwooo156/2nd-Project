@@ -121,6 +121,7 @@
 					><font-awesome-icon :icon="['fas', 'pen-to-square']" /></button>
 				</div>
 			</div>
+			<!-- 댓글 조회 -->
 			<div class="detail_replie_read" 
 				v-if="repliedata.length !== 0"
 				v-for="data in repliedata" :key="data"

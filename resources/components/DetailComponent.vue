@@ -295,18 +295,13 @@ export default {
 					}
 				})
 			}else if(this.replie){
-				console.log("디테일댓글작성if");
 				const URL = '/detail/reply/'+this.b_id;
 				const formData = new FormData();
 				formData.append('replie', this.replie);
 				formData.append('b_id', this.b_id);
 				formData.append('flg', '0');
-				console.log("replie : "+this.replie);
-				console.log("b_id : "+this.b_id);
-				console.log(formData);
 				axios.post(URL,formData)
 				.then(res =>{
-					console.log("디테일댓글작성then");
 					if(res.data.code==="0"){
 						this.replie = "";
 						this.repliecount++;
@@ -321,7 +316,6 @@ export default {
 					}
 				})
 				.catch(err => {
-					console.log("디테일댓글작성catch");
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
@@ -343,7 +337,6 @@ export default {
 		// 좋아요 입력
 		plusheart() {
 			if(!(this.userauth === "")) {				
-				console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
@@ -353,9 +346,7 @@ export default {
 					"flg": "0"
 				})
 				.then(res=>{
-					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
-						console.log(res.data.likeflg);
 						this.likeflg = res.data.likeflg;
 						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
 							this.$router.push('/detail?id='+this.b_id);
@@ -368,7 +359,7 @@ export default {
 				})
 				.catch(err => {
 					console.log("plusheart 함수 catch");
-					this.$router.push('/error');
+					// this.$router.push('/error');
 				})				
 			} else {
 				Swal.fire({
@@ -482,18 +473,11 @@ export default {
 			axios.get(URL)
 			.then(res =>{
 				if(res.data.code==="0"){
-					console.log('댓글테스트')
-					console.log(this.repliedata)
 					this.repliedata = [ ...this.repliedata, ...res.data.data ];
-					console.log(this.repliedata)
-					console.log('replie_offset')
 					this.replie_offset = this.replie_offset+20;			
-					console.log('여기진입')
 					if(this.repliedata.length === this.repliecount||res.data.data.length<20){
-						console.log('여기서')
 						this.moreflg = true;
 					}
-					console.log('여기종료')
 				}else{
 					Swal.fire({
                     icon: 'error',

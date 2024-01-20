@@ -1,8 +1,7 @@
 <template lang="">
-	<div class="detail_frame">
+	<!-- <div class="detail_frame">
 		<div class="detail_container">
 			<div class="detail_header_flex">
-				<!-- <form action="/community/testwrite" methods="post"> -->
 					<div class=" detail_type center">
 						<div><h2 class="write_header_title">게시글 작성</h2></div>
 						<br>
@@ -23,9 +22,6 @@
 						</div>
 					</div>
 
-
-
-
 				<div class="detail_header font_air bold">
 					<div class="write_title write_box1">
 						<span class="write_title">제목 작성</span>
@@ -39,16 +35,12 @@
 					</div>
 					
 				</div>
-
 				
 				<div class="input-group mb-3 align-items-center">
 					<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
 					<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
 					<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
 				</div>
-
-
-
 
 			<div class="detail_body">
 				<div class="write_box1">
@@ -64,13 +56,50 @@
 				</div>					
 			</div>
 
-
 				<div class="post_btn_bot">
 					<button type="button" @click="commuWrite()">작성</button>
 					<button type="button" @click="goBack">취소</button>
 				</div>
-				<!-- </form> -->
 			</div>
+		</div>
+	</div> -->
+
+
+	<div class="admin_frame">
+		<div>게시글 작성</div>
+		<div class="col-md-3 position-relative mb-3">
+			<label for="writeflg" class="form-label">게시판</label>
+			<select class="form-select" id="writeflg" v-model="flg" name="flg">
+				<option value="0">자유게시판</option>
+				<option value="1">정보게시판</option>
+				<option value="2">질문게시판</option>
+				<option value="3">건의게시판</option>
+			</select>
+		</div>
+		<div class="col-md-3 position-relative mb-3">
+			<label for="writeflg" class="form-label">카테고리</label>
+			<select class="form-select" id="writeflg" v-model="categoryflg" name="flg">
+				<option value="0">자유게시판</option>
+				<option value="1">정보게시판</option>
+				<option value="2">질문게시판</option>
+				<option value="3">건의게시판</option>
+			</select>
+		</div>
+		<div class="input-group mb-1">
+			<span class="input-group-text" id="basic-addon1">제목</span>
+			<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="title">
+		</div>
+		<div class="input-group mb-1">
+			<span class="input-group-text">내용</span>
+			<textarea class="form-control" aria-label="With textarea" v-model="content"></textarea>
+		</div>
+		<div class="input-group mb-3 align-items-center">
+			<input id="admin_file_img1" class="form-control" type="file" accept="image/*" @change="setThumbnail">
+			<input id="admin_file_img2" class="form-control" type="file" accept="image/*" @change="setThumbnail">
+			<input id="admin_file_img3" class="form-control" type="file" accept="image/*" @change="setThumbnail">
+			<div v-for="index in 3" :key="index" class="image-container">
+      			<img :src="thumbnailSrc[index]" alt="Thumbnail" v-if="thumbnailSrc[index]" />
+    		</div>
 		</div>
 	</div>
 </template>
@@ -86,7 +115,8 @@ export default {
 			categoryflg: "0",
 			title: "",
 			content: "",
-			communityresult: ""
+			communityresult: "",
+			thumbnailSrc: [],
 		}
 	},
 	created() {
@@ -104,7 +134,16 @@ export default {
 				this.$router.push('/login');
 			}
 		},
+		// 이미지 미리보기
+		setThumbnail(index, event) {
+			var reader = new FileReader();
 
+			reader.onload = (event) => {
+				this.$set(this.thumbnailSrc, index, event.target.result);
+			};
+
+			reader.readAsDataURL(event.target.files[0]);
+		},
 		// 게시글 작성
 		commuWrite() {
 			// 스피너 로딩바

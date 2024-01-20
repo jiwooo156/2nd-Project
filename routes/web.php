@@ -150,7 +150,9 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
 
 // 커뮤니티 게시글 작성 라우터 생성
 Route::post('/commuwrite', [InfoController::class, 'communitywrite']); // 게시글 작성
-
+Route::get('/commuwrite', function () {
+    return view('welcome');
+});
 // 라우터 확인용 test
 //?달면 null허용한다는 뜻
 // Route::get('/main/{name?}', [InfoController::class, 'maininfo'])->name('main.info');
