@@ -1078,7 +1078,7 @@
 				</tr>			
 			</thead>
 			<tbody>
-				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modaluserget(data)">
+				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#userModal" @click="modaluserget(data)">
 					<th scope="row" class="admin_table_th">{{ data.id }}</th>
 					<td class="admin_table_th">{{ data.email }}</td>
 					<td class="admin_table_th">{{ data.name }}</td>
@@ -1094,7 +1094,7 @@
 				<div
 					v-if="replies.length < 1"
 				>조회된 유저가 없습니다</div>
-				<div class="modal fade" id="replieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -1148,7 +1148,7 @@
 											{{ this.modaluser.deleted_at }}
 										</div>
 									</div>
-									<div class="input-group mb-3">
+									<div class="input-group mb-1">
 										<span class="input-group-text">재제당한횟수</span>
 										<div type="text" class="form-control">
 											{{ this.modaluser.cnt }}
@@ -1157,14 +1157,19 @@
 										<div type="text" class="form-control">
 											{{ this.modaluser.restraint }}
 										</div>
+									</div>
+									<div class="input-group mb-3"> 	
 										<span class="input-group-text">재제종료일</span>
 										<div type="text" class="form-control">
-											{{ this.modaluser.res_at }}
+											{{ this.modaluser.restraint_at }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">관리자등급</span>
-										<div type="text" class="form-control">
+										<div v-if="modaluser.flg === '일반유저'" type="text" class="form-control">
+											{{ this.modaluser.flg }}
+										</div>
+										<div v-else type="text" class="form-control">
 											{{ this.modaluser.flg }}
 										</div>
 									</div>
@@ -1204,29 +1209,26 @@
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary admin_boot_modal_close font_air bold" data-bs-dismiss="modal">닫기</button>
 													<button type="button" class="btn btn-primary qna_color font_air bold"
-														@click="restraintuser(this.selectUserData.id,this.restraint_date,this.restraint_msg)"
+														@click="restraintuser(this.modaluser.id,this.restraint_date,this.restraint_msg)"
 													>적용</button>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div v-if="selectUserData.deleted_at==='X'" class="admin_frame9_btn_box">
+								</div>
+								<div class="modal-footer">
+									<div v-if="modaluser.deleted_at==='X'" class="admin_frame9_btn_box">
 										<div class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
-										v-if="(this.selectUserData.res_at < this.todaytime||this.selectUserData.cnt === 0||this.selectUserData.res_at === 'X')&&selectUserData.flg==='X'"
+										v-if="(modaluser.restraint_at < todaytime||modaluser.cnt === 0||modaluser.restraint_at === 'X')&&this.modaluser.flg==='일반유저'"
 										>유저제재</div>
 										<div class="btn btn-danger btn-sm"
-										@click="clearestraint(this.selectUserData.id,null)"
-										v-if="(this.selectUserData.res_at > this.todaytime&&this.selectUserData.res_at !== 'X')&&selectUserData.flg==='X'"
+										@click="clearestraint(this.modaluser.id,null)"
+										v-if="(this.modaluser.restraint_at > this.todaytime&&this.modaluser.restraint_at !== 'X')&&modaluser.flg==='일반유저'"
 										>제재해제</div>
-										<div class="btn btn-primary btn-sm" @click="adminalret(selectUserData.id)" v-if="selectUserData.flg==='X'&&authority">관리자로임명</div>
-										<div class="btn btn-primary btn-sm" @click="admindel(selectUserData.id)" v-if="selectUserData.flg!=='X'&&authority">관리자권한해제</div>
+										<div class="btn btn-primary btn-sm" @click="adminalret(modaluser.id)" v-if="modaluser.flg==='일반유저'&&authority">관리자로임명</div>
+										<div class="btn btn-primary btn-sm" @click="admindel(modaluser.id)" v-if="modaluser.flg!=='일반유저'&&authority">관리자권한해제</div>
 									</div>
 								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at==='X'" @click="modalrepliedel(modalreplie.id)">삭제</button>
-								<button type="button" class="btn btn-danger" v-if="this.modalreplie.deleted_at!=='X'" @click="modalreplierepair(modalreplie.id)">복구</button>
-								<button type="button" id="modal_replie_close_btn" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 							</div>
 						</div>
 					</div>
@@ -1952,6 +1954,7 @@ export default {
 			this.modalflg = false;
 			this.updateflg = false;
 			this.$store.commit('setLoading', false);
+			document.querySelector('.btn-close').click();
 		},
 		// 답변달기
 		adminAnswer(id,email){
@@ -2178,15 +2181,20 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){			
-					for(let i = 0; i < res.data.data.data.length; i++){
-						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
-						res.data.data.data[i].restraint_at = res.data.data.data[i].restraint_at === null ? "X":res.data.data.data[i].restraint_at;
-					}	
-					this.userdata = res.data.data.data
-					this.page = res.data.data.current_page
-					this.lastpage = res.data.data.last_page
-					console.log(this.userdata);
-					this.paging();
+					if(res.data.admin){
+						if(res.data.admin.flg === "0"){
+							this.modaluser.flg = '일반관리자'
+						}else if(res.data.admin.flg === "1"){
+							this.modaluser.flg = '메인관리자'
+						}
+					}else{
+						this.modaluser.flg = '일반유저'
+					}
+					if(res.data.report){
+						this.modaluser.restraint = res.data.report.restraint
+					}else{
+						this.modaluser.restraint = 'X'
+					}
 				}
 			})
 			.catch(err => {
@@ -2241,7 +2249,8 @@ export default {
 				.then(res => {
 					if(res.data.code === "0"){
 						document.querySelector('.admin_boot_modal_close').click();
-						this.searchuser()
+						this.closeModal();
+						this.searchuser(this.page);
 						Swal.fire({
 							icon: 'success',
 							title: '완료',
@@ -2277,7 +2286,8 @@ export default {
 			.then(res => {
 				if(res.data.code === "0"){
 					if(!(this.mainflg === 3&&this.subflg === 1)){				
-						this.resetall()
+						this.searchuser(this.page);
+						this.closeModal();
 					}
 					if(u_id===null){
 						this.keepdata(id,'2')
@@ -3308,7 +3318,8 @@ export default {
 			axios.delete(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-					this.resetall();
+					this.closeModal();
+					this.searchuser(this.page);
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -3359,13 +3370,14 @@ export default {
 					axios.put(URL)
 					.then(res => {
 						if(res.data.code === "0"){
+							this.searchuser(this.page);
+							this.closeModal();
 							Swal.fire({
 								icon: 'success',
 								title: '완료',
 								text: '정상처리되었습니다.',
 								confirmButtonText: '확인'
 							})
-							this.resetall();
 						}
 					})
 					.catch(err => {

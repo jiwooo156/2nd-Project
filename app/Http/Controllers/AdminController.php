@@ -357,30 +357,18 @@ class AdminController extends Controller
     }
     // 모달유저정보조회
     public function modaluserget(Request $req){
-        Log::debug('함수호출');
-        $data = Report::select('restraint')
-            ->where('r_id', $data->id)
+        // 백슬레쉬 해주는 이유 전역클래스
+        $report = Report::select('restraint')
+            ->where('r_id', $req->id)
             ->orderBy('restraint_at', 'desc')
             ->first();
-        Log::debug('통과');
-        if (empty($data)) {
-            Log::debug('비엇을때');
-            $data = new stdClass();
-            $data->restraint = "";
-        }
-        Log::debug('중간');
         $admin = Admin::select('flg')
-            ->where('u_id', $data->id)
+            ->where('u_id', $req->id)
             ->first();
-        if (empty($admin)) {
-            Log::debug('어드민비엇을때');
-            $data->flg = "";
-        }
-        Log::debug('중간');
-        Log::debug($data);
         return response()->json([
             'code' => '0',
-            'data' =>  $data,
+            'report' =>  $report,
+            'admin' =>  $admin,
         ], 200);
     }
     // 유저제재
