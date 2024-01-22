@@ -3,45 +3,45 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 		<div class="container-fluid">
 			<router-link to="/admin" @click="flgchg(0,0)" class="admin_header_left_a">이의이승관리자</router-link>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-control font_air bolds="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<a class="nav-link dropdown-toggle font_air bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							등록&조회
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(1,0)">게시글 등록</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(3,2)">유저 조회</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(1,1)">게시물 조회</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(1,2)">댓글 조회</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(1,0)">게시글 등록</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(3,2)">유저 조회</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(1,1)">게시물 조회</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(1,2)">댓글 조회</div></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<a class="nav-link dropdown-toggle font_air bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							통계
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(2,0)">유저</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(2,1)">조회수</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(2,2)">좋아요</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(2,0)">유저</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(2,1)">조회수</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(2,2)">좋아요</div></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<a class="nav-link dropdown-toggle font_air bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							신고&건의
 						</a>
 						<ul class="dropdown-menu">
-							<li><div class="dropdown-item pointer" @click="flgchg(3,0)">건의답변</div></li>
-							<li><div class="dropdown-item pointer" @click="flgchg(3,1)">신고목록</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(3,0)">건의답변</div></li>
+							<li><div class="dropdown-item pointer font_air bold" @click="flgchg(3,1)">신고목록</div></li>
 						</ul>
 					</li>
 				</ul>
-				<router-link to="/main" class="admin_header_right_a">메인으로</router-link>
+				<router-link to="/main" class="admin_header_right_a font_air bold">메인으로</router-link>
 				<div
-					class="pointer"
+					class="pointer font_air bold"
 					@click="logout"
 				>로그아웃</div>
 			</div>
@@ -55,19 +55,19 @@
 				<div class=" admin_container_box1_content admin_container1">
 					<div class="admin_container_box1_1">
 						<span class=" font_air bold">오늘의 가입수</span>
-						<div>{{ this.sign_cnt }} 명</div>
+						<div class=" font_air bold">{{ this.sign_cnt }} 명</div>
 					</div>	
 					<div class="admin_container_box1_2 font_air bold">
 						<span class=" font_air bold">오늘의 탈퇴수</span>
-						<div>{{ this.drop_cnt }} 명</div>
+						<div class=" font_air bold">{{ this.drop_cnt }} 명</div>
 					</div>	
 					<div class="admin_container_box1_3 font_air bold pointer"  @click="flgchg(3,0)">
 						<span class=" font_air bold">미 답변 건의</span>
-						<div>{{ this.d_cnt }}건</div>
+						<div class=" font_air bold">{{ this.d_cnt }}건</div>
 					</div>	
 					<div class="admin_container_box1_4 font_air bold pointer"  @click="flgchg(3,1)">
 						<span class=" font_air bold">신규 신고</span>
-						<div>{{ this.r_cnt }}건</div>
+						<div class=" font_air bold">{{ this.r_cnt }}건</div>
 					</div>
 				</div>	
 			</div>
@@ -79,11 +79,11 @@
 			<div class="admin_container_box3">
 				<div class="font_air bold admin_main_chart2_flex">					
 					<div class="font_air bold">유저활동내역</div>
-					<select class="form-select" id="validationTooltip04" required v-model="main_chart_type" @change="mainchartget">
-						<option value="0">1주일</option>
-						<option value="1">1개월</option>
-						<option value="2">6개월</option>
-						<option value="3">1년</option>
+					<select class="form-select pointer" id="validationTooltip04" required v-model="main_chart_type" @change="mainchartget">
+						<option value="0" class=" font_air bold pointer">1주일</option>
+						<option value="1" class=" font_air bold pointer">1개월</option>
+						<option value="2" class=" font_air bold pointer">6개월</option>
+						<option value="3" class=" font_air bold pointer">1년</option>
 					</select>
 				</div>
 				<Bar v-if="chart_flg1" :data="main_chart1.data" :options="main_chart1.options" />
@@ -92,24 +92,24 @@
 			<div class="admin_container_box4">
 				<div>
 					<div class="font_air bold">간편공지등록</div>
-					<select class="form-select" id="validationTooltip04" required v-model="main_input">
-						<option value="0">자유</option>
-						<option value="1">정보</option>
-						<option value="2">질문</option>
-						<option value="3">건의</option>
+					<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="main_input">
+						<option value="0" class=" font_air bold pointer">자유</option>
+						<option value="1" class=" font_air bold pointer">정보</option>
+						<option value="2" class=" font_air bold pointer">질문</option>
+						<option value="3" class=" font_air bold pointer">건의</option>
 					</select>
 				</div>		
 				<div>
 					<div class="input-group mb-1">
-						<span class="input-group-text" id="basic-addon1">제목</span>
-						<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="main_title">
+						<span class="input-group-text font_air bold" id="basic-addon1">제목</span>
+						<input type="text" class="form-control font_air bold font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="main_title">
 					</div>
 					<div class="input-group mb-3">
-						<span class="input-group-text">내용</span>
-						<textarea class="form-control" aria-label="With textarea" v-model="main_content"></textarea>
+						<span class="input-group-text font_air bold">내용</span>
+						<textarea class="form-control font_air bold font_air bold" aria-label="With textarea" v-model="main_content"></textarea>
 					</div>
 				</div>
-				<button type="button" class="btn btn-secondary" @click="addnotice">등록</button>
+				<button type="button" class="btn btn-secondary font_air bold" @click="addnotice">등록</button>
 			</div>
 		</div>		
 	</div>
@@ -125,40 +125,40 @@
 				<div class="admin_modal_container">
 					<div class="input-group  mb-3">
 						<span class="input-group-text">작성자번호</span>
-						<div aria-label="First name" class="form-control">
+						<div aria-label="First name" class="form-control font_air bold">
 							{{ now_data.u_id }}
 						</div>
 						<span class="input-group-text">Email</span>
-						<div aria-label="Last name" class="form-control">
+						<div aria-label="Last name" class="form-control font_air bold">
 							{{ now_data.email }}
 						</div>
 					</div>
 					<div class="input-group">
 						<span class="input-group-text" id="inputGroup-sizing-default">번호</span>
-						<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+						<div class="form-control font_air bold" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 							{{ now_data.id }}
 						</div>
 					</div>
 					<div class="input-group">
 						<span class="input-group-text" id="inputGroup-sizing-default">제목</span>
-						<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+						<div class="form-control font_air bold" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 							{{ now_data.title }}
 						</div>
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text">내용</span>
-						<textarea class="form-control admin_request_textarea" aria-label="With textarea" readonly style="background-color: #fff;">{{ now_data.content }}</textarea>
+						<textarea class="form-control font_air bold admin_request_textarea" aria-label="With textarea" readonly style="background-color: #fff;">{{ now_data.content }}</textarea>
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text">작성시간</span>
-						<div class="form-control" aria-label="With textarea">{{ now_data.created_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ now_data.created_at }}</div>
 					</div>
 				</div>
 				<div class="input-group mb-3"
 					v-if="now_data.admin_flg==='0'"
 				>
 					<span class="input-group-text">답변</span>
-					<textarea class="form-control" aria-label="With textarea"
+					<textarea class="form-control font_air bold" aria-label="With textarea"
 						v-model="answer"
 						placeholder="최대 200글자까지 작성 가능합니다"
 						@input="koreaName"
@@ -169,7 +169,7 @@
 					v-if="now_data.admin_flg==='1'"
 				>
 					<span class="input-group-text">답변내용</span>
-					<textarea class="form-control admin_request_textarea" id="admin_request_textarea" aria-label="With textarea"
+					<textarea class="form-control font_air bold admin_request_textarea" id="admin_request_textarea" aria-label="With textarea"
 						readonly
 					>{{ now_data.replie }}</textarea>
 				</div>
@@ -198,11 +198,11 @@
 				<div class="admin_modal_container">
 					<div class="input-group  mb-3">
 						<span class="input-group-text admin_report_span_to">작성자번호</span>
-						<div aria-label="First name" class="form-control">
+						<div aria-label="First name" class="form-control font_air bold">
 							{{ modalReport.u_id }}
 						</div>
 						<span class="input-group-text admin_report_span_to">Email</span>
-						<div aria-label="Last name" class="form-control">
+						<div aria-label="Last name" class="form-control font_air bold">
 							{{ modalReport.email }}
 						</div>
 					</div>
@@ -210,39 +210,39 @@
 						v-if="this.now_report.flg==='1'"
 					>
 						<span class="input-group-text admin_report_span_to">내용</span>
-						<div class="form-control" aria-label="With textarea">{{ modalReport.replie }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ modalReport.replie }}</div>
 					</div>
 					<div
 						v-if="this.now_report.flg==='0'"
 					>
 						<div class="input-group">
 							<span class="input-group-text admin_report_span_to" id="inputGroup-sizing-default">작성위치</span>
-							<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<div class="form-control font_air bold" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 								{{ modalReport.flg }}
 							</div>
 						</div>
 						<div class="input-group">
 							<span class="input-group-text admin_report_span_to" id="inputGroup-sizing-default">제목</span>
-							<div class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<div class="form-control font_air bold" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 								{{ modalReport.title }}
 							</div>
 						</div>
 						<div class="input-group mb-3">
 							<span class="input-group-text admin_report_span_to">내용</span>
-							<div class="form-control" aria-label="With textarea">{{ modalReport.content }}</div>
+							<div class="form-control font_air bold" aria-label="With textarea">{{ modalReport.content }}</div>
 						</div>
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text admin_report_span_to">작성시간</span>
-						<div class="form-control" aria-label="With textarea">{{ modalReport.created_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ modalReport.created_at }}</div>
 						<span class="input-group-text admin_report_span_to">삭제일자</span>
-						<div class="form-control" aria-label="With textarea">{{ modalReport.deleted_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ modalReport.deleted_at }}</div>
 					</div>
 					<div class="input-group mb-3"
 						v-if="this.now_report.admin_flg === '3'"
 					>
 						<span class="input-group-text admin_report_span_to">제재일자</span>
-						<div class="form-control" aria-label="With textarea">{{ modalReport.restraint_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ modalReport.restraint_at }}</div>
 					</div>
 				</div>
 				<hr>
@@ -250,27 +250,27 @@
 					<div class="admin_modal_title">신고자</div>
 					<div class="input-group">
 						<span class="input-group-text admin_report_span_from">작성자번호</span>
-						<div aria-label="First name" class="form-control">
+						<div aria-label="First name" class="form-control font_air bold">
 							{{ this.now_report.u_id }}
 						</div>
 						<span class="input-group-text admin_report_span_from">Email</span>
-						<div aria-label="Last name" class="form-control">
+						<div aria-label="Last name" class="form-control font_air bold">
 							{{ this.now_report.email }}
 						</div>
 					</div>
 					<div class="input-group">
 						<span class="input-group-text admin_report_span_from">신고사유</span>
-						<div class="form-control" aria-label="With textarea">{{ this.now_report.content }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ this.now_report.content }}</div>
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text admin_report_span_from">신고시간</span>
-						<div class="form-control" aria-label="With textarea">{{ this.now_report.created_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ this.now_report.created_at }}</div>
 					</div>
 					<div class="input-group mb-4"
 						v-if="this.now_report.admin_flg === '4'"
 					>
 						<span class="input-group-text admin_report_span_from">제재일자</span>
-						<div class="form-control" aria-label="With textarea">{{ this.now_report.restraint_at }}</div>
+						<div class="form-control font_air bold" aria-label="With textarea">{{ this.now_report.restraint_at }}</div>
 					</div>
 				</div>
 				<div class="admin_modal_btn_box">
@@ -334,92 +334,92 @@
 	<div v-if="mainflg===1&&subflg===0" class="admin_frame">
 		<form class="row g-3 needs-validation admin_form" validate>
 			<div>
-				<div class="col-md-3 position-relative mb-3">
-					<label for="validationTooltip04" class="form-label">등록위치</label>
-					<select class="form-select" id="validationTooltip04" required v-model="admin_category" @change="resetall">
-						<option value="0">축제</option>
-						<option value="1">관광</option>
-						<option value="2">(자유)공지</option>
-						<option value="3">(정보)공지</option>
-						<option value="4">(질문)공지</option>
-						<option value="5">(건의)공지</option>
+				<div class="col-md-3 position-relative mb-3 admin_insert_select">
+					<label for="validationTooltip04" class="form-label font_air bold pointer">등록위치</label>
+					<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="admin_category" @change="resetall">
+						<option value="0" class="font_air bold pointer">축제</option>
+						<option value="1" class="font_air bold pointer">관광</option>
+						<option value="2" class="font_air bold pointer">(자유)공지</option>
+						<option value="3" class="font_air bold pointer">(정보)공지</option>
+						<option value="4" class="font_air bold pointer">(질문)공지</option>
+						<option value="5" class="font_air bold pointer">(건의)공지</option>
 					</select>
 				</div>
 				<div class="input-group mb-1">
 					<span class="input-group-text" id="basic-addon1">제목</span>
-					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_title">
+					<input type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_title">
 				</div>
 				<div class="input-group mb-1">
 					<span class="input-group-text">내용</span>
-					<textarea class="form-control" aria-label="With textarea" v-model="admin_content"></textarea>
+					<textarea class="form-control font_air bold" aria-label="With textarea" v-model="admin_content"></textarea>
 				</div>
 				<div class="input-group mb-1" v-if="admin_category==='0'||admin_category==='1'">
 					<span class="input-group-text" >주소</span>
-					<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_place">
+					<input type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_place">
 				</div>
 				<div class="input-group mb-3 align-items-center">
-					<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
-					<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
-					<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
+					<input id="admin_file_img1" class="form-control font_air bold" type="file" accept="image/*">
+					<input id="admin_file_img2" class="form-control font_air bold" type="file" accept="image/*">
+					<input id="admin_file_img3" class="form-control font_air bold" type="file" accept="image/*">
 				</div>
 				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
 					<span class="input-group-text">지역</span>
-					<select class="form-select" id="validationTooltip04" v-model="admin_ns">
-						<option>경상북도</option>
-						<option>경상남도</option>
+					<select class="form-select font_air bold pointer" id="validationTooltip04" v-model="admin_ns">
+						<option class="font_air bold pointer">경상북도</option>
+						<option class="font_air bold pointer">경상남도</option>
 					</select>
 					<span class="input-group-text">시.군</span>
 					<!-- 북도 -->
-					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_n" v-if="admin_ns==='경상북도'">
-						<option>경산시</option>
-						<option>경주시</option>
-						<option>고령군</option>
-						<option>구미시</option>
-						<option>김천시</option>
-						<option>문경시</option>
-						<option>봉화군</option>
-						<option>상주시</option>
-						<option>성주군</option>
-						<option>안동시</option>
-						<option>영덕군</option>
-						<option>영양군</option>
-						<option>영주시</option>
-						<option>영천시</option>
-						<option>울릉군</option>
-						<option>울진군</option>
-						<option>의성군</option>
-						<option>예천군</option>
-						<option>청도군</option>
-						<option>청송군</option>
-						<option>칠곡군</option>
-						<option>포항시</option>
+					<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="admin_state_n" v-if="admin_ns==='경상북도'">
+						<option class="font_air bold pointer">경산시</option>
+						<option class="font_air bold pointer">경주시</option>
+						<option class="font_air bold pointer">고령군</option>
+						<option class="font_air bold pointer">구미시</option>
+						<option class="font_air bold pointer">김천시</option>
+						<option class="font_air bold pointer">문경시</option>
+						<option class="font_air bold pointer">봉화군</option>
+						<option class="font_air bold pointer">상주시</option>
+						<option class="font_air bold pointer">성주군</option>
+						<option class="font_air bold pointer">안동시</option>
+						<option class="font_air bold pointer">영덕군</option>
+						<option class="font_air bold pointer">영양군</option>
+						<option class="font_air bold pointer">영주시</option>
+						<option class="font_air bold pointer">영천시</option>
+						<option class="font_air bold pointer">울릉군</option>
+						<option class="font_air bold pointer">울진군</option>
+						<option class="font_air bold pointer">의성군</option>
+						<option class="font_air bold pointer">예천군</option>
+						<option class="font_air bold pointer">청도군</option>
+						<option class="font_air bold pointer">청송군</option>
+						<option class="font_air bold pointer">칠곡군</option>
+						<option class="font_air bold pointer">포항시</option>
 					</select>
 					<!-- 남도 -->
 					<select class="form-select pointer" id="validationTooltip04" required v-model="admin_state_s" v-if="admin_ns==='경상남도'">			
-						<option>거제시</option>
-						<option>거창군</option>
-						<option>고성군</option>
-						<option>김해시</option>
-						<option>남해군</option>
-						<option>밀양시</option>
-						<option>사천시</option>
-						<option>산청군</option>
-						<option>양산시</option>
-						<option>의령군</option>
-						<option>진주시</option>
-						<option>창녕군</option>
-						<option>창원시</option>
-						<option>통영시</option>
-						<option>하동군</option>
-						<option>함안군</option>
-						<option>함양군</option>
-						<option>합천군</option>
+						<option class="font_air bold pointer">거제시</option>
+						<option class="font_air bold pointer">거창군</option>
+						<option class="font_air bold pointer">고성군</option>
+						<option class="font_air bold pointer">김해시</option>
+						<option class="font_air bold pointer">남해군</option>
+						<option class="font_air bold pointer">밀양시</option>
+						<option class="font_air bold pointer">사천시</option>
+						<option class="font_air bold pointer">산청군</option>
+						<option class="font_air bold pointer">양산시</option>
+						<option class="font_air bold pointer">의령군</option>
+						<option class="font_air bold pointer">진주시</option>
+						<option class="font_air bold pointer">창녕군</option>
+						<option class="font_air bold pointer">창원시</option>
+						<option class="font_air bold pointer">통영시</option>
+						<option class="font_air bold pointer">하동군</option>
+						<option class="font_air bold pointer">함안군</option>
+						<option class="font_air bold pointer">함양군</option>
+						<option class="font_air bold pointer">합천군</option>
 					</select>
 				</div>
 				<div class="input-group mb-3" v-if="admin_category==='0'">
 					<span class="input-group-text">축제기간</span>
-					<input type="date" class="form-control" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_start_f">
-					<input type="date" class="form-control" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_end_f">
+					<input type="date" class="form-control font_air bold" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_start_f">
+					<input type="date" class="form-control font_air bold" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_end_f">
 				</div>
 				<div class="input-group mb-3 d-flex justify-content-evenly" v-if="admin_category==='0'||admin_category==='1'">
 					<div class="form-check form-switch">
@@ -441,15 +441,15 @@
 				</div>
 				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
 					<span class="input-group-text">입장료</span>
-					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_fee">
+					<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_fee">
 					<span class="input-group-text">이용시간</span>
-					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_time">
+					<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_time">
 				</div>
 				<div class="input-group mb-3" v-if="admin_category==='0'||admin_category==='1'">
 					<span class="input-group-text">휴일</span>
-					<input type="text" class="form-control" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_holiday">
+					<input type="text" class="form-control font_air bold" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_holiday">
 					<span class="input-group-text">연락처</span>
-					<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_tel">
+					<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="admin_tel">
 				</div>
 			</div>
 			<button type="button" class="btn btn-secondary" @click="insert_board">등록</button>
@@ -459,25 +459,25 @@
 	<div v-if="mainflg===1&&subflg===1" class="admin_frame">
 		<div class="admin_board_header">
 			<div class="col-md-3 position-relative mb-4 admin_board_header1">
-				<label for="validationTooltip04" class="form-label">등록위치</label>
-				<select class="form-select" id="validationTooltip04" required v-model="admin_board_cate" @change="get_board(1)">
-					<option value="0">전체</option>
-					<option value="1">축제</option>
-					<option value="2">관광</option>
-					<option value="3">자유</option>
-					<option value="4">정보</option>
-					<option value="5">질문</option>
-					<option value="6">건의</option>
+				<label for="validationTooltip04" class="form-label font_air bold pointer">등록위치</label>
+				<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="admin_board_cate" @change="get_board(1)">
+					<option value="0" class="font_air bold pointer">전체</option>
+					<option value="1" class="font_air bold pointer">축제</option>
+					<option value="2" class="font_air bold pointer">관광</option>
+					<option value="3" class="font_air bold pointer">자유</option>
+					<option value="4" class="font_air bold pointer">정보</option>
+					<option value="5" class="font_air bold pointer">질문</option>
+					<option value="6" class="font_air bold pointer">건의</option>
 				</select>
 			</div>
 			<div class="admin_board_header2">
-				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate">
-					<option value="0">게시글번호</option>
-					<option value="1">작성자번호</option>
-					<option value="2">제목</option>
-					<option value="3">내용</option>
+				<select class="form-select font_air bold pointer" id="" aria-label="Example select with button addon" v-model="admin_sub_cate">
+					<option value="0" class="font_air bold pointer">게시글번호</option>
+					<option value="1" class="font_air bold pointer">작성자번호</option>
+					<option value="2" class="font_air bold pointer">제목</option>
+					<option value="3" class="font_air bold pointer">내용</option>
 				</select>
-				<input type="text" class="form-control" aria-label="Text input with dropdown button" 
+				<input type="text" class="form-control font_air bold" aria-label="Text input with dropdown button" 
 					v-model="admin_sub_input"
 					@keyup.enter="get_board(1)"
 				>
@@ -486,28 +486,29 @@
 		</div>	
 		<table class="table table-hover  table-border mb-3">
 			<thead>
-				<tr>
-					<th scope="col">게시글번호</th>
-					<th scope="col">작성자번호</th>
-					<th scope="col">제목</th>
-					<th scope="col">내용</th>
-					<th scope="col">작성위치</th>
-					<th scope="col">작성시간</th>
-					<th scope="col">삭제여부</th>
+				<tr class="admin_tr">
+					<th scope="col" class="">게시글번호</th>
+					<th scope="col" class="">작성자번호</th>
+					<th scope="col" class="">제목</th>
+					<th scope="col" class="">내용</th>
+					<th scope="col" class="">작성위치</th>
+					<th scope="col" class="">작성시간</th>
+					<th scope="col" class="">삭제여부</th>
 				</tr>			
 			</thead>
 			<tbody>
 				<tr v-for="data in boards" :key="data"
 					@click="modalboardget(data.id,data.flg)"
+					class="pointer"
 					data-bs-toggle="modal" data-bs-target="#boardmodal"
 				>
-					<th scope="row" class="admin_table_th">{{ data.id }}</th>
-					<td class="admin_table_th">{{ data.u_id }}</td>
-					<td class="admin_table_td1">{{ data.title }}</td>
-					<td class="admin_table_td">{{ data.content }}</td>
-					<td class="admin_table_td2">{{ data.flg }}</td>
-					<td class="admin_table_td2">{{ data.created_at }}</td>
-					<td class="admin_table_td2">{{ data.deleted_at }}</td>
+					<th scope="row" class="admin_table_th font_air bold">{{ data.id }}</th>
+					<td class="admin_table_th font_air bold">{{ data.u_id }}</td>
+					<td class="admin_table_td1 font_air bold">{{ data.title }}</td>
+					<td class="admin_table_td font_air bold">{{ data.content }}</td>
+					<td class="admin_table_td2 font_air bold">{{ data.flg }}</td>
+					<td class="admin_table_td2 font_air bold">{{ data.created_at }}</td>
+					<td class="admin_table_td2 font_air bold">{{ data.deleted_at }}</td>
 				</tr>
 				<div
 					v-if="boards.length < 1"
@@ -522,25 +523,25 @@
 							<div class="modal-body">
 								<div class="input-group mb-1">
 									<span class="input-group-text" id="basic-addon1">제목</span>
-									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_title" :readonly="modal_board_flg">
+									<input type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_title" :readonly="modal_board_flg">
 								</div>
 								<div class="input-group mb-1">
 									<span class="input-group-text">내용</span>
-									<textarea class="form-control" aria-label="With textarea" v-model="modal_board_content" :readonly="modal_board_flg">{{ this.modalboard.content }}</textarea>
+									<textarea class="form-control font_air bold" aria-label="With textarea" v-model="modal_board_content" :readonly="modal_board_flg">{{ this.modalboard.content }}</textarea>
 								</div>
 								<div class="input-group mb-1" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
 									<span class="input-group-text" >주소</span>
-									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_place" :readonly="modal_board_flg">
+									<input type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_place" :readonly="modal_board_flg">
 								</div>
 								<div class="input-group mb-3 align-items-center" v-if="!modal_board_flg">
 									<span class="input-group-text" >1번이미지</span>
-									<input id="modal_file_img1_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img1">
+									<input id="modal_file_img1_text" class="form-control font_air bold" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img1">
 									<button type="button" class="btn btn-secondary" @click="modalboard.img1 = ''">삭제</button>
 									<span class="input-group-text" >2번이미지</span>
-									<input id="modal_file_img2_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img2">
+									<input id="modal_file_img2_text" class="form-control font_air bold" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img2">
 									<button type="button" class="btn btn-secondary" @click="modalboard.img2 = ''">삭제</button>
 									<span class="input-group-text" >3번이미지</span>
-									<input id="modal_file_img3_text" class="form-control" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img3">
+									<input id="modal_file_img3_text" class="form-control font_air bold" type="text" v-if="!modal_board_flg" readOnly :value="modalboard.img3">
 									<button type="button" class="btn btn-secondary" @click="modalboard.img3 = ''">삭제</button>
 								</div>
 								<div class="input-group mb-3 align-items-center">
@@ -557,104 +558,104 @@
 									<div v-if="!modalboard.img1&&!modalboard.img2&&!modalboard.img3&&modal_board_flg">
 										이미지없음
 									</div>
-									<input id="modal_file_img1" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
-									<input id="modal_file_img2" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
-									<input id="modal_file_img3" class="form-control" type="file" accept="image/*" v-if="!modal_board_flg">
+									<input id="modal_file_img1" class="form-control font_air bold" type="file" accept="image/*" v-if="!modal_board_flg">
+									<input id="modal_file_img2" class="form-control font_air bold" type="file" accept="image/*" v-if="!modal_board_flg">
+									<input id="modal_file_img3" class="form-control font_air bold" type="file" accept="image/*" v-if="!modal_board_flg">
 								</div>
 								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
 									<span class="input-group-text">지역</span>
-									<input class="form-control" type="text" :value="modalboard.ns_flg" v-if="modal_board_flg" :readonly="modal_board_flg">
-									<select class="form-select" id="validationTooltip04" v-model="modal_board_ns" v-if="!modal_board_flg" :value="modalboard.ns_flg">
-										<option value="경상북도">경상북도</option>
-										<option value="경상남도">경상남도</option>
+									<input class="form-control font_air bold" type="text" :value="modalboard.ns_flg" v-if="modal_board_flg" :readonly="modal_board_flg">
+									<select class="form-select font_air bold pointer font_air bold pointer" id="validationTooltip04" v-model="modal_board_ns" v-if="!modal_board_flg" :value="modalboard.ns_flg">
+										<option value="경상북도" class="font_air bold pointer">경상북도</option>
+										<option value="경상남도" class="font_air bold pointer">경상남도</option>
 									</select>
 									<span class="input-group-text">시.군</span>
-									<input class="form-control" type="text" :value="modalboard.states_name" v-if="modal_board_flg" :readonly="modal_board_flg">
+									<input class="form-control font_air bold" type="text" :value="modalboard.states_name" v-if="modal_board_flg" :readonly="modal_board_flg">
 									<!-- 북도 -->
-									<select class="form-select pointer" id="validationTooltip04" required v-model="modal_board_state_n" v-if="modal_board_ns==='경상북도'&&!modal_board_flg">
-										<option>경산시</option>
-										<option>경주시</option>
-										<option>고령군</option>
-										<option>구미시</option>
-										<option>김천시</option>
-										<option>문경시</option>
-										<option>봉화군</option>
-										<option>상주시</option>
-										<option>성주군</option>
-										<option>안동시</option>
-										<option>영덕군</option>
-										<option>영양군</option>
-										<option>영주시</option>
-										<option>영천시</option>
-										<option>울릉군</option>
-										<option>울진군</option>
-										<option>의성군</option>
-										<option>예천군</option>
-										<option>청도군</option>
-										<option>청송군</option>
-										<option>칠곡군</option>
-										<option>포항시</option>
+									<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="modal_board_state_n" v-if="modal_board_ns==='경상북도'&&!modal_board_flg">
+										<option class="font_air bold pointer">경산시</option>
+										<option class="font_air bold pointer">경주시</option>
+										<option class="font_air bold pointer">고령군</option>
+										<option class="font_air bold pointer">구미시</option>
+										<option class="font_air bold pointer">김천시</option>
+										<option class="font_air bold pointer">문경시</option>
+										<option class="font_air bold pointer">봉화군</option>
+										<option class="font_air bold pointer">상주시</option>
+										<option class="font_air bold pointer">성주군</option>
+										<option class="font_air bold pointer">안동시</option>
+										<option class="font_air bold pointer">영덕군</option>
+										<option class="font_air bold pointer">영양군</option>
+										<option class="font_air bold pointer">영주시</option>
+										<option class="font_air bold pointer">영천시</option>
+										<option class="font_air bold pointer">울릉군</option>
+										<option class="font_air bold pointer">울진군</option>
+										<option class="font_air bold pointer">의성군</option>
+										<option class="font_air bold pointer">예천군</option>
+										<option class="font_air bold pointer">청도군</option>
+										<option class="font_air bold pointer">청송군</option>
+										<option class="font_air bold pointer">칠곡군</option>
+										<option class="font_air bold pointer">포항시</option>
 									</select>
 									<!-- 남도 -->
-									<select class="form-select pointer" id="validationTooltip04" required v-model="modal_board_state_s" v-if="modal_board_ns==='경상남도'&&!modal_board_flg">			
-										<option>거제시</option>
-										<option>거창군</option>
-										<option>고성군</option>
-										<option>김해시</option>
-										<option>남해군</option>
-										<option>밀양시</option>
-										<option>사천시</option>
-										<option>산청군</option>
-										<option>양산시</option>
-										<option>의령군</option>
-										<option>진주시</option>
-										<option>창녕군</option>
-										<option>창원시</option>
-										<option>통영시</option>
-										<option>하동군</option>
-										<option>함안군</option>
-										<option>함양군</option>
-										<option>합천군</option>
+									<select class="form-select font_air bold pointer" id="validationTooltip04" required v-model="modal_board_state_s" v-if="modal_board_ns==='경상남도'&&!modal_board_flg">			
+										<option class="font_air bold pointer">거제시</option>
+										<option class="font_air bold pointer">거창군</option>
+										<option class="font_air bold pointer">고성군</option>
+										<option class="font_air bold pointer">김해시</option>
+										<option class="font_air bold pointer">남해군</option>
+										<option class="font_air bold pointer">밀양시</option>
+										<option class="font_air bold pointer">사천시</option>
+										<option class="font_air bold pointer">산청군</option>
+										<option class="font_air bold pointer">양산시</option>
+										<option class="font_air bold pointer">의령군</option>
+										<option class="font_air bold pointer">진주시</option>
+										<option class="font_air bold pointer">창녕군</option>
+										<option class="font_air bold pointer">창원시</option>
+										<option class="font_air bold pointer">통영시</option>
+										<option class="font_air bold pointer">하동군</option>
+										<option class="font_air bold pointer">함안군</option>
+										<option class="font_air bold pointer">함양군</option>
+										<option class="font_air bold pointer">합천군</option>
 									</select>
 								</div>
 								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'">
 									<span class="input-group-text">축제기간</span>
-									<input type="text" class="form-control" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_start_f" :readonly="modal_board_flg">
-									<input type="text" class="form-control" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_end_f" :readonly="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="축제시작 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_start_f" :readonly="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="축제종료 YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_end_f" :readonly="modal_board_flg">
 								</div>
 								<div class="input-group mb-3 d-flex justify-content-evenly" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
 									<div class="form-check form-switch">
 										<input class="form-check-input pointer" type="checkbox" id="admin_parking" v-model="modal_board_chk_flg1" :disabled ="modal_board_flg">
-										<label class="form-check-label pointer" for="admin_parking">주차가능 여부</label>
+										<label class="form-check-label pointer font_air bold pointer" for="admin_parking">주차가능 여부</label>
 									</div>
 									<div class="form-check form-switch">
 										<input class="form-check-input pointer" type="checkbox" id="admin_couple" v-model="modal_board_chk_flg2" :disabled ="modal_board_flg">
-										<label class="form-check-label pointer" for="admin_couple">커플 추천</label>
+										<label class="form-check-label pointer font_air bold pointer" for="admin_couple">커플 추천</label>
 									</div>
 									<div class="form-check form-switch">
 										<input class="form-check-input pointer" type="checkbox" id="admin_friend" v-model="modal_board_chk_flg3" :disabled ="modal_board_flg">
-										<label class="form-check-label pointer" for="admin_friend">친구 추천</label>
+										<label class="form-check-label pointer font_air bold pointer" for="admin_friend">친구 추천</label>
 									</div>
 									<div class="form-check form-switch">
 										<input class="form-check-input pointer" type="checkbox" id="admin_family" v-model="modal_board_chk_flg4" :disabled ="modal_board_flg">
-										<label class="form-check-label pointer" for="admin_family">가족 추천</label>
+										<label class="form-check-label pointer font_air bold pointer" for="admin_family">가족 추천</label>
 									</div>
 								</div>
 								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
 									<span class="input-group-text">입장료</span>
-									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_fee" :readonly ="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_fee" :readonly ="modal_board_flg">
 									<span class="input-group-text">이용시간</span>
-									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_time" :readonly ="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_time" :readonly ="modal_board_flg">
 								</div>
 								<div class="input-group mb-3" v-if="modalboard.main_flg==='축제'||modalboard.main_flg==='관광'">
 									<span class="input-group-text">휴일</span>
-									<input type="text" class="form-control" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_holiday" :readonly ="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="미작성시 연중무휴" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_holiday" :readonly ="modal_board_flg">
 									<span class="input-group-text">전화번호</span>
-									<input type="text" class="form-control" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_tel" :readonly ="modal_board_flg">
+									<input type="text" class="form-control font_air bold" placeholder="미작성시 없음" aria-label="Username" aria-describedby="basic-addon1" v-model="modal_board_tel" :readonly ="modal_board_flg">
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text" >삭제일자</span>
-									<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="this.modalboard.deleted_at" readOnly>
+									<input type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1" v-model="this.modalboard.deleted_at" readOnly>
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -696,20 +697,20 @@
 		<div class="admin_board_header">
 			<div class="col-md-3 position-relative mb-4 admin_board_header1">
 				<label for="validationTooltip1" class="form-label">등록위치</label>
-				<select class="form-select" id="validationTooltip1" required v-model="admin_board_cate1" @change="get_replie(1)">
-					<option value="0">전체</option>
-					<option value="1">축제&관광</option>
-					<option value="2">커뮤니티</option>
+				<select class="form-select font_air bold pointer" id="validationTooltip1" required v-model="admin_board_cate1" @change="get_replie(1)">
+					<option value="0" class="font_air bold pointer">전체</option>
+					<option value="1" class="font_air bold pointer">축제&관광</option>
+					<option value="2" class="font_air bold pointer">커뮤니티</option>
 				</select>
 			</div>
 			<div class="admin_board_header2">
-				<select class="form-select" id="" aria-label="Example select with button addon" v-model="admin_sub_cate1">
-					<option value="0">댓글번호</option>
-					<option value="1">작성자번호</option>
-					<option value="2">게시글번호</option>
-					<option value="3">내용</option>
+				<select class="form-select font_air bold pointer" id="" aria-label="Example select with button addon" v-model="admin_sub_cate1">
+					<option value="0" class="font_air bold pointer">댓글번호</option>
+					<option value="1" class="font_air bold pointer">작성자번호</option>
+					<option value="2" class="font_air bold pointer">게시글번호</option>
+					<option value="3" class="font_air bold pointer">내용</option>
 				</select>
-				<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
+				<input type="text" class="form-control font_air bold" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
 					v-model="admin_sub_input1"
 					@keyup.enter="get_replie(1)"
 				>
@@ -718,7 +719,7 @@
 		</div>	
 		<table class="table table-hover  table-border mb-3">
 			<thead>
-				<tr>
+				<tr class="admin_tr">
 					<th scope="col">댓글번호</th>
 					<th scope="col">작성자번호</th>
 					<th scope="col">게시글번호</th>
@@ -730,13 +731,13 @@
 			</thead>
 			<tbody>
 				<tr v-for="data in replies" :key="data"  data-bs-toggle="modal" data-bs-target="#replieModal" @click="modalreplieget(data.id,data.flg)">
-					<th scope="row" class="admin_table_th">{{ data.id }}</th>
-					<td class="admin_table_th">{{ data.u_id }}</td>
-					<td class="admin_table_th">{{ data.b_id }}</td>
-					<td class="admin_table_td">{{ data.replie }}</td>
-					<td class="admin_table_th">{{ data.flg }}</td>
-					<td class="admin_table_td2">{{ data.created_at }}</td>
-					<td class="admin_table_td2">{{ data.deleted_at }}</td>
+					<th scope="row" class="admin_table_th font_air bold pointer">{{ data.id }}</th>
+					<td class="admin_table_th font_air bold pointer">{{ data.u_id }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.b_id }}</td>
+					<td class="admin_table_td font_air bold pointer">{{ data.replie }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.flg }}</td>
+					<td class="admin_table_td2 font_air bold pointer">{{ data.created_at }}</td>
+					<td class="admin_table_td2 font_air bold pointer">{{ data.deleted_at }}</td>
 				</tr>
 				<div
 					v-if="replies.length < 1"
@@ -751,25 +752,25 @@
 							<div class="modal-body">
 								<div class="input-group mb-1">
 									<span class="input-group-text" id="basic-addon1">댓글번호</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.id }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.id }}</div>
 									<span class="input-group-text" id="basic-addon1">작성자번호</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.u_id }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.u_id }}</div>
 								</div>
 								<div class="input-group mb-1">
 									<span class="input-group-text" id="basic-addon1">게시판번호</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.b_id }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.b_id }}</div>
 									<span class="input-group-text" id="basic-addon1">작성위치</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.type }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.type }}</div>
 								</div>
 								<div class="input-group mb-3">
 									<span class="input-group-text">댓글</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.replie }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.replie }}</div>
 								</div>
 								<div class="input-group mb-1">
 									<span class="input-group-text">작성일</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.created_at }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.created_at }}</div>
 									<span class="input-group-text">삭제여부</span>
-									<div type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.deleted_at }}</div>
+									<div type="text" class="form-control font_air bold" aria-label="Username" aria-describedby="basic-addon1">{{ modalreplie.deleted_at }}</div>
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -807,7 +808,6 @@
 	<!-- 통계페이지 -->
 	<!-- 유저통계 -->
 	<div v-if="mainflg===2&&subflg===0" class="admin_frame">
-		<div>유저 통계</div>
 		<div class="admin_chart_flex center">
 			<div class="admin_chart_line">
 				<div class="font_air bold">현재 회원 연령별 성비(%)</div>
@@ -831,7 +831,6 @@
 	</div>
 	<!-- 조회수통계 -->
 	<div v-if="mainflg===2&&subflg===1" class="admin_frame">
-		<div>조회수 통계</div>
 		<div class="admin_chart_flex center">
 			<div>
 				<div class="font_air bold">각 테마별 평균 조회수</div>
@@ -859,7 +858,6 @@
 	</div>
 	<!-- 좋아요통계 -->
 	<div v-if="mainflg===2&&subflg===2" class="admin_frame">
-		<div>좋아요 통계</div>
 		<div class="admin_comu_label">축제&관광</div>
 		<div class="admin_chart_flex center">
 			<div>
@@ -900,8 +898,9 @@
 	</div>
 	<!-- 답변페이지 -->
 	<div v-if="mainflg===3&&subflg===0" class="admin_frame">
-		
-		건의목록
+		<div class="admin_main_flg">
+			건의목록
+		</div>
 		<div class="admin_category_flex">
 			<div
 				class="pointer"
@@ -933,13 +932,13 @@
 						@click="dataget(data)"
 					>
 						<div class="admin_report_card_header">
-							<h5 class="card-title">건의내용</h5>
-							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.requestarr[data.admin_flg] }}</span>
+							<h5 class="card-title font_air bold">건의내용</h5>
+							<span :class="'font_air bold admin_report_card_header_span'+data.admin_flg">{{ this.requestarr[data.admin_flg] }}</span>
 						</div>
-						<div class="card-text">작성자번호 = {{ data.u_id }}</div>
-						<div class="card-text">제목 = {{ data.title }}</div>
-						<div class="card-text">내용 = {{ data.content }}</div>
-						<div class="card-text">건의시간 = {{ data.created_at }}</div>
+						<div class="font_air bold card-text">작성자번호 = {{ data.u_id }}</div>
+						<div class="font_air bold card-text">제목 = {{ data.title }}</div>
+						<div class="font_air bold card-text">내용 = {{ data.content }}</div>
+						<div class="font_air bold card-text">건의시간 = {{ data.created_at }}</div>
 					</div>
 				</div>
 			</div>
@@ -968,9 +967,11 @@
 	</div>
 	<!-- 신고페이지 -->
 	<div v-if="mainflg===3&&subflg===1" class="admin_frame">
-		신고목록
+		<div class="admin_main_flg">
+			신고목록
+		</div>
 		<div class="admin_category_flex">
-			<div
+			<div	
 				:class="[{ 'admin_header_focus': this.report_flg === '0' }]"
 				class="pointer"
 				@click="reportall('0',1)"
@@ -1000,16 +1001,16 @@
 						@click="reportget(data)"
 					>
 						<div class="admin_report_card_header">
-							<h5 class="card-title">신고한 유저</h5>
-							<span :class="'admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
+							<h5 class="card-title font_air bold">신고한 유저</h5>
+							<span :class="'font_air bold admin_report_card_header_span'+data.admin_flg">{{ this.reportarr[data.admin_flg] }}</span>
 						</div>
-						<div class="card-text">작성자번호 = {{ data.u_id }}</div>
-						<div class="card-text">email = {{ data.email }}</div>
-						<div class="card-text">신고사유 = {{ data.content }}</div>
+						<div class="font_air bold card-text">작성자번호 = {{ data.u_id }}</div>
+						<div class="font_air bold card-text">email = {{ data.email }}</div>
+						<div class="font_air bold card-text">신고사유 = {{ data.content }}</div>
 						<hr>
-						<h5 class="card-title">신고 당한 {{this.reportarr1[data.flg]}}</h5>
-						<div class="card-text">{{this.reportarr1[data.flg]}}번호 = {{ data.b_id }}</div>
-						<div class="card-text">신고시간 = {{ data.created_at }}</div>
+						<h5 class="font_air bold card-title">신고 당한 {{this.reportarr1[data.flg]}}</h5>
+						<div class="font_air bold card-text">{{this.reportarr1[data.flg]}}번호 = {{ data.b_id }}</div>
+						<div class="font_air bold card-text">신고시간 = {{ data.created_at }}</div>
 					</div>
 				</div>
 			</div>
@@ -1040,30 +1041,30 @@
 	<div v-if="mainflg===3&&subflg===2" class="admin_frame">
 		<div class="admin_board_header">
 			<div class="col-md-3 position-relative mb-4 admin_board_header1">
-				<label for="validationTooltip1" class="form-label">유저정렬</label>
-				<select class="form-select" id="validationTooltip1" required v-model="admin_user_cate" @change="searchuser(1)">
-					<option value="0">가입일순</option>
-					<option value="1">탈퇴일순</option>
-					<option value="2">제제횟수순</option>
-					<option value="3">제제기간순</option>
+				<label for="validationTooltip1" class="form-label font_air bold pointer">유저정렬</label>
+				<select class="form-select " id="validationTooltip1" required v-model="admin_user_cate" @change="searchuser(1)">
+					<option value="0" class="font_air bold pointer">가입일순</option>
+					<option value="1" class="font_air bold pointer">탈퇴일순</option>
+					<option value="2" class="font_air bold pointer">제제횟수순</option>
+					<option value="3" class="font_air bold pointer">제제기간순</option>
 				</select>
 			</div>
 			<div class="admin_board_header2">
-				<select class="form-select" id="" aria-label="Example select with button addon" v-model="searchtype">
-					<option value="0">유저번호</option>
-					<option value="1">email</option>
-					<option value="2">이름</option>
+				<select class="form-select font_air bold pointer" id="" aria-label="Example select with button addon" v-model="searchtype">
+					<option value="0" class="font_air bold pointer">유저번호</option>
+					<option value="1" class="font_air bold pointer">email</option>
+					<option value="2" class="font_air bold pointer">이름</option>
 				</select>
-				<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
+				<input type="text" class="form-control font_air bold" aria-label="Text input with dropdown button" placeholder="미입력시 전체정보" 
 					v-model="searchval"
 					@keyup.enter="searchuser(1)"
 				>
 				<button class="btn btn-outline-secondary" type="button" @click="searchuser(1)">검색</button>
 			</div>
 		</div>	
-		<table class="table table-hover  table-border mb-3">
+		<table class="table table-hover  t font_air bold pointerable-border mb-3">
 			<thead>
-				<tr>
+				<tr class="admin_tr">
 					<th scope="col">유저번호</th>
 					<th scope="col">email</th>
 					<th scope="col">이름</th>
@@ -1079,17 +1080,17 @@
 			</thead>
 			<tbody>
 				<tr v-for="data in userdata" :key="data"  data-bs-toggle="modal" data-bs-target="#userModal" @click="modaluserget(data)">
-					<th scope="row" class="admin_table_th">{{ data.id }}</th>
-					<td class="admin_table_th">{{ data.email }}</td>
-					<td class="admin_table_th">{{ data.name }}</td>
-					<td class="admin_table_th">{{ data.nick }}</td>
-					<td class="admin_table_th">{{ data.phone }}</td>
-					<td class="admin_table_th">{{ data.gender }}</td>
-					<td class="admin_table_th">{{ data.birthdate }}</td>
-					<td class="admin_table_td2">{{ data.created_at }}</td>
-					<td class="admin_table_td2">{{ data.deleted_at }}</td>
-					<td class="admin_table_th">{{ data.cnt }}</td>
-					<td class="admin_table_td2">{{ data.restraint_at }}</td>
+					<th scope="row" class="admin_table_th font_air bold pointer">{{ data.id }}</th>
+					<td class="admin_table_th font_air bold pointer">{{ data.email }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.name }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.nick }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.phone }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.gender }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.birthdate }}</td>
+					<td class="admin_table_td2 font_air bold pointer">{{ data.created_at }}</td>
+					<td class="admin_table_td2 font_air bold pointer">{{ data.deleted_at }}</td>
+					<td class="admin_table_th font_air bold pointer">{{ data.cnt }}</td>
+					<td class="admin_table_td2 font_air bold pointer">{{ data.restraint_at }}</td>
 				</tr>
 				<div
 					v-if="userdata.length < 1"
@@ -1104,72 +1105,72 @@
 							<div class="modal-body">
 									<div class="input-group mb-3">
 										<span class="input-group-text">작성자번호</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.id }}
 										</div>
 										<span class="input-group-text">이메일</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.email }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">이름</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.name }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">닉네임</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.nick }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">생년월일</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.birthdate }}
 										</div>
 										<span class="input-group-text">전화번호</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.phone }}
 										</div>
 										<span class="input-group-text">성별</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.gender }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">가입일자</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.created_at }}
 										</div>
 										<span class="input-group-text">탈퇴일자</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.deleted_at }}
 										</div>
 									</div>
 									<div class="input-group mb-1">
 										<span class="input-group-text">재제당한횟수</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.cnt }}
 										</div>
 										<span class="input-group-text">재제사유</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.restraint }}
 										</div>
 									</div>
 									<div class="input-group mb-3"> 	
 										<span class="input-group-text">재제종료일</span>
-										<div type="text" class="form-control">
+										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.restraint_at }}
 										</div>
 									</div>
 									<div class="input-group mb-3">
 										<span class="input-group-text">관리자등급</span>
-										<div v-if="modaluser.flg === '일반유저'" type="text" class="form-control">
+										<div v-if="modaluser.flg === '일반유저'" type="text" class="form-control font_air bold">
 											{{ this.modaluser.flg }}
 										</div>
-										<div v-else type="text" class="form-control">
+										<div v-else type="text" class="form-control font_air bold">
 											{{ this.modaluser.flg }}
 										</div>
 									</div>
@@ -1201,7 +1202,7 @@
 															<option class=" font_air bold">악성 행위 및 고의적인 피해</option>
 															<option class=" font_air bold">기타</option>
 														</select>
-														<input class="form-control" type="text" placeholder="직접 입력 20자 내외"
+														<input class="form-control font_air bold" type="text" placeholder="직접 입력 20자 내외"
 															maxlength="20" aria-label="default input example" v-if="restraintinput" v-model="restraint_msg2">
 													</div>
 												

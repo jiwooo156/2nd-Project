@@ -11,34 +11,10 @@
 					</div>
 				</div>
 			</div>
-			<div>
-				<!-- <div class="font_air bold center detail_place">
+				<div>
+				<div class="font_air bold center detail_place">
 					장소 : {{this.detaildata.place}}
 				</div>
-				<div class="font_air bold center detail_place">
-					주차 : {{this.detaildata.parking_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					커플 : {{this.detaildata.couple_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					친구 : {{this.detaildata.friend_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					가족 : {{this.detaildata.family_flg}}
-				</div>
-				<div class="font_air bold center detail_place">
-					요금 : {{this.detaildata.fee}}
-				</div>
-				<div class="font_air bold center detail_place">
-					운영시간 : {{this.detaildata.time}}
-				</div>
-				<div class="font_air bold center detail_place">
-					휴일 : {{this.detaildata.holiday}}
-				</div>
-				<div class="font_air bold center detail_place">
-					전화번호 : {{this.detaildata.tel}}
-				</div> -->
 				<div 
 					v-if="this.detaildata.main_flg==='축제'"
 					class="font_air bold center detail_tofrom"
@@ -105,15 +81,19 @@
 							</div>
 							<div class="detail_parking_flg
 							detail_content font_air bold">
-								#요금{{detaildata.fee}}
+								#요금 : {{detaildata.fee}}
 							</div>
 							<div class="detail_parking_flg
 							detail_content font_air bold">
-								#운영시간{{detaildata.time}}
+								#운영시간 : {{detaildata.time}}
 							</div>
 							<div class="detail_parking_flg
 							detail_content font_air bold">
-								#{{detaildata.holiday}}
+								#휴일 : {{detaildata.holiday}}
+							</div>
+							<div class="detail_parking_flg
+							detail_content font_air bold">
+								#전화번호 : {{this.detaildata.tel}}
 							</div>
 						</div>	
 					</div>

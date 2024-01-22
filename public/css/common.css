@@ -1752,7 +1752,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 0.9rem;
 }
 .write_header_title {
 	display: block;
@@ -2346,7 +2345,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     justify-content: space-between;
     height: 330px;
     border-radius: 20px;
-    padding: 20px;
+	padding: 24px;
 }
 .admin_container_box4 textarea{
 	height: 100px;
@@ -2355,6 +2354,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.admin_main_flg {
+    font-size: 34px;
+    color: black;
+}
+.admin_tr{
+	font-size: 17px;
 }
 .admin_main_chart2_flex select{
 	width: 100px;
@@ -2558,6 +2564,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .admin_header_focus{
 	color:#0047f8ba;
+}
+.admin_insert_select{
+	padding: 0px;
 }
 /* 커뮤니티 정보게시판 시작 */
 .info_frame {
