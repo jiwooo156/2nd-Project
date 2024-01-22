@@ -29,21 +29,16 @@ class AdminController extends Controller
     // 어드민페이지 시작
     public function adminchk(Request $req)
     {
-        Log::debug("함수진입");
         $chk = Admin::where('u_id',Auth::user()->id)
                 ->get();
-        Log::debug("이걸봐요".$chk);
         if($req->id==Auth::user()->id && $req->nick === Auth::user()->nick && $req->email === Auth::user()->email && count($chk)>0){
             // 오늘 탈퇴자수
-            Log::debug("함수진입1");
             $out = User::withTrashed()
                 ->where('deleted_at', '>=', $req->today)
                 ->count();
             // 오늘 가입자수
-            Log::debug("함수진입2");
             $in = User::where('created_at','>=', $req->today)
                 ->count();
-                Log::debug("함수진입3");
             $datacnt = Community::
                 select('users.email','community.*')
                 ->where('community.flg', "3")
@@ -51,7 +46,6 @@ class AdminController extends Controller
                 ->where('community.admin_flg', 0)
                 ->orderby('community.created_at','asc')
                 ->count();
-                Log::debug("함수진입4");
             // 신고목록
             $reportcnt = Report::
                 select('users.email','reports.*')
@@ -59,7 +53,6 @@ class AdminController extends Controller
                 ->join('users', 'reports.u_id', '=', 'users.id')
                 ->orderby('reports.created_at','asc')
                 ->count();
-            Log::debug("여기도착");
             $result = DB::table('users')
                 ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') AS month")
                 ->selectRaw("COUNT(*) AS in_cnt")
@@ -75,10 +68,7 @@ class AdminController extends Controller
                 ->where('created_at', '>=', now()->subMonths(6))
                 ->groupBy('month')
                 ->orderByDesc('month')
-                ->get();
-                Log::debug("함수종료");
-            Log::debug($result);
-        
+                ->get();  
             return response()->json([
                 'code' => '0',
                 'sign_cnt' => $in,
@@ -128,7 +118,6 @@ class AdminController extends Controller
                 DB::raw('COUNT(*) as cnt,2 as num')
             )->groupBy('time');
         if ($req->flg === "0") {
-            Log::debug("진입");
             $like->where('created_at', '>=', now()->subWeek());
             $replie->where('created_at', '>=', now()->subWeek());
             $board->where('created_at', '>=', now()->subWeek());
@@ -146,7 +135,6 @@ class AdminController extends Controller
             $board->where('created_at', '>=', now()->subYear());
         }
         $result = $like->union($replie)->union($board)->get();
-        Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result,
@@ -154,28 +142,21 @@ class AdminController extends Controller
     }
     // modal용 report data획득
     public function reportget(Request $req){
-        Log::debug($req);
-        Log::debug($req->flg);
         if($req->flg==="0"){
-            Log::debug('이프진입');
             $data = Community::withTrashed()
             ->select('users.email','community.*','reports.restraint_at')
             ->where('community.id',$req->b_id)
             ->join('users', 'community.u_id', '=', 'users.id')
             ->leftjoin('reports', 'community.u_id', '=', 'reports.r_id')
             ->first();
-            Log::debug($data);
         }else{
-            Log::debug('엘스진입');
             $data = Replie::withTrashed()
             ->select('users.email','replies.*','reports.restraint_at')
             ->where('replies.id',$req->b_id)
             ->join('users', 'replies.u_id', 'users.id')
             ->leftjoin('reports', 'replies.u_id', 'reports.r_id')
             ->first();
-            Log::debug($data);
         }
-        Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -298,7 +279,6 @@ class AdminController extends Controller
     }
     // 전체유저조회
     public function userget(Request $req){
-        Log::debug($req);
         $case = ['id', 'email','name'];
         $case1 = ['created_at', 'deleted_at','cnt', 'restraint_at'];
         
@@ -341,8 +321,6 @@ class AdminController extends Controller
         $data = $data
             ->groupBy('users.id', 'users.email', 'users.name', 'users.nick', 'users.phone', 'users.gender', 'users.birthdate', 'users.created_at', 'users.deleted_at')
             ->paginate(10);
-        
-        Log::debug($data);
         if(!empty($data)){
             return response()->json([
                 'code' => '0',
@@ -459,7 +437,6 @@ class AdminController extends Controller
             })
             ->orderby('reports.created_at','desc')
             ->paginate(8);
-        Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -1018,7 +995,6 @@ class AdminController extends Controller
             }
         })
         ->orderBy('created_at', 'desc')->paginate(10);
-        Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result
@@ -1026,7 +1002,6 @@ class AdminController extends Controller
     }
     // 보드상세정보 조회
     public function boardmodalget(Request $req){
-        Log::debug("진입");
         if($req->type==="축제게시판"||$req->type==="관광게시판"){
             $result =  Info::withTrashed()->where('id',$req->id)
             ->first();
@@ -1034,7 +1009,6 @@ class AdminController extends Controller
             $result = Community::withTrashed()->where('id',$req->id)
             ->first();
         }
-        Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result,
@@ -1065,7 +1039,6 @@ class AdminController extends Controller
     }
     // 보드상세정보 수정
     public function boardmodalpost(Request $req){
-        Log::debug($req);
         try {
             // 트랜잭션시작
             DB::beginTransaction();
@@ -1238,11 +1211,9 @@ class AdminController extends Controller
     }
     // 댓글상세정보 조회
     public function repliemodalget(Request $req){
-        Log::debug("함수진입");
         $result =  Replie::withTrashed()->where('id',$req->id)
         ->first();
         $result->type = $req->type;
-        Log::debug($result);
         return response()->json([
             'code' => '0',
             'data' => $result,
@@ -1292,7 +1263,6 @@ class AdminController extends Controller
     public function adminpost(Request $req){
         try {
             DB::beginTransaction();
-            Log::debug($req->val);
                 $data = [];
                 $data['u_id'] = $req->id;
                 $data['flg'] = $req->val==="1"?"1":"0";

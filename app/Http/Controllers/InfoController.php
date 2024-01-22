@@ -252,9 +252,6 @@ class InfoController extends Controller
     }
     // 댓글 추가조회    
     public function morereplie(Request $req) {
-        Log::debug("***** 댓글 시작 *****");
-        Log::debug("댓글 b_id : ".$req->b_id);
-        Log::debug("오프셋 : ".$req->offset);
         // 리퀘스트온 값을토대로 20개의 데이터 조회
         $replie_result = Replie::
             select('users.email','replies.id', 'users.nick', 'replies.replie', 'replies.created_at')
@@ -264,19 +261,14 @@ class InfoController extends Controller
             ->limit(20)
             ->offset($req->offset)
             ->get();
-            Log::debug("결과 : ".$replie_result);
-            Log::debug("결과 : ".count($replie_result));
         // 조회결과 있을시
         if($replie_result){
-            Log::debug("여기는 if");
             return response()->json([
                 'code' => '0',
                 'data' => $replie_result,
             ], 200);
-            Log::debug($replie_result);
         // 조회결과 없거나 실패일 시
         }else{
-            Log::debug("엘스");
             return response()->json([
                 'code' => 'E99',
                 'errorMsg' => '댓글 조회에 실패하였습니다',
@@ -473,7 +465,6 @@ class InfoController extends Controller
     }
     // 검색 축제 더보기
     public function moresearchf(Request $req) {
-        Log::debug($req->offset);
         $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->where('main_flg','축제')
@@ -500,9 +491,7 @@ class InfoController extends Controller
     public function userlikeget(Request $req) {
         $auth = Auth::user();
         // 축제
-        Log::debug($req);
         if($req->flg === "0"){
-            Log::debug("진입1");
             $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
                 ->join('infos','likes.b_id','infos.id')
                 ->where('infos.main_flg','축제')
@@ -510,14 +499,12 @@ class InfoController extends Controller
                 ->where('likes.l_flg','1')
                 ->orderby('infos.start_at','desc');
         }else if($req->flg === "1"){
-            Log::debug("진입2");
             $data = Like::select('infos.id','infos.title','infos.img1 as img','infos.start_at','infos.end_at','infos.main_flg as flg')
             ->join('infos','likes.b_id','infos.id')
             ->where('infos.main_flg','관광')
             ->where('likes.flg','0')
             ->where('likes.l_flg','1');
         }else if($req->flg === "2"){
-            Log::debug("진입3");
             $data = Like::select('community.id', 'community.title', 'community.flg','community.created_at')
                 ->join('community', 'likes.b_id', 'community.id')
                 ->where('likes.flg', '1')
@@ -531,7 +518,6 @@ class InfoController extends Controller
                     'data' => $data,
                 ],200);
         }
-        Log::debug($auth->id);
             $data = $data
                 ->where('likes.u_id',$auth->id)
                 ->orderby('likes.created_at','desc')
@@ -562,7 +548,6 @@ class InfoController extends Controller
             $data = $data
                 ->orderby('created_at','desc')
                 ->paginate(8);
-                Log::debug($data);
         return response()->json([
             'code' => '0',
             'data' => $data,
@@ -722,8 +707,6 @@ class InfoController extends Controller
             ->orderBy('replies.created_at', 'desc')
             ->limit(20)
             ->get();
-            Log::debug("댓글갯수 : ".$repliecnt);
-            Log::debug("댓글 : ".$replieresult);
             return response()->json([
                 'code' => '0',
                 'data' => $communityresult,
@@ -793,14 +776,9 @@ class InfoController extends Controller
 
     // 0116 정지우 좋아요 작성
     public function plusheart(Request $req) {
-        Log::debug("plusheart 함수 시작");
-        Log::debug($req);
-
         // 리퀘스트 온 값 data에 저장
         $data = $req->only('b_id', 'flg');
         $data["u_id"] = Auth::user()->id;
-        Log::debug($data);
-
         // 로그인 여부 확인
         if (auth()->check()) {
             $auth_id = auth()->id();
@@ -811,42 +789,30 @@ class InfoController extends Controller
                 $likehistory = Like::where('u_id', $auth_id)
                     ->where('b_id', $req->b_id)
                     ->first();
-                Log::debug("결과");
-                Log::debug($likehistory);
-
                 // 좋아요 이력이 없으면 생성, 있으면 플래그변경
                 if (!$likehistory) {
-                    Log::debug("없을때");
                     // data 정보를 커뮤니티 테이블에 인서트
                     $result = Like::create($data);
                     $likehistory = true;
                 } else if ($likehistory->l_flg === '0') {
-                    Log::debug("0일때");
                     $result = Like::where('u_id', $auth_id)
                     ->where('b_id', $req->b_id)
                     ->update(['l_flg'=>'1']);
-                    Log::debug('여기는 업데이트야'. $result);
                     $likehistory = true;
                 } else {
-                    Log::debug('여기는 삭제야');
                     $result = Like::where('u_id', $auth_id)
                     ->where('b_id', $req->b_id)
                     ->update(['l_flg'=>'0']);
-                    Log::debug('여기는 삭제야'. $result);
                     $likehistory = false;
                 }
-
                 // 저장
                 DB::commit();
-                Log::debug($likehistory);
-        
                 return response()->json([
                     'code' => '0',
                     'data' => $result,
                     'likeflg' => $likehistory
                 ], 200);
             } catch (Exception $e) {
-                Log::debug("plusheart catch");
                 // 롤백
                 DB::rollback();
 
@@ -856,7 +822,6 @@ class InfoController extends Controller
                 ], 200);
             }
         } else {
-            Log::debug("로그인 상태 아님");
             // 로그인되어 있지 않으면 에러 응답
             return response()->json([
                 'code' => 'E99',
@@ -919,7 +884,6 @@ class InfoController extends Controller
 
         $informresult->get();
         $informresult = $informresult->paginate(12);
-        Log::debug($informresult);
         return response()->json([
             'code' => '0',
             'data' => $informresult,
@@ -1103,7 +1067,6 @@ class InfoController extends Controller
             ->where('flg',$req->flg)
             ->first();
         if(!empty($result)){
-            Log::debug("여기진입");
             return response()->json([
                 'code' => '1',
             ], 200);
