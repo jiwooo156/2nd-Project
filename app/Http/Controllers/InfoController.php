@@ -518,11 +518,18 @@ class InfoController extends Controller
             ->where('likes.l_flg','1');
         }else if($req->flg === "2"){
             Log::debug("진입3");
-            $data = Like::select('community.id', 'community.title', 'community.flg')
+            $data = Like::select('community.id', 'community.title', 'community.flg','community.created_at')
                 ->join('community', 'likes.b_id', 'community.id')
                 ->where('likes.flg', '1')
                 ->where('likes.l_flg', '1')
-                ->whereNull('community.deleted_at');
+                ->whereNull('community.deleted_at')
+                ->where('likes.u_id',$auth->id)
+                ->orderby('likes.created_at','desc')
+                ->paginate(5);
+                return response()->json([
+                    'code' => '0',
+                    'data' => $data,
+                ],200);
         }
         Log::debug($auth->id);
             $data = $data

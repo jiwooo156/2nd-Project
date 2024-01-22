@@ -1267,9 +1267,9 @@ margin-top:10px;
     max-width: 1000px;
 	margin: 15px auto;
 }
-.userchk_header_focus{
-	font-size: 1.2em;
-	color: #ff9696ba;
+.userchk_header_focus {
+    font-size: 1.2em;
+    color: #1a2eacba;
 }
 .userchk_select {
     font-size: 1em;
