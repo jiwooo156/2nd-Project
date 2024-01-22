@@ -326,6 +326,7 @@ export default {
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
+						console.log("테스트1"+res.data.likeresult)
 						// console.log('좋아요 누른 이력 : '+this.likeflg);
 						// console.log('좋아요 누른 이력 : '+this.likeresult);
 					} else if (res.data.data[0].flg === "3" && res.data.data[0].notice_flg === "1") {
@@ -334,6 +335,7 @@ export default {
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
+						console.log("테스트1"+res.data.likeresult)
 						// console.log('디테일 data : '+this.detaildata.flg);
 						// console.log('좋아요 누른 이력 : '+this.likeflg);
 					} else if (["0", "1", "2"].includes(res.data.data[0].flg)){
@@ -342,6 +344,7 @@ export default {
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
+						console.log("테스트1"+res.data.likeresult)
 						// console.log('디테일 data : '+this.detaildata.flg);
 						// console.log('좋아요 누른 이력 : '+this.likeflg);	
 					} else {

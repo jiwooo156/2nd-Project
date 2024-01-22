@@ -343,6 +343,7 @@ export default {
 					this.likeflg = res.data.likeresult;
 					this.content = res.data.data[0].content;
 					console.log("댓글 : "+this.repliedata);
+					console.log("댓글 : "+this.repliedata);
 					console.log("댓글갯수 : "+this.repliecount);
 				}else if(res.data.code==="E99"){
 					Swal.fire({

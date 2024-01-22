@@ -607,20 +607,6 @@ class InfoController extends Controller
         ->where('community.notice_flg', "0")
         ->where('community.deleted_at', null);
 
-        $infocnt = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->leftjoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
-        ->where('community.deleted_at', null);
-
         $noticeresult = Community::select(
             'community.id',
             'community.category_flg',
@@ -654,14 +640,11 @@ class InfoController extends Controller
         }
 
         $informresult->get();
-        $infocnt = $informresult->count();
-
         $informresult = $informresult->paginate(10);
         
         return response()->json([
             'code' => '0',
             'information' => $informresult,
-            'infocnt' => $infocnt,
             'noticedata' => $noticeresult,
         ], 200);          
     }
@@ -702,6 +685,7 @@ class InfoController extends Controller
             $auth_id = $auth->id;
             $result = Like::where('u_id',$auth_id)
             ->where('b_id',$req->id)
+            ->where('l_flg','1')
             ->exists();
         }
         
@@ -820,24 +804,21 @@ class InfoController extends Controller
         // 로그인 여부 확인
         if (auth()->check()) {
             $auth_id = auth()->id();
-
             try {
                 // 트랜잭션 시작
                 DB::beginTransaction();
-                // 해당 유저의 like 이력 조회 (있으면 true, 없으면 false)
-                
+                // 해당 유저의 like 이력 조회 
                 $likehistory = Like::where('u_id', $auth_id)
-                ->where('b_id', $req->b_id)
-                ->first();
+                    ->where('b_id', $req->b_id)
+                    ->first();
                 Log::debug("결과");
                 Log::debug($likehistory);
 
-                // 좋아요 이력이 없으면 생성, 있으면 삭제
+                // 좋아요 이력이 없으면 생성, 있으면 플래그변경
                 if (!$likehistory) {
                     Log::debug("없을때");
                     // data 정보를 커뮤니티 테이블에 인서트
                     $result = Like::create($data);
-                    Log::debug('여기는 생성이야'. $result);
                     $likehistory = true;
                 } else if ($likehistory->l_flg === '0') {
                     Log::debug("0일때");
@@ -898,23 +879,9 @@ class InfoController extends Controller
             DB::raw('COALESCE(lik.cnt, 0) as cnt')
         )
         ->leftJoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.flg', $req->flg)
         ->where('community.notice_flg', "0")
-        ->whereNull('community.deleted_at');
-
-        $infocnt = Community::select(
-            'community.id',
-            'community.category_flg',
-            'community.title',
-            'community.created_at',
-            'community.hits',
-            'users.nick',
-            DB::raw('COALESCE(lik.cnt, 0) as cnt')
-        )
-        ->leftJoin('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
-        ->where('community.flg', $req->flg)
         ->whereNull('community.deleted_at');
 
         $noticeresult = Community::select(
@@ -951,14 +918,11 @@ class InfoController extends Controller
         }
 
         $informresult->get();
-        $infocnt = $informresult->count();
-
         $informresult = $informresult->paginate(12);
-
+        Log::debug($informresult);
         return response()->json([
             'code' => '0',
             'data' => $informresult,
-            'infocnt' => $infocnt,
             'noticedata' => $noticeresult,
         ], 200);          
     }
@@ -968,7 +932,7 @@ class InfoController extends Controller
         // 리퀘스트온 아이디값으로 커뮤니티테이블 조회
         $com_result = community::
         join('users', 'community.u_id', '=', 'users.id')
-        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
+        ->leftJoin(DB::raw('(SELECT b_id, COUNT(b_id) as cnt FROM likes WHERE flg = 1 AND l_flg = 1 GROUP BY b_id) lik'), 'community.id', '=', 'lik.b_id')
         ->where('community.id',$req->id)
         ->select('community.*', 'users.nick', 'users.email', DB::raw('COALESCE(lik.cnt, 0) as cnt'))
         ->get();
@@ -983,6 +947,7 @@ class InfoController extends Controller
             $auth_id = $auth->id;
             $result = Like::where('u_id',$auth_id)
             ->where('b_id',$req->id)
+            ->where('l_flg','1')
             ->exists();
         }
 
@@ -1023,6 +988,7 @@ class InfoController extends Controller
                 'data' => $com_result,
                 'replie' => $replie_result,
                 'repliecount' => $replie_count,
+                'likeresult' => $result,
             ], 200)->cookie('hits'.$req->id,'hits'.$req->id, 1);
         // 조회된값이 없거나 실패일시
         }else{
