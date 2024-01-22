@@ -8,9 +8,7 @@ import Swal from 'sweetalert2';
 export default {
 	created() {
 		// this.kakaologin();
-		console.log("시작")
 		this.$store.dispatch('actionLoginKakao');
-		console.log("시작")
 	},
 	mounted() {
 	},

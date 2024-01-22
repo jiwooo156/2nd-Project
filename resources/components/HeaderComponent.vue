@@ -156,7 +156,6 @@ export default {
             this.$store.dispatch('actionLogout');
         },
         closeheader(){
-			console.log('클릭진입');
             document.querySelector('.navbar-toggler').click();	
         },
 	}

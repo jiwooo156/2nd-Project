@@ -76,22 +76,18 @@ export default {
         }
     },
     beforeCreate() {
-        console.log('비포크리에이트');
     },
     created() {
-        console.log('크리에이트');
         this.loginchk();
         this.localStoragechk();
         this.$store.commit('setLoading',true);
     },
     created() {
-        console.log('크리에이트');
         this.loginchk();
         this.localStoragechk();
         this.$store.commit('setLoading',true);
     },
     updated(){
-        console.log('업데이트');
         this.localStoragechk();
     },
     mounted(){
