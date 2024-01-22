@@ -2002,6 +2002,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	justify-content: space-between;
   	align-items: flex-end;
 }
+.qna_header_bot_2 {
+	border-bottom: 1px solid #d2d2d2;
+	display: flex;
+	justify-content: space-between;
+  	align-items: flex-end;
+}
+.qna_header_l {
+	margin-bottom: 0.5rem;
+}
 .qna_drop {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
@@ -2059,6 +2068,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	font-family: 'Cafe24SsurroundAir';
 	font-weight: bold;
 	color: #494949;
+	margin-bottom: 1rem;
 }
 .qna_header_r span{
 	color: #D14C6C;
