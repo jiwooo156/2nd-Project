@@ -1,120 +1,46 @@
 <template lang="">
-	<!-- <div class="detail_frame">
-		<div class="detail_container">
-			<div class="detail_header_flex">
-					<div class=" detail_type center">
-						<div><h2 class="write_header_title">게시글 작성</h2></div>
-						<br>
-						<div class="write_sort">
-							<h3>게시판?</h3>					
-							<select v-model="flg" name="flg" class="form-select write_drop" @click="checklocal" aria-label=".form-select-sm">
-								<option value="0" class="qna_drop_item" selected>자유게시판</option>
-								<option value="1" class="qna_drop_item">정보게시판</option>
-								<option value="2" class="qna_drop_item">질문게시판</option>
-								<option value="3" class="qna_drop_item">건의게시판</option>
-							</select>
-							<h3>카테고리?</h3>			
-							<select v-model="categoryflg" name="categoryflg" class="form-select write_drop" @click="checklocal" aria-label=".form-select-sm">
-								<option value="0" class="qna_drop_item" selected>축제</option>
-								<option value="1" class="qna_drop_item">관광</option>
-								<option value="2" class="qna_drop_item">기타</option>
-							</select>
-						</div>
-					</div>
-
-				<div class="detail_header font_air bold">
-					<div class="write_title write_box1">
-						<span class="write_title">제목 작성</span>
-						<textarea type="text" maxlength="50"
-						name="title"
-						@click="checklocal"
-						@input="changeKeyword"
-						placeholder="제목을 입력하세요."
-						v-model="title"
-						></textarea>
-					</div>
-					
-				</div>
-				
-				<div class="input-group mb-3 align-items-center">
-					<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
-					<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
-					<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
-				</div>
-
-			<div class="detail_body">
-				<div class="write_box1">
-					<span class="write_title">내용 작성</span>
-					<textarea type="text" maxlength="3000"
-					name="content" 
-					@click="checklocal"
-					@input="changeKeyword"
-					placeholder="내용을 입력하세요."
-					v-model="content"
-					class="detail_content font_air bold"
-					></textarea>
-				</div>					
+	<div class="write_frame">
+		<div class="write_container">
+			<div class="write_headertitle">
+				<h1>게시글 작성</h1>
 			</div>
-
-				<div class="post_btn_bot">
-					<button type="button" @click="commuWrite()">작성</button>
-					<button type="button" @click="goBack">취소</button>
+			<div class="write_flgframe">
+				<div class="col-md-3 position-relative mb-3">
+					<label for="writeflg" class="form-label">게시판</label>
+					<select class="form-select" id="writeflg" v-model="flg" name="flg">
+						<option value="0">자유게시판</option>
+						<option value="1">정보게시판</option>
+						<option value="2">질문게시판</option>
+						<option value="3">건의게시판</option>
+					</select>
+				</div>
+				<div class="col-md-3 position-relative mb-3">
+					<label for="writeflg" class="form-label">카테고리</label>
+					<select class="form-select" id="writeflg" v-model="categoryflg" name="flg">
+						<option value="0" class="qna_drop_item" selected>축제</option>
+						<option value="1" class="qna_drop_item">관광</option>
+						<option value="2" class="qna_drop_item">기타</option>
+					</select>
 				</div>
 			</div>
-		</div>
-	</div> -->
-
-
-	<div class="admin_frame">
-		<div class="write_headertitle">
-			<h1>게시글 작성</h1>
-		</div>
-		<div class="col-md-3 position-relative mb-3">
-			<label for="writeflg" class="form-label">게시판</label>
-			<select class="form-select" id="writeflg" v-model="flg" name="flg">
-				<option value="0">자유게시판</option>
-				<option value="1">정보게시판</option>
-				<option value="2">질문게시판</option>
-				<option value="3">건의게시판</option>
-			</select>
-		</div>
-		<div class="col-md-3 position-relative mb-3">
-			<label for="writeflg" class="form-label">카테고리</label>
-			<select class="form-select" id="writeflg" v-model="categoryflg" name="flg">
-				<option value="0" class="qna_drop_item" selected>축제</option>
-				<option value="1" class="qna_drop_item">관광</option>
-				<option value="2" class="qna_drop_item">기타</option>
-			</select>
-		</div>
-		<div class="input-group mb-1">
-			<span class="input-group-text" id="basic-addon1">제목</span>
-			<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="title">
-		</div>
-		<div class="input-group mb-1">
-			<span class="input-group-text">내용</span>
-			<textarea class="form-control" aria-label="With textarea" v-model="content"></textarea>
-		</div>
-		<!-- 이미지 입력 및 미리보기 -->
-		<div class="input-group mb-3 align-items-center">
-			<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
-			<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
-			<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
-			<!-- <input id="admin_file_img1" class="form-control" type="file" accept="image/*" @change="setThumbnail">
-			<input id="admin_file_img2" class="form-control" type="file" accept="image/*" @change="setThumbnail">
-			<input id="admin_file_img3" class="form-control" type="file" accept="image/*" @change="setThumbnail"> -->
-			<!-- <div class="image-container">
-      			<img :src="thumbnailSrc[0]" alt="Thumbnail" v-if="thumbnailSrc[0]" />
-    		</div>
-			<div class="image-container">
-      			<img :src="thumbnailSrc[1]" alt="Thumbnail" v-if="thumbnailSrc[1]" />
-    		</div>
-			<div class="image-container">
-      			<img :src="thumbnailSrc[2]" alt="Thumbnail" v-if="thumbnailSrc[2]" />
-    		</div> -->
-		</div>
-		<div class="write_btnframe">
-			<button class="pointer write_btn" @click="commuWrite">작성</button>
-			<button class="pointer write_btn" @click="goBack">취소</button>
+			
+			<div class="input-group mb-1">
+				<span class="input-group-text" id="basic-addon1">제목</span>
+				<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="title">
+			</div>
+			<div class="input-group mb-1">
+				<span class="input-group-text">내용</span>
+				<textarea class="form-control" aria-label="With textarea" v-model="content"></textarea>
+			</div>
+			<div class="input-group mb-3 align-items-center write_input_group">
+				<input id="write_file_img1" class="form-control write_form" type="file" accept="image/*">
+				<input id="write_file_img2" class="form-control write_form" type="file" accept="image/*">
+				<input id="write_file_img3" class="form-control write_form" type="file" accept="image/*">
+			</div>
+			<div class="write_btnframe">
+				<button class="pointer write_btn" @click="commuWrite">작성</button>
+				<button class="pointer write_btn" @click="goBack">취소</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -165,9 +91,9 @@ export default {
 			this.$store.commit('setLoading',true);
 			const URL = '/commuwrite';
 			// const uploadFile = event.target.files[0]
-			let img1 = document.querySelector('#admin_file_img1');
-			let img2 = document.querySelector('#admin_file_img2');
-			let img3 = document.querySelector('#admin_file_img3');
+			let img1 = document.querySelector('#write_file_img1');
+			let img2 = document.querySelector('#write_file_img2');
+			let img3 = document.querySelector('#write_file_img3');
 			const formData = new FormData();
 			formData.append('title', this.title);
 			formData.append('content', this.content);

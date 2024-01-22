@@ -2777,8 +2777,24 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* 작성페이지 */
+.write_frame {
+	background-color: #f8f9fa;
+    min-height: 100vh;
+	width: 100%;
+}
+.write_container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 .write_headertitle {
+	margin-top: 100px;
 	text-align: center;
+    padding: 50px 0;
+}
+.write_flgframe {
+	display: flex;
+	justify-content: space-between;
 }
 .write_btnframe {
 	display: flex;
@@ -3682,6 +3698,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	.userchk_select {
 		font-size: 14px;
 		width: 110px;
+	}
+	.write_input_group {
+		display: flex;
+		flex-direction: column;
+	}
+	#write_file_img1,#write_file_img2,#write_file_img3  {
+		width: 100%;
 	}
 }
 
