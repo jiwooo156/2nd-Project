@@ -1928,6 +1928,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	display: flex;
 	justify-content: space-between;
 	padding-bottom: 0.5rem;
+	margin-top: 0.9rem;
 }
 .detail_com_tofrom {
 	margin: 0;
@@ -2759,8 +2760,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .community_like {
 	vertical-align: middle;
 	line-height: 1rem;
-	font-size: 1.1rem;
-	margin-right: 0.4rem;
+	font-size: 1rem;
+	margin-right: 0.2rem;
 }
 .community_heart {
 	display: inline-block;

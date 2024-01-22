@@ -60,13 +60,13 @@
 					</thead>
 					<tbody>
 						<tr v-for="notice in noticedata" :key="notice" v-if="this.noticedata&&this.page === 1" class="info_notice pointer font_air bold" @click="$router.push('/community?id='+notice.id)">
-							<td class="col_hidden">{{ notice.id }}</td>
-							<td>공지사항</td>
-							<td class="info_title">{{ notice.title }}</td>
-							<td>관리자</td>
-							<td>{{ formatEventDate(notice.created_at) }}</td>
-							<td class="col_hidden">{{ notice.hits }}</td>
-							<td class="col_hidden">{{ notice.cnt }}</td>
+							<td class="col_hidden font_air bold">{{ notice.id }}</td>
+							<td class="font_air bold">공지사항</td>
+							<td class="info_title font_air bold">{{ notice.title }}</td>
+							<td class="font_air bold">관리자</td>
+							<td class="font_air bold">{{ formatEventDate(notice.created_at) }}</td>
+							<td class="col_hidden font_air bold">{{ notice.hits }}</td>
+							<td class="col_hidden font_air bold">{{ notice.cnt }}</td>
 						</tr>
 						<tr v-for="infodata in infolist" :key="infodata" class="pointer font_air bold" @click="$router.push('/community?id='+infodata.id)">
 							<td class="col_hidden font_air bold">{{ infodata.id }}</td>
@@ -81,7 +81,7 @@
 				</table>
 			</div>
 			<div class="d-flex flex-row-reverse mt-5 mb-5">
-				<div @click="checklocal()" class="qna_btn_bot1 pointer">글 작성하기</div>
+				<div @click="checklocal()" class="qna_btn_bot1 pointer">작성하기</div>
 			</div>
 			<div class="d-flex justify-content-center qna_page_bot">
 				<nav aria-label="Page navigation example">
