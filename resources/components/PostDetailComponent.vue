@@ -38,7 +38,7 @@
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
 				<!-- 신고 모달 -->
-				<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1">
+				<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1" id="reportmodal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -68,9 +68,9 @@
 						</div>
 					</div>
 				</div>
-				<button type="button" id="openModalBtn" @click="reporting">신고하기</button>
+				<button type="button" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal">신고하기</button>
 				<!-- 수정 모달 -->
-				<div class="modal updateModal" tabindex="-1">
+				<div class="modal updateModal" tabindex="-1" id="updatemodal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -134,7 +134,7 @@
 					</div>
 				</div>
 				<div class="post_btn_bot" >
-					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" @click="update">수정</button>
+					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#updatemodal">수정</button>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delPost">삭제</button>
 				</div>
@@ -629,11 +629,8 @@ export default {
 			}
 		},
 		// 신고 기능
-		reporting() {
-			var myModal = new bootstrap.Modal(document.querySelector('.reportModal'));
-			myModal.show();
-		},
 		reportPost(flg) {
+			let tt = ['게시글','댓글']
 			const URL = '/post/re';
 			const formData = new FormData();
 			formData.append('b_id', this.b_id);
@@ -643,14 +640,18 @@ export default {
 			axios.post(URL,formData)
 			.then(res =>{
 				if(res.data.code==="0"){
-					this.report = "";
-					this.reportdata.unshift(res.data.data);
-				}else{
 					Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: res.data.errorMsg,
-					confirmButtonText: '확인'
+						icon: 'success',
+						title: '완료',
+						text: '정상처리되었습니다.',
+						confirmButtonText: '확인'
+					})
+				}else if(res.data.code==="1"){
+					Swal.fire({
+						icon: 'warning',
+						title: '주의',
+						text: '이미 신고하신 '+tt[flg]+" 입니다.",
+						confirmButtonText: '확인'
 					})
 				}
 			})

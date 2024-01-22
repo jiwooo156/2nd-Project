@@ -1124,28 +1124,38 @@ class InfoController extends Controller
     }
     // 커뮤니티 신고 기능
     public function reportingPost(Request $req) {
-        Log::debug($req);
-        try {
-            // 트랜잭션 시작
-            DB::beginTransaction();
-            $auth = Auth::user()->id;
-            // 리퀘스트 온 값 data에 저장
-            $data = $req->only('flg','content', 'b_id');
-            $data['u_id'] = $auth;
-            // data정보를 리폿 테이블에 인서트
-            $result = Report::create($data);
-            //저장
-            DB::commit();
+        $auth = Auth::user()->id;
+        $result = Report::where('b_id',$req->b_id)
+            ->where('u_id',$auth)
+            ->where('flg',$req->flg)
+            ->first();
+        if(!empty($result)){
+            Log::debug("여기진입");
             return response()->json([
-                'code' => '0',
-                'data' => $result,
+                'code' => '1',
             ], 200);
-        } catch(Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'code' => 'E99',
-                'errorMsg' => '신고 실패.'
-            ], 400);
-        } 
+        }else{
+            try {
+                // 트랜잭션 시작
+                DB::beginTransaction();
+                // 리퀘스트 온 값 data에 저장
+                $data = $req->only('flg','content', 'b_id');
+                $data['u_id'] = $auth;
+                $data['admin_flg'] = '0';
+                // data정보를 리폿 테이블에 인서트
+                Report::create($data);
+                //저장
+                DB::commit();
+                return response()->json([
+                    'code' => '0',
+                ], 200);
+            } catch(Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E99',
+                    'errorMsg' => '신고 실패.'
+                ], 400);
+            } 
+        }
     }
 }
