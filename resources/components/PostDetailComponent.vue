@@ -31,8 +31,8 @@
 					<img :src="this.detaildata.img3" class="figure-img img-fluid rounded">
 				</figure>
 			</div>
-			<div v-if="detaildata.flg === '2'" class="detail_post_like d-flex justify-content-between">
-				<div @click="plusheart()">
+			<div class="detail_post_like d-flex" :class="{ 'justify-content-between': detaildata.flg === '2', 'justify-content-end': detaildata.flg === '3' }">
+				<div @click="plusheart()" v-if="detaildata.flg === '2'" >
 					<span class="detail_likes detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
 					<span class="detail_likes font_air bold pointer">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
@@ -131,17 +131,17 @@
 					</div>
 				</div>
 				<div class="post_btn_bot" >
-					<div class="qna_report_open">
+					<div class="qna_report_open" v-if="detaildata.flg === '2'" >
 						<button type="button" v-if="!checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고</button>
 					</div>
-					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#updatemodal">수정</button>
+					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#updatemodal" @click="update">수정</button>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delPost">삭제</button>
 				</div>
 			</div>
 		</div>
-		<div v-if="detaildata.flg === '2'" class="detail_post_replie_container">
-			<div class="detail_replie_write_box font_air bold">
+		<div class="detail_post_replie_container">
+			<div class="detail_replie_write_box font_air bold" v-if="detaildata.flg === '2'" >
 				<div class="font_air bold">
 					댓글쓰기  ({{ this.repliecount }})
 				</div>
@@ -230,7 +230,10 @@
 			</div>
 			<div class="detail_replie_read" 
 				v-if="repliedata.length === 0">
-				<div class="font_air bold detail_no_replie">
+				<div class="font_air bold detail_no_replie" v-if="detaildata.flg === '2'">
+					작성된 답변이 없습니다.
+				</div>
+				<div class="font_air bold detail_no_replie" v-else>
 					작성된 댓글이 없습니다.
 				</div>
 			</div>
@@ -416,8 +419,6 @@ export default {
 			this.editedContent = this.detaildata.content;
 			this.editedFlg = this.detaildata.flg;
 			this.editedCategory = this.detaildata.category_flg;
-			var myModal = new bootstrap.Modal(document.querySelector('.updateModal'));
-			myModal.show();
 		},
 		updatePost() {
 			const URL = '/post/update?id=' + this.b_id;

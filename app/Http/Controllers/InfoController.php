@@ -987,6 +987,7 @@ class InfoController extends Controller
     // 커뮤니티 질문&건의 수정
     public function postupdate(Request $req){
         try {
+            Log::debug($req);
             // 트랜잭션시작
             DB::beginTransaction();
             // 조회
@@ -1035,7 +1036,7 @@ class InfoController extends Controller
             ], 400);
         }
     }
-    // 커뮤니티 질문&건의 수정
+    // 신고
     public function reportpost(Request $req){
         try {
             // 트랜잭션시작

@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<!-- 수정 모달 -->
-				<div class="modal" tabindex="-1">
+				<div class="modal" tabindex="-1"  id="updatemodal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -152,7 +152,7 @@
 					<div class="qna_report_open">
 						<button type="button" v-if="!(this.detaildata.u_id === this.userauth)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고</button>
 					</div>
-					<button type="button" v-if="this.detaildata.u_id === this.userauth" @click="editbefore()">수정</button>
+					<button type="button" v-if="this.detaildata.u_id === this.userauth" data-bs-toggle="modal" data-bs-target="#updatemodal" @click="editbefore">수정</button>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="this.detaildata.u_id === this.userauth" @click="delpost()">삭제</button>
 				</div>
@@ -576,12 +576,11 @@ export default {
 		},
 		// 게시글 수정요소 정의
 		editbefore() {
+			console.log("함수진입");
 			this.editedTitle = this.detaildata.title;
 			this.editedContent = this.detaildata.content;
 			this.editedFlg = this.detaildata.flg;
 			this.editedCategory = this.detaildata.category_flg;
-			var myModal = new bootstrap.Modal(document.querySelector('.modal'));
-			myModal.show();
 		},
 		// 게시글 수정
 		detailedit() {
@@ -592,6 +591,10 @@ export default {
 			let b_img1 = document.querySelector('#modal_file_img1_text');
 			let b_img2 = document.querySelector('#modal_file_img2_text');
 			let b_img3 = document.querySelector('#modal_file_img3_text');
+			console.log(this.editedTitle)
+			console.log(this.editedContent)
+			console.log(this.editedFlg)
+			console.log(this.editedCategory)
 			const formData = new FormData();
 			formData.append('title', this.editedTitle);
 			formData.append('content', this.editedContent);
@@ -603,7 +606,7 @@ export default {
 			formData.append('b_img1', b_img1.value);
 			formData.append('b_img2', b_img2.value);
 			formData.append('b_img3', b_img3.value);
-			axios.put(URL, formData)
+			axios.post(URL, formData)
 			.then(res => {
 				if(res.data.code === "0") {
 					Swal.fire({

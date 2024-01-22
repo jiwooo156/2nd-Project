@@ -146,7 +146,7 @@ Route::middleware('myValidation')->prefix('community')->group(function() {
     Route::post('/del/{id}', [InfoController::class, 'repliedel']); // 댓글 삭제
     Route::post('/heartpost', [InfoController::class, 'plusheart']); // 좋아요 입력
     Route::delete('/delete', [InfoController::class, 'postdelete']); // 게시글 삭제
-    Route::put('/update', [InfoController::class, 'postupdate']); // 게시글 수정
+    Route::post('/update', [InfoController::class, 'postupdate']); // 게시글 수정
 });
 
 // 커뮤니티 게시글 작성 라우터 생성
