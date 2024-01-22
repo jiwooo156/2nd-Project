@@ -80,6 +80,9 @@
 								{{ data.created_at }}
 							</td>
 						</tr>
+						<td colspan="4" class="pb-3 pt-5" 
+							v-if="likedata.length < 1&&writeflg==='0'"
+						>작성하신 게시글이 없습니다.</td>
 					</tbody>
 				</table>
 			</div>
@@ -126,7 +129,8 @@
 						<th scope="col" class="none">게시글제목</th>
 						<th scope="col">댓글내용</th>
 						<th scope="col" class="none">작성시간</th>
-					</tr>			
+					</tr>	
+							
 				</thead>
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
