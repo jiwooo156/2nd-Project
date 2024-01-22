@@ -1910,32 +1910,21 @@ export default {
 			this.$store.commit('setLoading',true);
 			this.now_data = {};
 			this.now_report = data;
-			console.log(this.now_report)
 			this.now_report.restraint_at = this.now_report.restraint_at === null ? "X":this.now_report.restraint_at;
 			const URL = '/admin/report?b_id='+data.b_id+'&flg='+data.flg
 			axios.get(URL)
 			.then(res => {
-				console.log("댄진입")
-				console.log(res.data.data)
 				if(res.data.data.flg ==="0"){
-					console.log('0일때')
 					res.data.data.flg = "자유게시판"
 				}else if(res.data.data.flg ==="1"){
-					console.log('1일때')
 					res.data.data.flg ="정보게시판"
 				}else{
-					console.log('2일때')
 					res.data.data.flg ="질문게시판"
 				}
-				console.log('1')
 				this.modalReport = res.data.data;
-				console.log('데이터성공')
 				this.modalReport.deleted_at = this.modalReport.deleted_at === null ? "X":this.modalReport.deleted_at;
-				console.log('삭제일자')
 				this.modalReport.restraint_at = this.modalReport.restraint_at === null ? "X":this.modalReport.restraint_at;
-				console.log('제제일자')
 				this.modalflg = true;
-				console.log('트루')
 			})
 			.catch(err => {
 				Swal({
@@ -1978,7 +1967,6 @@ export default {
 				axios.post(URL,formData)
 				.then(res => {
 					if(res.data.code === "0"){
-						console.log('댄진입')
 						if(this.mainflg===3&&this.subflg===0){
 							this.requestall(this.request_flg,this.page);
 						}else{
@@ -2026,18 +2014,15 @@ export default {
 		},
 		// 게시물 삭제
 		delreplie(id,flg){	
-			console.log("플래그="+flg)
 			this.$store.commit('setLoading', true);
 			const URL = '/admin/report?id='+id+'&flg='+flg
 			axios.delete(URL)
 			.then(res => {
 				if(res.data.code === "0"){
-					console.log("정상진입")
 					this.closeModal();
 					if(this.mainflg===3&&this.subflg===1){
 						this.reportall(this.report_flg,this.page)
 					}else{
-						console.log("엘스로")
 						this.adminchk();
 					}
 					Swal.fire({
@@ -2076,7 +2061,6 @@ export default {
 			this.$store.commit('setLoading',true);
 			this.modalReport = {};
 			this.now_data = data;
-			console.log(this.now_data)
 			this.modalflg = true;
 			this.$store.commit('setLoading', false);
 		},
@@ -2123,14 +2107,10 @@ export default {
 		flgchg(main,sub){
 			this.mainflg = main;
 			this.subflg = sub;
-			console.log(main)
-			console.log(sub)
 			if(main===1&&sub===1){
-				console.log("11진입")
 				this.get_board(1)
 			}
 			if(main===1&&sub===2){
-				console.log("21진입")
 				this.get_replie(1)
 			}
 			if(main===3&&sub===1){
@@ -2158,13 +2138,10 @@ export default {
 					this.userdata = res.data.data.data
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
-					console.log(this.userdata);
 					this.paging();
 				}
 			})
 			.catch(err => {
-				console.log(res.data.errorMsg);
-				console.log("캐치진입");
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
@@ -2201,8 +2178,6 @@ export default {
 				}
 			})
 			.catch(err => {
-				console.log(res.data.errorMsg);
-				console.log("캐치진입");
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
@@ -2323,7 +2298,6 @@ export default {
 			const URL = '/admin/reportall?flg='+flg+'&page='+page
 			axios.get(URL)
 			.then(res => {
-				console.log("댄")
 				if(res.data.code === "0"){
 					this.reportdata = res.data.data.data;
 					this.page = res.data.data.current_page
@@ -2488,7 +2462,6 @@ export default {
 		requestall(flg,page){
 			this.$store.commit('setLoading',true);
 			this.request_flg =flg;
-			console.log(this.request_flg)
 			const URL = '/admin/requestall?flg='+flg+'&page='+page
 			axios.get(URL)
 			.then(res => {
@@ -2542,7 +2515,6 @@ export default {
 				}
 			})
 			.catch(err => {
-				console.log("캐치")
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
@@ -2609,9 +2581,7 @@ export default {
 							this.likemain_c[i].type = "기타";
 						}
 						this.chart6.data.labels[i] = this.likemain_c[i].type;
-						console.log(this.chart6.data.labels[i])
 						this.chart6.data.datasets[0].data[i]=this.likemain_c[i].cnt;
-						console.log(this.chart6.data.datasets[0].data[i])
 					}
 					// 커뮤 게시판
 					this.likeflg = res.data.flg;	
@@ -2640,14 +2610,12 @@ export default {
 						this.h_chart1.data.labels[i] = this.hit_flg[i].type;
 						this.h_chart1.data.datasets[0].data[i]=this.hit_flg[i].cnt;
 					}
-					console.log("통과1")
 					// 조회수 축제관광
 					this.hit_main = res.data.hit_main;	
 					for(let i = 0; i < this.hit_main.length; i++){
 						this.h_chart2.data.labels[i] = this.hit_main[i].type;
 						this.h_chart2.data.datasets[0].data[i]=this.hit_main[i].cnt;
 					};
-					console.log("통과2")
 					// 조회수 ns
 					this.hit_ns = res.data.hit_ns;	
 					for(let i = 0; i < this.hit_ns.length; i++){
@@ -2703,7 +2671,6 @@ export default {
                     text: '에러 발생.',
                     confirmButtonText: '확인'
                 });
-				console.log(err);
 			})
 			.finally(() => {
 				this.$store.commit('setLoading', false);
@@ -2910,7 +2877,6 @@ export default {
 				formData.append('ns_flg',this.admin_ns);
 				if(this.admin_ns==="경상북도"){
 					formData.append('states_name',this.admin_state_n);
-					console.log(this.admin_state_n);
 				}else{
 					formData.append('states_name',this.admin_state_s);
 				}
@@ -2945,10 +2911,8 @@ export default {
 		},
 		// 모든보드정보 조회
 		get_board(page){
-			console.log("현재페이지"+this.page)
 			this.$store.commit('setLoading',true);
 			let URL = '/admin/board?flg='+this.admin_board_cate+"&page="+page+"&sub_flg="+this.admin_sub_cate+"&val="+this.admin_sub_input
-			console.log(URL)
 			axios.get(URL)
 			.then(res => {
 				if(res.data.code === "0"){
@@ -2972,8 +2936,6 @@ export default {
 						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
 					}
 					// 
-					console.log("조회된데이터")
-					console.log(res.data.data.data)
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
 					this.boards = res.data.data.data;
@@ -3008,7 +2970,6 @@ export default {
 						}
 						res.data.data.data[i].deleted_at = res.data.data.data[i].deleted_at === null ? "X":res.data.data.data[i].deleted_at;
 					}
-					console.log(res.data.data.data)
 					this.page = res.data.data.current_page
 					this.lastpage = res.data.data.last_page
 					this.replies = res.data.data.data;
@@ -3139,7 +3100,6 @@ export default {
 				formData.append('ns_flg',this.modal_board_ns);
 				if(this.modal_board_ns==="경상북도"){
 					formData.append('states_name',this.modal_board_state_n);
-					console.log(this.modal_board_state_n);
 				}else{
 					formData.append('states_name',this.modal_board_state_s);
 				}
@@ -3177,8 +3137,6 @@ export default {
 		modalboarddel(id,flg){
 			this.$store.commit('setLoading',true);
 			let URL = '/admin/boardmodal/'+id+'/'+flg
-			console.log(id)
-			console.log(flg)
 			axios.delete(URL)
 			.then(res => {
 				if(res.data.code === "0"){
