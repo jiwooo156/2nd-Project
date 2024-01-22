@@ -79,10 +79,37 @@
 							</div>
 							<br>
 							<div class="qna_tit">
-								<span class="detail_type">제목:</span>
+								<span class="detail_type">제목</span>
 								<input v-model="editedTitle" type="text" id="titleInput" class="form-control qna_tit">
-								<span class="detail_type">내용:</span>
-								<textarea v-model="editedContent" id="contentInput" class="form-control"></textarea>
+								<span class="detail_type">내용</span>
+								<textarea v-model="editedContent" id="contentInput" style="height: 10rem" class="form-control"></textarea>
+							</div>
+							<!-- 사진 업로드 -->
+							<label for="formFile" class="form-label detail_type">사진 확인</label>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img1_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img1">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img1 = ''">삭제</button>
+							</div>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img2_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img2">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img2 = ''">삭제</button>
+							</div>
+							<div class="input-group">
+								<span class="input-group-text font_air bold" >사진</span>
+								<input id="modal_file_img3_text" class="form-control font_air bold" type="text" readOnly :value="this.detaildata.img3">
+								<button type="button" class="btn btn-secondary font_air bold" @click="this.detaildata.img3 = ''">삭제</button>
+							</div>
+							<label for="formFile" class="form-label detail_type detail_margin">사진 변경</label>
+							<div class="input-group">
+								<input id="modal_file_img1" class="form-control font_air bold" type="file" accept="image/*">
+							</div>
+							<div class="input-group">
+								<input id="modal_file_img2" class="form-control font_air bold" type="file" accept="image/*">
+							</div>
+							<div class="input-group">
+								<input id="modal_file_img3" class="form-control font_air bold" type="file" accept="image/*">
 							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
@@ -493,12 +520,23 @@ export default {
 		// 게시글 수정
 		detailedit() {
 			const URL = '/community/update?id=' + this.b_id;
-			const formData = {
-				title: this.editedTitle,
-				content: this.editedContent,
-				flg: this.editedFlg,
-				category_flg: this.editedCategory,
-			};
+			let img1 = document.querySelector('#modal_file_img1');
+			let img2 = document.querySelector('#modal_file_img2');
+			let img3 = document.querySelector('#modal_file_img3');
+			let b_img1 = document.querySelector('#modal_file_img1_text');
+			let b_img2 = document.querySelector('#modal_file_img2_text');
+			let b_img3 = document.querySelector('#modal_file_img3_text');
+			const formData = new FormData();
+			formData.append('title', this.editedTitle);
+			formData.append('content', this.editedContent);
+			formData.append('flg', this.editedFlg);
+			formData.append('category_flg', this.editedCategory);
+			formData.append('img1', img1.files[0]);
+			formData.append('img2', img2.files[0]);
+			formData.append('img3', img3.files[0]);
+			formData.append('b_img1', b_img1.value);
+			formData.append('b_img2', b_img2.value);
+			formData.append('b_img3', b_img3.value);
 			axios.put(URL, formData)
 			.then(res => {
 				if(res.data.code === "0") {

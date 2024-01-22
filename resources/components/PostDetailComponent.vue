@@ -31,14 +31,14 @@
 					<img :src="this.detaildata.img3" class="figure-img img-fluid rounded">
 				</figure>
 			</div>
-			<div class="detail_post_like d-flex justify-content-between">
+			<div v-if="detaildata.flg === '2'" class="detail_post_like d-flex justify-content-between">
 				<div @click="plusheart()">
 					<span class="detail_likes detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
 				<!-- 신고 모달 -->
-				<div class="modal reportModal" tabindex="-1">
+				<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -55,14 +55,14 @@
 								<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
 								<div class="input-group">
 									<span>신고사유 :</span>
-									<input type="text" id="titleInput" class="form-control qna_tit">
+									<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
 
 								</div>
 								<div>신고하시겠습니까?</div>
 							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
-							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost">신고완료</button>
+							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('0')">신고완료</button>
 							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
 						</div>
 						</div>
@@ -140,7 +140,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="detail_post_replie_container">
+		<div v-if="detaildata.flg === '2'" class="detail_post_replie_container">
 			<div class="detail_replie_write_box font_air bold">
 				<div class="font_air bold">
 					댓글쓰기  ({{ this.repliecount }})
@@ -241,6 +241,7 @@ export default {
 			// 신고 기능
 			report: '',
 			reportdata: '',
+			reportmsg: '',
 			// 정렬 및 필터 기능
 			flgOptions: [
 				{ label: '자유', value: '0' },
@@ -411,8 +412,8 @@ export default {
 			formData.append('b_img2', b_img2.value);
 			formData.append('b_img3', b_img3.value);
 
-			console.log(formData.get('img1'));
-			console.log(formData.get('b_img1'));
+			// console.log(formData.get('img1'));
+			// console.log(formData.get('b_img1'));
 
 			axios.post(URL, formData)
 			.then(res => {
@@ -632,15 +633,13 @@ export default {
 			var myModal = new bootstrap.Modal(document.querySelector('.reportModal'));
 			myModal.show();
 		},
-		reportPost() {
-			const URL = '/post/re'+this.b_id;
+		reportPost(flg) {
+			const URL = '/post/re';
 			const formData = new FormData();
 			formData.append('b_id', this.b_id);
-			formData.append('u_id', this.u_id);
-			formData.append('flg', this.flg);
-			formData.append('content', this.content);
+			formData.append('flg', flg);
+			formData.append('content', this.reportmsg);
 			console.log('b_id', this.b_id);
-			console.log('u_id', this.u_id);
 			axios.post(URL,formData)
 			.then(res =>{
 				if(res.data.code==="0"){
