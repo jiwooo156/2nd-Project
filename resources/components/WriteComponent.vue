@@ -79,10 +79,9 @@
 		<div class="col-md-3 position-relative mb-3">
 			<label for="writeflg" class="form-label">카테고리</label>
 			<select class="form-select" id="writeflg" v-model="categoryflg" name="flg">
-				<option value="0">자유게시판</option>
-				<option value="1">정보게시판</option>
-				<option value="2">질문게시판</option>
-				<option value="3">건의게시판</option>
+				<option value="0" class="qna_drop_item" selected>축제</option>
+				<option value="1" class="qna_drop_item">관광</option>
+				<option value="2" class="qna_drop_item">기타</option>
 			</select>
 		</div>
 		<div class="input-group mb-1">

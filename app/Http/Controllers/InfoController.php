@@ -472,21 +472,23 @@ class InfoController extends Controller
     }
     // 검색 축제 더보기
     public function moresearchf(Request $req) {
+        Log::debug($req->offset);
         $festival = Info::select('id', 'states_name', 'title', 'img1', 'content', 'start_at', 'end_at', 'hits')
             ->when($req->states_name !== "지역", fn ($query) => $query->where('states_name', $req->states_name))
             ->where('main_flg','축제')
             ->when($req->searchkeyword !== null, fn ($query) => $query->where('title', 'like', '%' . $req->searchkeyword . '%'))
-            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
-            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->orderBy('end_at', 'desc'))
-            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at)->orderBy('end_at', 'asc'))
+            ->when($req->start_at !== null&&$req->end_at === null, fn ($query) => $query->where('end_at', '>=', $req->start_at))
+            ->when($req->end_at !== null&&$req->start_at === null, fn ($query) => $query->where('start_at', '<=', $req->end_at))
+            ->when($req->end_at !== null&&$req->start_at !== null, fn ($query) => $query->where('start_at', '<=', $req->end_at)->where('end_at', '>=', $req->start_at))
             ->when($req->couple_flg === "1", fn ($query) => $query->where('couple_flg', $req->couple_flg))
             ->when($req->friend_flg === "1", fn ($query) => $query->where('friend_flg', $req->friend_flg))
             ->when($req->family_flg === "1", fn ($query) => $query->where('family_flg', $req->family_flg))
             ->when($req->parking_flg=== "1", fn ($query) => $query->where('parking_flg', $req->parking_flg))
             ->when($req->fee === "1", fn ($query) => $query->where('fee', '없음'))
             ->where('ns_flg',$req->ns)
-            ->limit(6)
+            ->orderBy('end_at', 'desc')
             ->offset($req->offset)
+            ->limit(6)
             ->get();
         return response()->json([
             'code' => '0',

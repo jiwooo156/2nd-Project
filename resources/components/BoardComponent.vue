@@ -6,7 +6,7 @@
 				<h1 v-else="this.nowflg==='1'">정보게시판</h1>
 				<div class="qna_header_bot">
 					<div class="qna_header_l">
-						<select v-model="option" @click="getInfo()" class="form-select qna_drop my-3" aria-label=".form-select-sm">
+						<select v-model="option" @change="getInfo" class="form-select qna_drop my-3" aria-label=".form-select-sm">
 							<option value="3" class="qna_drop_item">전체</option>
 							<option value="0" class="qna_drop_item">축제</option>
 							<option value="1" class="qna_drop_item">관광</option>
