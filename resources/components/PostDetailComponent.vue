@@ -34,7 +34,7 @@
 			<div v-if="detaildata.flg === '2'" class="detail_post_like d-flex justify-content-between">
 				<div @click="plusheart()">
 					<span class="detail_likes detail_like_basic font_air bold" :class="this.likeflg ? 'detail_like' : 'detail_like_basic'"><font-awesome-icon :icon="['fas', 'heart']" /></span> 
-					<span class="detail_likes font_air bold">좋아요</span>
+					<span class="detail_likes font_air bold pointer">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
 				<!-- 게시글 신고 모달 -->
