@@ -1830,7 +1830,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     max-width: 500px;
 }
 .detail_replie_container{
-    margin-top: 30px;
+    margin-top: 0;
 }
 .detail_replie_write_box{
 	padding: 5px 10px;
@@ -2318,7 +2318,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .community_margin {
 	margin: 0;
 }
-
+#community_margin{
+	margin-bottom: 0;
+}
 /* 어드민 */
 .admin_category_flex {
 	display: flex;

@@ -224,7 +224,7 @@
 						data-bs-toggle="modal" data-bs-target="#reportrepliemodal"
 						@click="reportrepliemodal"
 					>
-						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
+						<span class="font_air bold">신고</span>
 					</div>
 				</div>
 			</div>

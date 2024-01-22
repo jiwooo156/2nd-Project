@@ -99,46 +99,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
+			<div class="detail_content community_heart pointer d-flex justify-content-between" @click="plusheart()" id="community_margin" >
 				<!-- fas : 꽉 찬 하트 -->
-				<span :class="this.likeflg ? 'community_heart_red' : 'community_heart_black'">
-					<font-awesome-icon :icon="['fas', 'heart']"/>
-				</span>
-				좋아요
-				{{this.detaildata.cnt}}
-			</div>
-			<!-- 게시글 신고 모달 -->
-			<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1" id="reportmodal">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title qna_update">게시글 신고</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="qna_report">
-							<div>신고할 게시글 확인</div>
-							<span>제목 : </span>
-							<span class="font_air bold detail_com_tofrom">{{ this.detaildata.title }}</span>
-							<br>
-							<span>작성자 : </span>
-							<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
-							<div class="input-group">
-								<span>신고사유 :</span>
-								<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
-
-							</div>
-							<div>신고하시겠습니까?</div>
-						</div>
-					</div>
-					<div class="modal-footer d-flex justify-content-center">
-						<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('0')">신고완료</button>
-						<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
-					</div>
-					</div>
+				<div class="font_air bold ">
+					<span :class="this.likeflg ? 'community_heart_red' : 'community_heart_black'">
+						<font-awesome-icon :icon="['fas', 'heart']"/>
+					</span>
+					좋아요
+					{{this.detaildata.cnt}}
+				</div>
+				<div class="post_btn_bot">
+					<button type="button" @click="goBack">목록</button>
 				</div>
 			</div>
-			<button type="button" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고하기</button>
 		</div>
 		<div class="detail_replie_container">
 			<div class="detail_replie_write_box font_air bold">
@@ -197,7 +170,7 @@
 						data-bs-toggle="modal" data-bs-target="#reportmodal"
 						@click="reportmodal"
 					>
-						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
+						<span class="font_air bold">신고</span>
 					</div>
 					<!-- 댓글 신고 모달 -->
 					<div class="modal reportModal" tabindex="-1" id="reportmodal">
@@ -208,20 +181,21 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<div class="qna_report">
-									<span>댓글 : </span>
-									<span class="font_air bold detail_com_tofrom">{{ data.replie }}</span>
-									<br>
-									<span>작성자 : </span>
-									<span class="font_air bold detail_com_tofrom">{{ data.nick }}</span>
-									<div class="input-group">
-										<span>신고사유 :</span>
-										<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
+								<div class="qna_report" id="qna_replie">
+									<div class="qna_report_margin" id="qna_replie">
+										<span class="qna_report_con">댓글 : </span>
+										<span class="font_air bold detail_com_tofrom qna_report_content">{{ data.replie }}</span>
 									</div>
+									<div class="qna_report_margin" id="qna_replie">
+										<span class="qna_report_con">작성자 : </span>
+										<span class="font_air bold detail_com_tofrom qna_report_content">{{ data.nick }}</span>
+									</div>
+									<span class="qna_report_con">신고사유</span>
+									<input type="text" id="titleInput" style="height: 5rem" class="form-control qna_tit" v-model="reportmsg">
 								</div>
 							</div>
 							<div class="modal-footer d-flex justify-content-center">
-								<button type="button" class="btn btn-primary qna_modal_btn qna_color" 	@click="reportPost('0',data.id)">신고완료</button>
+								<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('1',data.id)">신고완료</button>
 								<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
 							</div>
 							</div>
@@ -638,6 +612,10 @@ export default {
 					}
 				})
 			}
+		},
+		// 뒤로가기 동작 실행
+		goBack() {
+			this.$router.go(-1);
 		}
 	},
 	beforeRouteLeave(to, from, next) {
