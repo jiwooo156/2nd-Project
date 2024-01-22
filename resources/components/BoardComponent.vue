@@ -170,9 +170,8 @@ export default {
 				}
 			})
 			.then(res => {
-				console.log('정상처리')
 				this.infolist = res.data.information.data;
-				this.cntinfo = res.data.infocnt;
+				this.cntinfo = res.data.information.total
 				this.page = res.data.information.current_page
 				this.lastpage = res.data.information.last_page
 				this.noticedata = res.data.noticedata;

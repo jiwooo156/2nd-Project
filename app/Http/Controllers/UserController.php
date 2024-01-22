@@ -132,13 +132,11 @@ class UserController extends Controller
             $admin_flg = Admin::where('u_id',Auth::user()->id)->first();
             if($admin_flg){
                 if($admin_flg->flg === "0"){
-                    Log::debug("0진ㅇ비");
                     return response()->json([
                         'code' => '1'
                         ,'data' => $result
                     ], 200);
                 }else{
-                    Log::debug("1진입");
                     return response()->json([
                         'code' => '2'
                         ,'data' => $result
@@ -178,13 +176,10 @@ class UserController extends Controller
             }
         // 값이 조회됬을때
         }else if($result){
-            Log::debug("여기진입");
             $data = Report::
                 where('r_id',$result->id)
                 ->orderby('restraint_at','desc')
                 ->first();
-            Log::debug($data);
-            Log::debug("여기통과");
             if(!(Hash::check($req->password, $result->password))){
                 $errorMsg = ['비밀번호를 확인해주세요'];
                 return response()->json([
@@ -669,7 +664,6 @@ class UserController extends Controller
             $data['auth_token']='kakao';
             $data['auth_flg']='1';
             $total = Authenticate::create($data);
-            Log::debug($total);
             return redirect('/signin')->cookie('auth_id', $total->id, 720, null, null, false, false);
         // 계정있을경우 기존이메일로 로그인
         }else{

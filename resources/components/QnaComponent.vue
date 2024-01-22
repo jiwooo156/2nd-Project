@@ -273,7 +273,7 @@ export default {
 			})
 			.then(res => {
 				this.infolist = res.data.data.data;
-				this.cntinfo = res.data.infocnt;
+				this.cntinfo = res.data.data.total;
 				this.page = res.data.data.current_page;
                 this.lastpage = res.data.data.last_page;
 				this.noticedata = res.data.noticedata;
