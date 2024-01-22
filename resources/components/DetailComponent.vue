@@ -301,8 +301,6 @@ export default {
 					this.repliecount = res.data.repliecount;
 					this.userauth = res.data.userauth;
 					this.likeflg = res.data.likeresult;
-					console.log('userauth : '+this.userauth);
-					console.log('좋아요 누른 이력 : '+this.likeflg);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -512,7 +510,6 @@ export default {
 		// 댓글추가 불러오기
 		morereplie(){
 			this.$store.commit('setLoading', true);
-			console.log(this.replie_offset)
 			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
 			.then(res =>{
@@ -586,7 +583,6 @@ export default {
 				axios.post(URL,formData)
 				.then(res =>{
 					if(res.data.code==="0"){
-						console.log("진입")
 						document.querySelector('.btn-close').click();
 						Swal.fire({
 							icon: 'success',
@@ -595,7 +591,6 @@ export default {
 							confirmButtonText: '확인'
 						})
 					}else if(res.data.code==="1"){
-						console.log("진입")
 						document.querySelector('.btn-close').click();
 						Swal.fire({
 							icon: 'warning',

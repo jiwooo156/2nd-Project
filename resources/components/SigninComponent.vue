@@ -193,8 +193,6 @@ export default {
 		.then(res => {
 			this.$store.commit('setErrMsg','');
 			if(res.data.code === "0"){
-				console.log('정상');
-				console.log(res.data.data);
 				this.email = res.data.data.email;
 			}else{
 				console.log('else');

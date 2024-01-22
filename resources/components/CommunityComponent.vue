@@ -320,7 +320,6 @@ export default {
 
 		// 현재url가져오기
 		let params = new URLSearchParams(window.location.search);
-		console.log(params);
 		this.b_id = params.get('id');
 		this.getinfo(this.b_id);
 	},
@@ -342,9 +341,6 @@ export default {
 					this.userauth = res.data.userauth;
 					this.likeflg = res.data.likeresult;
 					this.content = res.data.data[0].content;
-					console.log("댓글 : "+this.repliedata);
-					console.log("댓글 : "+this.repliedata);
-					console.log("댓글갯수 : "+this.repliecount);
 				}else if(res.data.code==="E99"){
 					Swal.fire({
                     icon: 'error',
@@ -425,7 +421,6 @@ export default {
 		// 좋아요 입력
 		plusheart() {
 			if(!(this.userauth === "")) {				
-				console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
@@ -435,9 +430,7 @@ export default {
 					"flg": "1"
 				})
 				.then(res=>{
-					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
-						console.log(res.data.likeflg);
 						this.likeflg = res.data.likeflg;
 						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
 							this.$router.push('/community?id='+this.b_id);
@@ -450,7 +443,7 @@ export default {
 				})
 				.catch(err => {
 					console.log("plusheart 함수 catch");
-					this.$router.push('/error');
+					// this.$router.push('/error');
 				})				
 			} else {
 				Swal.fire({
@@ -557,7 +550,6 @@ export default {
 				axios.delete(URL)
 					.then(res => {
 						if (res.data.code === "0") {
-							// console.log("정상진입");
 							Swal.fire({
 								icon: 'success',
 								title: '완료',

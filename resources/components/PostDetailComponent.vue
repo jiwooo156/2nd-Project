@@ -315,9 +315,7 @@ export default {
 			const URL = '/post/detail/'+this.b_id;
 			axios.get(URL)
 			.then(res => {
-				// console.log("getinfo 함수 시작");
 				if(res.data.code==="0"){
-					console.log("if 진입");
 					if (res.data.data[0].flg === "3" && 
 						res.data.data[0].notice_flg === "0" &&
 						this.checkUser(res.data.data[0].email)) {
@@ -326,27 +324,18 @@ export default {
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log("테스트1"+res.data.likeresult)
-						// console.log('좋아요 누른 이력 : '+this.likeflg);
-						// console.log('좋아요 누른 이력 : '+this.likeresult);
 					} else if (res.data.data[0].flg === "3" && res.data.data[0].notice_flg === "1") {
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log("테스트1"+res.data.likeresult)
-						// console.log('디테일 data : '+this.detaildata.flg);
-						// console.log('좋아요 누른 이력 : '+this.likeflg);
 					} else if (["0", "1", "2"].includes(res.data.data[0].flg)){
 						this.detaildata = res.data.data[0];
 						this.repliedata = res.data.replie;
 						this.repliecount = res.data.repliecount;
 						this.userauth = res.data.userauth;
 						this.likeflg = res.data.likeresult;
-						console.log("테스트1"+res.data.likeresult)
-						// console.log('디테일 data : '+this.detaildata.flg);
-						// console.log('좋아요 누른 이력 : '+this.likeflg);	
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -364,7 +353,6 @@ export default {
 						confirmButtonText: '확인',
 					});
 				}
-				// console.log("getinfo 함수 끝");
 			})
 			.catch(err => {
 				Swal.fire({
@@ -399,7 +387,6 @@ export default {
 				axios.delete(URL)
 					.then(res => {
 						if (res.data.code === "0") {
-							// console.log("정상진입");
 							Swal.fire({
 								icon: 'success',
 								title: '완료',
@@ -451,10 +438,6 @@ export default {
 			formData.append('b_img1', b_img1.value);
 			formData.append('b_img2', b_img2.value);
 			formData.append('b_img3', b_img3.value);
-
-			// console.log(formData.get('img1'));
-			// console.log(formData.get('b_img1'));
-
 			axios.post(URL, formData)
 			.then(res => {
 				if(res.data.code === "0") {
@@ -495,7 +478,6 @@ export default {
                     }
                 })
             }else{
-				// console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
 				this.b_id = params.get('id');
@@ -505,7 +487,6 @@ export default {
 					"flg": "1"
 				})
 				.then(res=>{
-					console.log("plusheart 함수 then");
 					if(res.data.code==="0"){
 						this.likeflg = res.data.likeflg;
 						if(res.data.likeflg===false&&this.detaildata.cnt > 0) {
@@ -549,15 +530,6 @@ export default {
 				return '기타';
 			}
 		},
-		// created_at 데이터 출력 변환
-		// formatEventDate(dateString) {
-		// 	const dateObject = new Date(dateString);
-		// 	const year = dateObject.getFullYear();
-		// 	const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-		// 	const day = String(dateObject.getDate()).padStart(2, "0");
-
-		// 	return `${year}-${month}-${day}`;
-		// },
 		// 시간초기화
 		converttime(date){
 			const start = new Date(date);
@@ -794,8 +766,6 @@ export default {
                     confirmButtonText: '확인'
                 })
 				}
-				console.log(this.repliedata);
-				console.log(this.replie_offse);
 			})
 			.catch(err => {
 				Swal.fire({

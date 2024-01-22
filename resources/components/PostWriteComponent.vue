@@ -77,9 +77,7 @@ export default {
             formData.append('category_flg', this.categoryflg);
             axios.post(URL, formData)
             .then(res => {
-                console.log(res);
                 this.communityresult = res.data.data;
-                console.log(this.communityresult);
                 this.$router.replace('/community?id='+this.communityresult.id);
             })
             .catch(err => {

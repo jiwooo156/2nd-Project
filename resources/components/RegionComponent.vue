@@ -269,7 +269,6 @@ export default {
 		}
 		this.getState( objUrlParam.get('ns') );
 		this.getRecommendFestival(objUrlParam.get('ns'));
-		// console.log('create');
 		// 로컬스토리지에 저장된 정보있는지 확인
 		let boo = localStorage.getItem('nick') ?  true : false;
 		this.$store.commit('setLocalFlg', boo);
@@ -290,9 +289,6 @@ export default {
 		searchkeyword(){
 			this.changeSearchFlg()
 		},
-		// url(){
-		// 	console.log(테스트)
-		// }
 	},
 	mounted() {
 		// 오늘날짜
@@ -342,9 +338,6 @@ export default {
 			axios.get(URL)
 			// axios는 http status code가 200번대면 then으로, 그외에는 catch로
 			.then(res => {
-				// console.log("getState");
-				// console.log("레스데이터"+res.data);
-				console.log("getState"+res.data);
 				if(res.data.code === '0') {
 					this.states = res.data.data;
 				} else {
@@ -360,17 +353,12 @@ export default {
 			// 로딩시작
 			this.$store.commit('setLoading',true);
 			const URL = '/region/recommendf?ns='+ ns+'&today='+this.today;
-			// console.log(this.today);
 			axios.get(URL)
 			.then(res => {
-				// console.log("추천축제 댄");
 				this.recommendfestival = res.data.rfestival;
 				this.recommendtour = res.data.rtour;
-				// console.log(this.recommendfestival);
-				// console.log(this.recommendtour);
 			})
 			.catch(err => {
-				// console.log("캐치");
 				// 로딩종료
 				Swal.fire({
                     icon: 'error',
@@ -393,29 +381,19 @@ export default {
 			axios.get(URL)
 			.then(res => {
 				this.offset = 3;
-				// console.log("지역축제 댄");
-				// console.log("현재지역 댄");
 				this.nowstate = state;
-				// console.log(this.nowstate);
-				// console.log("축제정보");
 				this.regionfestival = res.data.sfestival;
-				// console.log(this.regionfestival);
-				// console.log("타워 값넣기");
 				this.regiontour = res.data.stour;
-				// console.log(this.regiontour);
 				this.searchflg = false;
 				this.searchmoreflg_t = false;
 				this.searchmoreflg_f = false;
 				// 지역축제 총 갯수
 				this.region_f_cnt = res.data.f_cnt;
-				// console.log(this.region_f_cnt)
 				// 지역관광 총 갯수
 				this.region_t_cnt = res.data.t_cnt;
-				// console.log(this.region_t_cnt)
 				this.regionnameflg = true;
 			})
 			.catch(err => {
-				// console.log("캐치");
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -432,26 +410,16 @@ export default {
 			// 로딩시작
 			this.$store.commit('setLoading',true);
 			this.searchflg = false;
-			// console.log(this.nowstate)
 			const URL = '/region/morefestivalget?states_name='+this.nowstate+'&offset='+this.offset;
-			// console.log("현재주소"+this.nowstate);
-			// console.log("오프셋"+this.offset);
 			axios.get(URL)
 			.then(res => {
-				// console.log(res.data.mfestival);
 
 				// 중복된 속성을 허용하고 그대로 합침				
-				// console.log("페스티발"+res.data.mfestival);
-				// console.log("관광"+res.data.mtour);
-				// console.log("원래잇던애");
 				this.regionfestival = [ ...this.regionfestival, ...res.data.mfestival ];
 				this.regiontour = [ ...this.regiontour, ...res.data.mtour ];
-				// console.log("추가한후");
-				// console.log(this.regiontour);
 				this.offset = this.offset + 3;
 			})
 			.catch(err => {
-				// console.log("캐치");
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -527,7 +495,6 @@ export default {
 					this.searchflg = true;
 				})
 				.catch(err => {
-					// console.log("캐치");
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
@@ -553,7 +520,6 @@ export default {
 				}
 			})
 			.catch(err => {
-				// console.log("캐치");
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -578,7 +544,6 @@ export default {
 				}
 			})
 			.catch(err => {
-				// console.log("캐치");
 				Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -630,7 +595,6 @@ export default {
 			const month = String(now.getMonth() + 1).padStart(2, '0');
 			const day = String(now.getDate()).padStart(2, '0');
 			this.today = `${year}-${month}-${day}`;
-			// console.log(this.today)
 		},
 		changeSearchFlg() {
 			this.searchmoreflg_f = false
