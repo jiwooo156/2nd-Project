@@ -326,6 +326,7 @@ export default {
 			this.$store.commit('setNsFlg','2');
 		}
 		this.getState( this.nowns );
+		this.searchstate = "지역";
 		this.getRecommendFestival(this.nowns);
 		this.regionnameflg= false;
 		this.searchflg= false;

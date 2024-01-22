@@ -439,7 +439,21 @@ export default {
 		},
 		// 좋아요 입력
 		plusheart() {
-			if(!(this.userauth === "")) {				
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }
+                })
+            }else{
 				// console.log("plusheart 함수 진입");
 				// 현재url가져오기
 				let params = new URLSearchParams(window.location.search);
@@ -465,18 +479,6 @@ export default {
 				.catch(err => {
 					console.log("plusheart 함수 catch");
 				})				
-			} else {
-				Swal.fire({
-					icon: 'error',
-					title: '주의',
-					text: '로그인 후 이용해 주세요.',
-					confirmButtonText: '확인'
-                })
-				.then((result) => {
-					if (result.isConfirmed) {
-						this.$router.push('/login');
-					}
-				});
 			}
 		},
 		getCategoryFlg() {
@@ -571,42 +573,58 @@ export default {
 		},
 		// 댓글작성
 		repliewrite(){
-			if(this.replie){
-				const URL = '/post/reply'+this.b_id;
-				const formData = new FormData();
-				formData.append('replie', this.replie);
-				formData.append('b_id', this.b_id);
-				formData.append('flg', '1');
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						this.replie = "";
-						this.repliecount++;
-						this.repliedata.unshift(res.data.data);
-					}else{
-						Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: res.data.errorMsg,
-						confirmButtonText: '확인'
-						})
-					}
-				})
-				.catch(err => {
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: err.response.data.errorMsg,
-						confirmButtonText: '확인'
-					})
-				})
-			}else{
-				Swal.fire({
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
                     icon: 'warning',
                     title: '주의',
-                    text: '댓글을 작성해 주세요.',
-                    confirmButtonText: '확인'
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
                 })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }
+                })
+            }else{
+				if(this.replie){
+					const URL = '/post/reply'+this.b_id;
+					const formData = new FormData();
+					formData.append('replie', this.replie);
+					formData.append('b_id', this.b_id);
+					formData.append('flg', '1');
+					axios.post(URL,formData)
+					.then(res =>{
+						if(res.data.code==="0"){
+							this.replie = "";
+							this.repliecount++;
+							this.repliedata.unshift(res.data.data);
+						}else{
+							Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+							})
+						}
+					})
+					.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg,
+							confirmButtonText: '확인'
+						})
+					})
+				}else{
+					Swal.fire({
+						icon: 'warning',
+						title: '주의',
+						text: '댓글을 작성해 주세요.',
+						confirmButtonText: '확인'
+					})
+				}
 			}
 		},
 		// 신고 기능

@@ -49,7 +49,7 @@
 				</div>
 			</div>
 			<div class="detail_post_like d-flex justify-content-between">
-				<div class="detail_content community_heart font_air bold pointer" @click="plusheart()" >
+				<div class="detail_content community_heart font_air bold pointer" @click="plusheart" >
 					<span class="community_like font_air bold" :class="this.likeflg ? 'community_heart_red' : 'community_heart_black'"><font-awesome-icon :icon="['fas', 'heart']"/></span>
 					<span class="community_like font_air bold">좋아요</span>
 					<span class="community_like font_air bold">{{this.detaildata.cnt}}</span>
@@ -267,43 +267,59 @@ export default {
 		},
 		// 댓글작성
 		repliewrite(){
-			if(this.replie){
-				const URL = '/community/reply/'+this.b_id;
-				const formData = new FormData();
-				formData.append('replie', this.replie);
-				formData.append('b_id', this.b_id);
-				formData.append('flg', '1');
-				axios.post(URL,formData)
-				.then(res =>{
-					if(res.data.code==="0"){
-						this.replie = "";
-						this.repliecount++;
-						this.repliedata.unshift(res.data.data);
-					}else{
-						Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: res.data.errorMsg,
-						confirmButtonText: '확인'
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
                 })
-					}
-				})
-				.catch(err => {
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }
+                })
+            }else{
+				if(this.replie){
+					const URL = '/community/reply/'+this.b_id;
+					const formData = new FormData();
+					formData.append('replie', this.replie);
+					formData.append('b_id', this.b_id);
+					formData.append('flg', '1');
+					axios.post(URL,formData)
+					.then(res =>{
+						if(res.data.code==="0"){
+							this.replie = "";
+							this.repliecount++;
+							this.repliedata.unshift(res.data.data);
+						}else{
+							Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: res.data.errorMsg,
+							confirmButtonText: '확인'
+					})
+						}
+					})
+					.catch(err => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.response.data.errorMsg,
+							confirmButtonText: '확인'
+						})
+					})
+				}else{
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: err.response.data.errorMsg,
+						text: '댓글을 작성해 주세요.',
 						confirmButtonText: '확인'
 					})
-				})
-			}else{
-				Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: '댓글을 작성해 주세요.',
-					confirmButtonText: '확인'
-				})
-			}		
+				}		
+			}
 		},
 		// 좋아요 입력
 		plusheart() {
@@ -337,10 +353,12 @@ export default {
 				})				
 			} else {
 				Swal.fire({
-					icon: 'error',
+					icon: 'warning',
 					title: '주의',
 					text: '로그인 후 이용해 주세요.',
-					confirmButtonText: '확인'
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
                 })
 				.then((result) => {
 					if (result.isConfirmed) {
