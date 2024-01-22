@@ -2,7 +2,7 @@
 	<!-- 헤더 -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 		<div class="container-fluid">
-			<router-link to="/admin" @click="flgchg(0,0)">이의이승관리자</router-link>
+			<router-link to="/admin" @click="flgchg(0,0)" class="admin_header_left_a">이의이승관리자</router-link>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -39,7 +39,7 @@
 						</ul>
 					</li>
 				</ul>
-				<router-link to="/main">메인으로</router-link>
+				<router-link to="/main" class="admin_header_right_a">메인으로</router-link>
 				<div
 					class="pointer"
 					@click="logout"

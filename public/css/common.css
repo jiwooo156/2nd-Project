@@ -1736,11 +1736,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	margin-top: 100px;
 }
 .detail_header{
-	margin-top:50px;
 	margin-bottom: 15px;
     padding: 10px;
     font-size: 2.3rem;
     background: #d14c6c1f;
+}
+.admin_header_left_a {
+    font-size: 1.5rem;
+    padding-right: 25px;
+}
+.admin_header_right_a{
+	padding-right: 10px;
 }
 .detail_header_flex{
     display: flex;
@@ -2321,11 +2327,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .admin_container_box1_3{
-	background: linear-gradient(to bottom right, #193f81, #4b7bcc, #4997ff, #91b0e5);
-}
-
-.admin_container_box1_4{
-	background: linear-gradient(to bottom right, #2e5daf, #2a72ec, #4997ff, #91b0e5);
+    background: linear-gradient(to bottom right, #193f81, #4b7bcc, #59a0ff, #b5d1ff);
 }
 
 .admin_container_box1_4{
