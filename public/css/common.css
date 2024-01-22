@@ -2782,6 +2782,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     min-height: 100vh;
 	width: 100%;
 }
+.write_frame div:nth-child(2) {
+	padding: 0;
+}
 .write_container {
     width: 95%;
     max-width: 1200px;
