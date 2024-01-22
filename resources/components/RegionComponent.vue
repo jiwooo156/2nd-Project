@@ -6,8 +6,8 @@
 			</div>
 			<div class="region_slider_container">
 				<Carousel :itemsToShow="item" :wrapAround="true" :transition="400" :autoplay="3000" :mouseDrag="true" ref="myCarousel">
-					<Slide v-for="state in states" :key="state">
-						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer">{{ state.states_name }}</div>
+					<Slide v-for="state in states" :key="state" >
+						<div @click="getRegionfestival(state.states_name)" class="font_air bold carousel__item pointer" :class="'state' + statearr[state.states_name]">{{ state.states_name }}</div>
 					</Slide>
 					<template #addons>
 						<navigation />
@@ -245,6 +245,7 @@ export default {
 			span_flg3: "0", 
 			span_flg4: "0", 
 			span_flg5: "0", 
+			statearr : { "경산시": 1, "경주시": 2, "고령군": 3,"구미시": 4,"김천시": 5, "봉화군": 6, "문경시": 7, "상주시": 8, "성주군": 9, "안동시": 10, "영덕군": 11, "영양군": 12, "영주시": 13, "영천시": 14, "포항시": 15, "예천군": 16, "울릉군": 17, "울진군": 18, "의성군": 19, "청도군": 20, "청송군": 21, "칠곡군": 22, "거제시": 23, "김해시": 24, "밀양시": 25, "사천시": 26, "양산시": 27, "진주시": 28, "창원시": 29, "통영시": 30, "거창군": 31, "고성군": 32, "남해군": 33, "산청군": 34, "의령군": 35, "함안군": 36, "창녕군": 37, "하동군": 38, "함양군": 39, "합천군": 40, "군위군": 41}
 		}
 	},
 	components: {

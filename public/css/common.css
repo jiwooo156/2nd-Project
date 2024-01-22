@@ -1438,7 +1438,7 @@ margin-top:10px;
 	font-size: 1.3rem;
 }
 /* 지역 페이지 슬라이드 */
-.carousel__item {
+/* .carousel__item {
     color: #D14C6C;
     width: 100px;
     height: 100px;
@@ -1446,6 +1446,17 @@ margin-top:10px;
     background-color: #ffeff3;
     text-align: center;
     line-height: 100px;
+} */
+.carousel__item {
+    color: #000000;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    text-align: center;
+    font-weight: 900;
+    line-height: 174px;
+    box-shadow: 15px 1px 16px -5px #c8c8c8;
 }
 /* 지역 페이지 검색바 */
 .region_search_frame {
@@ -2227,6 +2238,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_update {
 	font-size: 1.5rem;
+	color: #000;
+}
+#qna_replie {
+	padding-left: 0;
+	color: #000;
 }
 .detail_margin {
 	margin-top: 1rem;
@@ -2273,10 +2289,34 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #000;
 	font-size: 2rem;
 }
+.qna_report_open button {
+	color: #3d3d3d;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background-color: #eeeeee;
+	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
+}
+.qna_report_con {
+	font-size: 1.3rem;
+}
+.qna_report_content {
+	font-size: 1.3rem;
+}
+.qna_report_margin {
+	margin-bottom: 0.6rem;
+}
+.qna_report_ok {
+	font-size: 1.5rem;
+}
 /* 정렬순 정지우 동적 클래스 */
 .qna_btn_button_on {
 	color: #28284d !important;
 	border-radius: 10px !important;
+}
+.community_margin {
+	margin: 0;
 }
 
 /* 어드민 */
@@ -2690,9 +2730,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .info_likes {
 	width: 9%;
 }
-/* .col_hidden {
-	display: table-column
-} */
 
 /* 자유&정보게시판 목록 페이징 처리 */
 .info_pageframe {
@@ -2735,6 +2772,231 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	margin: 0 10px;
 }
 
+/* 작성페이지 */
+.write_headertitle {
+	text-align: center;
+}
+.write_btnframe {
+	display: flex;
+	gap: 3px;
+	justify-content: flex-end;
+}
+.write_btn {
+	color: #3d3d3d;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background-color: #eeeeee;
+	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
+}
+
+/* 슬라이드 이미지 */
+.state1 {
+	background-image: url( "../img/경산 대추.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state2 {
+	background-image: url( "../img/경주 첨성대.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state3 {
+	background-image: url( "../img/고령 대가야.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state4 {
+	background-image: url( "../img/구미 라면.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state5 {
+	background-image: url( "../img/김천 포도.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state6 {
+	background-image: url( "../img/봉화 송이버섯.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state7 {
+	background-image: url( "../img/문경 문경새재.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state8 {
+	background-image: url( "../img/상주 곶감.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state9 {
+	background-image: url( "../img/성주 참외.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state10 {
+	background-image: url( "../img/안동 하회탈.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state11 {
+	background-image: url( "../img/영덕 대게.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state12 {
+	background-image: url( "../img/영양 무.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state13 {
+	background-image: url( "../img/영주 풍기인삼.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state14 {
+	background-image: url( "../img/영천 천문대.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state15 {
+	background-image: url( "../img/포항 호미곶.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state16 {
+	background-image: url( "../img/예천 쌀.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state17 {
+	background-image: url( "../img/울릉 오징어.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state18 {
+	background-image: url( "../img/울진 대게.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state19 {
+	background-image: url( "../img/의성 마늘.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state20 {
+	background-image: url( "../img/청도 소싸움.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state21 {
+	background-image: url( "../img/청송 사과.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state22 {
+	background-image: url( "../img/칠곡 안상규 벌꿀.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state23 {
+	background-image: url( "../img/거제 유자.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state24 {
+	background-image: url( "../img/김해 도자기.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state25 {
+	background-image: url( "../img/밀양 양갱.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state26 {
+	background-image: url( "../img/사천 굴.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state27 {
+	background-image: url( "../img/양산 매실.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state28 {
+	background-image: url( "../img/진주 하모.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state29 {
+	background-image: url( "../img/창원 키위.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state30 {
+	background-image: url( "../img/통영 이순신.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state31 {
+	background-image: url( "../img/거창 사과.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state32 {
+	background-image: url( "../img/고성 공룡발자국.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state33 {
+	background-image: url( "../img/남해 시금치.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state34 {
+	background-image: url( "../img/산청 딸기.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state35 {
+	background-image: url( "../img/의령 망개떡.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state36 {
+	background-image: url( "../img/함안 수박.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state37 {
+	background-image: url( "../img/창녕 양파.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state38 {
+	background-image: url( "../img/하동 녹차.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state39 {
+	background-image: url( "../img/함양 복분자.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state40 {
+	background-image: url( "../img/합천 해인사.png" );
+	background-size: cover;
+	background-position: center;
+}
+.state41 {
+	background-image: url( "../img/군위 풍차.png" );
+	background-size: cover;
+	background-position: center;
+}
 /* pc */
 @media only screen and (min-width: 991px) {
 	/* 에러 */
@@ -2946,6 +3208,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 		background-color: #ffeff3;
 		text-align: center;
 		line-height: 90px;
+		box-shadow: 0px 0px 5px #9e9e9e;
 	}
 	/* 에러페이지 */
 	.error_h1{

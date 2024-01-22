@@ -66,7 +66,9 @@
 
 
 	<div class="admin_frame">
-		<div>게시글 작성</div>
+		<div class="write_headertitle">
+			<h1>게시글 작성</h1>
+		</div>
 		<div class="col-md-3 position-relative mb-3">
 			<label for="writeflg" class="form-label">게시판</label>
 			<select class="form-select" id="writeflg" v-model="flg" name="flg">
@@ -92,13 +94,27 @@
 			<span class="input-group-text">내용</span>
 			<textarea class="form-control" aria-label="With textarea" v-model="content"></textarea>
 		</div>
+		<!-- 이미지 입력 및 미리보기 -->
 		<div class="input-group mb-3 align-items-center">
-			<input id="admin_file_img1" class="form-control" type="file" accept="image/*" @change="setThumbnail">
+			<input id="admin_file_img1" class="form-control" type="file" accept="image/*">
+			<input id="admin_file_img2" class="form-control" type="file" accept="image/*">
+			<input id="admin_file_img3" class="form-control" type="file" accept="image/*">
+			<!-- <input id="admin_file_img1" class="form-control" type="file" accept="image/*" @change="setThumbnail">
 			<input id="admin_file_img2" class="form-control" type="file" accept="image/*" @change="setThumbnail">
-			<input id="admin_file_img3" class="form-control" type="file" accept="image/*" @change="setThumbnail">
-			<div v-for="index in 3" :key="index" class="image-container">
-      			<img :src="thumbnailSrc[index]" alt="Thumbnail" v-if="thumbnailSrc[index]" />
+			<input id="admin_file_img3" class="form-control" type="file" accept="image/*" @change="setThumbnail"> -->
+			<!-- <div class="image-container">
+      			<img :src="thumbnailSrc[0]" alt="Thumbnail" v-if="thumbnailSrc[0]" />
     		</div>
+			<div class="image-container">
+      			<img :src="thumbnailSrc[1]" alt="Thumbnail" v-if="thumbnailSrc[1]" />
+    		</div>
+			<div class="image-container">
+      			<img :src="thumbnailSrc[2]" alt="Thumbnail" v-if="thumbnailSrc[2]" />
+    		</div> -->
+		</div>
+		<div class="write_btnframe">
+			<button class="pointer write_btn" @click="commuWrite">작성</button>
+			<button class="pointer write_btn" @click="goBack">취소</button>
 		</div>
 	</div>
 </template>
