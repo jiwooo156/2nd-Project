@@ -1927,6 +1927,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	display: flex;
 	justify-content: space-between;
 	padding-bottom: 0.5rem;
+	margin-top: 0.9rem;
 }
 .detail_com_tofrom {
 	margin: 0;
