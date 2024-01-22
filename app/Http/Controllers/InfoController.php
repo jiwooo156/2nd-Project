@@ -7,6 +7,7 @@ use App\Models\Info;
 use App\Models\Replie;
 use App\Models\Like;
 use App\Models\Community;
+use App\Models\Report;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -1123,11 +1124,14 @@ class InfoController extends Controller
     }
     // 커뮤니티 신고 기능
     public function reportingPost(Request $req) {
+        Log::debug($req);
         try {
             // 트랜잭션 시작
             DB::beginTransaction();
+            $auth = Auth::user()->id;
             // 리퀘스트 온 값 data에 저장
-            $data = $req->only('flg','content', 'b_id', 'u_id');
+            $data = $req->only('flg','content', 'b_id');
+            $data['u_id'] = $auth;
             // data정보를 리폿 테이블에 인서트
             $result = Report::create($data);
             //저장
