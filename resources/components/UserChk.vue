@@ -16,19 +16,19 @@
 			</div>
 		</div>
 		<div v-if="mainflg===0" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
-				<option value="0">축제</option>
-				<option value="1">관광</option>
-				<option value="2">커뮤니티</option>
+			<select class="form-select form-select-lg mb-3 pointer userchk_select font_air bold	" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
+				<option value="0" class="font_air bold">축제</option>
+				<option value="1" class="font_air bold">관광</option>
+				<option value="2" class="font_air bold">커뮤니티</option>
 			</select>
-			<div class="userchk_card_gird">
+			<div class="userchk_card_gird" v-if="likeflg!=='2'">
 				<div class="userchk_card" v-for="data in likedata" :key="data">
 					<router-link :to='"/detail?id="+data.id' v-if="data.flg==='축제'||data.flg==='관광'">
 						<img :src="data.img" v-if="data.flg === '축제'||data.flg === '관광'">
 						<div class="region_title ">{{ data.title }}</div>
 						<div class="region_content font_air bold" v-if="data.flg==='축제'">기간 : {{ data.start_at }} ~ {{ data.end_at }}</div>
 					</router-link>
-					<router-link :to='"/community?id="+data.id' v-if="data.flg==='0'||data.flg==='1'">
+					<!-- <router-link :to='"/community?id="+data.id' v-if="data.flg==='0'||data.flg==='1'">
 						<img :src="data.img" v-if="data.flg === '축제'||data.flg === '관광'">
 						<div class="region_title ">{{ this.community[data.flg] }}</div>
 						<div class="region_title ">제목 : {{ data.title }}</div>
@@ -36,7 +36,7 @@
 					<router-link :to='"/post?id="+data.id' v-if="data.flg==='2'||data.flg==='3'">
 						<div class="region_title ">{{ this.community[data.flg] }}</div>
 						<div class="region_title ">제목 : {{ data.title }}</div>
-					</router-link>
+					</router-link> -->
 					<div v-if="data.flg === '축제'">
 						<div v-if="indate(today,data.start_at,data.end_at)" class="region_date_msg1 font_air bold">진행중</div>
 						<div v-else-if="beforedate(today, data.start_at)" class="region_date_msg2 font_air bold">
@@ -49,8 +49,42 @@
 						v-if="likedata.length < 1"
 					>조회된 게시글이 없습니다.</div>
 			</div>
-			<div class='admin_page  mt-3'>
-				<nav aria-label="Page navigation example">
+			<div v-else>
+				<table class="table table-hover  table-border mb-3 table-bordered font_air bold" >
+					<thead>	
+						<tr>
+							<th scope="col" class="none">작성위치</th>
+							<th scope="col">게시글제목</th>
+							<th scope="col" class="none">작성시간</th>
+						</tr>								
+					</thead>
+					<tbody>
+						<tr v-if="writeflg === '0'" v-for="data in likedata" :key="data"  @click="writedetail(data)">
+							<td class="userchk_body_td1 none font_air bold">{{ community[data.flg] }}</td>
+							<td class="userchk_body_td2 font_air bold">	
+								<div>
+									<div class="userchk_title font_air bold">
+										{{ data.title }}
+									</div>
+								</div>				
+								<div class="userchk_mobile_box font_air bold">
+									<div>
+										작성위치 : {{ community[data.flg] }}
+									</div>
+									<div>
+										작성일자 : {{ data.created_at }}
+									</div>
+								</div>
+							</td>
+							<td class="userchk_body_td3 none font_air bold">
+								{{ data.created_at }}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+				<div class='admin_page  mt-3'>
+					<nav aria-label="Page navigation example">
 					<ul class="pagination">
 						<li class="page-item" :class="[{ 'disabled': this.page === 1 }, (this.page !== 1) ? 'pointer' : '']">
 							<span class="page-link" @click="likeget(likeflg,1)">&lt;&lt;</span>
@@ -72,9 +106,9 @@
 			</div>
 		</div>
 		<div v-if="mainflg===1" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
-				<option value="0">게시글</option>
-				<option value="1">댓글</option>
+			<select class="form-select form-select-lg mb-3 pointer userchk_select font_air bold" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
+				<option value="0" class="font_air bold">게시글</option>
+				<option value="1" class="font_air bold">댓글</option>
 			</select>
 			<table class="table table-hover  table-border mb-3 table-bordered">
 				<thead>	
@@ -96,15 +130,15 @@
 				</thead>
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
-						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
-						<td class="userchk_body_td1 none" v-else>{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">	
+						<td class="userchk_body_td1 none font_air bold" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
+						<td class="userchk_body_td1 none font_air bold" v-else>{{ community[data.flg] }}</td>
+						<td class="userchk_body_td2 font_air bold">	
 							<div>
-								<div class="userchk_title">
+								<div class="userchk_title font_air bold">
 									{{ data.title }}
 								</div>
 							</div>				
-							<div class="userchk_mobile_box">
+							<div class="userchk_mobile_box font_air bold">
 								<div>
 									작성위치 : {{ community[data.flg] }}
 								</div>
@@ -113,7 +147,7 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td3 none">
+						<td class="userchk_body_td3 none font_air bold">
 							{{ data.created_at }}
 						</td>
 					</tr>
@@ -121,15 +155,12 @@
 						v-if="writeflg==='1'"
 						@click="repliemodal(data)"
 					>
-						<td class="userchk_body_td1 none">{{ data.title }}</td>
+						<td class="userchk_body_td1 none font_air bold">{{ data.title }}</td>
 						<td class="userchk_body_td2">
 							<div class="userchk_consol">
 								<div>
 									{{ data.replie }}
 								</div>
-								<span class="pointer userchk_content_report">
-									<font-awesome-icon :icon="['fas', 'trash']" />	
-								</span>
 							</div>
 							<div class="userchk_mobile_box">
 								<div>
@@ -140,10 +171,8 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td4 none">{{ data.created_at }}
-							<span class="pointer" 	@click="repliemodal(data)">
-								<font-awesome-icon :icon="['fas', 'trash']" />	
-							</span>
+						<td class="userchk_body_td4 none">
+							{{ data.created_at }}
 						</td>
 					</tr>
 					<td colspan="4" class="pb-3 pt-5" 

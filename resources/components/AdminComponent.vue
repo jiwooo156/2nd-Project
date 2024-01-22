@@ -2,7 +2,7 @@
 	<!-- 헤더 -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3">
 		<div class="container-fluid">
-			<router-link to="/admin" @click="flgchg(0,0)">이의이승관리자</router-link>
+			<router-link to="/admin" @click="flgchg(0,0)" class="admin_header_left_a">이의이승관리자</router-link>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -39,7 +39,7 @@
 						</ul>
 					</li>
 				</ul>
-				<router-link to="/main">메인으로</router-link>
+				<router-link to="/main" class="admin_header_right_a">메인으로</router-link>
 				<div
 					class="pointer"
 					@click="logout"
@@ -78,7 +78,7 @@
 			</div>
 			<div class="admin_container_box3">
 				<div class="font_air bold admin_main_chart2_flex">					
-					<div class="font_air bold">테스트</div>
+					<div class="font_air bold">유저활동내역</div>
 					<select class="form-select" id="validationTooltip04" required v-model="main_chart_type" @change="mainchartget">
 						<option value="0">1주일</option>
 						<option value="1">1개월</option>
@@ -277,15 +277,15 @@
 					<button type="button" class="btn btn-danger" 
 						@click="delreplie(modalReport.id,now_report.flg)" 
 						v-if="modalReport.deleted_at === 'X'"
-					>게시글 삭제</button>
+					>{{ reportarr1[this.now_report.flg]}} 삭제</button>
 					<button type="button" class="btn btn-danger"
 						@click="repairreplie(modalReport.id,now_report.flg)" 
 						v-if="modalReport.deleted_at !== 'X'&&this.now_report.admin_flg !== '0'"
-					>게시글 복구</button>
+					>{{ reportarr1[this.now_report.flg]}} 복구</button>
 					<button type="button" class="btn btn-primary"
 						@click="keepdata(this.now_report.id,'2')"
 						v-if="this.now_report.admin_flg === '0'"
-					>게시글 유지</button>
+					>{{ reportarr1[this.now_report.flg]}} 유지</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning"
 						v-if="this.now_report.admin_flg === '3'"
 						@click="clearestraint(null,this.now_report.id)"
@@ -1092,7 +1092,7 @@
 					<td class="admin_table_td2">{{ data.restraint_at }}</td>
 				</tr>
 				<div
-					v-if="replies.length < 1"
+					v-if="userdata.length < 1"
 				>조회된 유저가 없습니다</div>
 				<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-lg modal-dialog-centered">
@@ -1954,7 +1954,9 @@ export default {
 			this.modalflg = false;
 			this.updateflg = false;
 			this.$store.commit('setLoading', false);
-			document.querySelector('.btn-close').click();
+			if(this.mainflg===3&&this.subflg===2){
+				document.querySelector('.btn-close').click();
+			}
 		},
 		// 답변달기
 		adminAnswer(id,email){

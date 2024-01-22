@@ -127,6 +127,38 @@
 				좋아요
 				{{this.detaildata.cnt}}
 			</div>
+			<!-- 게시글 신고 모달 -->
+			<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1" id="reportmodal">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title qna_update">게시글 신고</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="qna_report">
+							<div>신고할 게시글 확인</div>
+							<span>제목 : </span>
+							<span class="font_air bold detail_com_tofrom">{{ this.detaildata.title }}</span>
+							<br>
+							<span>작성자 : </span>
+							<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
+							<div class="input-group">
+								<span>신고사유 :</span>
+								<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
+
+							</div>
+							<div>신고하시겠습니까?</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('0')">신고완료</button>
+						<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+					</div>
+					</div>
+				</div>
+			</div>
+			<button type="button" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고하기</button>
 		</div>
 		<div class="detail_replie_container">
 			<div class="detail_replie_write_box font_air bold">
@@ -182,8 +214,38 @@
 					v-else
 				>
 					<div class="font_air bold pointer"
+						data-bs-toggle="modal" data-bs-target="#reportmodal"
+						@click="reportmodal"
 					>
 						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
+					</div>
+					<!-- 댓글 신고 모달 -->
+					<div class="modal reportModal" tabindex="-1" id="reportmodal">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title qna_update">댓글 신고</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="qna_report">
+									<span>댓글 : </span>
+									<span class="font_air bold detail_com_tofrom">{{ data.replie }}</span>
+									<br>
+									<span>작성자 : </span>
+									<span class="font_air bold detail_com_tofrom">{{ data.nick }}</span>
+									<div class="input-group">
+										<span>신고사유 :</span>
+										<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer d-flex justify-content-center">
+								<button type="button" class="btn btn-primary qna_modal_btn qna_color" 	@click="reportPost('0',data.id)">신고완료</button>
+								<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+							</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -222,6 +284,7 @@ export default {
 			b_id: "",
 			repliecount: "",
 			new_replie: "",
+			reportmsg: "",
 			replie_offset: 20,
 			moreflg: false,
 			userauth: "",
@@ -468,6 +531,7 @@ export default {
 		},
 		// 댓글추가 불러오기
 		morereplie(){
+			this.$store.commit('setLoading', true);
 			console.log(this.replie_offset)
 			const URL = '/detail/more/?b_id='+this.b_id+'&offset='+this.replie_offset;
 			axios.get(URL)
@@ -494,7 +558,10 @@ export default {
                     text: err.response.data.errorMsg,
                     confirmButtonText: '확인'
                 })
-			})		
+			})	
+			.finally(() => {
+				this.$store.commit('setLoading', false);
+			});	
 		},
 		// 이메일 마스킹
 		masking(str) {
@@ -518,7 +585,80 @@ export default {
 				// 전달받은 값의 @앞 부분내용중 @ 앞에 있는 부분의 4글자 만큼 *로 변경
 				return teststr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
 			}
-		},	
+		},
+		//신고기능 
+		reportPost(flg,id) {
+			if(this.reportmsg === ""){
+				Swal.fire({
+					icon: 'warning',
+					title: '주의',
+					text: '신고사유를 입력해 주세요',
+					confirmButtonText: '확인'
+				})
+			}else{			
+				this.$store.commit('setLoading', true);
+				let tt = ['게시글','댓글']
+				const URL = '/post/re';
+				const formData = new FormData();
+				formData.append('b_id', id);
+				formData.append('flg', flg);
+				formData.append('content', this.reportmsg);
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						console.log("진입")
+						document.querySelector('.btn-close').click();
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '정상처리되었습니다.',
+							confirmButtonText: '확인'
+						})
+					}else if(res.data.code==="1"){
+						console.log("진입")
+						document.querySelector('.btn-close').click();
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '이미 신고하신 '+tt[flg]+" 입니다.",
+							confirmButtonText: '확인'
+						})
+					}
+				})
+				.catch(err => {
+					document.querySelector('.btn-close').click();
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})
+				})
+				.finally(() => {
+					this.$store.commit('setLoading', false);
+					this.reportmsg = ""
+				});	
+			}
+		},
+		// 모달클릭시 플래그
+		reportmodal(){
+			if(!(localStorage.getItem('nick'))){
+				document.querySelector('.btn-close').click();
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
+			}
+		}
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

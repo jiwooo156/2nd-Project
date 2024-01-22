@@ -35,7 +35,7 @@
 				</div>
 			</div>	
 			<!-- 공지 -->
-			<div class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
+			<div id="carouselExampleIndicators" class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
 				<div class="carousel-inner">
 					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
 						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
@@ -109,16 +109,16 @@
 		<div v-else="this.nowflg==='3'" class="qna_container">
 			<div class="qna_header">
 				<h1>건의게시판</h1>
-				<div class="qna_header_bot">
+				<div class="qna_header_bot_2">
 					<div class="qna_header_l">
-						<select v-model="option" @click="getInfo()" class="form-select qna_drop my-3" aria-label=".form-select-sm">
+						<select v-model="option" @click="getInfo()" class="form-select mt-3 qna_drop" aria-label=".form-select-sm">
 							<option value="3" class="qna_drop_item" selected>전체</option>
 							<option value="0" class="qna_drop_item">축제</option>
 							<option value="1" class="qna_drop_item">관광</option>
 							<option value="2" class="qna_drop_item">기타</option>
 						</select>
 						<!-- 클릭시 버튼 동그라미 색상 변경 #D14C6C/ 글자 검정색/ 좀만 크게 -->
-						<div class="qna_btn">
+						<!-- <div class="qna_btn">
 							<div class="btn-group" role="group">
 								<button type="button"  class="btn" value="1" @click="buttonclick(1)" :class="{'qna_btn_button_on': this.rangevalue == 1}">
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>최신순
@@ -130,7 +130,7 @@
 									<span class="font_center"><font-awesome-icon :icon="['fas', 'circle']"/></span>좋아요순
 								</button>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<div class="qna_header_r">
 						<div>
@@ -140,13 +140,13 @@
 				</div>
 			</div>	
 			<!-- 공지 -->
-			<div class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
+			<div id="carouselExampleIndicators" class="carousel slide qna_content px-2 qna_notice_card" data-bs-ride="carousel">
 				<div class="carousel-inner">
 					<div v-for="(notice, index) in noticedata" :key="notice.id" class="carousel-item" :class="{ 'active': index === currentIndex }">
 						<div class="card pointer qna_card_width" @click="$router.push('/post?id=' + notice.id)">
 							<div class="card-body qna_card_body qna_mobile">
 								<h6 class="card-subtitle mb-2 qna_pink" id="qna_notice_icon"><font-awesome-icon :icon="['fas', 'volume-off']" /> {{ isNotice(notice.category_flg) }}</h6>
-								<h5 class="card-title qna_card_tit">
+								<h5 class="card-title mb-3 qna_card_tit">
 									{{ notice.title }}
 								</h5>
 								<div class="d-flex justify-content-between">

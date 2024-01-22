@@ -7,6 +7,7 @@ use App\Models\Info;
 use App\Models\Replie;
 use App\Models\Like;
 use App\Models\Community;
+use App\Models\Report;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -517,11 +518,18 @@ class InfoController extends Controller
             ->where('likes.l_flg','1');
         }else if($req->flg === "2"){
             Log::debug("진입3");
-            $data = Like::select('community.id', 'community.title', 'community.flg')
+            $data = Like::select('community.id', 'community.title', 'community.flg','community.created_at')
                 ->join('community', 'likes.b_id', 'community.id')
                 ->where('likes.flg', '1')
                 ->where('likes.l_flg', '1')
-                ->whereNull('community.deleted_at');
+                ->whereNull('community.deleted_at')
+                ->where('likes.u_id',$auth->id)
+                ->orderby('likes.created_at','desc')
+                ->paginate(5);
+                return response()->json([
+                    'code' => '0',
+                    'data' => $data,
+                ],200);
         }
         Log::debug($auth->id);
             $data = $data
@@ -1123,25 +1131,38 @@ class InfoController extends Controller
     }
     // 커뮤니티 신고 기능
     public function reportingPost(Request $req) {
-        try {
-            // 트랜잭션 시작
-            DB::beginTransaction();
-            // 리퀘스트 온 값 data에 저장
-            $data = $req->only('flg','content', 'b_id', 'u_id');
-            // data정보를 리폿 테이블에 인서트
-            $result = Report::create($data);
-            //저장
-            DB::commit();
+        $auth = Auth::user()->id;
+        $result = Report::where('b_id',$req->b_id)
+            ->where('u_id',$auth)
+            ->where('flg',$req->flg)
+            ->first();
+        if(!empty($result)){
+            Log::debug("여기진입");
             return response()->json([
-                'code' => '0',
-                'data' => $result,
+                'code' => '1',
             ], 200);
-        } catch(Exception $e) {
-            DB::rollback();
-            return response()->json([
-                'code' => 'E99',
-                'errorMsg' => '신고 실패.'
-            ], 400);
-        } 
+        }else{
+            try {
+                // 트랜잭션 시작
+                DB::beginTransaction();
+                // 리퀘스트 온 값 data에 저장
+                $data = $req->only('flg','content', 'b_id');
+                $data['u_id'] = $auth;
+                $data['admin_flg'] = '0';
+                // data정보를 리폿 테이블에 인서트
+                Report::create($data);
+                //저장
+                DB::commit();
+                return response()->json([
+                    'code' => '0',
+                ], 200);
+            } catch(Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'code' => 'E99',
+                    'errorMsg' => '신고 실패.'
+                ], 400);
+            } 
+        }
     }
 }
