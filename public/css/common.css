@@ -2228,6 +2228,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 .qna_update {
 	font-size: 1.5rem;
+	color: #000;
+}
+#qna_replie {
+	padding-left: 0;
+	color: #000;
 }
 .detail_margin {
 	margin-top: 1rem;
@@ -2274,10 +2279,34 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 	color: #000;
 	font-size: 2rem;
 }
+.qna_report_open button {
+	color: #3d3d3d;
+	font-family: 'Cafe24SsurroundAir';
+	font-weight: bold;
+	border: none;
+	background-color: #eeeeee;
+	padding: 0.5rem 0.8rem;
+	border-radius: 18px 18px 18px 18px;
+}
+.qna_report_con {
+	font-size: 1.3rem;
+}
+.qna_report_content {
+	font-size: 1.3rem;
+}
+.qna_report_margin {
+	margin-bottom: 0.6rem;
+}
+.qna_report_ok {
+	font-size: 1.5rem;
+}
 /* 정렬순 정지우 동적 클래스 */
 .qna_btn_button_on {
 	color: #28284d !important;
 	border-radius: 10px !important;
+}
+.community_margin {
+	margin: 0;
 }
 
 /* 어드민 */

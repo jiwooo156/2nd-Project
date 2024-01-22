@@ -37,7 +37,7 @@
 					<span class="detail_likes font_air bold">좋아요</span>
 					<span class="detail_likes font_air bold">{{ this.detaildata.cnt }}</span>
 				</div>
-				<!-- 신고 모달 -->
+				<!-- 게시글 신고 모달 -->
 				<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1" id="reportmodal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
@@ -47,18 +47,16 @@
 						</div>
 						<div class="modal-body">
 							<div class="qna_report">
-								<div>신고할 게시글 확인</div>
-								<span>제목 : </span>
-								<span class="font_air bold detail_com_tofrom">{{ this.detaildata.title }}</span>
-								<br>
-								<span>작성자 : </span>
-								<span class="font_air bold detail_com_tofrom">{{ this.detaildata.nick }}</span>
-								<div class="input-group">
-									<span>신고사유 :</span>
-									<input type="text" id="titleInput" class="form-control qna_tit" v-model="reportmsg">
-
+								<div class="qna_report_margin">
+									<span class="qna_report_con">제목 : </span>
+									<span class="font_air bold detail_com_tofrom qna_report_content">{{ this.detaildata.title }}</span>
 								</div>
-								<div>신고하시겠습니까?</div>
+								<div class="qna_report_margin">
+									<span class="qna_report_con">작성자 : </span>
+									<span class="font_air bold detail_com_tofrom qna_report_content">{{ this.detaildata.nick }}</span>
+								</div>
+								<span class="qna_report_con">신고사유</span>
+								<input type="text" id="titleInput" style="height: 5rem" class="form-control qna_tit" v-model="reportmsg">
 							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
@@ -68,7 +66,6 @@
 						</div>
 					</div>
 				</div>
-				<button type="button" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal">신고하기</button>
 				<!-- 수정 모달 -->
 				<div class="modal updateModal" tabindex="-1" id="updatemodal">
 					<div class="modal-dialog modal-dialog-centered">
@@ -134,6 +131,9 @@
 					</div>
 				</div>
 				<div class="post_btn_bot" >
+					<div class="qna_report_open">
+						<button type="button" v-if="!checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고</button>
+					</div>
 					<button type="button" v-if="checkUser(this.detaildata.email)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#updatemodal">수정</button>
 					<button type="button" @click="goBack">목록</button>
 					<button type="button" v-if="checkUser(this.detaildata.email)" @click="delPost">삭제</button>
@@ -188,6 +188,43 @@
 						@click="del_replie(data.id)"
 					>
 						삭제
+					</div>
+				</div>
+				<div class="detail_replie_change" v-else>
+					<!-- 댓글 신고 모달 -->
+					<div class="modal reportrepliemodal" tabindex="-1" id="reportrepliemodal">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title qna_update">댓글 신고</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div class="qna_report" id="qna_replie">
+									<div class="qna_report_margin" id="qna_replie">
+										<span class="qna_report_con">댓글 : </span>
+										<span class="font_air bold detail_com_tofrom qna_report_content">{{ data.replie }}</span>
+									</div>
+									<div class="qna_report_margin" id="qna_replie">
+										<span class="qna_report_con">작성자 : </span>
+										<span class="font_air bold detail_com_tofrom qna_report_content">{{ data.nick }}</span>
+									</div>
+									<span class="qna_report_con">신고사유</span>
+									<input type="text" id="titleInput" style="height: 5rem" class="form-control qna_tit" v-model="reportmsg">
+								</div>
+							</div>
+							<div class="modal-footer d-flex justify-content-center">
+								<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('1',data.id)">신고완료</button>
+								<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="font_air bold pointer"
+						data-bs-toggle="modal" data-bs-target="#reportrepliemodal"
+						@click="reportrepliemodal"
+					>
+						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
 					</div>
 				</div>
 			</div>
@@ -636,10 +673,10 @@ export default {
 			formData.append('b_id', this.b_id);
 			formData.append('flg', flg);
 			formData.append('content', this.reportmsg);
-			console.log('b_id', this.b_id);
 			axios.post(URL,formData)
 			.then(res =>{
 				if(res.data.code==="0"){
+					document.querySelector('.btn-close').click();
 					Swal.fire({
 						icon: 'success',
 						title: '완료',
@@ -647,6 +684,7 @@ export default {
 						confirmButtonText: '확인'
 					})
 				}else if(res.data.code==="1"){
+					document.querySelector('.btn-close').click();
 					Swal.fire({
 						icon: 'warning',
 						title: '주의',
@@ -656,6 +694,7 @@ export default {
 				}
 			})
 			.catch(err => {
+				document.querySelector('.btn-close').click();
 				Swal.fire({
 					icon: 'error',
 					title: 'Error',
@@ -663,6 +702,43 @@ export default {
 					confirmButtonText: '확인'
 				})
 			})
+		},
+		// 모달클릭시 플래그
+		reportmodal(){
+			if(!(localStorage.getItem('nick'))){
+				document.querySelector('.btn-close').click();
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
+			}
+		},
+		reportrepliemodal(){
+			if(!(localStorage.getItem('nick'))){
+				document.querySelector('.btn-close').click();
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
+			}
 		},
 		// 댓글삭제
 		del_replie(id){		
