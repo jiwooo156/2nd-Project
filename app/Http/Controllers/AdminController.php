@@ -358,19 +358,19 @@ class AdminController extends Controller
     // 모달유저정보조회
     public function modaluserget(Request $req){
         // 백슬레쉬 해주는 이유 전역클래스
-        $report = Report::select('restraint')
-            ->where('r_id', $req->id)
-            ->orderBy('restraint_at', 'desc')
-            ->first();
-        $admin = Admin::select('flg')
-            ->where('u_id', $req->id)
-            ->first();
-        return response()->json([
-            'code' => '0',
-            'report' =>  $report,
-            'admin' =>  $admin,
-        ], 200);
-    }
+            $report = Report::select('restraint')
+                ->where('r_id', $req->id)
+                ->orderBy('restraint_at', 'desc')
+                ->first();
+            $admin = Admin::select('flg')
+                ->where('u_id', $req->id)
+                ->first();
+            return response()->json([
+                'code' => '0',
+                'report' =>  $report,
+                'admin' =>  $admin,
+            ], 200);
+        }
     // 유저제재
     public function restraintuser(Request $req){
         try {
@@ -1043,11 +1043,11 @@ class AdminController extends Controller
     // 전체댓글조회
     public function replieget(Request $req){
         $result = Replie::withTrashed()->select('id', 'u_id', 'b_id', 'replie', 'flg', 'deleted_at', 'created_at')
-        ->when(in_array($req->flg, ["1"]), function ($query) use ($req) {
-            return $query->where('flg', $req->flg === "0");
+        ->when($req->flg==="1", function ($query) use ($req) {
+            return $query->where('flg',"0");
         })
-        ->when(in_array($req->flg, ["2"]), function ($query) use ($req) {
-            return $query->where('flg', $req->flg === 1); // 원하는 처리 추가
+        ->when($req->flg==="2", function ($query) use ($req) {
+            return $query->where('flg',"1"); // 원하는 처리 추가
         })
         ->when(!empty($req->val), function ($query) use ($req) {
             if (in_array($req->sub_flg, ["0", "1", "2"])) {
