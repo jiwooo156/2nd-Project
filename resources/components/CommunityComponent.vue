@@ -55,7 +55,7 @@
 					<span class="community_like font_air bold">{{this.detaildata.cnt}}</span>
 				</div>
 				<!-- 게시글 신고 모달 -->
-				<div v-if="detaildata.flg === '2'" class="modal reportModal" tabindex="-1" id="reportmodal">
+				<div class="modal reportModal" tabindex="-1" id="reportmodal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -77,7 +77,7 @@
 							</div>
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
-							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('0')">신고완료</button>
+							<button type="button" class="btn btn-primary qna_modal_btn qna_color" @click="reportPost('0',this.b_id)">신고완료</button>
 							<button type="button" class="btn btn-light qna_modal_btn" data-bs-dismiss="modal">닫기</button>
 						</div>
 						</div>
@@ -150,7 +150,7 @@
 				</div>
 				<div class="post_btn_bot">
 					<div class="qna_report_open">
-						<button type="button" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고</button>
+						<button type="button" v-if="!(this.detaildata.u_id === this.userauth)" id="openModalBtn" data-bs-toggle="modal" data-bs-target="#reportmodal" @click="reportmodal">신고</button>
 					</div>
 					<button type="button" v-if="this.detaildata.u_id === this.userauth" @click="editbefore()">수정</button>
 					<button type="button" @click="goBack">목록</button>
@@ -216,7 +216,7 @@
 							<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title qna_update">댓글 신고</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								<button type="button" class="btn-close btn-close1" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<div class="qna_report" id="qna_replie">
@@ -243,7 +243,7 @@
 						data-bs-toggle="modal" data-bs-target="#reportrepliemodal"
 						@click="reportrepliemodal"
 					>
-						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
+						<span class="font_air bold">신고</span>
 					</div>
 				</div>
 			</div>
@@ -721,42 +721,54 @@ export default {
 			this.$router.go(-1);
 		},
 		// 신고 기능
-		reportPost(flg) {
-			let tt = ['게시글','댓글']
-			const URL = '/post/re';
-			const formData = new FormData();
-			formData.append('b_id', this.b_id);
-			formData.append('flg', flg);
-			formData.append('content', this.reportmsg);
-			axios.post(URL,formData)
-			.then(res =>{
-				if(res.data.code==="0"){
-					document.querySelector('.btn-close').click();
-					Swal.fire({
-						icon: 'success',
-						title: '완료',
-						text: '정상처리되었습니다.',
-						confirmButtonText: '확인'
-					})
-				}else if(res.data.code==="1"){
-					document.querySelector('.btn-close').click();
-					Swal.fire({
-						icon: 'warning',
-						title: '주의',
-						text: '이미 신고하신 '+tt[flg]+" 입니다.",
-						confirmButtonText: '확인'
-					})
-				}
-			})
-			.catch(err => {
-				document.querySelector('.btn-close').click();
+		reportPost(flg,id) {
+			if(this.reportmsg === ""){
 				Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: err.response.data.errorMsg,
+					icon: 'warning',
+					title: '주의',
+					text: '신고사유를 입력해 주세요',
 					confirmButtonText: '확인'
 				})
-			})
+			}else{	
+				let tt = ['게시글','댓글']
+				const URL = '/post/re';
+				const formData = new FormData();
+				formData.append('b_id',id);
+				formData.append('flg', flg);
+				formData.append('content', this.reportmsg);
+				axios.post(URL,formData)
+				.then(res =>{
+					if(res.data.code==="0"){
+						Swal.fire({
+							icon: 'success',
+							title: '완료',
+							text: '정상처리되었습니다.',
+							confirmButtonText: '확인'
+						})
+					}else if(res.data.code==="1"){
+						Swal.fire({
+							icon: 'warning',
+							title: '주의',
+							text: '이미 신고하신 '+tt[flg]+" 입니다.",
+							confirmButtonText: '확인'
+						})
+					}
+				})
+				.catch(err => {
+					document.querySelector('.btn-close').click();
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: err.response.data.errorMsg,
+						confirmButtonText: '확인'
+					})
+				})
+				.finally(() => {
+					document.querySelector('.btn-close').click();
+					document.querySelector('.btn-close1').click();
+					this.reportmsg = "";
+				});
+			}
 		},
 		// 모달클릭시 플래그
 		reportmodal(){
