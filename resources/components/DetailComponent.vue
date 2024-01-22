@@ -183,6 +183,7 @@
 				>
 					<div class="font_air bold pointer"
 						data-bs-toggle="modal" data-bs-target="#reportmodal"
+						@click="reportmodal"
 					>
 						<span>신고<font-awesome-icon :icon="['fas', 'bell']" /></span>
 					</div>
@@ -610,6 +611,25 @@ export default {
 				});	
 			}
 		},
+		// 모달클릭시 플래그
+		reportmodal(){
+			if(!(localStorage.getItem('nick'))){
+				document.querySelector('.btn-close').click();
+				Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+					showCancelButton: true,
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+				})
+				.then((result) => {
+					if (result.isConfirmed) {
+						this.$router.push('/login')
+					}
+				})
+			}
+		}
 	},
 	beforeRouteLeave(to, from, next) {
 		next();

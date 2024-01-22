@@ -16,10 +16,10 @@
 			</div>
 		</div>
 		<div v-if="mainflg===0" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
-				<option value="0">축제</option>
-				<option value="1">관광</option>
-				<option value="2">커뮤니티</option>
+			<select class="form-select form-select-lg mb-3 pointer userchk_select font_air bold	" aria-label=".form-select-lg example" v-model="likeflg" @change="likeget(this.likeflg,1)">
+				<option value="0" class="font_air bold">축제</option>
+				<option value="1" class="font_air bold">관광</option>
+				<option value="2" class="font_air bold">커뮤니티</option>
 			</select>
 			<div class="userchk_card_gird" v-if="likeflg!=='2'">
 				<div class="userchk_card" v-for="data in likedata" :key="data">
@@ -60,14 +60,14 @@
 					</thead>
 					<tbody>
 						<tr v-if="writeflg === '0'" v-for="data in likedata" :key="data"  @click="writedetail(data)">
-							<td class="userchk_body_td1 none">{{ community[data.flg] }}</td>
-							<td class="userchk_body_td2">	
+							<td class="userchk_body_td1 none font_air bold">{{ community[data.flg] }}</td>
+							<td class="userchk_body_td2 font_air bold">	
 								<div>
-									<div class="userchk_title">
+									<div class="userchk_title font_air bold">
 										{{ data.title }}
 									</div>
 								</div>				
-								<div class="userchk_mobile_box">
+								<div class="userchk_mobile_box font_air bold">
 									<div>
 										작성위치 : {{ community[data.flg] }}
 									</div>
@@ -76,7 +76,7 @@
 									</div>
 								</div>
 							</td>
-							<td class="userchk_body_td3 none">
+							<td class="userchk_body_td3 none font_air bold">
 								{{ data.created_at }}
 							</td>
 						</tr>
@@ -106,9 +106,9 @@
 			</div>
 		</div>
 		<div v-if="mainflg===1" class="userchk_body">
-			<select class="form-select form-select-lg mb-3 pointer userchk_select" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
-				<option value="0">게시글</option>
-				<option value="1">댓글</option>
+			<select class="form-select form-select-lg mb-3 pointer userchk_select font_air bold" aria-label=".form-select-lg example" v-model="writeflg" @change="writeget(this.writeflg,1)">
+				<option value="0" class="font_air bold">게시글</option>
+				<option value="1" class="font_air bold">댓글</option>
 			</select>
 			<table class="table table-hover  table-border mb-3 table-bordered">
 				<thead>	
@@ -130,15 +130,15 @@
 				</thead>
 				<tbody>
 					<tr v-if="writeflg === '0'" v-for="data in writedata" :key="data.id" @click="writedetail(data)">
-						<td class="userchk_body_td1 none" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
-						<td class="userchk_body_td1 none" v-else>{{ community[data.flg] }}</td>
-						<td class="userchk_body_td2">	
+						<td class="userchk_body_td1 none font_air bold" v-if="data.flg === '축제'||data.flg === '관광'">{{ data.flg }}</td>
+						<td class="userchk_body_td1 none font_air bold" v-else>{{ community[data.flg] }}</td>
+						<td class="userchk_body_td2 font_air bold">	
 							<div>
-								<div class="userchk_title">
+								<div class="userchk_title font_air bold">
 									{{ data.title }}
 								</div>
 							</div>				
-							<div class="userchk_mobile_box">
+							<div class="userchk_mobile_box font_air bold">
 								<div>
 									작성위치 : {{ community[data.flg] }}
 								</div>
@@ -147,7 +147,7 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td3 none">
+						<td class="userchk_body_td3 none font_air bold">
 							{{ data.created_at }}
 						</td>
 					</tr>
@@ -155,7 +155,7 @@
 						v-if="writeflg==='1'"
 						@click="repliemodal(data)"
 					>
-						<td class="userchk_body_td1 none">{{ data.title }}</td>
+						<td class="userchk_body_td1 none font_air bold">{{ data.title }}</td>
 						<td class="userchk_body_td2">
 							<div class="userchk_consol">
 								<div>
