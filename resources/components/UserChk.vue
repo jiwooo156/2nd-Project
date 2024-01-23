@@ -162,9 +162,7 @@
 						<td class="userchk_body_td1 none font_air bold">{{ data.title }}</td>
 						<td class="userchk_body_td2">
 							<div class="userchk_consol font_air bold">
-								<div>
-									{{ data.replie }}
-								</div>
+								{{ data.replie }}
 							</div>
 							<div class="userchk_mobile_box font_air bold">
 								<div>

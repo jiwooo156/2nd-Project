@@ -102,7 +102,7 @@
 				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/commuwrite" type="button" @click="checklocal2">질문하기</router-link>
+				<div class="qna_btn_bot1" type="button" @click="checklocal2">질문하기</div>
 			</div>
 		</div>
 		<!-- 건의게시판 -->
@@ -188,7 +188,7 @@
 				</div>
 			</div>
 			<div class="qna_btn_bot d-flex flex-row-reverse mt-5 mb-5">
-				<router-link to="/commuwrite" type="button" @click="checklocal3">건의하기</router-link>
+				<div class="qna_btn_bot1" type="button" @click="checklocal3">건의하기</div>
 			</div>
 		</div>
 		<!-- 페이징 -->
@@ -217,6 +217,8 @@
 	</div>
 </template>
 <script>
+import Swal from 'sweetalert2';
+
 export default {
 	name: "QnaComponent",
 
@@ -328,28 +330,48 @@ export default {
 		},
 		// 질문 로그인 확인
 		checklocal2() {
-			if (!localStorage.getItem('nick')) {
-				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
-					this.$router.push('/login');
-				} else {
-					this.$router.push('/qna?flg=2');
-				}
-			} else {
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+				.then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }else {
+						this.$router.push('/qna?flg=2');
+					}
+                })
+            }else {
 				this.$router.push('/commuwrite');
 			}
 		},
 		// 건의 로그인 확인
 		checklocal3() {
-			if (!localStorage.getItem('nick')) {
-				if (confirm("로그인을 하신 후 이용해 주시기 바랍니다.")) {
-					this.$router.push('/login');
-				} else {
-					this.$router.push('/qna?flg=3');
-				}
-			} else {
+			if(!(localStorage.getItem('nick'))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '주의',
+                    text: '로그인 후 이용해 주세요.',
+                    showCancelButton: true,
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push('/login')
+                    }else {
+						this.$router.push('/qna?flg=3');
+					}
+                })
+            }else {
 				this.$router.push('/commuwrite');
 			}
-		},
+		}, 
 		// 페이징처리
         paging(){
             this.numbox = [];
