@@ -121,7 +121,7 @@ class InfoController extends Controller
         if(auth()->check()) {
             $auth = Auth::user();
             $auth_id = $auth->id;
-            $result = Like::where('u_id',$auth_id)->where('b_id',$req->id)->exists();
+            $result = Like::where('u_id',$auth_id)->where('b_id',$req->id)->where('l_flg','1')->exists();
         }
         // 리퀘스트 온 쿠키값이 없으면서 조회된값이 1개일시
         if(!($req->cookie('hits'.$req->id))&&count($info_result)===1){    

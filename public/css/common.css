@@ -1378,6 +1378,9 @@ margin-top:10px;
 .userchk_consol {
     width: 100%;
     max-width: 910px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .userchk_consol div{
 	max-width: 100%;
