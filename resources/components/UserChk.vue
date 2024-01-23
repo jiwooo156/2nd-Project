@@ -166,7 +166,7 @@
 									{{ data.replie }}
 								</div>
 							</div>
-							<div class="userchk_mobile_box">
+							<div class="userchk_mobile_box font_air bold">
 								<div>
 									작성위치 : {{ community[data.flg] }}
 								</div>
