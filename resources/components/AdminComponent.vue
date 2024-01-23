@@ -290,12 +290,12 @@
 						v-if="this.now_report.admin_flg === '3'"
 						@click="clearestraint(null,this.now_report.id)"
 					>
-						작성자 재제해제
+						작성자 제재해제
 					</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
 						v-if="this.now_report.admin_flg !== '3'"
 					>
-						작성자 재제
+						작성자 제재
 					</button>	
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'0','0')">1일</a></li>
@@ -303,18 +303,18 @@
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'2','0')">7일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'3','0')">15일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'4','0')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'5','0')">영구재제</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.modalReport.u_id,'5','0')">영구제재</a></li>
 					</ul>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning"
 						v-if="this.now_report.admin_flg === '4'"
 						@click="clearestraint(null,this.now_report.id)"
 					>
-						신고자 재제해제
+						신고자 제재해제
 					</button>
 					<button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
 						v-if="this.now_report.admin_flg !== '4'"
 					>
-						신고자 재제
+						신고자 제재
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'0','1')">1일</a></li>
@@ -322,7 +322,7 @@
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'2','1')">7일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'3','1')">15일</a></li>
 						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'4','1')">30일</a></li>
-						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'5','1')">영구재제</a></li>
+						<li><a class="dropdown-item" href="#" @click="modalRestraintuser(this.now_report.id,this.now_report.u_id,'5','1')">영구제재</a></li>
 					</ul>
 					<button type="button" class="btn btn-secondary" @click="closeModal">취소</button>
 				</div>
@@ -1150,17 +1150,17 @@
 										</div>
 									</div>
 									<div class="input-group mb-1">
-										<span class="input-group-text">재제당한횟수</span>
+										<span class="input-group-text">제재당한횟수</span>
 										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.cnt }}
 										</div>
-										<span class="input-group-text">재제사유</span>
+										<span class="input-group-text">제재사유</span>
 										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.restraint }}
 										</div>
 									</div>
 									<div class="input-group mb-3"> 	
-										<span class="input-group-text">재제종료일</span>
+										<span class="input-group-text">제재종료일</span>
 										<div type="text" class="form-control font_air bold">
 											{{ this.modaluser.restraint_at }}
 										</div>
@@ -1178,23 +1178,23 @@
 										<div class="modal-dialog modal-dialog-centered">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title" id="exampleModalLabel">유저재제</h5>
+													<h5 class="modal-title" id="exampleModalLabel">유저제재</h5>
 													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 												</div>
 												<div class="modal-body" >
 													<div>
-														<span>재제기간</span>
+														<span>제재기간</span>
 														<select class="form-select" aria-label="Default select example" v-model="restraint_date">
 															<option class=" font_air bold" value="0">1일</option>
 															<option class=" font_air bold" value="1">3일</option>
 															<option class=" font_air bold" value="2">7일</option>
 															<option class=" font_air bold" value="3">15일</option>
 															<option class=" font_air bold" value="4">30일</option>
-															<option class=" font_air bold" value="5">영구재제</option>
+															<option class=" font_air bold" value="5">영구제재</option>
 														</select>
 													</div>
 													<div>
-														<span>재제사유</span>
+														<span>제재사유</span>
 														<select class="form-select" aria-label="Default select example" v-model="restraint_msg">
 															<option class=" font_air bold">욕설 및 혐오 표현</option>
 															<option class=" font_air bold">불법 콘텐츠 게시</option>
@@ -1327,7 +1327,7 @@ export default {
 			drop_cnt: 0,
 			data: [],
 			r_data: [],	
-			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자재제",4:"신고자재제"},
+			reportarr: {0:"처리전",1:"삭제처리",2:"이상없음",3:"작성자제재",4:"신고자제재"},
 			requestarr: {0:"답변전",1:"답변완료"},
 			reportarr1: {0:"게시글",1:"댓글"},
 			now_data: {},
@@ -2203,14 +2203,14 @@ export default {
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
-					text: '재제기간을 입력해 주세요.',
+					text: '제재기간을 입력해 주세요.',
 					confirmButtonText: '확인'
 				})
 			}else if(msg ===""||(msg === "기타"&&this.restraint_msg2 === "")){
 				Swal.fire({
 					icon: 'warning',
 					title: '주의',
-					text: '재제사유를 입력해 주세요.',
+					text: '제재사유를 입력해 주세요.',
 					confirmButtonText: '확인'
 				})
 			}else{
@@ -2350,11 +2350,11 @@ export default {
 		},
 		// 모달유저제재
 		modalRestraintuser(id,u_id,flg,user){
-			let to=['작성자 재제','신고자 재제']
-			let date=['1일','3일','7일','15일','30일','영구재제']
+			let to=['작성자 제재','신고자 제재']
+			let date=['1일','3일','7일','15일','30일','영구제재']
 			Swal.fire({
 				title: to[user],
-				text: '작성자번호 : '+u_id+'\n'+'재제사유 : '+date[flg],
+				text: '작성자번호 : '+u_id+'\n'+'제재기간 : '+date[flg],
 				input: 'select',
 				inputOptions: {
 					'욕설 및 혐오 표현': '욕설 및 혐오 표현',
@@ -2383,7 +2383,7 @@ export default {
 					const val = result.value;	
 					if(val==="기타"){
 						Swal.fire({
-							title: '재제사유',
+							title: '제재사유',
 							input: 'text',
 							inputPlaceholder: '20자 이내로 작성해 주세요',
 							showCancelButton: true,
