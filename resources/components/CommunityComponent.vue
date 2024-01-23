@@ -480,6 +480,9 @@ export default {
                         if(res.data.code==="0"){
                             document.querySelector('#detail_replie'+id).remove();
                             this.repliecount--;
+							if(this.repliecount === 0){
+								this.getinfo();
+							}
                         }else{
                             Swal.fire({
                                 icon: 'error',
