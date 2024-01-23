@@ -108,9 +108,9 @@
 					좋아요
 					{{this.detaildata.cnt}}
 				</div>
-				<div class="post_btn_bot">
+				<!-- <div class="post_btn_bot">
 					<button type="button" @click="goBack">목록</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="detail_replie_container">
@@ -609,9 +609,9 @@ export default {
 			}
 		},
 		// 뒤로가기 동작 실행
-		goBack() {
-			this.$router.go(-1);
-		}
+		// goBack() {
+		// 	this.$router.go(-1);
+		// }
 	},
 	beforeRouteLeave(to, from, next) {
 		next();
