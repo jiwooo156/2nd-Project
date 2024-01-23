@@ -175,7 +175,7 @@
 								</div>
 							</div>
 						</td>
-						<td class="userchk_body_td4 none">
+						<td class="userchk_body_td3 none font_air bold">
 							{{ data.created_at }}
 						</td>
 					</tr>

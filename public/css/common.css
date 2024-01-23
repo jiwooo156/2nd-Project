@@ -774,7 +774,7 @@ input[type='date']:valid::before {
 .login_frame{
     margin: 0 auto;
     width: 95%;
-    max-width: 550px;
+    max-width: 650px;
 }
 .login_header{
 	font-size: 2.3rem;
@@ -785,10 +785,11 @@ input[type='date']:valid::before {
 	color: #000;
 }
 .login_container{
-	padding: 40px;
+    padding: 40px;
     background-color: white;
-    border-radius: 7px;
+    border-radius: 20px;
     margin-top: 60px;
+    border: 3px solid #ededed;
 }
 .login_box{
 	display: flex;
