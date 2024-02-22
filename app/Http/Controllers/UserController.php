@@ -162,7 +162,6 @@ class UserController extends Controller
         // 관리자일떄만
         if($result&&$admin_flg){
             Auth::login($result);
-            Auth::user();
             if($admin_flg->flg==="1"){
                 return response()->json([
                     'code' => '2'
@@ -196,7 +195,6 @@ class UserController extends Controller
                 }
             }
             Auth::login($result);
-            Auth::user();
             return response()->json([
                 'code' => '0',
                 'data' => $result
